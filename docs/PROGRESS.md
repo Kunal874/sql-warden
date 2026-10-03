@@ -4,8 +4,8 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed task: G0.1 / C0 (preflight and owner answers).
-Last completed commit: none yet. Next: G0.2 foundation, then G0.3 Python project.
+Current group: G0. Last completed task: G0.3 (Python checks passed; commit pending).
+Last completed commit: 2c77c72. Next: G0.4 restricted PostgreSQL boundary.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -16,8 +16,8 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - RTX 4060 Laptop GPU: 8188 MiB VRAM; 16 GB system RAM; roughly 66 GB free on D:.
 - Node 24.18.0/npm 11.16.0, uv 0.12.22, Docker Desktop 4.83.0, WSL 2.7.11.0.
 - uv/Docker are installed per-user and not on this session's PATH.
-- Python 3.14.0 existed; managed 3.12 installation is in progress.
-- Ollama 0.35.1 installation is in progress.
+- Python 3.14.0 existed; managed Python 3.12.15 now runs successfully.
+- Ollama 0.35.1 installed successfully (installer hash verified by winget).
 - PostgreSQL 17 service owns 5432. API 8000, Vite 5173, Ollama 11434 had no listeners.
 - No active Git hook path, commit template or author/committer environment override was found.
 - No model inference, database import or security integration checks have run.
@@ -27,8 +27,8 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 ### G0 — foundation and data
 
 - [x] G0.1 / C0: inspect tools, GPU/disk/ports, identity and time; record owner answers.
-- [ ] G0.2: initialize local repo; instructions/spec/memory/ignore files; verified owner-only foundation commit.
-- [ ] G0.3: minimal locked Python 3.12 src project; ruff/pytest; meaningful behavior check.
+- [x] G0.2: initialize local repo; instructions/spec/memory/ignore files; verified owner-only foundation commit.
+- [x] G0.3: minimal locked Python 3.12 src project; ruff/pytest; meaningful behavior check.
 - [ ] G0.4: isolated Docker PostgreSQL 16, restricted dataset/app logins; direct denial tests.
 - [ ] G0.5a (early): inspect/fetch one small pinned dataset; provenance, safe import and data checks.
 - [ ] G0.6a (early): Qwen endpoint smoke; availability, digest/template/capabilities and measured memory.
@@ -124,9 +124,26 @@ Kunal requested execution, confirmed identity, missing-tool installation and 15�
 Read all active execution contracts and detailed plan; original Appendix A is superseded.
 Initialized local feat/foundation; configured owner-only identity, no remote.
 Checks: workspace/Git inventory, GitHub refs, tool paths/versions, GPU/disk, ports, WSL/services.
-Python install downloaded 3.12.15 but returned a minor-version-link error; inspect actual
-runtime before retrying. Ollama installation is running (execution session 90858).
-Task checks/commits are pending; no implementation is claimed complete.
+Python install downloaded 3.12.15 and returned a minor-version-link error, but subsequent
+inspection found the complete target and both direct execution and uv discovery succeeded.
+No installation retry was needed; the cause of the transient reported error is unconfirmed.
+Ollama installation completed with a verified installer hash. Docker Desktop started
+(initial PID 55532); engine readiness is pending. No model has been downloaded.
+G0.2 checks: staged whitespace check, ignore behavior, owner identity, empty remote list
+and clean status passed. Commit 2c77c72 has Kunal as both author and committer and a clean body.
+G0.3: uv locked/installed the minimal project with Python 3.12.15. Limits tests were
+observed RED (missing constructor) before implementation, then all 40 passed.
+Full checks: pytest 40 passed, ruff check passed, ruff format checked 3 files,
+uv lock --check passed, git diff --check passed. Tests validate positive integer
+bounds, cell/result budgets and timeout relationships. No database-security claim.
+Ruff 0.16 also formats Python snippets in Markdown by default; explicitly scoped
+its include list to Python and pyproject.toml to preserve the planning documents.
+The sandbox could not write the pytest cache created during setup; a full run with
+the needed access passed without warnings. uv's initial cross-drive hardlink warning
+fell back to copies; dependency installation succeeded.
+Resolved transitive dev dependencies were inspected: colorama, iniconfig, packaging,
+pluggy, pygments and typing-extensions, plus the approved pytest/pytest-asyncio/ruff.
+This inventory check is not a claim of a vulnerability scan.
 
 Pre-flight contract reconciliation:
 - G0/G2: the guard and restricted identities must exist before the first model query.
@@ -137,9 +154,10 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: finish G0.2 verification and first logical commit; inspect Python installation,
-then G0.3 test-first foundation behavior. Start installed Docker and confirm engine readiness
-before G0.4. Do not touch the existing PostgreSQL 17 service or its data.
+Next: commit the verified Python project, then G0.4 PostgreSQL roles and direct
+connection tests. Docker engine 29.6.2 and Ollama 0.35.1 respond successfully.
+Port 55432 is free. Official postgres:16 image pull session 43259 is in progress.
+Do not touch the existing PostgreSQL 17 service or its data.
 
 Known tool paths for this session:
 - uv: C:/Users/Kunal/AppData/Local/Microsoft/WinGet/Packages/astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe/uv.exe
@@ -148,5 +166,15 @@ Known tool paths for this session:
 
 Use explicit paths if a fresh PowerShell cannot resolve commands; re-detect rather than
 changing global settings. External installed-tool access may require sandbox escalation.
-Ollama installer session: 90858; no project background processes have been started.
+Ollama installer session 90858 completed. Docker Desktop was started with PID 55532;
+no project containers or model inference processes have been started.
+
+Python checks (project virtual environment):
+
+`uv run pytest -q`
+
+`uv run ruff check .`
+
+`uv run ruff format --check .`
+
 Open decisions: none at C0. Later C1–C9 remain unanswered and apply at their milestones.

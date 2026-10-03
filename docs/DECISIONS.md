@@ -37,6 +37,18 @@ Docker PostgreSQL 16 once its availability is checked.
 Rationale: keep the agreed database version without changing the existing service.
 Cost if wrong: choose another free local port; no data migration is involved.
 
+## D-005 — G0.3: minimal Python foundation (2026-10-03)
+
+Context: the foundation needs a package and a meaningful check before the executor.
+Decision:
+G0.3 uses uv's bundled build backend, pinned to the installed uv version 0.12.22.
+This is part of the approved uv toolchain, not an added runtime framework. Only
+approved pytest/pytest-asyncio/ruff are needed initially; runtime dependencies
+will be added when their tasks need them. Query limits validation replaces the
+obsolete trivial foundation test and is reused by the early executor.
+Rationale: use the selected toolchain and test a real resource-boundary contract.
+Cost if wrong: packaging or limit defaults can be adjusted locally before C4.
+
 ## Source checks
 
 - Node 24 LTS: https://nodejs.org/en/about/previous-releases (checked 2026-10-03).

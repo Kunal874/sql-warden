@@ -1,0 +1,27 @@
+[project]
+name = "sqlwarden"
+version = "0.1.0"
+description = "A measured, read-only text-to-SQL agent"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[build-system]
+requires = ["uv_build==0.12.22"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-asyncio>=0.25,<2", "ruff>=0.9,<1"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = ["integration: requires the isolated local PostgreSQL container"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+include = ["*.py", "*.pyi", "pyproject.toml"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
