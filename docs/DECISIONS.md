@@ -189,6 +189,27 @@ wording was clarified):
 - Future commit attribution and release checks: verify this commit's author,
   committer and body immediately; full-history/publication checks remain at G7.
 
+## D-014 — G0.7a preparation and native guard-plan review (2026-10-03)
+
+Context: Kunal requested continued progress after G0.6a. The active BUILD_SPEC
+already approves the guard/executor/comparator/CLI design, but no implementation
+plan exists for the new safety components.
+Options: couple the guard to a CLI file, or implement one reusable pure guard
+before its database/model consumers.
+Recommendation: the latter, in two native tasks: pure guard then restricted-reader
+acceptance checks. Reuse the accepted BUILD_SPEC; preserve this checkout and the
+existing native execution method. The written minimum-sql-guard plan awaits review,
+including the proposed direct addition of approved-list SQLGlot 30.21.0. No parser
+dependency or guard runtime code has been added and no implementation approval is
+inferred from the earlier continue.
+Rationale: the first component can be tested without loading Qwen or touching
+credentials/data. Subsequent G0.7a components consume it; this preparation does
+not complete G0.7a or authorize generated SQL before all required controls pass.
+Source findings: EX_COMPARATOR.md records the inspected official set comparison
+at the same Mini-Dev revision as DATA. No benchmark definition/freeze, gold run,
+code-license assumption or score is made. Parser source metadata and license
+are documented in the plan; wheel integrity remains an installation-time check.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -5,9 +5,9 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 amends their order and checks.
 
 Current group: G0. Last completed task: G0.6a, local Qwen feasibility smoke.
-Last completed commit before this update: 15616d4. Current: first-model smoke
-verified and simple-English notebook created; next task is G0.7a. The following
-logical commit records this checkpoint and its evidence.
+Last completed commit before this update: 5cf31fa. Current: G0.7a source
+investigation and first-guard implementation plan prepared; waiting for Kunal's
+review of that written plan and its direct SQLGlot addition. G0.7a is not complete.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -35,6 +35,9 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [x] G0.5a (early): inspect/fetch one small pinned dataset; provenance, safe import and data checks.
 - [x] G0.6a (early): Qwen endpoint smoke; availability, digest/template/capabilities and measured memory.
 - [ ] G0.7a (early): tested minimum guard, bounded executor, EX comparator and one-database CLI smoke.
+  - [x] Inspect/pin official EX source and prepare the first SQL-guard plan.
+  - [ ] Review/approve the written guard plan and direct SQLGlot addition.
+  - [ ] Implement/verify the guard, then executor/comparator/CLI; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -119,6 +122,50 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-03 — G0.7a preparation and guard-plan handoff
+
+Reconciled clean feat/foundation at 5cf31fa; owner attribution and prior notebook
+checkpoint are preserved. Read the active contracts, relevant detailed-plan
+sections, limits and existing California test connection. Baseline rerun with
+both private test environments: 158 passed in 8.28 seconds. Ollama ps is empty;
+no model inference, installation, import or runtime SQL generation was started.
+
+Used brainstorming to classify the next subsystem as architectural. Reused the
+already approved BUILD_SPEC design instead of asking to approve its contracts
+again. Used writing-plans to prepare the first independently testable prerequisite:
+docs/superpowers/plans/2026-10-03-minimum-sql-guard.md. Two native tasks cover a
+pure fail-closed, scope-aware guard and real restricted-reader acceptance checks.
+The written plan is new and still requires review; the earlier continue is not
+approval of an artifact that did not exist. Direct SQLGlot addition is also pending.
+
+Checked primary upstream sources without running downloaded code. Official
+Mini-Dev HEAD remains abd11b6, matching DATA; EX_COMPARATOR.md records exact file
+hashes and comparison behavior. This is reference inspection, not a benchmark
+freeze, score or completed comparator. The upstream runner is not used: its
+connection configuration and extra drivers do not match this project. No source
+code was vendored and no code license was assumed from the dataset license.
+
+PyPI SQLGlot 30.21.0 supports Python >=3.9; its tag resolves to 5d16fa8 with MIT
+license. Registry wheel metadata is recorded, not a local wheel verification.
+Inspected pinned scope/expression/identifier sources; they use modular exports,
+and identifier normalization can honor comment metadata. The proposed guard
+must ignore those input-supplied controls, use PostgreSQL ASCII name folding,
+inspect every table scope and leave accepted SQL unchanged. No dependency was
+added. Web documentation paths that failed were replaced by pinned source/API
+inspection rather than assumed successful reads. The plan self-review corrected
+its oversized-input example so it tests the byte limit, not just blank input.
+
+Updated the simple-English notebook with this completed preparation subtask,
+separate from unimplemented runtime work. The executor, comparator, CLI and
+model-readiness strategy remain subsequent G0.7a work. D-014 records the handoff.
+Plan self-review assigns all five review-focus conditions to concrete test steps;
+all local document links and six Python snippet syntax checks pass (snippets were
+not executed). Ruff check/format and diff checks pass. Runtime, tests, dependencies
+and all three original planning inputs remain unchanged.
+The staged check caught one extra EOF blank line in the new EX source record
+that the earlier tracked-only diff had not covered. Removed only that line;
+the complete staged whitespace check now passes.
 
 ### 2026-10-03 — learning notebook and G0.6a local model smoke
 
@@ -362,8 +409,14 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: G0.7a — reviewed minimum guard, bounded executor, pinned EX comparator and
-safe one-database CLI. The previous native-import plan is complete; do not
+Next: Kunal reviews the new
+[minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md), including
+the proposed direct sqlglot==30.21.0 addition. Native execution remains selected;
+do not start its unchecked tasks before that review. Then use executing-plans
+for its two tasks in this checkout. No guard code/parser dependency exists yet.
+G0.7a still requires the bounded executor, pinned EX comparator and safe CLI after
+the guard. EX_COMPARATOR.md contains only source-reference evidence.
+The previous native-import plan is complete; do not
 re-execute its tasks. The ignored review scratch was retained because host policy
 blocked cleanup; its ten rulings are preserved in DECISIONS.
 Do not download the source
@@ -433,4 +486,5 @@ The native extraction and one-time import have also completed; do not rerun them
 
 `uv run ruff format --check .`
 
-Open decisions: none at C0. Later C1–C9 remain unanswered and apply at their milestones.
+Open decisions: written guard-plan review and direct SQLGlot addition are pending.
+None at C0. Later C1–C9 remain unanswered and apply at their milestones.

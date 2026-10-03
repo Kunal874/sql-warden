@@ -208,6 +208,28 @@ for the next run. The startup timeout is recorded, not hidden.
 
 Technical measurements and limitations are in [MODELS](../docs/MODELS.md).
 
+### G0.7a preparation — Plan the first SQL safety check
+
+What was done: read the saved build rules and wrote a step-by-step plan for the
+SQL guard. This will be the code that checks a proposed query before it can run.
+Also read the official BIRD answer-checking code and saved its exact version and
+file fingerprints. The downloaded code was only read, not run.
+
+Why: safety checks must come before connecting AI answers to the database. The
+answer checker must follow its published rules, not rules chosen to improve a score.
+
+Checked: all 158 existing tests still pass. The scoring source ignores repeated
+rows when comparing answers; later result voting needs separate rules that keep
+repeats. No AI model was loaded, no new package was installed, and no new SQL
+guard was built in this preparation step.
+
+Next: you review the written guard plan and its proposed SQLGlot package addition.
+Then the guard will be built and tested. The limited query runner, answer checker
+and AI-connected command-line demo still come afterward. G0.7a is not finished.
+
+The technical [guard plan](../docs/superpowers/plans/2026-10-03-minimum-sql-guard.md)
+and [scoring-source record](../docs/EX_COMPARATOR.md) hold the exact details.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -364,6 +386,23 @@ feature has already been implemented.
   delete this data. We have preserved the project's named volume.
 - **SQL guard:** code that checks the structure of a proposed query before
   execution. It is still future work; prompt instructions cannot replace it.
+- **Parser / AST (syntax tree):** a parser reads SQL and makes a structured map
+  of its parts. This lets us see a real command instead of guessing from words.
+  Parsing alone does not prove a query is allowed or will run successfully.
+- **SQLGlot:** the planned Python package that reads SQL into that tree. It is
+  not installed in this project yet, and it is not the database itself.
+- **Allowlist:** a written list of things the program permits. A thing missing
+  from the list is not automatically allowed just because it looks harmless.
+- **Fail closed:** if a safety check cannot understand or verify something, it
+  refuses instead of guessing that it is safe.
+- **CTE / SQL scope:** a CTE gives a name to a small query inside a bigger query.
+  Scope is where that name is valid. The same name elsewhere does not give that
+  other place permission to read an unrelated table.
+- **Operator / cast:** an operator is a symbol such as + or =. A cast converts
+  a value to another type. Both can use database functions, so they also need review.
+- **Tuple / set / multiset:** a row tuple keeps values in column order. A set
+  keeps each distinct row once; a multiset also keeps how often a row repeats.
+  The inspected BIRD EX rule uses sets, not multisets.
 - **Sandbox / restricted executor:** the controlled place where permitted
   queries will run with strict permissions and time/output limits.
 - **RLS (row-level security):** database rules that can restrict individual
@@ -389,9 +428,9 @@ feature has already been implemented.
 
 ## 6. What comes next?
 
-G0.6a's first model smoke is complete. G0.7a builds the tested SQL guard,
-limited query runner and result
-comparator before the first real question-to-database demonstration. The rest
+G0.6a's first model smoke is complete. G0.7a's first guard plan is prepared and
+awaits your review. After approval, the tested SQL guard, limited query runner and
+result comparator come before the first real question-to-database demonstration. The rest
 of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date
