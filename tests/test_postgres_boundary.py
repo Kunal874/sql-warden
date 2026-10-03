@@ -15,6 +15,27 @@ ROLE_KEYS = {
     "warden_bootstrap": "WARDEN_BOOTSTRAP_PASSWORD",
 }
 
+LARGE_OBJECT_FUNCTIONS = (
+    "lo_create",
+    "lo_creat",
+    "lo_from_bytea",
+    "lo_put",
+    "lowrite",
+    "lo_unlink",
+    "lo_truncate",
+    "lo_truncate64",
+    "lo_open",
+    "lo_close",
+    "loread",
+    "lo_get",
+    "lo_lseek",
+    "lo_lseek64",
+    "lo_tell",
+    "lo_tell64",
+    "lo_import",
+    "lo_export",
+)
+
 
 @asynccontextmanager
 async def connected(role="warden_sandbox_demo_schools"):
@@ -37,12 +58,87 @@ async def connected(role="warden_sandbox_demo_schools"):
         await conn.close()
 
 
+@asynccontextmanager
+async def rolled_back(conn):
+    """Preserve persistent fixtures even if a denial unexpectedly succeeds."""
+    transaction = conn.transaction()
+    await transaction.start()
+    try:
+        yield
+    finally:
+        await transaction.rollback()
+
+
 async def test_reader_can_read_its_own_synthetic_rows():
     async with connected() as conn:
         rows = await conn.fetch(
             'SELECT "School Name", enrollment FROM demo_schools.schools ORDER BY id'
         )
         assert [tuple(row) for row in rows] == [("Sample North", 120), ("Sample South", 80)]
+
+
+@pytest.mark.parametrize("raise_after_write", [False, True])
+async def test_probe_transaction_always_rolls_back(raise_after_write):
+    async with connected("warden_app") as conn:
+        before = await conn.fetch("SELECT value FROM app.boundary_probe ORDER BY value")
+        observed_failure = False
+        try:
+            async with rolled_back(conn):
+                await conn.execute("INSERT INTO app.boundary_probe VALUES ('rollback-probe')")
+                assert (
+                    await conn.fetchval(
+                        "SELECT count(*) FROM app.boundary_probe WHERE value = 'rollback-probe'"
+                    )
+                    == 1
+                )
+                if raise_after_write:
+                    raise AssertionError("simulated unexpected probe success")
+        except AssertionError as error:
+            assert raise_after_write
+            assert str(error) == "simulated unexpected probe success"
+            observed_failure = True
+        assert observed_failure == raise_after_write
+        after = await conn.fetch("SELECT value FROM app.boundary_probe ORDER BY value")
+        assert after == before
+
+
+@pytest.mark.parametrize("role", ["warden_sandbox_demo_schools", "warden_sandbox_demo_other"])
+@pytest.mark.parametrize(
+    "sql",
+    [
+        "SELECT pg_catalog.lo_create(0)",
+        "SELECT pg_catalog.lo_creat(131072)",
+        "SELECT pg_catalog.lo_from_bytea(0, decode('01', 'hex'))",
+    ],
+)
+async def test_reader_cannot_create_large_objects_even_with_read_only_disabled(role, sql):
+    async with connected(role) as conn:
+        await conn.execute("SET default_transaction_read_only = off")
+        async with rolled_back(conn):
+            with pytest.raises(asyncpg.InsufficientPrivilegeError):
+                await conn.fetchval(sql)
+
+
+@pytest.mark.parametrize(
+    "role",
+    [
+        "warden_sandbox_demo_schools",
+        "warden_sandbox_demo_other",
+        "warden_app",
+    ],
+)
+async def test_all_large_object_overloads_are_denied_to_runtime_logins(role):
+    async with connected(role) as conn:
+        functions = await conn.fetch(
+            "SELECT p.proname, p.oid::regprocedure::text AS signature, "
+            "has_function_privilege(current_user, p.oid, 'EXECUTE') AS executable "
+            "FROM pg_catalog.pg_proc p "
+            "JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace "
+            "WHERE n.nspname = 'pg_catalog' AND p.proname = ANY($1::text[])",
+            LARGE_OBJECT_FUNCTIONS,
+        )
+        assert {row["proname"] for row in functions} == set(LARGE_OBJECT_FUNCTIONS)
+        assert [row["signature"] for row in functions if row["executable"]] == []
 
 
 @pytest.mark.parametrize(
@@ -68,8 +164,9 @@ async def test_reader_can_read_its_own_synthetic_rows():
 async def test_privileges_deny_forbidden_sql_even_with_read_only_default_disabled(sql):
     async with connected() as conn:
         await conn.execute("SET default_transaction_read_only = off")
-        with pytest.raises(asyncpg.InsufficientPrivilegeError):
-            await conn.execute(sql)
+        async with rolled_back(conn):
+            with pytest.raises(asyncpg.InsufficientPrivilegeError):
+                await conn.execute(sql)
         assert await conn.fetchval("SELECT count(*) FROM demo_schools.schools") == 2
 
 
@@ -118,7 +215,7 @@ async def test_app_login_cannot_read_dataset_rows(sql):
 
 
 async def test_app_login_can_store_application_state():
-    async with connected("warden_app") as conn, conn.transaction():
+    async with connected("warden_app") as conn, rolled_back(conn):
         await conn.execute("INSERT INTO app.boundary_probe (value) VALUES ('local-check')")
         assert (
             await conn.fetchval(
@@ -139,20 +236,15 @@ async def test_other_reader_is_isolated_in_both_directions():
 
 
 async def test_new_owner_created_tables_inherit_only_their_dataset_reader():
-    async with connected("warden_bootstrap") as conn:
-        transaction = conn.transaction()
-        await transaction.start()
-        try:
-            await conn.execute("SET LOCAL ROLE warden_owner")
-            await conn.execute("CREATE TABLE demo_schools.future_grant_probe (id int)")
-            access = await conn.fetchrow(
-                "SELECT "
-                "has_table_privilege('warden_sandbox_demo_schools', "
-                "'demo_schools.future_grant_probe', 'SELECT'), "
-                "has_table_privilege('warden_sandbox_demo_other', "
-                "'demo_schools.future_grant_probe', 'SELECT'), "
-                "has_table_privilege('warden_app', 'demo_schools.future_grant_probe', 'SELECT')"
-            )
-            assert tuple(access) == (True, False, False)
-        finally:
-            await transaction.rollback()
+    async with connected("warden_bootstrap") as conn, rolled_back(conn):
+        await conn.execute("SET LOCAL ROLE warden_owner")
+        await conn.execute("CREATE TABLE demo_schools.future_grant_probe (id int)")
+        access = await conn.fetchrow(
+            "SELECT "
+            "has_table_privilege('warden_sandbox_demo_schools', "
+            "'demo_schools.future_grant_probe', 'SELECT'), "
+            "has_table_privilege('warden_sandbox_demo_other', "
+            "'demo_schools.future_grant_probe', 'SELECT'), "
+            "has_table_privilege('warden_app', 'demo_schools.future_grant_probe', 'SELECT')"
+        )
+        assert tuple(access) == (True, False, False)

@@ -4,8 +4,8 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed task: G0.4 (checks passed; commit pending).
-Last completed commit: 94a2175. Next: G0.5a one small pinned BIRD dataset.
+Current group: G0. Last completed task: G0.4 (review follow-up verified; commit pending).
+Last completed commit: 7ed5b64. Next: G0.5a one small pinned BIRD dataset.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -118,6 +118,24 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 
 ## Session log
 
+### 2026-10-03 — G0.4 review follow-up
+
+Read-only review found that revoking lo_import/lo_export left large-object creation
+and mutation functions executable. Effective ACL inspection confirmed the gap.
+Six rollback-protected direct creation probes reproduced it; three ACL tests also
+failed for the runtime logins. Revoked PUBLIC execution on every overload of the
+unused large-object API using one shared idempotent setup script. Applied it to the
+existing volume after a container restart; no data or credentials were deleted.
+The two test-harness checks first failed for the missing rollback helper, then
+passed after implementation. Destructive denial probes now always roll back,
+including unexpected success; app-state and future-grant tests use it too.
+
+Verified: 80 tests passed (43 unit/setup + 37 actual PostgreSQL integration), ruff
+check and format passed, uv lock --check and git diff --check passed. A setup-only
+catalog check found zero runtime-owned large objects after all reproduction tests.
+This corrects the initial G0.4 write-boundary gap; it is not an exhaustive security
+audit or a claim that the later guard, executor, tenant RLS or attack suite exists.
+
 ### 2026-10-03 — G0.4 boundary
 
 G0.3 commit 94a2175 verified owner-only. Added approved asyncpg 0.31.0 and updated
@@ -129,7 +147,7 @@ Pinned the downloaded official image digest and reviewed the bootstrap SQL.
 PostgreSQL 16.15 is healthy on 127.0.0.1:55432, capped at 768 MiB and one CPU.
 No BIRD data, tenant RLS, AST guard, model query or benchmark result is claimed.
 
-Final checks: 69 tests passed (43 unit/setup + 26 actual PostgreSQL integration),
+Initial checks: 69 tests passed (43 unit/setup + 26 actual PostgreSQL integration),
 ruff check passed, format check passed for 6 files, git diff --check passed;
 .env and .env.setup are ignored. Direct tests bypass the guard and verify SELECT
 on the assigned synthetic schema, forbidden writes even after disabling the
@@ -176,7 +194,12 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: commit/review G0.4, then inspect and pin one small BIRD dataset for G0.5a.
+Next: commit the verified G0.4 review follow-up, then inspect and pin one small BIRD dataset
+for G0.5a. GitHub Mini-Dev revision abd11b6db92a1c9f809b32f7564c7c71b34d67f0 and
+Hugging Face revision f65faf4ae3b638c1fa6df1d3370c8d92c8366301 were inspected.
+The HF repository contains label JSON, not database files; the official README
+links a corresponding database package. Inspect its size/paths and choose one small
+database before downloading/importing; do not substitute the synthetic fixtures.
 Docker engine 29.6.2 and Ollama 0.35.1 respond. The postgres image pull completed.
 Before model inference, implement/test the minimum guard, bounded executor and comparator.
 Do not touch the existing PostgreSQL 17 service or its data.
@@ -202,6 +225,8 @@ Full checks including PostgreSQL: `uv run --env-file .env.setup pytest -q`.
 Restart: `docker compose --env-file .env.setup up -d --wait`.
 Stop without deleting data: `docker compose --env-file .env.setup stop`.
 Do not rerun credential initialization when either local env file exists.
+The current volume already has db/function_hardening.sql applied. Its setup-only
+update command is documented in README; do not rerun the full bootstrap on existing data.
 
 `uv run ruff check .`
 

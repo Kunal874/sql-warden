@@ -65,7 +65,24 @@ Cost if wrong: local limits/layout can be revised before C1/C4; preserve the vol
 and credentials rather than recreating them silently.
 
 Verified runtime: PostgreSQL 16.15. SQLWarden container healthy; 26 real integration
-checks passed, including cross-schema denial and effective future grants.
+checks initially passed, including cross-schema denial and effective future grants.
+
+## D-007 — G0.4: close the large-object permission gap (2026-10-03)
+
+Context: review and direct rollback-protected tests showed that PUBLIC still had
+execution rights on large-object creation/mutation functions. Disabling the mutable
+read-only default allowed the restricted reader to create a large object.
+Decision: revoke the complete unused large-object API (all overloads), alongside
+the reviewed file/sleep functions. Use one idempotent function_hardening.sql in
+fresh bootstrap and as a targeted existing-volume permissions update. Always roll
+back mutating test probes, including unexpected success.
+Rationale: the read-only project does not need this API; privileges must hold even
+without the read-only default. Preserve data/credentials and avoid a volume reset.
+Verification: 80 tests passed, including 37 real database checks; zero runtime-owned
+large objects remained after reproduction. This is an initial boundary, not an
+exhaustive security audit. PostgreSQL 16 documents the large-object SQL interface at
+https://www.postgresql.org/docs/16/lo-funcs.html and its client/server functions at
+https://www.postgresql.org/docs/16/lo-interfaces.html (checked 2026-10-03).
 
 ## Source checks
 

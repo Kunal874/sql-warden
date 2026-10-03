@@ -63,7 +63,6 @@ ALTER ROLE warden_sandbox_demo_other SET search_path = pg_catalog, demo_other;
 DO $hardening$
 DECLARE
   reader text;
-  risky record;
 BEGIN
   FOREACH reader IN ARRAY ARRAY['warden_sandbox_demo_schools', 'warden_sandbox_demo_other']
   LOOP
@@ -74,19 +73,10 @@ BEGIN
     EXECUTE format('ALTER ROLE %I SET work_mem = %L', reader, '16MB');
     EXECUTE format('ALTER ROLE %I SET temp_file_limit = %L', reader, '64MB');
   END LOOP;
-  -- Review every overload of these file, sleep and large-object functions.
-  FOR risky IN
-    SELECT p.oid::regprocedure AS signature
-    FROM pg_catalog.pg_proc p
-    JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
-    WHERE n.nspname = 'pg_catalog' AND p.proname = ANY (ARRAY[
-      'pg_sleep', 'pg_sleep_for', 'pg_sleep_until', 'pg_read_file', 'pg_read_binary_file',
-      'pg_ls_dir', 'pg_stat_file', 'lo_import', 'lo_export'
-    ])
-  LOOP
-    EXECUTE format('REVOKE EXECUTE ON FUNCTION %s FROM PUBLIC', risky.signature);
-  END LOOP;
 END;
 $hardening$;
+
+-- The same idempotent grants update also supports existing local volumes.
+\ir function_hardening.sql
 
 COMMIT;
