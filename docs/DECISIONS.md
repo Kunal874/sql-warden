@@ -322,6 +322,52 @@ Deferred minors: none reported or re-graded. Ignored review scratch is retained
 under .superpowers/sdd/2026-10-03-minimum-sql-guard; no deletion was attempted.
 No merge, remote, push, pull request or publication was performed.
 
+## D-018 — bounded-executor preparation and review gate (2026-10-04)
+
+Context: Kunal requested further progress and a progress update after D-017's
+completed guard. The approved BUILD_SPEC supplies the executor design; its new
+implementation plan still needs review. General continuation and approval of
+the earlier guard plan do not approve this newly written artifact.
+Options: add an all-dataset registry or per-request connections, versus reuse
+one fixed California reader and a caller-owned one-connection pool.
+Recommendation/pending review: the latter, in three native test-first tasks:
+pure complete-result/estimate contracts; internally guarded restricted execution;
+actual PostgreSQL budgets/cancellation/settings reset and pool recovery.
+Keep the current checkout and installed dependencies. No executor runtime code,
+new config fields or direct dependencies are added by this preparation.
+
+Proposed contracts: only complete ok results contain data; overflow/errors never
+return a prefix. Account for compact UTF-8 JSON {columns, rows} framing and cells,
+while preserving original typed rows/order/duplicates. Fetch one row and detect
+cap-plus-one. Add positive-integer max_estimated_cost/max_estimated_rows=100000
+as uncalibrated initial knobs, not currency, gold-informed tuning or a benchmark
+change. Guard internally before restricted, bounded EXPLAIN (FORMAT JSON);
+never ANALYZE, LIMIT injection, caller-selected role/host or a forged decision.
+
+One explicit readonly transaction holds settings/planning/fetching. Normal
+results and budget blocks roll back/release within the deadline; error/cancellation
+terminates the connection synchronously and the real tests must prove replacement.
+External cancellation propagates. Pool lifecycle has a separate finite bound;
+creation/close errors have a fixed, chain-suppressed category, while caller body
+exceptions/cancellation retain themselves. No runtime loader reads test env files.
+
+Residual limits: the driver receives/decodes one cell/row or EXPLAIN value before
+checking it; sizing can transiently allocate encoded bytes. The envelope cap is
+not a heap/wire cap, work_mem is not total memory isolation, synchronous checking
+is not hard process preemption, and application error redaction does not prove
+PostgreSQL administrator logs are redacted. No server logging/grant change made.
+
+Evidence: official PostgreSQL 16 and asyncpg docs plus installed locked 0.31.0
+source inspected; upstream GitHub tag/API browsing unavailable, so no upstream
+commit pin claimed. The plan contains the sources and concrete controls for all
+five Review Focus conditions; code blocks only syntax-checked, not implemented.
+Fresh existing suite: 407 passed including 123 actual PostgreSQL checks, zero
+skips; no-env 284/123 skipped; setup-only 327/80 skipped; sync/lint/format pass.
+Foundation checklist has 6/12 numbered items complete plus partial G0.7a; no
+effort-weighted overall percentage claimed. The notebook records preparation.
+Await Kunal's review of docs/superpowers/plans/2026-10-04-bounded-sql-executor.md,
+preserving native execution. No inference, data change or publication authorized.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

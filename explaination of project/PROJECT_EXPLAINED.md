@@ -43,6 +43,12 @@ The AI question-answering flow, limited query runner, evaluation
 scores, website and public release are not built yet. G0, the foundation group,
 is still in progress. No AI-generated SQL has been executed.
 
+Where we are: 6 of the 12 numbered foundation tasks are complete. Inside the
+next task, the query guard is finished and the limited runner's plan is ready
+for your review. This does not mean half the entire project is done: the agent,
+experiments, website and release still come later. We are building the first
+small working demonstration before expanding.
+
 ## 3. Completed work, one step at a time
 
 ### G0.1 — Check the laptop and agree on the basics
@@ -320,6 +326,31 @@ The limited query runner and answer checker must come before running AI SQL.
 The technical [guard plan](../docs/superpowers/plans/2026-10-03-minimum-sql-guard.md)
 and [scoring-source record](../docs/EX_COMPARATOR.md) hold the exact details.
 
+### G0.7a, executor preparation — Plan the limited query runner
+
+What was done: wrote and checked the next implementation plan. The runner will
+use our existing query guard and the restricted California Schools login.
+There is no new package, download or AI model load for this preparation.
+The runner itself has not been built yet.
+
+Why: a query can be allowed to read and still take too long or produce a huge
+answer. The guard checks what is allowed; the runner will limit time and output.
+If only part of the answer fits, it must not pretend that part is the full answer.
+
+The plan has three parts: test the answer-size rules, build the guarded runner,
+then check it with the real database. It plans for timeouts, cancelled work,
+wrong settings, private error messages and reusing a connection after failure.
+No AI SQL will run until the runner and answer checker also pass their checks.
+
+Checked: all 407 existing tests passed again, including 123 real database tests.
+The code-style checks pass. The database is healthy and no model is loaded.
+The proposed code examples were checked for valid Python syntax only; this
+does not prove the future runner works. No imported data or password changed.
+
+Read the technical [runner plan](../docs/superpowers/plans/2026-10-04-bounded-sql-executor.md).
+The planning skill requires your review of this new plan before coding begins;
+the previously selected single-worker approach stays the same.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -521,6 +552,26 @@ feature has already been implemented.
   The inspected BIRD EX rule uses sets, not multisets.
 - **Sandbox / restricted executor:** the controlled place where permitted
   queries will run with strict permissions and time/output limits.
+- **Connection pool:** a small set of database connections kept ready for reuse.
+  This runner is planned to use at most one, rather than opening unlimited links.
+- **Cursor:** a way to collect an answer gradually, instead of loading all rows
+  into the program at once. Our plan requests one row at a time.
+- **Budget / deadline / timeout:** a budget is a maximum amount allowed, such as
+  rows, bytes or time. A deadline is the latest finishing time. A timeout means
+  the time limit was reached, not that the database returned a correct answer.
+- **Overflow / complete result:** overflow means an answer exceeded a limit.
+  A complete result contains the whole answer. A matching first page does not
+  prove that two complete answers are equal.
+- **Cap-plus-one:** ask for one extra row to check whether more rows exist.
+  If the limit is two and a third row appears, the result is too large.
+- **UTF-8 / byte size:** UTF-8 turns text into computer bytes. A Hindi character
+  or emoji can use several bytes; counting letters is not enough. The planned
+  result budget also counts column names and the brackets around the data.
+- **EXPLAIN / estimated cost:** EXPLAIN asks PostgreSQL what work it expects
+  a query to need. Its cost is a rough work estimate, not money or accuracy.
+  Estimates can be wrong, so time limits are still needed.
+- **Cancellation:** stopping work because the caller asks to stop. The planned
+  runner must release its database resources, not just stop showing output.
 - **RLS (row-level security):** database rules that can restrict individual
   rows to the correct user or tenant. Tenant RLS is not implemented yet.
 - **API / endpoint:** an API is a way programs talk to each other; an endpoint
@@ -545,8 +596,9 @@ feature has already been implemented.
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
-final review fixes, are complete. The limited query runner and result comparator
-come before the first real question-to-database demonstration. The rest
+final review fixes, are complete. Next, review the new limited-runner plan,
+then build and test it. After that come the answer checker and a small command-line
+question-to-database demonstration. The rest
 of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date

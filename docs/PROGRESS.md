@@ -4,11 +4,14 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed subtask: G0.7a minimum SQL guard, including
-restricted PostgreSQL acceptance and final review fixes. Last completed commit
-before this update: f8255de. Kunal approved the written guard plan and SQLGlot
-30.21.0 on 2026-10-04. Next: plan the bounded executor that consumes this guard.
-G0.7a is not complete.
+Current group: G0. Last completed subtask: G0.7a bounded-executor preparation,
+not implementation. Last completed commit before this update: 7fa0a2d.
+The minimum SQL guard and its real acceptance/final fixes are complete.
+The new executor plan is prepared and self-reviewed; next is Kunal's review,
+then native implementation with no new dependency. G0.7a is not complete.
+Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
+interview drill; the guard is finished inside the next item. This is checklist
+coverage, not half the project's effort. G1–G5/G7 remain unfinished.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -41,7 +44,11 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Implement/verify the pure scope-aware guard (193 unit checks after review fixes).
   - [x] Verify guard acceptance on real restricted PostgreSQL (56 real checks).
   - [x] Complete final read-only guard-plan review and resolve its findings.
-  - [ ] Implement/verify executor/comparator/CLI; no generated SQL yet.
+  - [x] Prepare/self-review the bounded executor implementation plan.
+  - [ ] Review/approve that new executor plan; preserve native execution.
+  - [ ] Implement/verify the bounded executor against real PostgreSQL.
+  - [ ] Implement/verify the pinned EX comparator.
+  - [ ] Build the safe one-database model/CLI flow; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -126,6 +133,44 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — G0.7a bounded-executor preparation
+
+Resumed D-017's exact Handoff at clean feat/foundation, 7fa0a2d. Reused the
+approved BUILD_SPEC design and completed guard; prepared
+[bounded executor plan](superpowers/plans/2026-10-04-bounded-sql-executor.md)
+for review, with three native tasks: complete-result/estimate budgets, guarded
+single-pool workflow, and real restricted-reader limits/recovery controls.
+No executor code/tests or config defaults have changed. No dependency added.
+
+Inspected the installed asyncpg 0.31.0 public cursor/transaction/pool APIs and
+termination behavior, plus official PostgreSQL 16 EXPLAIN/timeout docs. Proposed
+one fixed California pool, explicit readonly transaction-local settings, guarded
+EXPLAIN without ANALYZE, fetch(1), finite acquire/total/cleanup, cap-plus-one and
+prefix-free failure. Cost/row estimates start at proposed 100000 each, subject
+to this plan review; they are not calibrated or benchmark-tuned. Byte sizing
+uses a defined compact UTF-8 data envelope, not EX/voting canonicalization.
+
+Inline self-review fixed short identity metadata and lifecycle error/cancellation
+contracts, added concrete controls for all five Review Focus cases, and requires
+actual cancelled-backend removal before pool recovery. All 12 proposed Python fences
+were syntax-checked only, not run as implementation tests. Existing guard accepts
+the two handwritten undefined-object controls; no SQL was executed by that probe.
+Recorded transient decoding/encoding and administrator-log residual limits.
+
+Fresh verification of existing code: no-env 284 passed / 123 skipped (1.60s);
+setup-only 327 passed / 80 skipped (3.81s); both private test files 407 passed,
+zero skips, including 123 actual PostgreSQL checks (13.59s). Locked sync,
+ruff check, 15-file format check, relative file links and diff whitespace pass.
+PostgreSQL healthy; Ollama has no
+loaded model. Original planning files, runtime/test source and locks unchanged;
+no data import, inference, download, remote, push or publication.
+
+Updated the learning notebook with this preparation and simple runner/budget
+terms. The writing-plans review gate requires review of the newly written plan
+before implementation; prior guard-plan approval does not approve a new artifact.
+No new execution-method question: native in this checkout remains selected.
+This completes preparation only, not the runner or G0.7a.
 
 ### 2026-10-04 — G0.7a guard final review and one TDD fix pass
 
@@ -534,9 +579,13 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: plan the bounded executor that calls this guard itself, with the existing
-dataset-specific identity and QueryLimits. Keep this same guard; do not create a
-second implementation. No runtime executor is produced by the guard plan.
+Next: Kunal reviews/confirms the newly prepared
+[bounded executor plan](superpowers/plans/2026-10-04-bounded-sql-executor.md).
+Then use executing-plans natively in this checkout for its three tasks. Do not
+implement it before that review, ask again about the execution method, add a
+dependency, redo completed guard/import work, or load a model for executor work.
+The plan consumes the existing guard and QueryLimits; no runtime executor exists
+yet. D-018 records the pending proposal and limits, not an implementation approval.
 The [minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md)
 and its final review are complete: 193 guard checks, 56 real acceptance checks,
 407 full-suite passes (123 actual PostgreSQL), both Important findings fixed
@@ -622,5 +671,6 @@ The native extraction and one-time import have also completed; do not rerun them
 
 `uv run ruff format --check .`
 
-Open decisions: none for the approved guard plan or SQLGlot addition.
+Open decision: review of the new bounded-executor plan; no new dependency requested.
+None for the completed guard plan or approved SQLGlot addition.
 None at C0. Later C1–C9 remain unanswered and apply at their milestones.
