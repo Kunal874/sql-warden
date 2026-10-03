@@ -4,8 +4,8 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed task: G0.4 including the verified review follow-up.
-Last completed commit: 12e8aab. Current: G0.5a import verified; compact provenance checks pending.
+Current group: G0. Last completed task: G0.5a for California Schools.
+Last completed commit: 214b442. Current: G0.5a provenance verified; final review pending.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -20,7 +20,7 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - Ollama 0.35.1 installed successfully (installer hash verified by winget).
 - PostgreSQL 17 service owns 5432. API 8000, Vite 5173, Ollama 11434 had no listeners.
 - No active Git hook path, commit template or author/committer environment override was found.
-- No model inference or BIRD import has run. Synthetic database permission checks have run.
+- At preflight no model inference or BIRD import had run; see the current session log below.
 
 ## Task checklist
 
@@ -30,7 +30,7 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [x] G0.2: initialize local repo; instructions/spec/memory/ignore files; verified owner-only foundation commit.
 - [x] G0.3: minimal locked Python 3.12 src project; ruff/pytest; meaningful behavior check.
 - [x] G0.4: isolated Docker PostgreSQL 16, restricted dataset/app logins; direct denial tests.
-- [ ] G0.5a (early): inspect/fetch one small pinned dataset; provenance, safe import and data checks.
+- [x] G0.5a (early): inspect/fetch one small pinned dataset; provenance, safe import and data checks.
 - [ ] G0.6a (early): Qwen endpoint smoke; availability, digest/template/capabilities and measured memory.
 - [ ] G0.7a (early): tested minimum guard, bounded executor, EX comparator and one-database CLI smoke.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
@@ -117,6 +117,25 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-03 — G0.5a content/provenance / approved plan Task 3
+
+Task 2 committed at 214b442, with Kunal as author and committer and no extra body
+attribution. Tests first identified the missing compact manifest. Captured native
+ordered COPY fingerprints using only the restricted reader, with fixed output
+settings. Recorded all 89 source/native columns and types, PK/FK mapping, actual
+NULL distributions, complete-content controls, source hashes/revisions and the
+actual dirty Git state when the import ran. No raw rows or secret values are stored.
+Live metadata verifies date/real(float4)/bigint, PK uniqueness and both validated
+FKs/joins. A source-description check failed for four whitespace-padded frpm names;
+trimmed description-name padding only and recorded exact aliases. All descriptions
+now match native names uniquely; SQL identifiers and source files are unchanged.
+Rechecked all eight pinned source artifacts, 500 unique aligned label IDs and
+the 30 California IDs; question/evidence differences across the full release stay
+explicit. Gold SQL was not executed or used for inference.
+Full verification: 149 passed (90 unit/setup/data + 59 actual PostgreSQL), lint,
+format, lock and diff checks passed. G0.5a is complete for this one database.
+One fresh-context final whole-branch review remains before the final handoff.
 
 ### 2026-10-03 — G0.5a setup-only import / approved plan Task 2
 
@@ -267,7 +286,8 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: execute Task 3 of the approved native-import plan inline.
+Next: finish the read-only whole-branch review, then G0.6a Qwen endpoint/capability
+smoke followed by G0.7a guard, bounded executor, pinned EX comparator and safe CLI.
 Do not download the source
 archive/labels again or overwrite data/bird_california. Source fingerprints and
 native block hashes are in DATA.md. The current extractor refuses repeats by design.
@@ -292,7 +312,8 @@ sqlwarden-postgres-1 is running and healthy on loopback port 55432, using the
 sqlwarden_pg16_data named volume. No model download/inference is running.
 No Git remote is configured and nothing has been pushed or published.
 Archive download session 71692 and read-only native inspection session 69421 completed.
-No data download or inspection process remains running.
+No data download or inspection process remains running. Native extraction session
+42513 completed. Database import is complete and no import process is running.
 
 Python checks (project virtual environment):
 

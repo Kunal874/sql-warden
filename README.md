@@ -6,7 +6,7 @@ versioned BIRD Mini-Dev evaluations and tests of database isolation and SQL cont
 
 ## Current status
 
-The foundation passes 146 tests: 90 unit/setup/data checks and 56 real PostgreSQL
+The foundation passes 149 tests: 90 unit/setup/data checks and 59 real PostgreSQL
 integration checks. The local database is PostgreSQL 16.15 on 127.0.0.1:55432.
 There are no model results, accuracy claims or
 published security measurements yet. The first milestone is one real database
@@ -17,7 +17,9 @@ The first BIRD database source and canonical labels are downloaded and pinned.
 California Schools is imported into its own schema and read-only login. Complete
 typed content matches the native COPY data. The
 [native import plan](docs/superpowers/plans/2026-10-03-bird-native-import.md)
-is finishing its provenance checks. No downloaded SQL dump has been executed.
+is verified. The [compact import manifest](docs/california-import-manifest.json)
+records source/content hashes, types, keys, NULL counts and observed checks.
+No downloaded SQL dump has been executed.
 
 The intended stack is Python 3.12, FastAPI, PostgreSQL 16, sqlglot and the official
 OpenAI Python SDK against native Ollama. React 18, TypeScript and Vite follow after

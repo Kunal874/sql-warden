@@ -1,7 +1,8 @@
 # SQLWarden data provenance
 
-Checked on 2026-10-03. G0.5a is in progress: the selective native import is verified;
-the compact provenance artifact is being completed. Model execution has not happened. This is not an evaluation
+Checked on 2026-10-03. G0.5a is complete for California Schools: selective native
+import, content/types/keys, descriptions and direct privileges are verified.
+Model execution has not happened. This is not an evaluation
 result or a completed conversion-validity manifest.
 
 ## Sources and selected release
@@ -74,7 +75,7 @@ value_description fields. Description counts match table column counts.
 | frpm | 9986 | 29 | primary key CDSCode; references schools.CDSCode |
 | satscores | 2269 | 11 | primary key cds; references schools.CDSCode |
 
-## Native PostgreSQL source: inspected, not executed
+## Native PostgreSQL source: selected COPY data only
 
 The package contains `minidev/MINIDEV_postgresql/BIRD_dev.sql`, a flat `public`
 schema dump made by PostgreSQL 14.12. It also contains source-owner changes,
@@ -106,13 +107,31 @@ lowercase; quoted names with spaces/case remain unchanged. Native `real` is not
 SQLite's 64-bit REAL, and the unquoted native names are not the source SQLite's
 case-preserved names. Equal counts alone do not establish semantic equivalence.
 
-Recommended next import: extract only these native data blocks; load them through
+Import method: extract only these native data blocks; load them through
 asyncpg's COPY-data interface into owner-reviewed table definitions in
 `california_schools`, with a new dataset-specific restricted login. Never execute
 archive-provided SQL or its owner/session commands. Preserve native types and
 identifier behavior. Validate content, keys, dates/numerics and privileges before
 generated SQL. The [implementation plan](superpowers/plans/2026-10-03-bird-native-import.md)
-was approved by Kunal's proceed on 2026-10-03; execution is in progress.
+was approved by Kunal's proceed on 2026-10-03 and all three tasks are verified.
+
+The small [import manifest](california-import-manifest.json) records the actual
+import Git state, source hashes, full column/type/key mapping, ordered native
+content fingerprints and per-column NULL counts. Fingerprints were streamed using
+the restricted reader, in primary-key order with COLLATE C and fixed native output
+settings. They are not the raw TSV hashes or SQLite-equivalence claims.
+
+| Table | Ordered native COPY SHA-256 |
+| --- | --- |
+| schools | 34e8f4ca65a612a43dc8cc4040091eb37eae2bf70b02a937c7d26a5fe0df7dae |
+| frpm | 1309104cd94cc85c790f93518d63ac5be05177dda0e5c3d63110fa52ce0c41ca |
+| satscores | 4fa59c2fd521124791ff36e219559d53eabe5765e658108b6f9b1abc84b0ef24 |
+
+All 89 descriptions map uniquely to native columns. Four frpm description names
+have whitespace padding: School Code, District Name, School Type and
+Percent (%) Eligible Free (Ages 5-17). Only description-name padding was trimmed;
+the exact aliases are recorded in the manifest. Source bytes, quoted SQL names,
+labels and benchmark definitions are unchanged.
 
 ## Label alignment: observed differences matter
 

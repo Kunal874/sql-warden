@@ -1,5 +1,6 @@
 """Setup validation and direct real-PostgreSQL checks for the California import."""
 
+import csv
 import hashlib
 import json
 import os
@@ -12,9 +13,11 @@ import pytest
 from test_postgres_boundary import LARGE_OBJECT_FUNCTIONS, connected, rolled_back
 
 from scripts import load_bird
+from sqlwarden.data import pg_name, quote_ident
 
 CALIFORNIA_ROLE = "warden_sandbox_california_schools"
 SOURCE = Path("data/bird_california/native")
+IMPORT_MANIFEST = Path("docs/california-import-manifest.json")
 
 
 @pytest.mark.parametrize(
@@ -283,3 +286,187 @@ async def test_content_verifier_detects_same_count_changed_values_and_probe_roll
             )
             == row["school"]
         )
+
+
+async def capture_import_evidence():
+    """Test utility: record only metadata/hashes, never credentials, gold SQL or rows."""
+    tables = load_bird.validate_source(SOURCE)
+    evidence = {}
+    async with california_connected() as conn, conn.transaction(readonly=True):
+        await conn.execute(
+            "SET LOCAL extra_float_digits=3; SET LOCAL DateStyle='ISO,YMD'; "
+            "SET LOCAL timezone='UTC'"
+        )
+        for name, table in tables.items():
+            columns = [c["name"] for c in table["columns"]]
+            target = "california_schools." + quote_ident(name)
+            primary_key = quote_ident(table["primary_key"][0])
+            checksum = hashlib.sha256()
+            byte_count = 0
+
+            async def consume(data, checksum=checksum):
+                nonlocal byte_count
+                byte_count += len(data)
+                if byte_count > 32 * 1024 * 1024:
+                    raise ValueError("Native evidence export exceeded budget")
+                checksum.update(data)
+
+            projection = ",".join(map(quote_ident, columns))
+            status = await conn.copy_from_query(
+                f'SELECT {projection} FROM {target} ORDER BY {primary_key} COLLATE "C"',
+                output=consume,
+                format="text",
+                encoding="UTF8",
+                timeout=15,
+            )
+            nulls = await conn.fetchrow(
+                "SELECT "
+                + ",".join(
+                    f"count(*) FILTER (WHERE {quote_ident(column)} IS NULL)" for column in columns
+                )
+                + " FROM "
+                + target
+            )
+            types = await conn.fetch(
+                "SELECT column_name,data_type,is_nullable FROM information_schema.columns "
+                "WHERE table_schema='california_schools' AND table_name=$1 "
+                "ORDER BY ordinal_position",
+                name,
+            )
+            actual = [(r["column_name"], r["data_type"], r["is_nullable"] == "NO") for r in types]
+            wanted = [(c["name"], c["type"], c["not_null"]) for c in table["columns"]]
+            assert actual == wanted
+            with (SOURCE.parent / f"{name}.csv").open(encoding="utf-8-sig", newline="") as file:
+                descriptions = list(csv.DictReader(file))
+            description_names = [
+                pg_name(row["original_column_name"].strip()) for row in descriptions
+            ]
+            assert len(description_names) == len(columns)
+            assert set(description_names) == set(columns)
+            evidence[name] = {
+                "rows": int(status.split()[1]),
+                "ordered_copy_bytes": byte_count,
+                "ordered_copy_sha256": checksum.hexdigest(),
+                "null_counts": list(nulls),
+                "columns": [
+                    [c["source_name"], c["name"], c["type"], c["not_null"]]
+                    for c in table["columns"]
+                ],
+                "primary_key": table["primary_key"],
+                "foreign_key": list(table["foreign_key"]) if table["foreign_key"] else None,
+                "description_name_adaptations": {
+                    row["original_column_name"]: row["original_column_name"].strip()
+                    for row in descriptions
+                    if row["original_column_name"] != row["original_column_name"].strip()
+                },
+                "native_source": load_bird.NATIVE_EXPECTED[name],
+            }
+    return evidence
+
+
+@pytest.mark.integration
+async def test_recorded_import_matches_live_ordered_content_types_nulls_and_descriptions():
+    async with california_connected():
+        pass
+    manifest = json.loads(IMPORT_MANIFEST.read_text(encoding="utf-8"))
+    assert await capture_import_evidence() == manifest["tables"]
+
+
+@pytest.mark.integration
+async def test_native_date_float4_bigint_and_key_constraints_are_preserved():
+    async with california_connected() as conn:
+        observed = dict(
+            await conn.fetch(
+                "SELECT attname,format_type(atttypid,atttypmod) FROM pg_attribute "
+                "WHERE attrelid='california_schools.schools'::regclass AND attname=ANY($1::text[])",
+                ["opendate", "closeddate", "lastupdate", "latitude", "longitude", "charter"],
+            )
+        )
+        assert observed == {
+            "opendate": "date",
+            "closeddate": "date",
+            "lastupdate": "date",
+            "latitude": "real",
+            "longitude": "real",
+            "charter": "bigint",
+        }
+        assert (
+            await conn.fetchval(
+                "SELECT count(*) FROM pg_constraint c JOIN pg_namespace n ON n.oid=c.connamespace "
+                "WHERE n.nspname='california_schools' AND c.contype='p'"
+            )
+            == 3
+        )
+        assert (
+            await conn.fetchval(
+                "SELECT count(*) FROM pg_constraint c JOIN pg_namespace n ON n.oid=c.connamespace "
+                "WHERE n.nspname='california_schools' AND c.contype='f' AND c.convalidated"
+            )
+            == 2
+        )
+        for table, key in [("schools", "cdscode"), ("frpm", "cdscode"), ("satscores", "cds")]:
+            assert await conn.fetchval(
+                f"SELECT count(*)=count(DISTINCT {key}) FROM california_schools.{table}"
+            )
+
+
+@pytest.mark.integration
+async def test_pinned_sources_and_labels_match_by_unique_ids_not_position():
+    async with california_connected():
+        pass
+    manifest = json.loads(IMPORT_MANIFEST.read_text(encoding="utf-8"))
+    for name, expected in manifest["source_files"].items():
+        path = Path(name)
+        with path.open("rb") as file:
+            assert hashlib.file_digest(file, "sha256").hexdigest() == expected["sha256"]
+        assert path.stat().st_size == expected["bytes"]
+    dialects = [
+        json.loads(Path("data/raw/mini_dev_" + dialect + ".json").read_text(encoding="utf-8"))
+        for dialect in ("sqlite", "pg")
+    ]
+    indexed = [{row["question_id"]: row for row in rows} for rows in dialects]
+    assert len(indexed[0]) == len(dialects[0]) == len(indexed[1]) == len(dialects[1]) == 500
+    assert set(indexed[0]) == set(indexed[1])
+    assert all(indexed[0][i]["db_id"] == indexed[1][i]["db_id"] for i in indexed[0])
+    for field in ("question", "evidence"):
+        different = sorted(i for i in indexed[0] if indexed[0][i][field] != indexed[1][i][field])
+        assert different == manifest["label_alignment"][field + "_different_ids"]
+    selected = sorted(i for i, row in indexed[0].items() if row["db_id"] == "california_schools")
+    assert selected == [
+        5,
+        11,
+        12,
+        17,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        31,
+        32,
+        36,
+        37,
+        39,
+        40,
+        41,
+        45,
+        46,
+        47,
+        48,
+        50,
+        62,
+        72,
+        77,
+        79,
+        82,
+        83,
+        85,
+        87,
+    ]
+    assert selected == manifest["label_alignment"]["california_question_ids"]
+    assert all(
+        indexed[0][i][field] == indexed[1][i][field]
+        for i in selected
+        for field in ("question", "evidence")
+    )

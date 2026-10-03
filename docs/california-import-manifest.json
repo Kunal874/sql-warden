@@ -1,0 +1,830 @@
+{
+  "format_version": 1,
+  "verified_on": "2026-10-03",
+  "db_id": "california_schools",
+  "source_revision": {
+    "database_package": "https://drive.google.com/file/d/13VLWIwpw5E3d5DUkMvzw7hvHE67a4XkG/view",
+    "mini_dev_git": "abd11b6db92a1c9f809b32f7564c7c71b34d67f0",
+    "labels_hf": "f65faf4ae3b638c1fa6df1d3370c8d92c8366301",
+    "declared_license": "CC-BY-SA-4.0"
+  },
+  "import_git_state": {
+    "head": "12e8aabcd8d79314ee611e6bdf3ef1cfd788541a",
+    "dirty": true,
+    "description": "Import executed before committing the loader; its checked code is committed at 214b442a922cdc128af5f17d0c8bb181fdbb809d",
+    "loader_sha256": "034d995e7bb52ba9a6419db0133022f21c1c880f97762ab65b47c61656f6a793"
+  },
+  "runtime": {
+    "postgresql": "16.15",
+    "schema": "california_schools",
+    "owner": "warden_owner",
+    "reader": "warden_sandbox_california_schools",
+    "reader_connection_limit": 2
+  },
+  "fingerprint_contract": {
+    "query": "All checked native columns, source column order, primary-key order with COLLATE C",
+    "format": "PostgreSQL COPY text, UTF8, LF, extra_float_digits=3, DateStyle ISO,YMD, timezone UTC",
+    "scope": "Complete native typed rows; not a raw TSV hash or SQLite-equivalence claim",
+    "column_fields": [
+      "sqlite_source_name",
+      "postgresql_name",
+      "postgresql_type",
+      "not_null"
+    ],
+    "null_counts": "Column order; number of SQL NULL values"
+  },
+  "source_files": {
+    "data/raw/minidev_0703.zip": {
+      "bytes": 799944582,
+      "sha256": "aeb211c0e39010bbdae3838bb5e8bd27dc446ed77495b1709f85ccc9bf67f2be"
+    },
+    "data/raw/mini_dev_sqlite.json": {
+      "bytes": 278513,
+      "sha256": "88ceb0710163cae46a256ecea8f0a8c98286599530b60587fda5c3cfe57d45d2"
+    },
+    "data/raw/mini_dev_pg.json": {
+      "bytes": 283551,
+      "sha256": "7fa740ef9225389cff6c34432120e8325d0ca3008d73db1ae38731234bc10da7"
+    },
+    "data/bird_california/california_schools.sqlite": {
+      "bytes": 11116544,
+      "sha256": "c0903eec662e63068fd1d14403d3d6c1d473287fc10c4356333ea58f878db983"
+    },
+    "data/bird_california/schools.csv": {
+      "bytes": 11957,
+      "sha256": "f18d96abf47892e4bd8094dd47d6978ea6bbc11821eccdf91f3f54dd1685979f"
+    },
+    "data/bird_california/frpm.csv": {
+      "bytes": 1651,
+      "sha256": "f2c3fa53a02c5d711866a192f580c6a545389192a096441767f40d72ffa41334"
+    },
+    "data/bird_california/satscores.csv": {
+      "bytes": 1057,
+      "sha256": "a44145158100894387d05a96987c487e3c83742892b13127b486de309bb8f138"
+    },
+    "data/bird_california/dev_tables.json": {
+      "bytes": 158301,
+      "sha256": "48aa9febe7282d1690f3ed1f222dc040c182df83812ba4e9bee956084d99c8ff"
+    }
+  },
+  "tables": {
+    "schools": {
+      "rows": 17686,
+      "ordered_copy_bytes": 7728755,
+      "ordered_copy_sha256": "34e8f4ca65a612a43dc8cc4040091eb37eae2bf70b02a937c7d26a5fe0df7dae",
+      "null_counts": [
+        0,
+        1030,
+        5040,
+        0,
+        0,
+        0,
+        1369,
+        294,
+        294,
+        293,
+        293,
+        293,
+        292,
+        292,
+        292,
+        292,
+        292,
+        5969,
+        17146,
+        10722,
+        1369,
+        11992,
+        1369,
+        15885,
+        16044,
+        0,
+        0,
+        1369,
+        1369,
+        5711,
+        5711,
+        1369,
+        1369,
+        3882,
+        5743,
+        6868,
+        7076,
+        4823,
+        4823,
+        5986,
+        5986,
+        6012,
+        17255,
+        17255,
+        17262,
+        17644,
+        17644,
+        17644,
+        0
+      ],
+      "columns": [
+        [
+          "CDSCode",
+          "cdscode",
+          "text",
+          true
+        ],
+        [
+          "NCESDist",
+          "ncesdist",
+          "text",
+          false
+        ],
+        [
+          "NCESSchool",
+          "ncesschool",
+          "text",
+          false
+        ],
+        [
+          "StatusType",
+          "statustype",
+          "text",
+          true
+        ],
+        [
+          "County",
+          "county",
+          "text",
+          true
+        ],
+        [
+          "District",
+          "district",
+          "text",
+          true
+        ],
+        [
+          "School",
+          "school",
+          "text",
+          false
+        ],
+        [
+          "Street",
+          "street",
+          "text",
+          false
+        ],
+        [
+          "StreetAbr",
+          "streetabr",
+          "text",
+          false
+        ],
+        [
+          "City",
+          "city",
+          "text",
+          false
+        ],
+        [
+          "Zip",
+          "zip",
+          "text",
+          false
+        ],
+        [
+          "State",
+          "state",
+          "text",
+          false
+        ],
+        [
+          "MailStreet",
+          "mailstreet",
+          "text",
+          false
+        ],
+        [
+          "MailStrAbr",
+          "mailstrabr",
+          "text",
+          false
+        ],
+        [
+          "MailCity",
+          "mailcity",
+          "text",
+          false
+        ],
+        [
+          "MailZip",
+          "mailzip",
+          "text",
+          false
+        ],
+        [
+          "MailState",
+          "mailstate",
+          "text",
+          false
+        ],
+        [
+          "Phone",
+          "phone",
+          "text",
+          false
+        ],
+        [
+          "Ext",
+          "ext",
+          "text",
+          false
+        ],
+        [
+          "Website",
+          "website",
+          "text",
+          false
+        ],
+        [
+          "OpenDate",
+          "opendate",
+          "date",
+          false
+        ],
+        [
+          "ClosedDate",
+          "closeddate",
+          "date",
+          false
+        ],
+        [
+          "Charter",
+          "charter",
+          "bigint",
+          false
+        ],
+        [
+          "CharterNum",
+          "charternum",
+          "text",
+          false
+        ],
+        [
+          "FundingType",
+          "fundingtype",
+          "text",
+          false
+        ],
+        [
+          "DOC",
+          "doc",
+          "text",
+          true
+        ],
+        [
+          "DOCType",
+          "doctype",
+          "text",
+          true
+        ],
+        [
+          "SOC",
+          "soc",
+          "text",
+          false
+        ],
+        [
+          "SOCType",
+          "soctype",
+          "text",
+          false
+        ],
+        [
+          "EdOpsCode",
+          "edopscode",
+          "text",
+          false
+        ],
+        [
+          "EdOpsName",
+          "edopsname",
+          "text",
+          false
+        ],
+        [
+          "EILCode",
+          "eilcode",
+          "text",
+          false
+        ],
+        [
+          "EILName",
+          "eilname",
+          "text",
+          false
+        ],
+        [
+          "GSoffered",
+          "gsoffered",
+          "text",
+          false
+        ],
+        [
+          "GSserved",
+          "gsserved",
+          "text",
+          false
+        ],
+        [
+          "Virtual",
+          "virtual",
+          "text",
+          false
+        ],
+        [
+          "Magnet",
+          "magnet",
+          "bigint",
+          false
+        ],
+        [
+          "Latitude",
+          "latitude",
+          "real",
+          false
+        ],
+        [
+          "Longitude",
+          "longitude",
+          "real",
+          false
+        ],
+        [
+          "AdmFName1",
+          "admfname1",
+          "text",
+          false
+        ],
+        [
+          "AdmLName1",
+          "admlname1",
+          "text",
+          false
+        ],
+        [
+          "AdmEmail1",
+          "admemail1",
+          "text",
+          false
+        ],
+        [
+          "AdmFName2",
+          "admfname2",
+          "text",
+          false
+        ],
+        [
+          "AdmLName2",
+          "admlname2",
+          "text",
+          false
+        ],
+        [
+          "AdmEmail2",
+          "admemail2",
+          "text",
+          false
+        ],
+        [
+          "AdmFName3",
+          "admfname3",
+          "text",
+          false
+        ],
+        [
+          "AdmLName3",
+          "admlname3",
+          "text",
+          false
+        ],
+        [
+          "AdmEmail3",
+          "admemail3",
+          "text",
+          false
+        ],
+        [
+          "LastUpdate",
+          "lastupdate",
+          "date",
+          true
+        ]
+      ],
+      "primary_key": [
+        "cdscode"
+      ],
+      "foreign_key": null,
+      "description_name_adaptations": {},
+      "native_source": {
+        "rows": 17686,
+        "bytes": 7728755,
+        "sha256": "f6f4de19738417ed5bd27d1d2e7935aa3e2b4319a2c366542560514671f38b6a"
+      }
+    },
+    "frpm": {
+      "rows": 9986,
+      "ordered_copy_bytes": 2481961,
+      "ordered_copy_sha256": "1309104cd94cc85c790f93518d63ac5be05177dda0e5c3d63110fa52ce0c41ca",
+      "null_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        45,
+        45,
+        8139,
+        45,
+        8819,
+        8819,
+        45,
+        0,
+        0,
+        0,
+        56,
+        56,
+        50,
+        50,
+        14,
+        78,
+        78,
+        72,
+        72,
+        0
+      ],
+      "columns": [
+        [
+          "CDSCode",
+          "cdscode",
+          "text",
+          true
+        ],
+        [
+          "Academic Year",
+          "Academic Year",
+          "text",
+          false
+        ],
+        [
+          "County Code",
+          "County Code",
+          "text",
+          false
+        ],
+        [
+          "District Code",
+          "District Code",
+          "bigint",
+          false
+        ],
+        [
+          "School Code",
+          "School Code",
+          "text",
+          false
+        ],
+        [
+          "County Name",
+          "County Name",
+          "text",
+          false
+        ],
+        [
+          "District Name",
+          "District Name",
+          "text",
+          false
+        ],
+        [
+          "School Name",
+          "School Name",
+          "text",
+          false
+        ],
+        [
+          "District Type",
+          "District Type",
+          "text",
+          false
+        ],
+        [
+          "School Type",
+          "School Type",
+          "text",
+          false
+        ],
+        [
+          "Educational Option Type",
+          "Educational Option Type",
+          "text",
+          false
+        ],
+        [
+          "NSLP Provision Status",
+          "NSLP Provision Status",
+          "text",
+          false
+        ],
+        [
+          "Charter School (Y/N)",
+          "Charter School (Y/N)",
+          "bigint",
+          false
+        ],
+        [
+          "Charter School Number",
+          "Charter School Number",
+          "text",
+          false
+        ],
+        [
+          "Charter Funding Type",
+          "Charter Funding Type",
+          "text",
+          false
+        ],
+        [
+          "IRC",
+          "irc",
+          "bigint",
+          false
+        ],
+        [
+          "Low Grade",
+          "Low Grade",
+          "text",
+          false
+        ],
+        [
+          "High Grade",
+          "High Grade",
+          "text",
+          false
+        ],
+        [
+          "Enrollment (K-12)",
+          "Enrollment (K-12)",
+          "real",
+          false
+        ],
+        [
+          "Free Meal Count (K-12)",
+          "Free Meal Count (K-12)",
+          "real",
+          false
+        ],
+        [
+          "Percent (%) Eligible Free (K-12)",
+          "Percent (%) Eligible Free (K-12)",
+          "real",
+          false
+        ],
+        [
+          "FRPM Count (K-12)",
+          "FRPM Count (K-12)",
+          "real",
+          false
+        ],
+        [
+          "Percent (%) Eligible FRPM (K-12)",
+          "Percent (%) Eligible FRPM (K-12)",
+          "real",
+          false
+        ],
+        [
+          "Enrollment (Ages 5-17)",
+          "Enrollment (Ages 5-17)",
+          "real",
+          false
+        ],
+        [
+          "Free Meal Count (Ages 5-17)",
+          "Free Meal Count (Ages 5-17)",
+          "real",
+          false
+        ],
+        [
+          "Percent (%) Eligible Free (Ages 5-17)",
+          "Percent (%) Eligible Free (Ages 5-17)",
+          "real",
+          false
+        ],
+        [
+          "FRPM Count (Ages 5-17)",
+          "FRPM Count (Ages 5-17)",
+          "real",
+          false
+        ],
+        [
+          "Percent (%) Eligible FRPM (Ages 5-17)",
+          "Percent (%) Eligible FRPM (Ages 5-17)",
+          "real",
+          false
+        ],
+        [
+          "2013-14 CALPADS Fall 1 Certification Status",
+          "2013-14 CALPADS Fall 1 Certification Status",
+          "bigint",
+          false
+        ]
+      ],
+      "primary_key": [
+        "cdscode"
+      ],
+      "foreign_key": [
+        "cdscode",
+        "schools",
+        "cdscode"
+      ],
+      "description_name_adaptations": {
+        "School Code ": "School Code",
+        "District Name ": "District Name",
+        "School Type ": "School Type",
+        " Percent (%) Eligible Free (Ages 5-17)": "Percent (%) Eligible Free (Ages 5-17)"
+      },
+      "native_source": {
+        "rows": 9986,
+        "bytes": 2481961,
+        "sha256": "504bc2f6a66e9dfff6c9f04bb6078bcab6196c966b8d992575f88d9ad618f316"
+      }
+    },
+    "satscores": {
+      "rows": 2269,
+      "ordered_copy_bytes": 197389,
+      "ordered_copy_sha256": "4fa59c2fd521124791ff36e219559d53eabe5765e658108b6f9b1abc84b0ef24",
+      "null_counts": [
+        0,
+        0,
+        520,
+        0,
+        0,
+        0,
+        0,
+        596,
+        596,
+        596,
+        596
+      ],
+      "columns": [
+        [
+          "cds",
+          "cds",
+          "text",
+          true
+        ],
+        [
+          "rtype",
+          "rtype",
+          "text",
+          true
+        ],
+        [
+          "sname",
+          "sname",
+          "text",
+          false
+        ],
+        [
+          "dname",
+          "dname",
+          "text",
+          false
+        ],
+        [
+          "cname",
+          "cname",
+          "text",
+          false
+        ],
+        [
+          "enroll12",
+          "enroll12",
+          "bigint",
+          true
+        ],
+        [
+          "NumTstTakr",
+          "numtsttakr",
+          "bigint",
+          true
+        ],
+        [
+          "AvgScrRead",
+          "avgscrread",
+          "bigint",
+          false
+        ],
+        [
+          "AvgScrMath",
+          "avgscrmath",
+          "bigint",
+          false
+        ],
+        [
+          "AvgScrWrite",
+          "avgscrwrite",
+          "bigint",
+          false
+        ],
+        [
+          "NumGE1500",
+          "numge1500",
+          "bigint",
+          false
+        ]
+      ],
+      "primary_key": [
+        "cds"
+      ],
+      "foreign_key": [
+        "cds",
+        "schools",
+        "cdscode"
+      ],
+      "description_name_adaptations": {},
+      "native_source": {
+        "rows": 2269,
+        "bytes": 197389,
+        "sha256": "549f79e4b98bb0660dd9024271e3787ea83cf875fccc8e7a547c38c419a79c0f"
+      }
+    }
+  },
+  "label_alignment": {
+    "matched_unique_ids": 500,
+    "database_count": 11,
+    "question_different_ids": [
+      937,
+      964
+    ],
+    "evidence_different_ids": [
+      402,
+      682,
+      765,
+      964,
+      988,
+      1175,
+      1476,
+      1498,
+      1524,
+      1526
+    ],
+    "california_question_ids": [
+      5,
+      11,
+      12,
+      17,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      31,
+      32,
+      36,
+      37,
+      39,
+      40,
+      41,
+      45,
+      46,
+      47,
+      48,
+      50,
+      62,
+      72,
+      77,
+      79,
+      82,
+      83,
+      85,
+      87
+    ],
+    "california_question_and_evidence_differences": 0
+  },
+  "checks": {
+    "typed_content": "Complete two-direction EXCEPT ALL against setup-only native source replay; same-count changed-value control detects mismatch and rolls back",
+    "keys": "Three primary keys and two validated foreign keys; uniqueness and both joins checked",
+    "privileges": "Direct connection tests: own SELECT; writes/TEMP/DDL/SET ROLE/large objects denied even after disabling read-only default; app/other-reader isolation and owner future grants",
+    "repeat_import": "Refuses existing role/schema; persistent source and named volume preserved",
+    "tests": "tests/test_bird_load.py; tests/test_postgres_boundary.py"
+  },
+  "limitations": [
+    "No native/SQLite gold-result equivalence or conversion survival rate",
+    "No gold query, model inference or benchmark score",
+    "Initial privilege checks are not an exhaustive security audit; guard, bounded executor and tenant RLS remain future work"
+  ]
+}

@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC.md](../../BUILD_SPEC.md), sections 5, 8 and 11. Source evidence and fingerprints: [DATA.md](../../DATA.md).
 
-**Status:** Approved by Kunal's “proceed” on 2026-10-03. Execution is in progress; completion evidence belongs in PROGRESS.md.
+**Status:** Tasks 1–3 verified on 2026-10-03 after Kunal's approval; 149 tests pass, including 59 real PostgreSQL checks. Final review/handoff is recorded in PROGRESS.md.
 
 ## Global Constraints
 
@@ -47,7 +47,7 @@
 - Produces `extract_native_copy(stream: BinaryIO, destination: Path, tables: dict, expected: dict) -> dict`, returning selected column lists, row counts, byte sizes and SHA-256 values.
 - Produces ignored `data/bird_california/native/{schools,frpm,satscores}.tsv` and a metadata manifest; no SQL file is published.
 
-- [ ] **Step 1: Write failing schema/name tests.** Create a SQLite fixture with the three fixed table names. Its schools table includes CDSCode TEXT PRIMARY KEY, `School Name` TEXT, Charter INTEGER, Latitude REAL and OpenDate DATE. Include the two source foreign keys. Compute the fixture hash and call read_tables with that hash.
+- [x] **Step 1: Write failing schema/name tests.** Create a SQLite fixture with the three fixed table names. Its schools table includes CDSCode TEXT PRIMARY KEY, `School Name` TEXT, Charter INTEGER, Latitude REAL and OpenDate DATE. Include the two source foreign keys. Compute the fixture hash and call read_tables with that hash.
 
 ```python
 def test_native_names_types_and_keys(sqlite_fixture):
@@ -68,7 +68,7 @@ required table, an unsupported type such as BLOB, a normalized-name collision,
 a PostgreSQL identifier exceeding 63 UTF-8 bytes and an unexpected foreign-key
 target. Every failure must occur before any PostgreSQL connection is made.
 
-- [ ] **Step 2: Observe RED.**
+- [x] **Step 2: Observe RED.**
 
 ```powershell
 uv run pytest tests/test_bird_native.py -q
@@ -77,7 +77,7 @@ uv run pytest tests/test_bird_native.py -q
 Expected initial failure: missing sqlwarden.data/read_tables, followed by explicit
 assertion failures if mapping or validation is incomplete.
 
-- [ ] **Step 3: Implement the checked metadata mapping.** Use sqlite3 read-only URI
+- [x] **Step 3: Implement the checked metadata mapping.** Use sqlite3 read-only URI
 mode, query_only and trusted_schema off. Use fixed table names for PRAGMA calls;
 check the file digest before opening it. Read table_info and foreign_key_list,
 never execute sqlite_master SQL. Normalize only ASCII ordinary identifiers;
@@ -103,7 +103,7 @@ sequence must match the reviewed native definitions and full native COPY headers
 PK/NOT NULL/FK constraints come from the checked SQLite metadata and must validate
 against the native data; do not silently drop a failing constraint.
 
-- [ ] **Step 4: Write native-block tests and observe RED.** Use BytesIO fixtures,
+- [x] **Step 4: Write native-block tests and observe RED.** Use BytesIO fixtures,
 not an administrative SQL server. All fixture table names remain the three fixed
 names, with smaller column lists supplied to the helper only for these unit tests.
 
@@ -139,7 +139,7 @@ over-limit line/block and existing-destination tests. Assert no partial output i
 published on failures and existing files are unchanged. Preserve COPY escaping,
 NULL markers and LF bytes; do not parse/rewrite row values or treat them as SQL.
 
-- [ ] **Step 5: Implement bounded extraction.** Verify the archive SHA first and
+- [x] **Step 5: Implement bounded extraction.** Verify the archive SHA first and
 require exactly one ordinary, unencrypted native dump member. Read that member
 through zipfile to EOF so CRC validation runs. Read at most 1 MiB per source line;
 write at most 32 MiB per selected table. Track every COPY block, including ignored
@@ -160,7 +160,7 @@ NATIVE_EXPECTED = {
 }
 ```
 
-- [ ] **Step 6: Run the tests, then actual extraction.**
+- [x] **Step 6: Run the tests, then actual extraction.**
 
 ```powershell
 uv run pytest tests/test_bird_extract.py tests/test_bird_native.py -q
@@ -191,7 +191,7 @@ the independently verified extraction change with owner-only identity.
 - CLI takes setup credentials only from `.env.setup` and the new dataset file;
   runtime credentials never include the bootstrap credential.
 
-- [ ] **Step 1: Write credential behavior tests and observe RED.**
+- [x] **Step 1: Write credential behavior tests and observe RED.**
 
 ```python
 def test_bird_credentials_are_separate_and_never_overwritten(tmp_path):
@@ -214,7 +214,7 @@ def test_bird_credentials_are_separate_and_never_overwritten(tmp_path):
 Also verify 48 lowercase hex characters and that captured output contains only the
 filename, not its value. Implement using the existing exclusive-create pattern.
 
-- [ ] **Step 2: Write validation and direct database tests before import.** Test
+- [x] **Step 2: Write validation and direct database tests before import.** Test
 that malformed password, altered native file, missing source manifest or unsupported
 schema rejects before database writes. CLI rejects missing WARDEN_TEST_TARGET,
 anything other than sqlwarden-local, and ports other than this project's 55432.
@@ -245,7 +245,7 @@ FORBIDDEN_CALIFORNIA_SQL = [
 Existing demo/app readers must also be denied California tables. Include a
 setup-only rollback test for future table default grants in the new schema.
 
-- [ ] **Step 3: Implement a single atomic import transaction.** Validate all
+- [x] **Step 3: Implement a single atomic import transaction.** Validate all
 source files first against the pinned native fingerprints. Refuse an existing
 california_schools schema or warden_sandbox_california_schools role; no drop/reset
 or implicit migration path. Generate identifiers with quote_ident and types only
@@ -317,7 +317,7 @@ row order. It is an import check, not the official EX comparator. Add a real
 always-rollback test that changes one imported value without changing its count
 and proves this function raises; the original data must remain unchanged afterward.
 
-- [ ] **Step 4: Verify and import once, then rerun direct tests.**
+- [x] **Step 4: Verify and import once, then rerun direct tests.**
 
 ```powershell
 uv run pytest tests/test_local_setup.py tests/test_bird_native.py -q
@@ -336,7 +336,7 @@ must refuse without changing data. Record evidence and commit only passing work.
 - Update DATA.md, README.md, PROGRESS.md and DECISIONS.md.
 - Create a small versioned `docs/california-import-manifest.json`; no raw rows.
 
-- [ ] **Step 1: Extend the actual content/type checks and record fingerprints.**
+- [x] **Step 1: Extend the actual content/type checks and record fingerprints.**
 The setup-only source replay in Task 2 proves complete typed row agreement, not
 just equal counts. Its mutation test must exercise that production function:
 
@@ -366,13 +366,13 @@ uniqueness and both foreign-key joins. Preserve native precision; never substitu
 SQLite values or round differences away. Match descriptions to native names using
 the checked mapping, not blind case-folding of every quoted identifier.
 
-- [ ] **Step 2: Verify label alignment by stable IDs.** Recheck pinned file hashes,
+- [x] **Step 2: Verify label alignment by stable IDs.** Recheck pinned file hashes,
 reject duplicate/missing IDs or changed db_id, and retain the 30 selected IDs in
 DATA.md. The existing full-release question/evidence differences remain recorded;
 do not claim all 500 dialect inputs are identical. Gold SQL/results remain
 offline-only. No prediction score or gold-validity rate is produced here.
 
-- [ ] **Step 3: Run the full checks and hand off.**
+- [x] **Step 3: Run the full checks and hand off.**
 
 ```powershell
 uv run --env-file .env.setup --env-file .env.california pytest -q

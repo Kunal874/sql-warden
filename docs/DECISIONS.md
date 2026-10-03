@@ -110,6 +110,18 @@ Rationale: reuse native PostgreSQL data without executing dump SQL or changing
 the benchmark. Full typed-content and privilege checks are required before
 marking G0.5a complete. Existing credentials, data and named volume stay intact.
 
+## D-010 — G0.5a: description-name padding (2026-10-03)
+
+Context: the actual metadata check found four frpm description names padded with
+whitespace, while the native SQL identifiers have no such padding.
+Decision: trim only the description-name padding and require a unique exact match
+to checked native names; record all four source-to-description aliases in the
+compact import manifest. Preserve source bytes, SQL names and benchmark labels.
+Rationale: attach the supplied descriptions to their verified existing columns;
+no schema correction, benchmark change or numeric conversion is made.
+Cost if wrong: a description could be misattached; the schema and privilege
+boundary are unchanged. All 89 descriptions now match uniquely.
+
 ## Source checks
 
 - Node 24 LTS: https://nodejs.org/en/about/previous-releases (checked 2026-10-03).
