@@ -4,10 +4,10 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed subtask: G0.7a guard plan Task 1, pure SQL guard.
-Last completed commit before this update: 83ac96a. Kunal approved the written
-guard plan and SQLGlot 30.21.0 addition on 2026-10-04. Current: Task 2, restricted
-PostgreSQL acceptance checks. G0.7a is not complete.
+Current group: G0. Last completed subtask: G0.7a guard plan Task 2, restricted
+PostgreSQL acceptance checks. Last completed commit before this update: 2cca672.
+Kunal approved the written guard plan and SQLGlot 30.21.0 on 2026-10-04. Current:
+final read-only review of the completed guard plan. G0.7a is not complete.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -38,7 +38,8 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Inspect/pin official EX source and prepare the first SQL-guard plan.
   - [x] Review/approve the written guard plan and direct SQLGlot addition.
   - [x] Implement/verify the pure scope-aware guard (184 unit checks).
-  - [ ] Verify guard acceptance on real restricted PostgreSQL.
+  - [x] Verify guard acceptance on real restricted PostgreSQL (56 real checks).
+  - [ ] Complete final read-only guard-plan review and resolve its findings.
   - [ ] Implement/verify executor/comparator/CLI; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
@@ -124,6 +125,47 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — G0.7a real guard acceptance / approved plan Task 2
+
+Task 1 committed at 2cca672 with verified Kunal author/committer and no additional
+body attribution. Task-done reran its 184 guard checks successfully and recorded
+83ac96a..2cca672; read the exact Task 2 brief before continuing natively.
+
+Added 56 real PostgreSQL checks. Every test reuses california_connected and the
+actual warden_sandbox_california_schools login in an explicit read-only transaction
+with SET LOCAL statement_timeout=5s, lock_timeout=500ms and search_path ordered
+pg_catalog, california_schools. Role, read-only state and all settings are asserted.
+Only static handwritten approved reads execute: exact count 17686, all 13 admitted
+function classes and eight cast types, small native-type operators, a three-row
+native key join, CTE shadowing and uppercase/comment-metadata controls. NULLIF's
+None and date/Decimal/numeric return types are checked, not treated as failures.
+
+Read catalog metadata under that same restricted login using trusted test-only
+inspection SQL, never runtime/guard-approved catalog reads. Reviewed 22 function
+signatures, their aggregate helper routines, 12 operators, eight builtin types'
+input/output routines and bigint->numeric's cast implementation. D-016 records
+signatures and findings. All inspected implementations are pg_catalog C/internal,
+immutable or stable where inspected, without SECURITY DEFINER. No untrusted
+qualification is guard-approved; those rejected inputs are not executed. Catalog
+metadata is intentionally readable; no hidden-catalog claim is made.
+
+Initial run: 54 acceptance tests passed, catalog lookup failed for schema-qualified
+SQL alias pg_catalog.int. Systematic inspection traced it to the test inventory,
+not the guard: qualified physical names are int4/int8/float4/float8/bool. Corrected
+those catalog lookup names and added one actual bigint->numeric cast control.
+No policy, grants, data or connection identity changed. Final scoped run: 56 passed
+in 3.32 seconds, no skips; separate catalog output confirmed recorded signatures.
+Ruff's nested-context/line-length findings were resolved mechanically.
+
+Verification in all modes: no env files 275 passed / 123 skipped in 1.63s;
+setup-only 318 passed / 80 skipped in 2.91s; both private test environments 398
+passed in 11.55s with no skips (275 unit/setup/data/guard + 123 real PostgreSQL).
+Locked sync, ruff check, format (15 files) and whitespace checks pass. All three
+historical planning inputs are unchanged; no remote or model is active. Notebook
+updated after the completed subtask. No generated SQL, gold execution, benchmark,
+runtime executor/pool, comparator, CLI, data reset or publication was performed.
+One fresh read-only whole-branch review is next before the final guard handoff.
 
 ### 2026-10-04 — G0.7a pure guard / approved plan Task 1
 
@@ -451,13 +493,13 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: execute Task 2 of the approved
-[minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md) natively
-in this checkout. Task 1 is implemented and verified; do not redo it. SQLGlot is
-pinned/installed and guard.py exists. Keep the same guard for later components.
-Task 2 runs only static authored read controls with california_connected;
-never execute the UNSAFE cases or model output. One fresh final read-only review
-follows the two native tasks. No runtime executor is produced by this plan.
+Next: one fresh read-only review of the completed
+[minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md). Tasks 1–2
+are implemented and verified; do not redo them. Re-grade review findings by impact
+and use one TDD fix pass for Critical/Important findings, as executing-plans requires.
+Then plan the bounded executor that calls this guard itself, with the existing
+dataset-specific identity and QueryLimits. Keep this same guard; do not create a
+second implementation. No runtime executor is produced by the guard plan.
 G0.7a still requires the bounded executor, pinned EX comparator and safe CLI after
 the guard. EX_COMPARATOR.md contains only source-reference evidence.
 The previous native-import plan is complete; do not

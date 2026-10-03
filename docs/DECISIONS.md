@@ -226,14 +226,63 @@ Rationale: unknown syntax/relations fail closed rather than relying on model
 instructions or textual keyword checks. SQLGlot remains a parser, not an engine
 validator. Qualified functions and parameterized/custom casts are intentionally
 strict false-block risks, to be measured later; no benchmark has been altered.
-Verification: 184 guard tests and the full 342-test suite pass; Task 2's actual
-guard acceptance checks remain pending. The future executor must guard SQL itself
+Verification: Task 1's 184 guard tests and 342-test suite passed. Task 2 now adds
+56 real guard acceptance checks; full suite 398 passes. The future executor must guard SQL itself
 and establish restricted identity/settings; GuardDecision is not an authority token.
 
 Execution rulings, in decision order:
 
 - Task 1: Ruling: two additional test expectations disagreed with the approved node list / pinned API — VALUES is explicitly reviewed and resolves to a non-physical Scope; Array inherits Func and is rejected as function_not_allowed. Correct those extra expectations, not production policy — cost if wrong: a reviewed VALUES query could be accepted incorrectly, or a rejection could have the wrong category; restricted execution remains mandatory and absent.
 - Task 1: Ruling: SQLGlot's unsupported-command warning can include input literals — use its error_message_context=0 parser option and test warning redaction, without changing global logging — cost if wrong: diagnostic messages may be less helpful; raw SQL must not leak into logs.
+
+## D-016 — G0.7a actual builtin acceptance inventory (2026-10-04)
+
+Context: an AST allowlist alone does not establish PostgreSQL behavior. Task 2
+uses handwritten controls, the restricted California login and explicit readonly
+transactions with 5s statement / 500ms lock timeouts and pg_catalog first in lookup.
+Decision: retain the approved narrow policy unchanged after actual acceptance and
+catalog checks; never add grants or use a setup identity to make a query pass.
+Rationale: inspect concrete native overloads and underlying routines rather than
+assuming every SELECT/function/type name is harmless. These are tested initial
+controls, not an exhaustive overload, extension, arbitrary-policy or attack audit.
+
+Actual PostgreSQL 16.15 inventory (all signatures below are in pg_catalog):
+
+- Aggregates: count()->bigint, count("any")->bigint; sum(bigint)->numeric,
+  sum(real)->real; avg(bigint)->numeric, avg(real)->double precision;
+  min/max(text)->text, min/max(bigint)->bigint, min/max(real)->real,
+  min/max(date)->date. Aggregate transition/final/combine/serialization/moving
+  routines were also inspected: C/internal, pg_catalog, immutable/stable,
+  no SECURITY DEFINER.
+- Other functions: abs(bigint)->bigint, abs(real)->real;
+  round(double precision)->double precision, round(numeric,integer)->numeric;
+  length(text)->integer, lower(text)->text, upper(text)->text;
+  row_number()->bigint. Stored functions/aggregates/windows are C/internal,
+  immutable/stable, non-SECURITY-DEFINER and executable by the actual reader.
+  CASE, COALESCE and NULLIF are SQL forms; no fabricated pg_proc grants are needed.
+- Operators: bigint + / - / * / division / modulo / equality resolve respectively
+  to int8pl/int8mi/int8mul/int8div/int8mod/int8eq(bigint,bigint);
+  real addition/comparison to float4pl/float4lt(real,real);
+  date comparison to date_lt(date,date); text equality/LIKE/ILIKE to
+  texteq/textlike/texticlike(text,text). All inspected operator implementations
+  are pg_catalog C/internal, immutable/stable, without SECURITY DEFINER.
+- Cast targets use builtin base types int4/int8/float4/float8/numeric/text/date/bool,
+  not a domain or composite type. Their inspected input/output routines are
+  int4in(cstring)/int4out(integer), int8in(cstring)/int8out(bigint),
+  float4in(cstring)/float4out(real), float8in(cstring)/float8out(double precision),
+  numeric_in(cstring,oid,integer)/numeric_out(numeric), textin(cstring)/textout(text),
+  date_in(cstring)/date_out(date), boolin(cstring)/boolout(boolean): builtin
+  C/internal, immutable/stable, no SECURITY DEFINER. bigint->numeric uses the
+  builtin function "numeric"(bigint). Literal/input-output casts and this explicit
+  conversion were executed only on tiny synthetic constants.
+
+Verification: 56 real checks pass. Untrusted function/operator/type qualification
+is rejected without executing it. NULL results are allowed and expected where
+appropriate. The initial schema-qualified alias lookup failure was corrected in
+the test inspector by using physical catalog type names; policy is unchanged.
+No AI-generated SQL or benchmark gold was used. The guard does not establish row,
+byte, acquisition or total-run bounds, enforce application cancellation, or run
+guarded EXPLAIN; those are required in the subsequent bounded executor.
 
 ## Native-import execution and final-review rulings
 

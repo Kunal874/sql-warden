@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 5–6 and 11; [AGENTS](../../../AGENTS.md); [DATA](../../DATA.md). These existing approved contracts supply the design; this plan does not replace them.
 
-**Status:** Prepared and self-reviewed on 2026-10-03; Kunal approved the plan and dependency on 2026-10-04. Task 1 is verified (184 guard tests, full suite 342 passed); Task 2 is next. Execution baseline: clean feat/foundation at 83ac96a, 158 tests passed with both private test environments.
+**Status:** Prepared and self-reviewed on 2026-10-03; Kunal approved the plan and dependency on 2026-10-04. Tasks 1–2 are verified (184 guard unit tests, 56 new real PostgreSQL checks; full suite 398 passed). One final read-only review remains. Execution baseline: clean feat/foundation at 83ac96a, 158 tests passed with both private test environments.
 
 ## Global Constraints
 
@@ -379,7 +379,7 @@ git log -1 --format=%B
 `test_bird_load.california_connected()` async context manager. No production pool,
 executor, admin credential loader or model client is produced in this task.
 
-- [ ] **Step 1: Write integration checks before broadening any policy.**
+- [x] **Step 1: Write integration checks before broadening any policy.**
 
 ```python
 import pytest
@@ -410,7 +410,7 @@ These are static authored tests, not AI queries or benchmark gold. Never execute
 Task 1's UNSAFE inputs here. Reuse the existing connection gate so no-env runs skip
 and explicitly supplied missing California setup fails.
 
-- [ ] **Step 2: Run real acceptance checks and investigate failures.**
+- [x] **Step 2: Run real acceptance checks and investigate failures.**
 
 ```powershell
 uv run --env-file .env.setup --env-file .env.california pytest tests/test_guard_postgres.py -q
@@ -421,7 +421,7 @@ differently in PostgreSQL, first pin that case in test_guard.py, observe RED, th
 tighten the policy and verify GREEN. Do not silently broaden the allowlist, change
 grants/data or use setup credentials for guarded queries to make a test pass.
 
-- [ ] **Step 3: Verify all modes and the safe-slice handoff.**
+- [x] **Step 3: Verify all modes and the safe-slice handoff.**
 
 ```powershell
 uv sync --locked
@@ -440,7 +440,7 @@ bounded executor/comparator/CLI must be planned, implemented and verified first.
 The native executor follows executing-plans and requests one final read-only review
 of this completed implementation; resolve findings with tests rather than claims.
 
-- [ ] **Step 4: Update explanations and commit verified acceptance evidence.**
+- [x] **Step 4: Update explanations and commit verified acceptance evidence.**
 Explain how a guard differs from database privileges and why both are needed.
 Record the real checks, initial false-block limitations and exact next task in
 PROGRESS/DECISIONS. Inspect staged diff/message and verify identity after commit.

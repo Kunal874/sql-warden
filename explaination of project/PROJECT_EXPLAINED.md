@@ -34,7 +34,9 @@ It is not a finished public service yet.
 - Tests check the imported values, database permissions and setup behavior.
 - A SQL guard checks query structure and allowed tables without connecting
   to a database or loading an AI model.
-- The latest completed code checkpoint has 342 passing tests, including 67
+- Small handwritten allowed queries have passed that guard and run with the
+  restricted database login and short time limits. No AI output was run.
+- The latest completed code checkpoint has 398 passing tests, including 123
   tests that connect to the real local PostgreSQL database.
 
 The AI question-answering flow, limited query runner, evaluation
@@ -255,6 +257,37 @@ This step checks SQL without running it. The next step checks a few handwritten
 allowed queries with the real restricted database login. The limited runner,
 answer comparator and AI-to-database flow are still unfinished.
 
+### G0.7a, guard Task 2 — Check allowed queries with the real database
+
+What was done: tested a small set of handwritten queries with the guard, then
+ran the accepted text using the restricted California reader. Each test checks
+the real login and sets a read-only transaction, a five-second query limit and
+a half-second lock-wait limit. Checked counts, small joins, named queries,
+allowed calculations and type conversions.
+
+Why: a parser is not PostgreSQL. The guard can understand a query while the
+database rejects a missing column or invalid type. Real checks tell us whether
+our permitted examples work with the actual database and login.
+
+Checked: all 56 new database tests pass. The known school count is 17,686.
+Every allowed function and type has a small test. Also checked the database's
+built-in function/operator/type definitions. Their reviewed implementations
+are built-in routines, not custom functions from another schema. One test's
+catalog lookup used a type alias rather than its stored name; that test lookup
+was corrected. Permissions, source data and the guard policy were not changed.
+
+The full project now has 398 passing tests. Without the private database test
+files, 275 pass and 123 database checks skip; with setup only, 318 pass and 80
+skip. With both files, all 398 run and pass. Skipped tests are not called passed.
+
+The guard and database permissions do different jobs. The guard decides which
+query shapes and tables we permit. PostgreSQL permissions refuse things the
+login must not access even if the guard has a bug. The read-only transaction
+adds another protection. We need all of them, plus the future result/time limits.
+
+This is not the AI question-answering flow or an accuracy score. The limited
+runner and answer checker still come next, after this increment's final review.
+
 The technical [guard plan](../docs/superpowers/plans/2026-10-03-minimum-sql-guard.md)
 and [scoring-source record](../docs/EX_COMPARATOR.md) hold the exact details.
 
@@ -437,6 +470,14 @@ feature has already been implemented.
   other place permission to read an unrelated table.
 - **Operator / cast:** an operator is a symbol such as + or =. A cast converts
   a value to another type. Both can use database functions, so they also need review.
+- **Overload:** the same function name with different kinds of input. For example,
+  adding whole numbers can use a different routine from adding floating-point numbers.
+- **Catalog:** PostgreSQL's own description of its tables, functions and types.
+  The tests can inspect this metadata; that does not allow reading other datasets.
+- **Read-only transaction:** a group of database work where writes are refused.
+  It does not make every possible reading function safe by itself.
+- **Search path:** the order PostgreSQL uses to find an unqualified name. Putting
+  built-in functions first helps name lookup; it is not a permission boundary.
 - **Tuple / set / multiset:** a row tuple keeps values in column order. A set
   keeps each distinct row once; a multiset also keeps how often a row repeats.
   The inspected BIRD EX rule uses sets, not multisets.
@@ -465,8 +506,8 @@ feature has already been implemented.
 
 ## 6. What comes next?
 
-G0.6a's first model smoke and G0.7a's pure guard are complete. The guard plan is
-approved; real restricted-database acceptance checks are next. The limited query
+G0.6a's first model smoke and G0.7a's guard tests, including real-database
+acceptance checks, are complete. A final read-only review is next. The limited query
 runner and result comparator come before the first real question-to-database demonstration. The rest
 of the data, agent loop, website, broader attack suite and release come later.
 
