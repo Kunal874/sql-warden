@@ -4,8 +4,8 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed task: G0.3 (Python checks passed; commit pending).
-Last completed commit: 2c77c72. Next: G0.4 restricted PostgreSQL boundary.
+Current group: G0. Last completed task: G0.4 (checks passed; commit pending).
+Last completed commit: 94a2175. Next: G0.5a one small pinned BIRD dataset.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -20,7 +20,7 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - Ollama 0.35.1 installed successfully (installer hash verified by winget).
 - PostgreSQL 17 service owns 5432. API 8000, Vite 5173, Ollama 11434 had no listeners.
 - No active Git hook path, commit template or author/committer environment override was found.
-- No model inference, database import or security integration checks have run.
+- No model inference or BIRD import has run. Synthetic database permission checks have run.
 
 ## Task checklist
 
@@ -29,7 +29,7 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [x] G0.1 / C0: inspect tools, GPU/disk/ports, identity and time; record owner answers.
 - [x] G0.2: initialize local repo; instructions/spec/memory/ignore files; verified owner-only foundation commit.
 - [x] G0.3: minimal locked Python 3.12 src project; ruff/pytest; meaningful behavior check.
-- [ ] G0.4: isolated Docker PostgreSQL 16, restricted dataset/app logins; direct denial tests.
+- [x] G0.4: isolated Docker PostgreSQL 16, restricted dataset/app logins; direct denial tests.
 - [ ] G0.5a (early): inspect/fetch one small pinned dataset; provenance, safe import and data checks.
 - [ ] G0.6a (early): Qwen endpoint smoke; availability, digest/template/capabilities and measured memory.
 - [ ] G0.7a (early): tested minimum guard, bounded executor, EX comparator and one-database CLI smoke.
@@ -118,6 +118,28 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 
 ## Session log
 
+### 2026-10-03 — G0.4 boundary
+
+G0.3 commit 94a2175 verified owner-only. Added approved asyncpg 0.31.0 and updated
+the lock; no new unapproved runtime dependency. Local setup tests observed RED,
+then 3 passed after exclusive credential creation with setup/runtime separation.
+Direct database tests observed RED before the server existed. Created the new
+SQLWarden container/network/volume only after confirming no colliding resources.
+Pinned the downloaded official image digest and reviewed the bootstrap SQL.
+PostgreSQL 16.15 is healthy on 127.0.0.1:55432, capped at 768 MiB and one CPU.
+No BIRD data, tenant RLS, AST guard, model query or benchmark result is claimed.
+
+Final checks: 69 tests passed (43 unit/setup + 26 actual PostgreSQL integration),
+ruff check passed, format check passed for 6 files, git diff --check passed;
+.env and .env.setup are ignored. Direct tests bypass the guard and verify SELECT
+on the assigned synthetic schema, forbidden writes even after disabling the
+read-only default, app/other-schema denial, role changes, CREATE/TEMP denial,
+file/sleep function denial, unprivileged flags/membership, and future object grants.
+Custom settings/search_path do not grant other dataset access. Catalog metadata
+is intentionally visible and is not a hidden-catalog claim.
+The app can store its synthetic application state but cannot read dataset rows.
+The earlier lint failure (nested async contexts) was fixed and the full checks rerun.
+
 ### 2026-10-03 — start
 
 Kunal requested execution, confirmed identity, missing-tool installation and 15–20 hours/week.
@@ -154,9 +176,9 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: commit the verified Python project, then G0.4 PostgreSQL roles and direct
-connection tests. Docker engine 29.6.2 and Ollama 0.35.1 respond successfully.
-Port 55432 is free. Official postgres:16 image pull session 43259 is in progress.
+Next: commit/review G0.4, then inspect and pin one small BIRD dataset for G0.5a.
+Docker engine 29.6.2 and Ollama 0.35.1 respond. The postgres image pull completed.
+Before model inference, implement/test the minimum guard, bounded executor and comparator.
 Do not touch the existing PostgreSQL 17 service or its data.
 
 Known tool paths for this session:
@@ -167,11 +189,19 @@ Known tool paths for this session:
 Use explicit paths if a fresh PowerShell cannot resolve commands; re-detect rather than
 changing global settings. External installed-tool access may require sandbox escalation.
 Ollama installer session 90858 completed. Docker Desktop was started with PID 55532;
-no project containers or model inference processes have been started.
+sqlwarden-postgres-1 is running and healthy on loopback port 55432, using the
+sqlwarden_pg16_data named volume. No model download/inference is running.
+No Git remote is configured and nothing has been pushed or published.
 
 Python checks (project virtual environment):
 
 `uv run pytest -q`
+
+Full checks including PostgreSQL: `uv run --env-file .env.setup pytest -q`.
+
+Restart: `docker compose --env-file .env.setup up -d --wait`.
+Stop without deleting data: `docker compose --env-file .env.setup stop`.
+Do not rerun credential initialization when either local env file exists.
 
 `uv run ruff check .`
 

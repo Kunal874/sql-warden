@@ -32,11 +32,14 @@ of the runtime and generated SQL always uses restricted dataset-specific logins.
 
 ## Commands
 
-Use PowerShell and uv from the repository root. Once G0.3 is installed:
+Use PowerShell and uv from the repository root:
 
 - `uv sync --locked`
 - `uv run pytest`
+- `uv run --env-file .env.setup pytest` (includes real local database checks)
 - `uv run ruff check .`
 - `uv run ruff format --check .`
 
 Additional commands and any local tool-path workaround belong in PROGRESS's Handoff.
+The database is bound to 127.0.0.1:55432. Preserve its named volume. The .env.setup
+file is setup/test-only; never use it to launch the runtime or send its values to a model.

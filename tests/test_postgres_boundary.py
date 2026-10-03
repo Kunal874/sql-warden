@@ -1,0 +1,158 @@
+"""Real direct-connection checks; no SQL guard is involved."""
+
+import os
+from contextlib import asynccontextmanager
+
+import asyncpg
+import pytest
+
+pytestmark = pytest.mark.integration
+
+ROLE_KEYS = {
+    "warden_sandbox_demo_schools": "WARDEN_SCHOOLS_PASSWORD",
+    "warden_sandbox_demo_other": "WARDEN_OTHER_PASSWORD",
+    "warden_app": "WARDEN_APP_PASSWORD",
+    "warden_bootstrap": "WARDEN_BOOTSTRAP_PASSWORD",
+}
+
+
+@asynccontextmanager
+async def connected(role="warden_sandbox_demo_schools"):
+    if os.environ.get("WARDEN_TEST_TARGET") != "sqlwarden-local":
+        pytest.skip("Use the dedicated local .env.setup file to run PostgreSQL integration tests")
+    try:
+        conn = await asyncpg.connect(
+            host="127.0.0.1",
+            port=int(os.environ["WARDEN_PG_PORT"]),
+            user=role,
+            password=os.environ[ROLE_KEYS[role]],
+            database="sqlwarden",
+            timeout=5,
+        )
+    except (OSError, asyncpg.InvalidPasswordError):
+        pytest.fail("The dedicated PostgreSQL server and restricted login must be available")
+    try:
+        yield conn
+    finally:
+        await conn.close()
+
+
+async def test_reader_can_read_its_own_synthetic_rows():
+    async with connected() as conn:
+        rows = await conn.fetch(
+            'SELECT "School Name", enrollment FROM demo_schools.schools ORDER BY id'
+        )
+        assert [tuple(row) for row in rows] == [("Sample North", 120), ("Sample South", 80)]
+
+
+@pytest.mark.parametrize(
+    "sql",
+    [
+        "INSERT INTO demo_schools.schools VALUES (3, 'not allowed', 1)",
+        "UPDATE demo_schools.schools SET enrollment = 0",
+        "DELETE FROM demo_schools.schools",
+        "TRUNCATE demo_schools.schools",
+        "DROP TABLE demo_schools.schools",
+        "CREATE TABLE demo_schools.forbidden (id int)",
+        "CREATE SCHEMA forbidden",
+        "CREATE TEMP TABLE forbidden (id int)",
+        "SELECT * FROM demo_other.canary",
+        "SELECT * FROM app.boundary_probe",
+        "SET ROLE warden_sandbox_demo_other",
+        "SET ROLE warden_app",
+        "SET ROLE warden_owner",
+        "SELECT pg_catalog.pg_sleep(0)",
+        "SELECT pg_catalog.pg_read_file('/sqlwarden-nonexistent-fixture')",
+    ],
+)
+async def test_privileges_deny_forbidden_sql_even_with_read_only_default_disabled(sql):
+    async with connected() as conn:
+        await conn.execute("SET default_transaction_read_only = off")
+        with pytest.raises(asyncpg.InsufficientPrivilegeError):
+            await conn.execute(sql)
+        assert await conn.fetchval("SELECT count(*) FROM demo_schools.schools") == 2
+
+
+async def test_search_path_and_custom_settings_do_not_grant_other_dataset_access():
+    async with connected() as conn:
+        await conn.execute("SET search_path = demo_other")
+        await conn.execute("SELECT set_config('app.tenant_id', '99', false)")
+        with pytest.raises(asyncpg.InsufficientPrivilegeError):
+            await conn.fetch("SELECT * FROM demo_other.canary")
+
+
+async def test_read_only_is_an_additional_transaction_boundary():
+    async with connected() as conn:
+        assert await conn.fetchval("SHOW default_transaction_read_only") == "on"
+        async with conn.transaction(readonly=True):
+            with pytest.raises(asyncpg.ReadOnlySQLTransactionError):
+                await conn.execute("INSERT INTO demo_schools.schools VALUES (3, 'blocked', 1)")
+
+
+@pytest.mark.parametrize(
+    "role", ["warden_sandbox_demo_schools", "warden_sandbox_demo_other", "warden_app"]
+)
+async def test_runtime_logins_have_no_privileged_flags_or_role_memberships(role):
+    async with connected(role) as conn:
+        flags = await conn.fetchrow(
+            "SELECT rolsuper, rolcreatedb, rolcreaterole, rolreplication, rolbypassrls "
+            "FROM pg_catalog.pg_roles WHERE rolname = current_user"
+        )
+        assert tuple(flags) == (False, False, False, False, False)
+        assert (
+            await conn.fetchval(
+                "SELECT count(*) FROM pg_catalog.pg_auth_members "
+                "WHERE member = (SELECT oid FROM pg_catalog.pg_roles WHERE rolname = current_user)"
+            )
+            == 0
+        )
+
+
+@pytest.mark.parametrize(
+    "sql", ["SELECT * FROM demo_schools.schools", "SELECT * FROM demo_other.canary"]
+)
+async def test_app_login_cannot_read_dataset_rows(sql):
+    async with connected("warden_app") as conn:
+        with pytest.raises(asyncpg.InsufficientPrivilegeError):
+            await conn.fetch(sql)
+
+
+async def test_app_login_can_store_application_state():
+    async with connected("warden_app") as conn, conn.transaction():
+        await conn.execute("INSERT INTO app.boundary_probe (value) VALUES ('local-check')")
+        assert (
+            await conn.fetchval(
+                "SELECT count(*) FROM app.boundary_probe WHERE value = 'local-check'"
+            )
+            == 1
+        )
+        await conn.execute("DELETE FROM app.boundary_probe WHERE value = 'local-check'")
+
+
+async def test_other_reader_is_isolated_in_both_directions():
+    async with connected("warden_sandbox_demo_other") as conn:
+        assert (
+            await conn.fetchval("SELECT value FROM demo_other.canary") == "synthetic-other-dataset"
+        )
+        with pytest.raises(asyncpg.InsufficientPrivilegeError):
+            await conn.fetch("SELECT * FROM demo_schools.schools")
+
+
+async def test_new_owner_created_tables_inherit_only_their_dataset_reader():
+    async with connected("warden_bootstrap") as conn:
+        transaction = conn.transaction()
+        await transaction.start()
+        try:
+            await conn.execute("SET LOCAL ROLE warden_owner")
+            await conn.execute("CREATE TABLE demo_schools.future_grant_probe (id int)")
+            access = await conn.fetchrow(
+                "SELECT "
+                "has_table_privilege('warden_sandbox_demo_schools', "
+                "'demo_schools.future_grant_probe', 'SELECT'), "
+                "has_table_privilege('warden_sandbox_demo_other', "
+                "'demo_schools.future_grant_probe', 'SELECT'), "
+                "has_table_privilege('warden_app', 'demo_schools.future_grant_probe', 'SELECT')"
+            )
+            assert tuple(access) == (True, False, False)
+        finally:
+            await transaction.rollback()

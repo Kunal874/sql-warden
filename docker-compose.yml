@@ -1,0 +1,32 @@
+name: sqlwarden
+
+services:
+  postgres:
+    image: postgres:16@sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54
+    environment:
+      POSTGRES_DB: sqlwarden
+      POSTGRES_USER: warden_bootstrap
+      POSTGRES_PASSWORD: ${WARDEN_BOOTSTRAP_PASSWORD:?Use --env-file .env.setup}
+      WARDEN_APP_PASSWORD: ${WARDEN_APP_PASSWORD:?Missing app credential}
+      WARDEN_SCHOOLS_PASSWORD: ${WARDEN_SCHOOLS_PASSWORD:?Missing schools credential}
+      WARDEN_OTHER_PASSWORD: ${WARDEN_OTHER_PASSWORD:?Missing other credential}
+    ports:
+      - "127.0.0.1:${WARDEN_PG_PORT:-55432}:5432"
+    volumes:
+      - pg16_data:/var/lib/postgresql/data
+      - ./db/bootstrap.sh:/docker-entrypoint-initdb.d/00_sqlwarden.sh:ro
+      - ./db/bootstrap.sql:/opt/sqlwarden/bootstrap.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+    mem_limit: 768m
+    cpus: 1.0
+    pids_limit: 128
+    shm_size: 128mb
+    restart: "no"
+
+volumes:
+  pg16_data:

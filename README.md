@@ -6,8 +6,9 @@ versioned BIRD Mini-Dev evaluations and tests of database isolation and SQL cont
 
 ## Current status
 
-The locked Python foundation and validated query budgets pass 40 unit tests.
-Database setup is next. There are no model results, accuracy claims or
+The foundation passes 69 tests: 43 unit/setup checks and 26 real PostgreSQL
+integration checks. The local database is PostgreSQL 16.15 on 127.0.0.1:55432.
+There are no model results, accuracy claims or
 published security measurements yet. The first milestone is one real database
 and local model answering a question through a tested guard and bounded executor.
 
@@ -29,6 +30,31 @@ uv run pytest
 uv run ruff check .
 uv run ruff format --check .
 ```
+
+For a first local database setup:
+
+```powershell
+uv run python scripts/init_local.py
+docker compose --env-file .env.setup up -d --wait
+uv run --env-file .env.setup pytest
+```
+
+The setup script refuses to overwrite existing credentials. On later runs, skip
+that first command. Private .env.setup holds bootstrap credentials for database
+setup/tests; .env contains only runtime credentials. Both are ignored by Git.
+Do not print either file or run a resolved Compose config that displays secrets.
+
+The two current datasets are synthetic permission-test fixtures. They are not
+BIRD data. Each has its own SELECT-only login; the app login can write only
+application tables. Direct tests cover writes with the read-only default disabled,
+cross-schema reads, role changes, temporary objects, risky functions and future
+table grants. Catalog metadata remains visible. This is an initial privilege
+boundary, not the completed SQL guard, executor, RLS or attack suite.
+
+The named volume persists across restarts. Bootstrap scripts run only when it is
+empty; changing them does not migrate existing data. Never delete that volume to
+apply changes without an explicit decision. To pause the server without deleting
+data, use `docker compose --env-file .env.setup stop`.
 
 The original [plan](sqlwarden-plan.md), [execution brief](SQLWARDEN_EXECUTION_PROMPT.md)
 and [plan review](SQLWARDEN_PLAN_REVIEW.md) are preserved. The active spec overrides

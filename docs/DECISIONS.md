@@ -49,6 +49,24 @@ obsolete trivial foundation test and is reused by the early executor.
 Rationale: use the selected toolchain and test a real resource-boundary contract.
 Cost if wrong: packaging or limit defaults can be adjusted locally before C4.
 
+## D-006 — G0.4: local database bootstrap (2026-10-03)
+
+Context: database isolation must exist before generated SQL or benchmark import.
+Decision: use the pinned official postgres:16 image digest
+sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54,
+loopback port 55432, a new sqlwarden_pg16_data volume and two synthetic fixture schemas.
+Each dataset gets its own restricted login; warden_app is limited to app;
+warden_owner is NOLOGIN and separate from the Docker bootstrap administrator.
+Generate random local credentials once and refuse overwrites. Separate setup-only
+.env.setup from runtime .env; neither is versioned or printed. No existing service,
+database or volume was changed or deleted.
+Rationale: demonstrate real least-privilege behavior before importing benchmark data.
+Cost if wrong: local limits/layout can be revised before C1/C4; preserve the volume
+and credentials rather than recreating them silently.
+
+Verified runtime: PostgreSQL 16.15. SQLWarden container healthy; 26 real integration
+checks passed, including cross-schema denial and effective future grants.
+
 ## Source checks
 
 - Node 24 LTS: https://nodejs.org/en/about/previous-releases (checked 2026-10-03).
