@@ -8,7 +8,7 @@ versioned BIRD Mini-Dev evaluations and tests of database isolation and SQL cont
 
 The foundation passes 158 tests: 91 unit/setup/data checks and 67 real PostgreSQL
 integration checks. The local database is PostgreSQL 16.15 on 127.0.0.1:55432.
-There are no model results, accuracy claims or
+There are no text-to-SQL accuracy results or
 published security measurements yet. The first milestone is one real database
 and local model answering a question through a tested guard and bounded executor.
 
@@ -21,6 +21,10 @@ is verified. The [compact import manifest](docs/california-import-manifest.json)
 records source/content hashes, types, keys, NULL counts and observed checks.
 No downloaded SQL dump has been executed.
 
+The first local Qwen smoke passed six tiny warm requests, including text/JSON
+responses and an output cap; the first cold request timed out. [Model evidence](docs/MODELS.md)
+records the exact artifact, memory and limitations. No model-generated SQL has run.
+
 The intended stack is Python 3.12, FastAPI, PostgreSQL 16, sqlglot and the official
 OpenAI Python SDK against native Ollama. React 18, TypeScript and Vite follow after
 the CLI and evaluation pipeline work.
@@ -30,6 +34,8 @@ the CLI and evaluation pipeline work.
 Work from `D:/PROJECTS/SQLWARDEN`. Read the [active build spec](docs/BUILD_SPEC.md)
 and [current handoff](docs/PROGRESS.md) before continuing.
 [Decisions](docs/DECISIONS.md) record confirmed choices.
+For a beginner-friendly account of completed work and AI terms, read the
+[project explanation](explaination%20of%20project/PROJECT_EXPLAINED.md).
 
 With uv available in your terminal:
 
@@ -113,6 +119,7 @@ The original [plan](sqlwarden-plan.md), [execution brief](SQLWARDEN_EXECUTION_PR
 and [plan review](SQLWARDEN_PLAN_REVIEW.md) are preserved. The active spec overrides
 historical instructions, unsupported claims and unsafe architecture in the plan.
 
-Dependencies and selected data are local; no model has been downloaded yet.
+Dependencies, selected data and the first Qwen model are local. The tested model
+is currently unloaded; its weights remain installed for reuse.
 Raw artifacts and secrets are excluded from Git. Public release and hosting
 remain gated at G7.

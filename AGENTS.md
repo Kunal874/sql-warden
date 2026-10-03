@@ -15,6 +15,7 @@ the Handoff. The active spec overrides the original plan's Appendix A.
 - No parallel implementation unless Kunal asks. Keep the runtime a plain Python state machine.
 - Preserve the three original planning files as historical inputs.
 - After a task, run its relevant checks and update progress with truthful results.
+- After each completed group/subtask, update [the simple-English notebook](explaination%20of%20project/PROJECT_EXPLAINED.md) with what changed, checks, new AI/coding terms and what remains unfinished.
 - Use tests first for security boundaries, result comparison, voting, budgets and state transitions.
 - Real PostgreSQL integration tests must run before database security claims.
 

@@ -4,10 +4,10 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed task: G0.5a for California Schools.
-Last completed commit: 13b6e6c. Current: G0.5a final review follow-ups verified;
-next task is G0.6a. The subsequent review-fix commit is identifiable in Git by
-`fix(db): close default-database access and gate import checks`.
+Current group: G0. Last completed task: G0.6a, local Qwen feasibility smoke.
+Last completed commit before this update: 15616d4. Current: first-model smoke
+verified and simple-English notebook created; next task is G0.7a. The following
+logical commit records this checkpoint and its evidence.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -33,7 +33,7 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [x] G0.3: minimal locked Python 3.12 src project; ruff/pytest; meaningful behavior check.
 - [x] G0.4: isolated Docker PostgreSQL 16, restricted dataset/app logins; direct denial tests.
 - [x] G0.5a (early): inspect/fetch one small pinned dataset; provenance, safe import and data checks.
-- [ ] G0.6a (early): Qwen endpoint smoke; availability, digest/template/capabilities and measured memory.
+- [x] G0.6a (early): Qwen endpoint smoke; availability, digest/template/capabilities and measured memory.
 - [ ] G0.7a (early): tested minimum guard, bounded executor, EX comparator and one-database CLI smoke.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
@@ -119,6 +119,49 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-03 — learning notebook and G0.6a local model smoke
+
+Reconciled the clean owner checkout at 15616d4; original planning inputs remain
+unchanged. Kunal requested one plain-language file updated after each completed
+group/subtask, under the exact folder name explaination of project. Created
+PROJECT_EXPLAINED.md there, with the completed foundation/import steps, actual
+checks, unfinished features and AI/coding glossary. Added stable pointers and the
+update rule to AGENTS/BUILD_SPEC; D-012 records this ongoing requirement.
+
+Classified G0.6a as a feasibility spike, not a new runtime subsystem. Read primary
+Ollama/Qwen sources and checked local resources. Ollama 0.35.1 was loopback-only,
+with no models initially. Before memory was freed: GPU 3301 MiB free, RAM about
+3.4 GiB available. After Kunal freed memory: GPU 6461 MiB free, RAM about 2.0 GiB.
+He authorized the small local probe and cannot free more memory; do not close his
+apps or demand further cleanup. Downloaded only the requested Qwen7B Q4_K_M,
+verified all base layer hashes/sizes, and created the previously absent context-
+2048/output-64 alias. No global settings, direct dependencies or remote inference.
+
+The first cold request timed out at 60.031 seconds with usage unavailable. Used
+systematic debugging: server log showed runner startup 45.30 seconds and no
+successful first response; the loaded runner was then tested with the unchanged
+limits. Six warm requests passed in 5.969 seconds: exact text, JSON object/schema,
+one matching seed pair and a two-token cap with finish_reason=length. Successful
+usage: 260 prompt + 54 output tokens; seven actual requests include the timeout,
+whose usage is unknown. Ollama prompt/KV caching was active, not an application
+response-cache replay. This is not SQL accuracy or benchmark throughput.
+
+Ollama reported one active 2048-token model, 4628519320 bytes entirely on GPU.
+Warm device-memory samples peaked at 5565 MiB across all applications, not an
+exact model-only peak; available RAM reached 1958367232 bytes in these samples.
+Unloaded the project model afterward: zero /api/ps models, device sample 1194 MiB
+used / 6763 MiB free. Pull session 45141 and first probe session 39691 completed;
+no model job remains running. The ignored .tools/probes/qwen_smoke.py is a
+throwaway manual probe, not runtime code. MODELS.md and qwen-smoke-manifest.json
+record source/artifact pins, actual checks, failed cold startup and limitations.
+The exact upstream conversion revision is unavailable; the actual GGUF is pinned.
+The learning notebook includes this completed task. Existing suite rerun: 158
+passed including 67 real PostgreSQL checks; ruff check/format and diff checks pass.
+No SQL, gold query, database data or credential entered the model; no publication.
+Read-only final review found no Critical or Important issue. Clarified one Minor
+notebook sentence about loopback addresses. The seven declined-to-judge items
+received explicit rulings under D-013; no further model run or database change.
 
 ### 2026-10-03 — G0.5a final review follow-up and handoff
 
@@ -319,8 +362,10 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: G0.6a Qwen endpoint/capability
-smoke followed by G0.7a guard, bounded executor, pinned EX comparator and safe CLI.
+Next: G0.7a — reviewed minimum guard, bounded executor, pinned EX comparator and
+safe one-database CLI. The previous native-import plan is complete; do not
+re-execute its tasks. The ignored review scratch was retained because host policy
+blocked cleanup; its ten rulings are preserved in DECISIONS.
 Do not download the source
 archive/labels again or overwrite data/bird_california. Source fingerprints and
 native block hashes are in DATA.md. The current extractor refuses repeats by design.
@@ -346,6 +391,19 @@ Ollama installer session 90858 completed. Docker Desktop was started with PID 55
 sqlwarden-postgres-1 is running and healthy on loopback port 55432, using the
 sqlwarden_pg16_data named volume. No model download/inference is running.
 No Git remote is configured and nothing has been pushed or published.
+Qwen7B Q4_K_M and its context-2048 smoke alias are installed, hash-verified and
+currently unloaded. No Ollama model is running. See MODELS.md and its compact
+manifest before using the recorded alias; never silently pull/replace it again.
+Cold first-use exceeded 60 seconds. The warm smoke passed, but later runtime
+readiness/warmup must have a separate explicit bound. Only small prompts/context
+were measured, not a full-schema workload. Do not close Kunal's other apps.
+Native Ollama path: C:/Users/Kunal/AppData/Local/Programs/Ollama/ollama.exe.
+Model unload: `ollama stop sqlwarden-qwen2.5-coder-7b-ctx2048:smoke-v1`.
+Read-only status: `ollama ps` or GET http://127.0.0.1:11434/api/ps.
+The temporary Python probe used `uv run python .tools/probes/qwen_smoke.py`,
+without either environment file; do not treat it as the future runtime client.
+After every completed task/group, update explaination of project/PROJECT_EXPLAINED.md
+in simple English, preserving previous entries and expanding the term glossary.
 Archive download session 71692 and read-only native inspection session 69421 completed.
 No data download or inspection process remains running. Native extraction session
 42513 completed. Database import is complete and no import process is running.

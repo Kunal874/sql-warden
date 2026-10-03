@@ -2,7 +2,7 @@
 
 Checked on 2026-10-03. G0.5a is complete for California Schools: selective native
 import, content/types/keys, descriptions and direct privileges are verified.
-Model execution has not happened. This is not an evaluation
+No model-driven SQL has been executed. This is not an evaluation
 result or a completed conversion-validity manifest.
 
 ## Sources and selected release

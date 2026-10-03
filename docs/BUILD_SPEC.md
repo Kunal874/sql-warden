@@ -6,6 +6,8 @@ This is the revised execution brief; the original planning inputs remain preserv
 
 Change log:
 - 2026-10-03: activated the revised execution brief without changing its contracts.
+- 2026-10-03: Kunal requested one living simple-English explanation in
+  `explaination of project`, updated after every completed group/subtask.
 
 Prepared on 2026-10-03 for Kunal's review. This file becomes an instruction to build only when Kunal explicitly asks to start or execute it. Reviewing, opening, or editing it is not authorization to run the build.
 
@@ -63,6 +65,11 @@ Do not create a test commit solely to test identity. Verify the first real found
 On each session, read `AGENTS.md`, `docs/BUILD_SPEC.md`, `docs/PROGRESS.md` and `docs/DECISIONS.md` if they exist. Check `git status` and recent history if this is a repository. Summarize current state, next task, open decisions and failures in four short lines. Resume the exact next task; do not restart setup.
 
 `docs/PROGRESS.md` holds the original task checklist with the amendments in section 11, task checks, a concise session log and a Handoff. Record completed, incomplete, blocked and deliberately skipped work accurately. `docs/DECISIONS.md` uses D-001 onward with context, options, decision, rationale and date. `AGENTS.md` stays mostly stable; do not duplicate a growing session log into it.
+
+Kunal's learning notebook is `explaination of project/PROJECT_EXPLAINED.md`. Update
+that one file after every fully completed group/subtask, in very simple English:
+what changed, why it matters, actual checks and explanations of new AI/coding
+terms. Keep earlier entries and distinguish finished work from future plans.
 
 At a substantive checkpoint, present a recommendation and at most three short questions. Use an available user-input tool or ordinary chat; never require a tool named `AskUserQuestion`. Inspect versions and local state directly instead of asking Kunal to perform checks you can run.
 

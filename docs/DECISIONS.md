@@ -139,6 +139,56 @@ Verification: nine new tests observed RED before fixes, then GREEN; full suite
 and catalog checks verify the default-database restriction. Setup-only checks
 pass with California checks skipped. This is not an exhaustive function audit.
 
+## D-012 — simple-English project notebook (2026-10-03)
+
+Context: Kunal requested a separate folder named explaination of project and a
+file explaining every completed group/subtask and AI terminology simply.
+Options: many separate reports, or one living notebook with completed-task entries
+and an expanding glossary.
+Decision: maintain explaination of project/PROJECT_EXPLAINED.md as one living file,
+using very simple English, with historical completed tasks and new terms added
+after each completed subtask/group. Preserve the exact requested folder name.
+Rationale: one place is easy to find and read; technical evidence remains in the
+existing progress, decisions and data records. Do not claim future features work.
+
+## D-013 — G0.6a: bounded local Qwen probe (2026-10-03)
+
+Context: the next approved milestone is Qwen endpoint smoke. Initial available
+GPU/RAM were limited; Kunal freed memory and authorized the bounded local probe
+without requiring him to close more programs.
+Decision: use the originally requested Qwen2.5-Coder-7B-Instruct Q4_K_M from
+Ollama, pin and independently hash its actual model/template/license artifacts,
+and create a new context-2048/output-64 local alias without global changes.
+Use only tiny synthetic text/JSON requests, not SQL/data/credentials. This is
+a feasibility spike with no retained runtime client or added dependencies.
+Rationale: measure one available local model before the guarded CLI. The first
+cold call timed out at 60 seconds; after runner loading, the unchanged bounded
+probe passed six warm calls. Preserve that failure and unavailable usage. One
+seed pair matched, but this is not a general determinism or accuracy claim.
+Ollama reported 100% GPU; the model was unloaded after testing. MODELS.md and
+qwen-smoke-manifest.json hold source pins, measurements and limitations. Exact
+upstream conversion ancestry is not declared; pin the actual GGUF, not an assumed
+conversion revision. The runtime still uses the approved SDK in its later task.
+
+G0.6a final-review rulings (no Critical or Important findings; the Minor loopback
+wording was clarified):
+
+- Existing foundation/database implementation: keep the unchanged verified
+  foundation; this review covers only the model evidence and notebook.
+- Repeating PostgreSQL tests in the reviewer: not needed; the executor reran all
+  158 tests, including 67 real PostgreSQL checks, before this checkpoint.
+- Repeating inference, weight hashing and unloading checks: retain the recorded
+  probe/hash evidence; the executor freshly confirmed an empty Ollama model list.
+  Do not reload the model merely to repeat the review.
+- Exact upstream conversion ancestry: retain the explicit unavailable status;
+  verified local artifact hashes do not establish its upstream conversion revision.
+- Production hardening of the ignored manual probe: do not ship it as runtime
+  code; the later provider needs its own approved SDK implementation and tests.
+- Larger contexts, cancellation, concurrency, varied seeds, arbitrary schemas,
+  the second model and SQL accuracy: remain unproved later work, not smoke claims.
+- Future commit attribution and release checks: verify this commit's author,
+  committer and body immediately; full-history/publication checks remain at G7.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
