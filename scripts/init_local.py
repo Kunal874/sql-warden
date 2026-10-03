@@ -1,5 +1,6 @@
 """Create local-only credentials without printing them or overwriting files."""
 
+import argparse
 from pathlib import Path
 from secrets import token_hex
 
@@ -29,9 +30,24 @@ def initialize(root: Path) -> None:
             file.write("".join(f"{key}={value}\n" for key, value in values.items()))
 
 
+def initialize_bird(root: Path) -> None:
+    with (root / ".env.california").open("x", encoding="utf-8", newline="\n") as file:
+        file.write(f"WARDEN_CALIFORNIA_PASSWORD={token_hex(24)}\n")
+    print("Created .env.california. Values are private and will not be printed.")
+
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--bird", action="store_true", help="Create only the separate California credential"
+    )
+    args = parser.parse_args()
     try:
-        initialize(Path(__file__).resolve().parents[1])
+        if args.bird:
+            initialize_bird(Path(__file__).resolve().parents[1])
+        else:
+            initialize(Path(__file__).resolve().parents[1])
     except FileExistsError as exc:
         raise SystemExit(str(exc)) from None
-    print("Created .env.setup and .env. Values are private and will not be printed.")
+    if not args.bird:
+        print("Created .env.setup and .env. Values are private and will not be printed.")

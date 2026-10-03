@@ -1,7 +1,7 @@
 # SQLWarden data provenance
 
-Checked on 2026-10-03. G0.5a is in progress: source preparation and native extraction are verified;
-PostgreSQL import and model execution have not happened. This is not an evaluation
+Checked on 2026-10-03. G0.5a is in progress: the selective native import is verified;
+the compact provenance artifact is being completed. Model execution has not happened. This is not an evaluation
 result or a completed conversion-validity manifest.
 
 ## Sources and selected release
@@ -89,7 +89,11 @@ The largest observed source line was 52856 bytes.
 Hash scope below: each selected COPY block's data lines, including LF endings,
 excluding its COPY header and terminating `\.` line. These blocks were hashed
 in memory, then extracted by the tested native-data helper. Their actual bytes,
-counts and SHA-256 values match this table; PostgreSQL import is still pending.
+counts and SHA-256 values match this table. The three blocks are now imported into
+the isolated `california_schools` schema under `warden_owner`, with a separate
+`warden_sandbox_california_schools` SELECT-only login. All rows match a setup-only
+typed source replay in both directions using duplicate-preserving EXCEPT ALL.
+Changing one value without changing its count is detected, and the probe rolls back.
 
 | Native block | Rows | Data bytes | SHA-256 |
 | --- | ---: | ---: | --- |

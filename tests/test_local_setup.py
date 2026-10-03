@@ -2,6 +2,7 @@
 
 import pytest
 
+from scripts import init_local
 from scripts.init_local import initialize
 
 
@@ -38,3 +39,26 @@ def test_existing_credentials_are_never_overwritten(tmp_path, existing):
         initialize(tmp_path)
     assert path.read_text() == "OWNER_VALUE=keep\n"
     assert not (tmp_path / ({".env", ".env.setup"} - {existing}).pop()).exists()
+
+
+def test_bird_credentials_are_separate_private_and_never_overwritten(tmp_path, capsys):
+    import re
+
+    setup = tmp_path / ".env.setup"
+    runtime = tmp_path / ".env"
+    setup.write_text("existing-setup\n")
+    runtime.write_text("existing-runtime\n")
+    init_local.initialize_bird(tmp_path)
+    path = tmp_path / ".env.california"
+    original = path.read_bytes()
+    values = read_env(path)
+    assert set(values) == {"WARDEN_CALIFORNIA_PASSWORD"}
+    assert re.fullmatch("[a-f0-9]{48}", values["WARDEN_CALIFORNIA_PASSWORD"])
+    output = capsys.readouterr().out
+    assert ".env.california" in output
+    assert values["WARDEN_CALIFORNIA_PASSWORD"] not in output
+    with pytest.raises(FileExistsError):
+        init_local.initialize_bird(tmp_path)
+    assert path.read_bytes() == original
+    assert setup.read_text() == "existing-setup\n"
+    assert runtime.read_text() == "existing-runtime\n"

@@ -5,7 +5,7 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 amends their order and checks.
 
 Current group: G0. Last completed task: G0.4 including the verified review follow-up.
-Last completed commit: 1e3878b. Current: G0.5a native source extraction verified; import pending.
+Last completed commit: 12e8aab. Current: G0.5a import verified; compact provenance checks pending.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -117,6 +117,24 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-03 — G0.5a setup-only import / approved plan Task 2
+
+Task 1 committed at 12e8aab with verified Kunal author/committer and clean body.
+Credential and source validation tests observed RED, then passed. Exclusively
+created private .env.california without changing either existing environment file.
+The actual reader test failed for its missing login before import, then passed
+after loading only native COPY data into the new schema/login. All three native
+counts and complete typed row multisets verify; PK, NOT NULL and both FKs validate.
+No dump SQL, owner commands or unrelated dataset was executed/imported.
+Direct tests cover forbidden writes with the read-only default disabled, app/other
+dataset reads, SET ROLE, TEMP/DDL, large-object/risky functions and future grants.
+The three existing runtime logins cannot read California. Repeat import refuses
+without changing existing rows. The content-mutation test failed under a temporary
+disabled comparison, then passed after restoration; its changed value rolls back.
+Current full checks: 146 passed (90 unit/setup/data + 56 actual PostgreSQL), lint,
+format, lock and diff checks passed. All local credentials/native data are ignored.
+No model, guard, executor or benchmark execution is claimed.
 
 ### 2026-10-03 — G0.5a native extraction / approved plan Task 1
 
@@ -249,14 +267,15 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: execute Task 2 then Task 3 of the approved native-import plan inline.
+Next: execute Task 3 of the approved native-import plan inline.
 Do not download the source
 archive/labels again or overwrite data/bird_california. Source fingerprints and
 native block hashes are in DATA.md. The current extractor refuses repeats by design.
 Do not execute the flat public-schema source dump, add a broad reader, or turn the
 synthetic fixtures into a claimed BIRD dataset.
-Native TSV extraction has completed; PostgreSQL import has not run, and
-.env.california does not exist. C1 labels/splits are still later decisions.
+Native extraction and PostgreSQL import completed. .env.california exists and is
+private/ignored. Do not rerun initialization or import; both refuse existing targets.
+C1 labels/splits are still later decisions.
 Docker engine 29.6.2 and Ollama 0.35.1 respond. The postgres image pull completed.
 Before model inference, implement/test the minimum guard, bounded executor and comparator.
 Do not touch the existing PostgreSQL 17 service or its data.
@@ -289,8 +308,8 @@ update command is documented in README; do not rerun the full bootstrap on exist
 
 The original source-selection command was `uv run python scripts/fetch_data.py`;
 it has completed and must not be rerun against the existing destination. Current
-full checks remain `uv run --env-file .env.setup pytest -q` until the new dataset
-credential and importer are implemented under the reviewed plan.
+full checks are `uv run --env-file .env.setup --env-file .env.california pytest -q`.
+The native extraction and one-time import have also completed; do not rerun them.
 
 `uv run ruff check .`
 

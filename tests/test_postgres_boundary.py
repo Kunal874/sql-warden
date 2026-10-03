@@ -13,6 +13,7 @@ ROLE_KEYS = {
     "warden_sandbox_demo_other": "WARDEN_OTHER_PASSWORD",
     "warden_app": "WARDEN_APP_PASSWORD",
     "warden_bootstrap": "WARDEN_BOOTSTRAP_PASSWORD",
+    "warden_sandbox_california_schools": "WARDEN_CALIFORNIA_PASSWORD",
 }
 
 LARGE_OBJECT_FUNCTIONS = (
