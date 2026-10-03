@@ -5,7 +5,9 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 amends their order and checks.
 
 Current group: G0. Last completed task: G0.5a for California Schools.
-Last completed commit: 214b442. Current: G0.5a provenance verified; final review pending.
+Last completed commit: 13b6e6c. Current: G0.5a final review follow-ups verified;
+next task is G0.6a. The subsequent review-fix commit is identifiable in Git by
+`fix(db): close default-database access and gate import checks`.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -117,6 +119,37 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-03 — G0.5a final review follow-up and handoff
+
+Task 3 committed at 13b6e6c with verified Kunal author/committer and no extra body
+attribution. One fresh-context read-only review covered the complete foundation
+branch (2c77c72..13b6e6c). Two findings remain Important after impact-based grading:
+runtime credentials could connect to postgres/template1, whose function catalogs
+have separate privileges; California cross-reader checks lacked the separate
+dataset setup gate. Eight real connection probes and one no-connection harness
+test reproduced all nine failures before either fix.
+
+Added the shared idempotent cluster_hardening.sql to fresh bootstrap and applied
+it twice successfully to this existing dedicated PostgreSQL 16 cluster. A container
+recreation mounted the new script; sqlwarden_pg16_data and existing credentials/
+rows remain intact. PUBLIC CONNECT/TEMP on postgres/template1 are revoked; actual
+connections for all four runtime logins are denied. Catalog checks confirm both
+privileges are false for every login/database pair, and template0 remains closed.
+The existing PostgreSQL 17 service was not changed. Cross-reader checks now verify
+the California setup gate before any other login connects; missing actual setup
+still fails when both environment files are supplied.
+
+Single review-fix pass: 9 RED -> 9 GREEN; complete suite 158 passed (91 unit/setup/
+data + 67 real PostgreSQL), ruff check/format, uv lock --check and diff checks pass.
+Without environment files: 91 passed, 67 skipped. Setup-only environment: 134
+passed, 24 California checks skipped. With both private environments: no skips.
+Native source/content fingerprints, labels, types and keys were rechecked by the
+full suite; no source SQL, gold query, model inference or score was executed.
+No second review was dispatched. No Critical or Minor findings were reported;
+all seven declined-to-judge items and execution rulings are recorded in DECISIONS.
+Keep feat/foundation locally under the existing workspace/G7 contracts. No remote,
+push, merge, publication or data reset. G0.5a is complete for this one database.
 
 ### 2026-10-03 — G0.5a content/provenance / approved plan Task 3
 
@@ -286,7 +319,7 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: finish the read-only whole-branch review, then G0.6a Qwen endpoint/capability
+Next: G0.6a Qwen endpoint/capability
 smoke followed by G0.7a guard, bounded executor, pinned EX comparator and safe CLI.
 Do not download the source
 archive/labels again or overwrite data/bird_california. Source fingerprints and
@@ -297,16 +330,18 @@ Native extraction and PostgreSQL import completed. .env.california exists and is
 private/ignored. Do not rerun initialization or import; both refuse existing targets.
 C1 labels/splits are still later decisions.
 Docker engine 29.6.2 and Ollama 0.35.1 respond. The postgres image pull completed.
-Before model inference, implement/test the minimum guard, bounded executor and comparator.
+Before executing generated SQL, implement/test the minimum guard, bounded executor
+and comparator. A model endpoint smoke must not execute model output as SQL.
 Do not touch the existing PostgreSQL 17 service or its data.
 
 Known tool paths for this session:
 - uv: C:/Users/Kunal/AppData/Local/Microsoft/WinGet/Packages/astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe/uv.exe
 - Docker: C:/Users/Kunal/AppData/Local/Programs/DockerDesktop/resources/bin/docker.exe
 - winget: C:/Users/Kunal/AppData/Local/Microsoft/WindowsApps/winget.exe
+- Git Bash (skill-script helper): C:/CODE/Git/bin/bash.exe
 
 Use explicit paths if a fresh PowerShell cannot resolve commands; re-detect rather than
-changing global settings. External installed-tool access may require sandbox escalation.
+changing global settings.
 Ollama installer session 90858 completed. Docker Desktop was started with PID 55532;
 sqlwarden-postgres-1 is running and healthy on loopback port 55432, using the
 sqlwarden_pg16_data named volume. No model download/inference is running.
@@ -319,13 +354,17 @@ Python checks (project virtual environment):
 
 `uv run pytest -q`
 
-Full checks including PostgreSQL: `uv run --env-file .env.setup pytest -q`.
+Synthetic/bootstrap checks: `uv run --env-file .env.setup pytest -q`.
+Full PostgreSQL/California checks:
+`uv run --env-file .env.setup --env-file .env.california pytest -q`.
 
 Restart: `docker compose --env-file .env.setup up -d --wait`.
 Stop without deleting data: `docker compose --env-file .env.setup stop`.
 Do not rerun credential initialization when either local env file exists.
-The current volume already has db/function_hardening.sql applied. Its setup-only
-update command is documented in README; do not rerun the full bootstrap on existing data.
+The current volume already has db/function_hardening.sql and db/cluster_hardening.sql
+applied. Their setup-only update commands are documented in README; do not rerun
+the full bootstrap on existing data. Preserve the default-database CONNECT/TEMP
+revocations; never grant a runtime login access outside sqlwarden.
 
 The original source-selection command was `uv run python scripts/fetch_data.py`;
 it has completed and must not be rerun against the existing destination. Current

@@ -215,9 +215,27 @@ async def test_california_role_owner_defaults_and_risky_function_acls():
     "role", ["warden_sandbox_demo_schools", "warden_sandbox_demo_other", "warden_app"]
 )
 async def test_other_runtime_logins_cannot_read_california(role):
+    async with california_connected():
+        pass
     async with connected(role) as conn, rolled_back(conn):
         with pytest.raises(asyncpg.InsufficientPrivilegeError):
             await conn.fetchval("SELECT count(*) FROM california_schools.schools")
+
+
+async def test_california_cross_reader_checks_skip_before_any_connection_without_dataset_setup(
+    monkeypatch,
+):
+    import sys
+
+    monkeypatch.setenv("WARDEN_TEST_TARGET", "sqlwarden-local")
+    monkeypatch.delenv("WARDEN_CALIFORNIA_PASSWORD", raising=False)
+
+    def unexpected_connection(_role):
+        raise AssertionError("California checks must not connect before dataset setup")
+
+    monkeypatch.setattr(sys.modules[__name__], "connected", unexpected_connection)
+    with pytest.raises(pytest.skip.Exception):
+        await test_other_runtime_logins_cannot_read_california("warden_app")
 
 
 @pytest.mark.integration

@@ -16,6 +16,42 @@ ROLE_KEYS = {
     "warden_sandbox_california_schools": "WARDEN_CALIFORNIA_PASSWORD",
 }
 
+
+@pytest.mark.parametrize(
+    "role",
+    [
+        "warden_sandbox_demo_schools",
+        "warden_sandbox_demo_other",
+        "warden_sandbox_california_schools",
+        "warden_app",
+    ],
+)
+@pytest.mark.parametrize("database", ["postgres", "template1"])
+async def test_runtime_logins_cannot_connect_to_unused_cluster_databases(role, database):
+    if os.environ.get("WARDEN_TEST_TARGET") != "sqlwarden-local":
+        pytest.skip("Supply the dedicated local setup environment")
+    if role == "warden_sandbox_california_schools" and not os.environ.get(
+        "WARDEN_CALIFORNIA_PASSWORD"
+    ):
+        pytest.skip("Supply the separate California environment after its one-time import")
+    if os.environ.get("WARDEN_PG_PORT") != "55432":
+        pytest.fail("Cluster boundary checks require the fixed dedicated local port")
+    conn = None
+    try:
+        with pytest.raises(asyncpg.InsufficientPrivilegeError):
+            conn = await asyncpg.connect(
+                host="127.0.0.1",
+                port=55432,
+                database=database,
+                user=role,
+                password=os.environ[ROLE_KEYS[role]],
+                timeout=5,
+            )
+    finally:
+        if conn is not None:
+            await conn.close()
+
+
 LARGE_OBJECT_FUNCTIONS = (
     "lo_create",
     "lo_creat",

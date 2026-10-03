@@ -122,6 +122,40 @@ no schema correction, benchmark change or numeric conversion is made.
 Cost if wrong: a description could be misattached; the schema and privilege
 boundary are unchanged. All 89 descriptions now match uniquely.
 
+## D-011 — final review: cluster boundary and setup gates (2026-10-03)
+
+Context: fresh read-only review found two Important issues. Runtime logins could
+connect to postgres/template1 despite hardening in sqlwarden; three California
+cross-reader checks could run before that dataset was set up.
+Decision: remove PUBLIC CONNECT/TEMP on these unused default databases with one
+shared idempotent cluster_hardening.sql, included in bootstrap and applied to the
+existing dedicated PostgreSQL 16 volume. Gate every California check on its
+separate environment/login before connecting with another reader.
+Rationale: database catalogs have independent privileges, and first synthetic
+setup must work without a California import. Preserve data, credentials, the
+named volume, template0's closed state and the existing PostgreSQL 17 service.
+Verification: nine new tests observed RED before fixes, then GREEN; full suite
+158 passed including 67 real PostgreSQL checks. Eight actual connection denials
+and catalog checks verify the default-database restriction. Setup-only checks
+pass with California checks skipped. This is not an exhaustive function audit.
+
+## Native-import execution and final-review rulings
+
+Recorded in decision order; all seven reviewer declined-to-judge items received
+an explicit ruling. No Critical or Minor findings were reported. Two Important
+findings were fixed in one TDD pass; no re-review or publication was performed.
+
+- Task 1: Ruling: SQLite forbids ASCII case-colliding columns itself, so exercise duplicate native columns at the COPY boundary and keep a defensive metadata collision check — no contrived corrupt SQLite fixture — cost if wrong: a malformed source may raise sqlite3.DatabaseError instead of ValueError.
+- Task 3: Ruling: four pinned frpm description names have leading/trailing whitespace — strip only description-name padding, require a unique exact native-name match and record all four aliases; source files and SQL identifiers remain unchanged — cost if wrong: a description could be misattached, while the schema/privilege boundary remains unchanged.
+- Final: Ruling: concurrent replacement of locally hashed sources — retain the trusted immutable-source workflow; this offline setup tool is not a defense against an administrator modifying its files mid-import — cost if wrong: local tampering could invalidate pre-use source verification.
+- Final: Ruling: no aggregate cap for ignored COPY data — retain streaming line/selected-block bounds because the complete archive is pinned and its known dump is about 1 GB — cost if wrong: processing time/CPU could be excessive despite bounded memory.
+- Final: Ruling: corrupt SQLite errors need not be converted to ValueError — retain the current error classification for a hash-pinned, checked source, consistent with Task 1 — cost if wrong: malformed source handling could expose a less uniform error/traceback.
+- Final: Ruling: four trimmed description aliases — retain Task 3's unique recorded matches; source bytes and SQL names are unchanged — cost if wrong: a description could attach to the wrong column.
+- Final: Ruling: guard/executor, RLS and model/evaluation are not implemented — retain the approved G0.5a-only scope, with generated SQL prohibited until G0.7a controls pass — cost if wrong: this working database is not yet a usable end-to-end agent.
+- Final: Ruling: no injected mid-import rollback test — retain the explicit single PostgreSQL transaction and existing rollback-protected controls; review found no atomicity defect — cost if wrong: a future partial-import regression could escape this coverage.
+- Final: Ruling: unreviewed PostgreSQL functions beyond the initial boundary — retain the stated non-exhaustive limitation and defer the broader function review to G2, before making stronger claims — cost if wrong: residual function capabilities could weaken isolation.
+- Final: Ruling: retain feat/foundation locally in the current checkout — AGENTS.md/D-003 require this workspace, no base branch exists, and G7 forbids remote/push publication before approval — cost if wrong: integration remains postponed until an explicit owner decision.
+
 ## Source checks
 
 - Node 24 LTS: https://nodejs.org/en/about/previous-releases (checked 2026-10-03).

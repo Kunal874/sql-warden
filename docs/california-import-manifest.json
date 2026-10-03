@@ -818,7 +818,7 @@
   "checks": {
     "typed_content": "Complete two-direction EXCEPT ALL against setup-only native source replay; same-count changed-value control detects mismatch and rolls back",
     "keys": "Three primary keys and two validated foreign keys; uniqueness and both joins checked",
-    "privileges": "Direct connection tests: own SELECT; writes/TEMP/DDL/SET ROLE/large objects denied even after disabling read-only default; app/other-reader isolation and owner future grants",
+    "privileges": "Direct connection tests: own SELECT; writes/TEMP/DDL/SET ROLE/large objects denied in sqlwarden even after disabling read-only default; app/other-reader isolation and owner future grants; all four runtime logins denied connections to unused postgres/template1 databases",
     "repeat_import": "Refuses existing role/schema; persistent source and named volume preserved",
     "tests": "tests/test_bird_load.py; tests/test_postgres_boundary.py"
   },

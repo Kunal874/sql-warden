@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC.md](../../BUILD_SPEC.md), sections 5, 8 and 11. Source evidence and fingerprints: [DATA.md](../../DATA.md).
 
-**Status:** Tasks 1–3 verified on 2026-10-03 after Kunal's approval; 149 tests pass, including 59 real PostgreSQL checks. Final review/handoff is recorded in PROGRESS.md.
+**Status:** Tasks 1–3 and the single final-review fix pass verified on 2026-10-03 after Kunal's approval; 158 tests pass, including 67 real PostgreSQL checks. Final review/handoff is recorded in PROGRESS.md, with execution/review rulings in DECISIONS.md.
 
 ## Global Constraints
 

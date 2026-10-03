@@ -12,6 +12,7 @@ CREATE ROLE warden_sandbox_demo_other LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE
   NOINHERIT NOREPLICATION NOBYPASSRLS CONNECTION LIMIT 2 PASSWORD :'other_password';
 
 REVOKE ALL ON DATABASE sqlwarden FROM PUBLIC;
+\ir cluster_hardening.sql
 GRANT CONNECT ON DATABASE sqlwarden TO
   warden_app, warden_sandbox_demo_schools, warden_sandbox_demo_other;
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
