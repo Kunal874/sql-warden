@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 5–6 and 11; [AGENTS](../../../AGENTS.md); [DATA](../../DATA.md). These existing approved contracts supply the design; this plan does not replace them.
 
-**Status:** Prepared and self-reviewed on 2026-10-03; Kunal approved the plan and dependency on 2026-10-04. Tasks 1–2 are verified (184 guard unit tests, 56 new real PostgreSQL checks; full suite 398 passed). One final read-only review remains. Execution baseline: clean feat/foundation at 83ac96a, 158 tests passed with both private test environments.
+**Status:** Prepared and self-reviewed on 2026-10-03; Kunal approved the plan and dependency on 2026-10-04. Tasks 1–2 and final review are complete (193 guard unit tests, 56 new real PostgreSQL checks; full suite 407 passed). Both Important review findings were fixed test-first in one pass; no Critical/Minor findings or re-review. D-015/D-017 record all rulings. Execution baseline: clean feat/foundation at 83ac96a, 158 tests passed with both private test environments. No executor/comparator/CLI or completed G0.7a is claimed.
 
 ## Global Constraints
 
@@ -232,9 +232,9 @@ def fold_identifier(identifier: exp.Identifier) -> None:
 
 Validate policy names at construction. For SQL, reject non-string, empty/NUL,
 unencodable Unicode and input exceeding MAX_SQL_BYTES before parsing. Use
-sqlglot.parse(read="postgres", error_level=ErrorLevel.RAISE); require exactly one
+sqlglot.parse(read="postgres", error_level=ErrorLevel.RAISE, error_message_context=0); require exactly one
 nonempty parsed statement and a Select/Union/Intersect/Except root (unwrap plain
-query parentheses). Catch ParseError/TokenError/RecursionError without echoing
+query parentheses). Catch ParseError/TokenError/RecursionError/IndexError without echoing
 their text. Reject over-budget AST count/depth and identifiers exceeding 63 UTF-8
 bytes. Normalize only analysis-tree Identifiers with fold_identifier, disregarding
 comment metadata; accepted text remains byte-for-byte unchanged.
@@ -278,6 +278,11 @@ from sqlglot.errors import OptimizeError
 from sqlglot.optimizer.scope import Scope, traverse_scope
 
 def _check_tables(tree: exp.Expression, policy: DatasetPolicy) -> str | None:
+    # Unsupported CTE bodies can make SQLGlot log raw SQL during scope traversal.
+    for cte in tree.find_all(exp.CTE):
+        body = cte.this.unnest() if isinstance(cte.this, exp.Expression) else None
+        if type(body) not in QUERY_ROOTS | {exp.Values}:
+            return "unsupported_relation"
     seen_tables = set()
     try:
         scopes = traverse_scope(tree)
@@ -311,7 +316,10 @@ or the exact policy schema, and an exact approved table name. Scope sources may
 represent CTE/derived relations, but a CTE reference cannot carry a schema/catalog.
 Then require every Table found by tree.find_all(exp.Table) to appear in seen_tables;
 unaccounted nodes reject. Inspect all descendant/unused CTE scopes. Catch
-OptimizeError/unsupported scope construction with a sanitized rejection. A CTE
+OptimizeError/unsupported scope construction with a sanitized rejection. Reject
+unsupported CTE bodies before traversal, including unused bodies, so scope warnings
+cannot log private SQL. Parser diagnostic redaction alone does not cover that path.
+A CTE
 name is never a global exemption. No rewriting, qualification injection or LIMIT
 injection is permitted. These checks finish Review Focus 1 and 5.
 

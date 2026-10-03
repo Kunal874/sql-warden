@@ -4,10 +4,11 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed subtask: G0.7a guard plan Task 2, restricted
-PostgreSQL acceptance checks. Last completed commit before this update: 2cca672.
-Kunal approved the written guard plan and SQLGlot 30.21.0 on 2026-10-04. Current:
-final read-only review of the completed guard plan. G0.7a is not complete.
+Current group: G0. Last completed subtask: G0.7a minimum SQL guard, including
+restricted PostgreSQL acceptance and final review fixes. Last completed commit
+before this update: f8255de. Kunal approved the written guard plan and SQLGlot
+30.21.0 on 2026-10-04. Next: plan the bounded executor that consumes this guard.
+G0.7a is not complete.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -37,9 +38,9 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G0.7a (early): tested minimum guard, bounded executor, EX comparator and one-database CLI smoke.
   - [x] Inspect/pin official EX source and prepare the first SQL-guard plan.
   - [x] Review/approve the written guard plan and direct SQLGlot addition.
-  - [x] Implement/verify the pure scope-aware guard (184 unit checks).
+  - [x] Implement/verify the pure scope-aware guard (193 unit checks after review fixes).
   - [x] Verify guard acceptance on real restricted PostgreSQL (56 real checks).
-  - [ ] Complete final read-only guard-plan review and resolve its findings.
+  - [x] Complete final read-only guard-plan review and resolve its findings.
   - [ ] Implement/verify executor/comparator/CLI; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
@@ -125,6 +126,46 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — G0.7a guard final review and one TDD fix pass
+
+Task 2 committed at f8255de with verified Kunal author/committer and body.
+One fresh-context read-only reviewer inspected the whole branch 2c77c72..f8255de,
+reran 184 guard tests and probed 2475 small scope combinations. Two findings are
+Important by actual effect: pinned parser builders can raise IndexError instead
+of a sanitized decision, and unsupported CTE bodies can log raw SQL and be
+accepted when unused. No Critical or Minor finding was reported.
+
+Reproduced both actual parser inputs (VAR_MAP(1), LEVENSHTEIN_LESS_EQUAL()) and an
+injected IndexError before fixing them: three RED failures. Added IndexError only
+to the parser boundary's explicit exception list, without broad exception masking.
+Guard 187 passed and full real suite 401 passed in 12.54s afterward.
+
+Four real malformed CTE controls (used/unused literal, nested parentheses, CASE)
+then observed RED because SQLGlot scope warnings contained the synthetic canary.
+Require an unwrapped reviewed query root or VALUES before CTE scope traversal.
+All four now reject without logging input, including the previously accepted
+unused body. No global logger setting was changed. Two positive controls preserve
+supported VALUES CTEs and nested query parentheses; original SQL is unchanged.
+This complements parser warning redaction; that option alone did not cover scope
+diagnostics. No unsafe reproduction was sent to PostgreSQL.
+
+Verification: 193 guard tests pass; 56 scoped actual PostgreSQL acceptance checks
+pass (3.42s). Full suite with both private test files: 407 passed, no skips,
+including 123 actual database checks (12.65s). No-env: 284 passed / 123 skipped
+(1.79s); setup-only: 327 passed / 80 skipped (2.85s). Locked sync, ruff check and
+15-file format check pass. The single fix pass is complete; no re-review.
+All eight reviewer declined-to-judge items have explicit D-017 rulings and costs;
+no minor work is deferred. Updated the guard plan and simple-English notebook.
+
+The normal current checkout has only feat/foundation and no remote. Keep it local
+under D-003/G7; no merge/push/PR/publication. PostgreSQL stays healthy on loopback
+55432 with its named volume; Qwen remains unloaded. No dependency, database grant,
+imported row, private credential, historical planning input or benchmark changed.
+Retain this plan's ignored review scratch: AGENTS.md asks for approval before
+destructive work, so the skill's cleanup instruction does not authorize deletion.
+All scratch rulings are preserved in DECISIONS. This completes the guard increment,
+not G0.7a; the bounded executor/comparator/CLI are still required before AI SQL.
 
 ### 2026-10-04 — G0.7a real guard acceptance / approved plan Task 2
 
@@ -493,13 +534,15 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: one fresh read-only review of the completed
-[minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md). Tasks 1–2
-are implemented and verified; do not redo them. Re-grade review findings by impact
-and use one TDD fix pass for Critical/Important findings, as executing-plans requires.
-Then plan the bounded executor that calls this guard itself, with the existing
+Next: plan the bounded executor that calls this guard itself, with the existing
 dataset-specific identity and QueryLimits. Keep this same guard; do not create a
 second implementation. No runtime executor is produced by the guard plan.
+The [minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md)
+and its final review are complete: 193 guard checks, 56 real acceptance checks,
+407 full-suite passes (123 actual PostgreSQL), both Important findings fixed
+test-first in one pass; no Critical or Minor findings. Do not redo its tasks or
+dispatch a second review. D-015/D-017 hold all rulings and their costs. Ignored
+.superpowers/sdd/2026-10-03-minimum-sql-guard is retained without deletion approval.
 G0.7a still requires the bounded executor, pinned EX comparator and safe CLI after
 the guard. EX_COMPARATOR.md contains only source-reference evidence.
 The previous native-import plan is complete; do not
@@ -554,6 +597,13 @@ Python checks (project virtual environment):
 Synthetic/bootstrap checks: `uv run --env-file .env.setup pytest -q`.
 Full PostgreSQL/California checks:
 `uv run --env-file .env.setup --env-file .env.california pytest -q`.
+
+Guard-only: `uv run pytest tests/test_guard.py -q`.
+Restricted PostgreSQL guard controls:
+`uv run --env-file .env.setup --env-file .env.california pytest tests/test_guard_postgres.py -q`.
+Trusted builtin catalog metadata only:
+`uv run --env-file .env.setup --env-file .env.california pytest tests/test_guard_postgres.py::test_actual_builtin_function_operator_and_type_inventory -q -s`.
+Do not use either private test environment to launch the runtime or prompt a model.
 
 Restart: `docker compose --env-file .env.setup up -d --wait`.
 Stop without deleting data: `docker compose --env-file .env.setup stop`.

@@ -36,7 +36,7 @@ It is not a finished public service yet.
   to a database or loading an AI model.
 - Small handwritten allowed queries have passed that guard and run with the
   restricted database login and short time limits. No AI output was run.
-- The latest completed code checkpoint has 398 passing tests, including 123
+- The latest completed code checkpoint has 407 passing tests, including 123
   tests that connect to the real local PostgreSQL database.
 
 The AI question-answering flow, limited query runner, evaluation
@@ -288,6 +288,35 @@ adds another protection. We need all of them, plus the future result/time limits
 This is not the AI question-answering flow or an accuracy score. The limited
 runner and answer checker still come next, after this increment's final review.
 
+### G0.7a, guard final review — Fix unusual input and protect logs
+
+What was done: one independent read-only review found two real problems. Two
+unusual function calls could crash the SQL reader. A wrongly formed named query
+could put its text into a warning log; one unused version was even accepted.
+
+Why: a safety check must refuse input it cannot understand. It must not crash
+or copy private query text into its error messages and logs.
+
+Checked: wrote tests that showed both problems before fixing them. The SQL
+reader now turns these crashes into a short rejection category. Malformed named
+query bodies are refused before the code that produced the warning runs. Good
+named queries and small VALUES examples still pass, with no SQL rewriting.
+The original parser warning protection was useful, but did not cover this second
+warning path. We did not silence the computer's logging or change database rights.
+
+All 193 guard tests now pass. The complete project has 407 passing tests,
+including 123 real database checks; the 56 guard-to-database checks still pass.
+Without private database test files, 284 pass and 123 skip. With setup only,
+327 pass and 80 skip. With both files, every test runs and passes.
+
+Your learning notebook, progress and decisions were updated. The code stays in
+your local Git branch; nothing was uploaded to GitHub. The review's limitations
+are written down rather than treated as proof. The imported data and passwords
+were not changed, and no AI model was loaded for this work.
+
+This finishes the first query safety checker, not the whole foundation group.
+The limited query runner and answer checker must come before running AI SQL.
+
 The technical [guard plan](../docs/superpowers/plans/2026-10-03-minimum-sql-guard.md)
 and [scoring-source record](../docs/EX_COMPARATOR.md) hold the exact details.
 
@@ -465,6 +494,15 @@ feature has already been implemented.
   table policy is fixed, so a later step cannot quietly change that same object.
 - **Stable error category:** a short label, such as table_not_allowed, that the
   program can handle without receiving private query text or an internal traceback.
+- **Exception / traceback:** an exception is a problem that interrupts normal
+  code. A traceback lists the internal steps where it happened. The guard turns
+  the known parser errors into short labels instead of giving that internal list.
+- **Log:** a record a program writes to help diagnose problems. Private query
+  text should not be copied into these records by the safety checker.
+- **Regression test:** a saved test for a bug, so the same bug is noticed if it
+  returns later. We first watched these new tests fail, then pass after the fixes.
+- **Canary:** made-up recognizable text used in a test. Here it let us notice
+  a logging leak without using a real password or private query value.
 - **CTE / SQL scope:** a CTE gives a name to a small query inside a bigger query.
   Scope is where that name is valid. The same name elsewhere does not give that
   other place permission to read an unrelated table.
@@ -506,9 +544,9 @@ feature has already been implemented.
 
 ## 6. What comes next?
 
-G0.6a's first model smoke and G0.7a's guard tests, including real-database
-acceptance checks, are complete. A final read-only review is next. The limited query
-runner and result comparator come before the first real question-to-database demonstration. The rest
+G0.6a's first model smoke and G0.7a's guard, including real-database checks and
+final review fixes, are complete. The limited query runner and result comparator
+come before the first real question-to-database demonstration. The rest
 of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date

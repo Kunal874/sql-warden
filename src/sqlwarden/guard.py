@@ -186,6 +186,11 @@ def _check_nodes(tree: exp.Expression) -> str | None:
 
 
 def _check_tables(tree: exp.Expression, policy: DatasetPolicy) -> str | None:
+    # Unsupported CTE bodies can make SQLGlot log raw SQL during scope traversal.
+    for cte in tree.find_all(exp.CTE):
+        body = cte.this.unnest() if isinstance(cte.this, exp.Expression) else None
+        if type(body) not in QUERY_ROOTS | {exp.Values}:
+            return "unsupported_relation"
     seen_tables = set()
     try:
         scopes = traverse_scope(tree)
@@ -228,7 +233,7 @@ def guard_sql(sql: str, policy: DatasetPolicy) -> GuardDecision:
         statements = sqlglot.parse(
             sql, read="postgres", error_level=ErrorLevel.RAISE, error_message_context=0
         )
-    except (ParseError, TokenError, RecursionError):
+    except (ParseError, TokenError, RecursionError, IndexError):
         return GuardDecision(False, "parse_error", None)
     if len(statements) != 1 or statements[0] is None:
         return GuardDecision(False, "statement_not_allowed", None)

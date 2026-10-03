@@ -284,6 +284,44 @@ No AI-generated SQL or benchmark gold was used. The guard does not establish row
 byte, acquisition or total-run bounds, enforce application cancellation, or run
 guarded EXPLAIN; those are required in the subsequent bounded executor.
 
+## D-017 — minimum guard final review and handoff rulings (2026-10-04)
+
+Context: one fresh-context read-only whole-branch review found no Critical or
+Minor issues, but two Important defects: actual SQLGlot builder IndexError can
+escape validation, and unsupported CTE bodies can leak SQL in scope warnings
+and be accepted when unused. The parser redaction option in D-015 alone does
+not protect the scope diagnostic path.
+Decision: fix both in one TDD pass, without a second reviewer, policy expansion,
+dependency upgrade, global log changes or database/data/credential changes.
+Verification: three parser regressions observed RED then GREEN; full real suite
+401 passed after that fix. Four malformed-CTE logging regressions observed RED
+then GREEN; two positive controls preserve VALUES and query parentheses. Final
+guard suite 193 passes; full suite 407 passes including 123 actual PostgreSQL
+checks. The 56 scoped guard acceptance checks still pass. No-env mode 284 passes /
+123 skips; setup-only 327 passes / 80 skips. Locked sync, lint and format pass.
+All original planning inputs are unchanged. This completes only the guard
+increment; the bounded executor, comparator and CLI remain before generated SQL.
+
+Execution/final-review rulings continue D-015's two rulings, in decision order.
+Each of the eight reviewer declined-to-judge items is resolved explicitly:
+
+- Final: Ruling: the plan's parser exception list omits actual pinned-builder IndexError failures — add IndexError only at the parse boundary, not a broad Exception handler, because both concrete reproductions violate sanitized rejection — cost if wrong: an unknown parser failure may still escape and require another independently demonstrated regression; known builder failures now reject without widening SQL policy.
+- Final: Ruling: individually allowed scalar nodes are not valid CTE query bodies — require an unwrapped reviewed query root or VALUES before traversing scopes; reject malformed bodies without muting global logs, because the scope builder otherwise logs SQL and can omit an unused body — cost if wrong: valid but unreviewed CTE forms may be falsely blocked; supported SELECT/set-operation/VALUES/parenthesized controls must remain accepted unchanged.
+- Final: Ruling: reviewer did not repeat PostgreSQL operations — retain executor verification, freshly repeated after fixes (407 total, 123 actual database checks), rather than widening the read-only reviewer task — cost if wrong: a database boundary regression could be missed by those specific controls; no exhaustive security claim is made.
+- Final: Ruling: executor deadlines/cancellation/guarded EXPLAIN, comparator and CLI are unfinished — keep generated SQL prohibited and hand off the next bounded-executor plan, rather than call the guard an end-to-end agent — cost if wrong: this component is not yet a usable question-answering flow.
+- Final: Ruling: arbitrary datasets, custom types/extensions and exhaustive overload safety are unreviewed — retain only the fixed native California builtin evidence; review any expanded trusted policy before use — cost if wrong: an unreviewed routine could weaken isolation.
+- Final: Ruling: parser acceptance of nonexistent function aliases or engine-invalid expressions — keep original SQL and the distinction between guard policy and PostgreSQL validation; do not rewrite or broaden acceptance to repair them — cost if wrong: some accepted queries can fail at the engine and the future executor must sanitize that failure.
+- Final: Ruling: no hard parser wall-clock deadline or aggregate transient-encoding memory cap — retain the approved input/AST limits without claiming process isolation; future request/executor limits must account for this residual risk — cost if wrong: hostile validation input could consume excessive time or memory before rejection.
+- Final: Ruling: concurrent administrator replacement of import files and ignored-dump aggregate processing limits — retain the trusted pinned offline workflow and prior native-import rulings; this guard increment changes neither importer nor files — cost if wrong: privileged local tampering could invalidate provenance, or ignored data could consume excessive processing time.
+- Final: Ruling: repeated inference/hash/cold-start and conversion-ancestry checks — keep recorded local artifact evidence and explicit unknown ancestry; do not reload the model for guard work — cost if wrong: later live model behavior or upstream conversion details can differ from the recorded smoke evidence.
+- Final: Ruling: README's foundation-era test total — retain its historical subset wording and use current PROGRESS/notebook totals, rather than rewrite historical evidence — cost if wrong: a reader could confuse the old subset with the current full-suite total.
+- Final: Ruling: retain feat/foundation in the required current checkout — no base branch exists and G7 prohibits remote/push/publication; no merge, new branch or integration menu needed for this local-only increment — cost if wrong: integration remains postponed until an explicit owner decision.
+- Final: Ruling: retain this plan's ignored scratch instead of the skill's deletion step — AGENTS.md requires approval before destructive work and no scratch-deletion approval was given; preserve all rulings in committed DECISIONS — cost if wrong: small redundant local review files remain on disk, not in Git.
+
+Deferred minors: none reported or re-graded. Ignored review scratch is retained
+under .superpowers/sdd/2026-10-03-minimum-sql-guard; no deletion was attempted.
+No merge, remote, push, pull request or publication was performed.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

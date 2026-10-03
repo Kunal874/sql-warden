@@ -140,6 +140,8 @@ def test_rejection_has_stable_non_secret_category(sql, reason):
         "WITH x AS (SELECT 1) SELECT * FROM (WITH x AS (SELECT 2) SELECT * FROM x) z",
         "SELECT count(*) FILTER (WHERE cdscode IS NOT NULL) FROM schools",
         "SELECT * FROM (VALUES (1)) AS x(n)",
+        "WITH x(n) AS (VALUES (1)) SELECT * FROM x",
+        "WITH x AS ((SELECT 1)) SELECT * FROM x",
         "SELECT 1;",
         ' \n/* keep all bytes */ SELECT "School Name" FROM "schools" '
         "WHERE cdscode = 'x; -- y' -- final comment\n",
@@ -300,7 +302,7 @@ def test_malformed_input_never_returns_executable_sql(sql):
     assert not decision.accepted and decision.sql is None
 
 
-@pytest.mark.parametrize("error", [ParseError, TokenError, RecursionError])
+@pytest.mark.parametrize("error", [ParseError, TokenError, RecursionError, IndexError])
 def test_parser_failures_are_sanitized(monkeypatch, error):
     def failed_parse(*args, **kwargs):
         raise error("not-a-real-secret")
@@ -311,11 +313,35 @@ def test_parser_failures_are_sanitized(monkeypatch, error):
     assert decision.reason == "parse_error"
 
 
+@pytest.mark.parametrize("sql", ["SELECT VAR_MAP(1)", "SELECT LEVENSHTEIN_LESS_EQUAL()"])
+def test_parser_builder_index_errors_are_sanitized(sql, caplog):
+    decision = guard_sql(sql, CALIFORNIA_POLICY)
+    assert not decision.accepted and decision.sql is None
+    assert decision.reason == "parse_error"
+    assert sql not in caplog.text
+
+
 def test_unsupported_command_does_not_log_input_literals(caplog):
     decision = guard_sql("CALL not_a_real_secret('not-a-real-secret')", CALIFORNIA_POLICY)
     assert not decision.accepted and decision.sql is None
     assert "not-a-real-secret" not in caplog.text
     assert "not_a_real_secret" not in caplog.text
+
+
+@pytest.mark.parametrize(
+    "sql",
+    [
+        "WITH x AS ('review-canary') SELECT 1",
+        "WITH x AS ('review-canary') SELECT * FROM x",
+        "WITH x AS (('review-canary')) SELECT 1",
+        "WITH x AS (CASE WHEN true THEN 'review-canary' ELSE NULL END) SELECT * FROM x",
+    ],
+)
+def test_unsupported_cte_bodies_reject_without_logging_sql(sql, caplog):
+    decision = guard_sql(sql, CALIFORNIA_POLICY)
+    assert "review-canary" not in caplog.text
+    assert not decision.accepted and decision.sql is None
+    assert decision.reason == "unsupported_relation"
 
 
 def test_empty_scope_traversal_cannot_skip_a_physical_table(monkeypatch):
