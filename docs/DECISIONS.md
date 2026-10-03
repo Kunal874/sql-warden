@@ -84,6 +84,21 @@ exhaustive security audit. PostgreSQL 16 documents the large-object SQL interfac
 https://www.postgresql.org/docs/16/lo-funcs.html and its client/server functions at
 https://www.postgresql.org/docs/16/lo-interfaces.html (checked 2026-10-03).
 
+## D-008 — G0.5a: pin the first source selection (2026-10-03)
+
+Context: the canonical HF revision has label JSON but no database files. The
+official corresponding package is minidev_0703.zip, with a July 2025 modification
+date; the older Aliyun package is dated 2024. Its complete archive is about 800 MB,
+while California Schools SQLite is about 11 MB and has only three tables.
+Decision: pin the canonical label revision and corresponding archive by SHA-256;
+extract only California Schools and its metadata, keep raw data ignored/immutable,
+and inspect source contents read-only. DATA.md holds exact URLs, hashes and counts.
+Rationale: one small actual database is sufficient for the early safe slice. No
+source SQL is automatically executed. Existing synthetic fixtures remain separate.
+The native dump's flat layout and type/name differences are confirmed. The proposed
+selective native import is awaiting review of its written implementation plan;
+no BIRD role/schema/import or benchmark definition change is approved by this record.
+
 ## Source checks
 
 - Node 24 LTS: https://nodejs.org/en/about/previous-releases (checked 2026-10-03).

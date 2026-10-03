@@ -4,8 +4,8 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed task: G0.4 (review follow-up verified; commit pending).
-Last completed commit: 7ed5b64. Next: G0.5a one small pinned BIRD dataset.
+Current group: G0. Last completed task: G0.4 including the verified review follow-up.
+Last completed commit: b2adedc. Current: G0.5a source preparation verified; import pending.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -118,6 +118,47 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 
 ## Session log
 
+### 2026-10-03 — G0.5a source preparation and next import plan
+
+The G0.4 follow-up commit b2adedc has Kunal as both author and committer; its body
+has no extra attribution. Read-only follow-up review found both findings addressed
+and no substantive remaining issue in that change.
+
+Checked primary source revisions and download metadata. The canonical HF repository
+contains labels, not database files. Compared the official older package and the
+July 2025 corresponding package; downloaded the latter (799944582 bytes) and pinned
+its SHA-256. Before download about 63 GB was free on D:. Extracted only the 11 MB
+California Schools SQLite source, three description CSVs and schema JSON, never
+archive SQL. Raw downloads and selected artifacts are ignored and unchanged.
+Extraction tests observed RED for the missing module, then seven passed after
+implementation. They verify exact selection/hash manifests, missing/duplicate/
+symlink/oversize/checksum failures, no partial output and overwrite refusal.
+
+Read-only source checks: SQLite integrity ok and no FK violations; row counts
+17686 schools, 9986 frpm, 2269 satscores. UTF-8 descriptions cover 49/29/11 columns.
+Both pinned dialect label files contain 500 unique matched IDs in 11 databases;
+question/evidence differences exist for some full-release IDs, but none of the
+30 California items. DATA.md records the exact observed differences and hashes.
+
+The native PostgreSQL dump is flat public, with different ordinary-identifier
+casing and bigint/real/date types. Inspected the selected DDL and streamed the dump
+read-only for source/COPY-block hashes and counts; did not execute any source SQL
+or import BIRD into PostgreSQL. Proposed a selective native-data import under the
+approved isolated-schema architecture. Wrote and self-reviewed the implementation
+plan; the writing-plans skill requires Kunal's review before that new importer code.
+Kunal's continue request was received while the plan was being prepared; the
+written plan is now open and a review question is pending. Do not treat an earlier
+continue as review of an artifact that did not yet exist.
+
+Read-only review of this source-preparation increment found no actionable issues;
+the review covered extraction correctness, bounded/atomic output and provenance.
+
+Verified current increment: 87 tests passed (50 unit/setup/extraction + 37 actual
+PostgreSQL), ruff check passed, format checked 8 files and git diff --check passed.
+The sandbox could not open the securely created selection folder; the approved
+read-only check with appropriate access succeeded. No data corruption was found.
+No model download, inference, gold execution, benchmark result or BIRD import is claimed.
+
 ### 2026-10-03 — G0.4 review follow-up
 
 Read-only review found that revoking lo_import/lo_export left large-object creation
@@ -194,12 +235,13 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: commit the verified G0.4 review follow-up, then inspect and pin one small BIRD dataset
-for G0.5a. GitHub Mini-Dev revision abd11b6db92a1c9f809b32f7564c7c71b34d67f0 and
-Hugging Face revision f65faf4ae3b638c1fa6df1d3370c8d92c8366301 were inspected.
-The HF repository contains label JSON, not database files; the official README
-links a corresponding database package. Inspect its size/paths and choose one small
-database before downloading/importing; do not substitute the synthetic fixtures.
+Next: obtain review of docs/superpowers/plans/2026-10-03-bird-native-import.md,
+then execute its three tasks inline to finish G0.5a. Do not download the source
+archive/labels again or overwrite data/bird_california. Source fingerprints and
+native block hashes are in DATA.md. The current extractor refuses repeats by design.
+Do not execute the flat public-schema source dump, add a broad reader, or turn the
+synthetic fixtures into a claimed BIRD dataset. No native TSV extraction/import has
+run yet, and .env.california does not exist. C1 labels/splits are still later decisions.
 Docker engine 29.6.2 and Ollama 0.35.1 respond. The postgres image pull completed.
 Before model inference, implement/test the minimum guard, bounded executor and comparator.
 Do not touch the existing PostgreSQL 17 service or its data.
@@ -215,6 +257,8 @@ Ollama installer session 90858 completed. Docker Desktop was started with PID 55
 sqlwarden-postgres-1 is running and healthy on loopback port 55432, using the
 sqlwarden_pg16_data named volume. No model download/inference is running.
 No Git remote is configured and nothing has been pushed or published.
+Archive download session 71692 and read-only native inspection session 69421 completed.
+No data download or inspection process remains running.
 
 Python checks (project virtual environment):
 
@@ -227,6 +271,11 @@ Stop without deleting data: `docker compose --env-file .env.setup stop`.
 Do not rerun credential initialization when either local env file exists.
 The current volume already has db/function_hardening.sql applied. Its setup-only
 update command is documented in README; do not rerun the full bootstrap on existing data.
+
+The original source-selection command was `uv run python scripts/fetch_data.py`;
+it has completed and must not be rerun against the existing destination. Current
+full checks remain `uv run --env-file .env.setup pytest -q` until the new dataset
+credential and importer are implemented under the reviewed plan.
 
 `uv run ruff check .`
 
