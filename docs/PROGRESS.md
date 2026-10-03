@@ -5,7 +5,7 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 amends their order and checks.
 
 Current group: G0. Last completed task: G0.4 including the verified review follow-up.
-Last completed commit: b2adedc. Current: G0.5a source preparation verified; import pending.
+Last completed commit: 1e3878b. Current: G0.5a native source extraction verified; import pending.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -117,6 +117,20 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-03 — G0.5a native extraction / approved plan Task 1
+
+Kunal approved the written native-import plan with proceed. Baseline 87 tests
+passed on clean feat/foundation at 1e3878b. Kept the required current checkout.
+Observed RED for missing metadata/extraction helpers and the native archive entry
+point, then 25 new tests passed. Actual extraction streamed the checked archive to
+EOF and selected only schools/frpm/satscores COPY bytes; all three row counts,
+sizes and hashes match DATA.md. Existing source files were not overwritten.
+Checked native identifiers, text/bigint/real/date mapping and source PK/FK metadata.
+No archive SQL was executed, no PostgreSQL import/model inference has run.
+Full verification: 112 passed including 37 actual PostgreSQL checks; lint,
+format and diff checks passed. The lint-only loop-state initialization issue was
+resolved without weakening tests.
 
 ### 2026-10-03 — G0.5a source preparation and next import plan
 
@@ -235,13 +249,14 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: obtain review of docs/superpowers/plans/2026-10-03-bird-native-import.md,
-then execute its three tasks inline to finish G0.5a. Do not download the source
+Next: execute Task 2 then Task 3 of the approved native-import plan inline.
+Do not download the source
 archive/labels again or overwrite data/bird_california. Source fingerprints and
 native block hashes are in DATA.md. The current extractor refuses repeats by design.
 Do not execute the flat public-schema source dump, add a broad reader, or turn the
-synthetic fixtures into a claimed BIRD dataset. No native TSV extraction/import has
-run yet, and .env.california does not exist. C1 labels/splits are still later decisions.
+synthetic fixtures into a claimed BIRD dataset.
+Native TSV extraction has completed; PostgreSQL import has not run, and
+.env.california does not exist. C1 labels/splits are still later decisions.
 Docker engine 29.6.2 and Ollama 0.35.1 respond. The postgres image pull completed.
 Before model inference, implement/test the minimum guard, bounded executor and comparator.
 Do not touch the existing PostgreSQL 17 service or its data.

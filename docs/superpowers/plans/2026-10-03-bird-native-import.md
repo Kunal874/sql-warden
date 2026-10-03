@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC.md](../../BUILD_SPEC.md), sections 5, 8 and 11. Source evidence and fingerprints: [DATA.md](../../DATA.md).
 
-**Status:** Awaiting review. Foundation and selected-source extraction already work; the importer described here has not been implemented or run.
+**Status:** Approved by Kunal's “proceed” on 2026-10-03. Execution is in progress; completion evidence belongs in PROGRESS.md.
 
 ## Global Constraints
 

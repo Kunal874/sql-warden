@@ -99,6 +99,17 @@ The native dump's flat layout and type/name differences are confirmed. The propo
 selective native import is awaiting review of its written implementation plan;
 no BIRD role/schema/import or benchmark definition change is approved by this record.
 
+## D-009 — G0.5a: approved selective native import (2026-10-03)
+
+Context: SQLite and PostgreSQL differ in identifiers and numeric storage; the
+downloaded dump also contains unrelated data and owner/session SQL.
+Decision: Kunal's proceed approves the written native-import plan. Select only
+three pinned COPY-data blocks, preserve native names/types and load them through
+asyncpg into the isolated California schema with its own restricted login.
+Rationale: reuse native PostgreSQL data without executing dump SQL or changing
+the benchmark. Full typed-content and privilege checks are required before
+marking G0.5a complete. Existing credentials, data and named volume stay intact.
+
 ## Source checks
 
 - Node 24 LTS: https://nodejs.org/en/about/previous-releases (checked 2026-10-03).

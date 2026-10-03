@@ -12,6 +12,8 @@ import tempfile
 import zipfile
 from pathlib import Path
 
+from sqlwarden.data import NATIVE_EXPECTED, SQLITE_SHA256, extract_native_copy, read_tables
+
 ARCHIVE_SHA256 = "aeb211c0e39010bbdae3838bb5e8bd27dc446ed77495b1709f85ccc9bf67f2be"
 MAX_MEMBER_BYTES = 32 * 1024 * 1024
 PREFIX = "minidev/MINIDEV/dev_databases/california_schools"
@@ -22,6 +24,26 @@ MEMBERS = {
     "frpm.csv": f"{PREFIX}/database_description/frpm.csv",
     "dev_tables.json": "minidev/MINIDEV/dev_tables.json",
 }
+NATIVE_MEMBER = "minidev/MINIDEV_postgresql/BIRD_dev.sql"
+
+
+def extract_native_archive(archive_path: Path, destination: Path, sqlite_path: Path) -> dict:
+    if destination.exists():
+        raise FileExistsError("Refusing to overwrite native source data")
+    tables = read_tables(sqlite_path, SQLITE_SHA256)
+    with archive_path.open("rb") as source:
+        if hashlib.file_digest(source, "sha256").hexdigest() != ARCHIVE_SHA256:
+            raise ValueError("Source archive checksum differs from the pinned artifact")
+        source.seek(0)
+        with zipfile.ZipFile(source) as archive:
+            matches = [item for item in archive.infolist() if item.filename == NATIVE_MEMBER]
+            if len(matches) != 1:
+                raise ValueError("Native dump member is missing or duplicated")
+            item = matches[0]
+            if stat.S_ISLNK(item.external_attr >> 16) or item.is_dir() or item.flag_bits & 1:
+                raise ValueError("Native dump member is not a plain unencrypted file")
+            with archive.open(item) as stream:
+                return extract_native_copy(stream, destination, tables, NATIVE_EXPECTED)
 
 
 def extract_selected(archive_path: Path, destination: Path, expected_sha256: str) -> dict:
@@ -87,8 +109,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--archive", type=Path, default=Path("data/raw/minidev_0703.zip"))
     parser.add_argument("--output", type=Path, default=Path("data/bird_california"))
+    parser.add_argument(
+        "--native",
+        action="store_true",
+        help="Extract only native COPY data from the verified archive",
+    )
     args = parser.parse_args()
-    manifest = extract_selected(args.archive, args.output, ARCHIVE_SHA256)
+    if args.native:
+        manifest = extract_native_archive(
+            args.archive, args.output / "native", args.output / "california_schools.sqlite"
+        )
+    else:
+        manifest = extract_selected(args.archive, args.output, ARCHIVE_SHA256)
     print(json.dumps(manifest, indent=2))
 
 

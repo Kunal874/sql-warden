@@ -1,6 +1,6 @@
 # SQLWarden data provenance
 
-Checked on 2026-10-03. G0.5a is in progress: source preparation is verified;
+Checked on 2026-10-03. G0.5a is in progress: source preparation and native extraction are verified;
 PostgreSQL import and model execution have not happened. This is not an evaluation
 result or a completed conversion-validity manifest.
 
@@ -41,7 +41,8 @@ Archive inspection found 246 entries, with 3539193972 bytes expanded in total.
 The full package was downloaded, but only the small California Schools source
 and its metadata were extracted. About 63 GB was free on D: before download;
 the archive plus this selection uses under 1 GB. Other databases and the large
-SQL dumps were not extracted.
+SQL dumps were not extracted. Subsequently, the native extractor selected only
+three COPY data blocks under `data/bird_california/native/`.
 
 The extractor validates the archive checksum, selects exact source member names,
 writes only fixed local filenames, rejects duplicate/missing/symlink/encrypted
@@ -87,7 +88,8 @@ The largest observed source line was 52856 bytes.
 
 Hash scope below: each selected COPY block's data lines, including LF endings,
 excluding its COPY header and terminating `\.` line. These blocks were hashed
-in memory; they have not yet been extracted or imported.
+in memory, then extracted by the tested native-data helper. Their actual bytes,
+counts and SHA-256 values match this table; PostgreSQL import is still pending.
 
 | Native block | Rows | Data bytes | SHA-256 |
 | --- | ---: | ---: | --- |
@@ -106,7 +108,7 @@ asyncpg's COPY-data interface into owner-reviewed table definitions in
 archive-provided SQL or its owner/session commands. Preserve native types and
 identifier behavior. Validate content, keys, dates/numerics and privileges before
 generated SQL. The [implementation plan](superpowers/plans/2026-10-03-bird-native-import.md)
-requires review before this new import code is written.
+was approved by Kunal's proceed on 2026-10-03; execution is in progress.
 
 ## Label alignment: observed differences matter
 
