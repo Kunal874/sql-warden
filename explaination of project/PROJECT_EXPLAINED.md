@@ -1,6 +1,6 @@
 # SQLWarden explained in simple English
 
-Last updated: 2026-10-03.
+Last updated: 2026-10-04.
 
 This is your learning notebook for the project. It will be updated after every
 completed subtask and group. It explains what was built, why it matters, how it
@@ -32,10 +32,12 @@ It is not a finished public service yet.
 - The first local Qwen model has answered six small test requests on the GPU.
   Those were simple text/format checks, not database questions.
 - Tests check the imported values, database permissions and setup behavior.
-- The latest completed code checkpoint has 158 passing tests, including 67
+- A SQL guard checks query structure and allowed tables without connecting
+  to a database or loading an AI model.
+- The latest completed code checkpoint has 342 passing tests, including 67
   tests that connect to the real local PostgreSQL database.
 
-The AI question-answering flow, SQL guard, limited query runner, evaluation
+The AI question-answering flow, limited query runner, evaluation
 scores, website and public release are not built yet. G0, the foundation group,
 is still in progress. No AI-generated SQL has been executed.
 
@@ -223,9 +225,35 @@ rows when comparing answers; later result voting needs separate rules that keep
 repeats. No AI model was loaded, no new package was installed, and no new SQL
 guard was built in this preparation step.
 
-Next: you review the written guard plan and its proposed SQLGlot package addition.
-Then the guard will be built and tested. The limited query runner, answer checker
-and AI-connected command-line demo still come afterward. G0.7a is not finished.
+At that preparation checkpoint, the plan and proposed SQLGlot addition still
+needed your review. You approved them on 2026-10-04. The limited query runner,
+answer checker and AI-connected demo come afterward; G0.7a is not finished.
+
+### G0.7a, guard Task 1 — Build the query safety checker
+
+What was done: installed the exact approved SQL-reading package and checked
+its downloaded fingerprint. Built a checker that reads a query's structure,
+looks inside its small named queries and nested queries, and checks which real
+tables they use. It refuses writes, unreviewed functions and forbidden tables.
+
+Why: a query starting with SELECT can still hide a forbidden action. Looking
+for a word such as DROP is not enough: that word might just be a harmless
+comment or text value. The checker reads the structure instead.
+
+Checked: wrote tests before the checker and saw them fail because it was
+missing. Now all 184 guard checks pass. They include quoted names, hidden
+tables, unknown features and exact size boundaries. Accepted SQL is returned
+unchanged; rejected SQL is not returned for execution. All 342 project tests
+pass, including the existing 67 real database checks.
+
+The checker refuses queries it cannot understand. It limits query size and
+the size/depth of the structure it reads. Errors give a short category rather
+than repeating private input. Two extra test assumptions were corrected after
+reading the approved rules and parser API; the safety rules were not expanded.
+
+This step checks SQL without running it. The next step checks a few handwritten
+allowed queries with the real restricted database login. The limited runner,
+answer comparator and AI-to-database flow are still unfinished.
 
 The technical [guard plan](../docs/superpowers/plans/2026-10-03-minimum-sql-guard.md)
 and [scoring-source record](../docs/EX_COMPARATOR.md) hold the exact details.
@@ -385,16 +413,25 @@ feature has already been implemented.
 - **Volume:** the saved database storage. Restarting a container should not
   delete this data. We have preserved the project's named volume.
 - **SQL guard:** code that checks the structure of a proposed query before
-  execution. It is still future work; prompt instructions cannot replace it.
+  execution. The first guard now works in tests; prompt instructions cannot replace it.
 - **Parser / AST (syntax tree):** a parser reads SQL and makes a structured map
   of its parts. This lets us see a real command instead of guessing from words.
   Parsing alone does not prove a query is allowed or will run successfully.
-- **SQLGlot:** the planned Python package that reads SQL into that tree. It is
-  not installed in this project yet, and it is not the database itself.
+- **SQLGlot:** the Python package that reads SQL into that tree. Its exact approved
+  version is now installed. It is not the database itself.
 - **Allowlist:** a written list of things the program permits. A thing missing
   from the list is not automatically allowed just because it looks harmless.
 - **Fail closed:** if a safety check cannot understand or verify something, it
   refuses instead of guessing that it is safe.
+- **Identifier / quoted name:** the name of a table, column or alias. PostgreSQL
+  makes ordinary English capital letters lowercase in unquoted names. A name
+  inside double quotes keeps its exact spelling, so "Schools" differs from schools.
+- **Alias:** a temporary short name used inside one query. It does not give
+  permission to read a different table.
+- **Immutable:** a value that cannot be changed after it is created. The guard's
+  table policy is fixed, so a later step cannot quietly change that same object.
+- **Stable error category:** a short label, such as table_not_allowed, that the
+  program can handle without receiving private query text or an internal traceback.
 - **CTE / SQL scope:** a CTE gives a name to a small query inside a bigger query.
   Scope is where that name is valid. The same name elsewhere does not give that
   other place permission to read an unrelated table.
@@ -428,9 +465,9 @@ feature has already been implemented.
 
 ## 6. What comes next?
 
-G0.6a's first model smoke is complete. G0.7a's first guard plan is prepared and
-awaits your review. After approval, the tested SQL guard, limited query runner and
-result comparator come before the first real question-to-database demonstration. The rest
+G0.6a's first model smoke and G0.7a's pure guard are complete. The guard plan is
+approved; real restricted-database acceptance checks are next. The limited query
+runner and result comparator come before the first real question-to-database demonstration. The rest
 of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date

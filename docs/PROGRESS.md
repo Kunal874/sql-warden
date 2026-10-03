@@ -4,10 +4,10 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed task: G0.6a, local Qwen feasibility smoke.
-Last completed commit before this update: 5cf31fa. Current: G0.7a source
-investigation and first-guard implementation plan prepared; waiting for Kunal's
-review of that written plan and its direct SQLGlot addition. G0.7a is not complete.
+Current group: G0. Last completed subtask: G0.7a guard plan Task 1, pure SQL guard.
+Last completed commit before this update: 83ac96a. Kunal approved the written
+guard plan and SQLGlot 30.21.0 addition on 2026-10-04. Current: Task 2, restricted
+PostgreSQL acceptance checks. G0.7a is not complete.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -36,8 +36,10 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [x] G0.6a (early): Qwen endpoint smoke; availability, digest/template/capabilities and measured memory.
 - [ ] G0.7a (early): tested minimum guard, bounded executor, EX comparator and one-database CLI smoke.
   - [x] Inspect/pin official EX source and prepare the first SQL-guard plan.
-  - [ ] Review/approve the written guard plan and direct SQLGlot addition.
-  - [ ] Implement/verify the guard, then executor/comparator/CLI; no generated SQL yet.
+  - [x] Review/approve the written guard plan and direct SQLGlot addition.
+  - [x] Implement/verify the pure scope-aware guard (184 unit checks).
+  - [ ] Verify guard acceptance on real restricted PostgreSQL.
+  - [ ] Implement/verify executor/comparator/CLI; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -122,6 +124,46 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — G0.7a pure guard / approved plan Task 1
+
+Kunal approved both the written guard plan and direct SQLGlot addition. Reconciled
+clean feat/foundation at 83ac96a and reused the required current checkout. Fresh
+baseline: 158 passed in 5.70 seconds with both private test environments. Native
+execution ledger is ignored under .superpowers/sdd/2026-10-03-minimum-sql-guard;
+Task 1's immutable policy/decision interface matches Task 2's existing reader gate.
+
+Added only sqlglot==30.21.0; locked sync succeeds. Installed metadata confirms
+Python >=3.9, MIT, no required transitive dependencies and no optional compiled
+extras. Independently downloaded the pure wheel into ignored .tools/parser:
+763892 bytes, SHA-256 816d1a4815b7562b3976efcc0b561c928a743f976efd0fb8ad6db7a5b96c069e,
+matching the pinned registry reference. uv's cross-drive hardlink warning fell
+back to copies successfully; no existing dependency version changed.
+
+Wrote tests first and observed missing sqlwarden.guard RED. Implemented the pure
+guard, exact node/function/type allowlists, fixed input/AST/identifier budgets,
+ASCII-only unquoted folding, every-scope relation checks and full Table accounting.
+Accepted text is unchanged; rejected text is None with a stable category. No
+database/model package is needed to import or use the guard. Error message context
+is zero so parser fallback warnings cannot echo input literals; no global logger
+setting was changed. The guard is not an execution capability or engine validator.
+
+First implementation run: 182 passed, two additional test expectations failed.
+Systematic inspection confirmed VALUES is already in the approved structural list
+and resolves to a safe derived Scope, while Array inherits Func. Corrected those
+extra expectations without changing the policy; all original 25 SAFE / 40 UNSAFE
+cases passed unchanged. D-015 records the rulings and their costs. Ruff rejected
+the plan's constant-string split style; its mechanical list rewrite/formatter
+preserved every allowed name and resolved the lint/format findings.
+
+Verified Task 1: 184 guard tests passed in 0.46 seconds; full suite 342 passed in
+7.27 seconds, including the existing 67 actual PostgreSQL checks. Locked sync,
+ruff check, format (14 files) and diff checks pass. Original planning inputs are
+unchanged. Updated the simple-English notebook after this completed subtask.
+Real-engine guard acceptance is next, not yet claimed. Strict unknown nodes,
+qualified functions and parameterized/custom casts may reject benign queries;
+G2 acceptance/attack audits remain later work. No AI SQL, EX score, model load,
+runtime executor, comparator, CLI or publication was performed.
 
 ### 2026-10-03 — G0.7a preparation and guard-plan handoff
 
@@ -409,11 +451,13 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: Kunal reviews the new
-[minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md), including
-the proposed direct sqlglot==30.21.0 addition. Native execution remains selected;
-do not start its unchecked tasks before that review. Then use executing-plans
-for its two tasks in this checkout. No guard code/parser dependency exists yet.
+Next: execute Task 2 of the approved
+[minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md) natively
+in this checkout. Task 1 is implemented and verified; do not redo it. SQLGlot is
+pinned/installed and guard.py exists. Keep the same guard for later components.
+Task 2 runs only static authored read controls with california_connected;
+never execute the UNSAFE cases or model output. One fresh final read-only review
+follows the two native tasks. No runtime executor is produced by this plan.
 G0.7a still requires the bounded executor, pinned EX comparator and safe CLI after
 the guard. EX_COMPARATOR.md contains only source-reference evidence.
 The previous native-import plan is complete; do not
@@ -486,5 +530,5 @@ The native extraction and one-time import have also completed; do not rerun them
 
 `uv run ruff format --check .`
 
-Open decisions: written guard-plan review and direct SQLGlot addition are pending.
+Open decisions: none for the approved guard plan or SQLGlot addition.
 None at C0. Later C1–C9 remain unanswered and apply at their milestones.

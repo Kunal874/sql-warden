@@ -210,6 +210,31 @@ at the same Mini-Dev revision as DATA. No benchmark definition/freeze, gold run,
 code-license assumption or score is made. Parser source metadata and license
 are documented in the plan; wheel integrity remains an installation-time check.
 
+Approval update (2026-10-04): Kunal's "yes i approve move forward" approves the
+written minimum-sql-guard plan and direct sqlglot==30.21.0 addition, as asked in
+the preceding handoff. Execute both tasks natively in the current checkout.
+The earlier pending status above is the historical preparation record.
+
+## D-015 — G0.7a minimum guard policy and execution rulings (2026-10-04)
+
+Context: the approved plan needs a pure guard before any executor or model query.
+Decision: freeze/slotted policy and decision records, exact concrete AST classes,
+reviewed functions and simple builtin cast types; PostgreSQL ASCII name folding,
+complete relation scopes and unchanged accepted SQL. SQL input is limited to
+8192 UTF-8 bytes, 1000 AST nodes and root-zero depth 64; identifiers to 63 bytes.
+Rationale: unknown syntax/relations fail closed rather than relying on model
+instructions or textual keyword checks. SQLGlot remains a parser, not an engine
+validator. Qualified functions and parameterized/custom casts are intentionally
+strict false-block risks, to be measured later; no benchmark has been altered.
+Verification: 184 guard tests and the full 342-test suite pass; Task 2's actual
+guard acceptance checks remain pending. The future executor must guard SQL itself
+and establish restricted identity/settings; GuardDecision is not an authority token.
+
+Execution rulings, in decision order:
+
+- Task 1: Ruling: two additional test expectations disagreed with the approved node list / pinned API — VALUES is explicitly reviewed and resolves to a non-physical Scope; Array inherits Func and is rejected as function_not_allowed. Correct those extra expectations, not production policy — cost if wrong: a reviewed VALUES query could be accepted incorrectly, or a rejection could have the wrong category; restricted execution remains mandatory and absent.
+- Task 1: Ruling: SQLGlot's unsupported-command warning can include input literals — use its error_message_context=0 parser option and test warning redaction, without changing global logging — cost if wrong: diagnostic messages may be less helpful; raw SQL must not leak into logs.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -6,11 +6,11 @@
 
 **Architecture:** Keep a pure Python guard separate from database connections. Parse the original SQL, inspect every supported tree node and relation scope, and return either unchanged SQL or a stable rejection category. The future executor must call the guard itself; a returned dataclass is not an authorization capability.
 
-**Tech Stack:** Python 3.12, uv, pure-Python sqlglot 30.21.0, existing asyncpg/pytest and standard-library dataclasses. SQLGlot is on the approved list, but its direct addition still needs Kunal's approval with this plan. No SDK, model loading or other dependency is needed here.
+**Tech Stack:** Python 3.12, uv, pure-Python sqlglot 30.21.0, existing asyncpg/pytest and standard-library dataclasses. Kunal approved its direct addition with this plan on 2026-10-04. No SDK, model loading or other dependency is needed here.
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 5–6 and 11; [AGENTS](../../../AGENTS.md); [DATA](../../DATA.md). These existing approved contracts supply the design; this plan does not replace them.
 
-**Status:** Prepared and self-reviewed on 2026-10-03; awaiting Kunal's review and dependency approval. No task below has been implemented. Baseline: clean feat/foundation at 5cf31fa, 158 tests passed with both private test environments.
+**Status:** Prepared and self-reviewed on 2026-10-03; Kunal approved the plan and dependency on 2026-10-04. Task 1 is verified (184 guard tests, full suite 342 passed); Task 2 is next. Execution baseline: clean feat/foundation at 83ac96a, 158 tests passed with both private test environments.
 
 ## Global Constraints
 
@@ -56,7 +56,8 @@ included in this increment.
 - [PyPI release](https://pypi.org/project/sqlglot/30.21.0/): Python >=3.9; pure wheel
   sqlglot-30.21.0-py3-none-any.whl, 763892 bytes, published SHA-256
   816d1a4815b7562b3976efcc0b561c928a743f976efd0fb8ad6db7a5b96c069e.
-  This is registry metadata, not a locally downloaded/verified wheel.
+  Originally registry metadata; independently downloaded/verified on 2026-10-04
+  with matching size/hash, under ignored .tools/parser (not committed).
 - Tag v30.21.0 points to commit 5d16fa83bfb8f3582eaffa4b99c7d05a061d8a76.
   [License](https://github.com/tobymao/sqlglot/blob/5d16fa83bfb8f3582eaffa4b99c7d05a061d8a76/LICENSE): MIT.
 - [Scope source](https://github.com/tobymao/sqlglot/blob/5d16fa83bfb8f3582eaffa4b99c7d05a061d8a76/sqlglot/optimizer/scope.py):
@@ -97,7 +98,7 @@ included in this increment.
   or None: `_check_nodes(tree: exp.Expression) -> str | None`,
   `_check_tables(tree: exp.Expression, policy: DatasetPolicy) -> str | None`.
 
-- [ ] **Step 1: Add the approved parser after plan approval.**
+- [x] **Step 1: Add the approved parser after plan approval.**
 
 ```powershell
 uv add "sqlglot==30.21.0"
@@ -108,7 +109,7 @@ Use the explicit uv path from PROGRESS if PATH is missing. Inspect resolved
 dependencies, default extras and wheel identity; do not add compiled extras or
 change Python. The selected version must be locked, not resolved again each run.
 
-- [ ] **Step 2: Write failing accept/reject tests with these exact cases.**
+- [x] **Step 2: Write failing accept/reject tests with these exact cases.**
 
 ```python
 import pytest
@@ -204,7 +205,7 @@ set operations. Check a quoted mixed-case table under a synthetic trusted policy
 quoted exact name passes and its unquoted spelling fails. These tests cover Review
 Focus 1, 3 and 5; do not use an actual forbidden file or execute UNSAFE cases.
 
-- [ ] **Step 3: Observe RED.**
+- [x] **Step 3: Observe RED.**
 
 ```powershell
 uv run pytest tests/test_guard.py -q
@@ -214,7 +215,7 @@ Expected initial failure: missing sqlwarden.guard; after its interface exists,
 assertion failures must identify incomplete protection. Preserve each observed
 RED result. Do not replace meaningful failure cases with parser-only tests.
 
-- [ ] **Step 4: Implement immutable policy/results and bounded parsing.**
+- [x] **Step 4: Implement immutable policy/results and bounded parsing.**
 
 ```python
 from sqlglot import exp
@@ -238,7 +239,7 @@ their text. Reject over-budget AST count/depth and identifiers exceeding 63 UTF-
 bytes. Normalize only analysis-tree Identifiers with fold_identifier, disregarding
 comment metadata; accepted text remains byte-for-byte unchanged.
 
-- [ ] **Step 5: Implement the explicit structural/function/type policy.**
+- [x] **Step 5: Implement the explicit structural/function/type policy.**
 
 ```python
 STRUCTURAL_NAMES = frozenset("""
@@ -269,7 +270,7 @@ modifying_node/function_not_allowed/cast_not_allowed/unsupported_node,
 schema_not_allowed/table_not_allowed/unsupported_relation, accepted.
 No expression literal is returned in rejection details. This covers Review Focus 2.
 
-- [ ] **Step 6: Resolve actual table scopes and require full coverage.**
+- [x] **Step 6: Resolve actual table scopes and require full coverage.**
 
 ```python
 from sqlglot import exp
@@ -314,7 +315,7 @@ OptimizeError/unsupported scope construction with a sanitized rejection. A CTE
 name is never a global exemption. No rewriting, qualification injection or LIMIT
 injection is permitted. These checks finish Review Focus 1 and 5.
 
-- [ ] **Step 7: Add boundary and invariance tests, then observe GREEN.**
+- [x] **Step 7: Add boundary and invariance tests, then observe GREEN.**
 
 ```python
 @pytest.mark.parametrize("sql", [None, 4, b"SELECT 1", "", " ", "SELECT '\x00'", "\ud800"])
@@ -355,7 +356,7 @@ monkeypatched parser for deterministic depth 64/65 checks. Also monkeypatch scop
 traversal to return no scope for a real Table tree and require unsupported_relation;
 no unaccounted physical source may be accepted after an API change.
 
-- [ ] **Step 8: Document and commit the working pure guard.** Update the notebook
+- [x] **Step 8: Document and commit the working pure guard.** Update the notebook
 with AST, scope, allowlist and fail-closed in simple language. PROGRESS must say
 the guard is unit-tested, not yet an execution boundary or completed G0.7a. Record
 strict-policy false blocks and the pending PostgreSQL checks. Inspect all staged
