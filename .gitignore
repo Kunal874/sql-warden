@@ -1,0 +1,44 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python and local tools
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+.tools/
+.superpowers/
+
+# Downloaded datasets, models and inference caches
+data/
+models/
+.cache/
+*.gguf
+*.safetensors
+*.pt
+*.pth
+
+# Raw experiment output; compact summaries are versioned
+results/**/predictions*.jsonl
+results/**/raw/
+results/**/cache/
+results/**/rows/
+*.log
+
+# Frontend and editor output
+web/node_modules/
+web/dist/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
