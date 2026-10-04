@@ -410,6 +410,38 @@ Execution ruling, in decision order:
 
 - Task 2: Ruling: Ruff rejects the plan's function-call default and try/except/pass cleanup style — use one module-level frozen QueryLimits default and contextlib.suppress for exactly InterfaceError, preserving the same behavior — cost if wrong: a shared default or cleanup exception policy could change behavior; the default is immutable and existing opener/detached tests must remain green.
 
+## D-021 — actual executor bounds, recovery and approved credential rotation (2026-10-04)
+
+Decision: keep D-018–D-020's fixed reader/pool and provisional estimate defaults;
+actual PostgreSQL evidence now supports only the tested executor contracts.
+The 18 real checks cover complete/empty/NULL/duplicate-position output, exact
+row/byte/UTF-8 limits, estimate blocks, fixed error categories, finite acquisition,
+statement timeout, external cancellation with backend removal, settings reset
+and subsequent successful query. No runtime correction was required.
+Retain decoded-value/transient-allocation, synchronous-validation and server-log
+limitations. This is not universal resource isolation or benchmark calibration.
+
+Tests were written before evaluation. Initial 18 passes; first full suite 528
+passes / one cold-connection fixture failure. After its contention-only correction
+and style cleanup, 18 passes (2.12s); final no-env 388/141 skipped, setup-only
+431/98 skipped, both-env 529 passes including 141 actual PostgreSQL, zero skips
+(16.07s). Sync/lint/18-file format/whitespace pass; original inputs unchanged.
+No dependency, data/grant change, model inference, generated SQL or publication.
+
+The failing fixture's library traceback exposed one restricted test-login password
+in the local chat. Kunal approved its rotation explicitly. Updated only that role's
+password and ignored .env.california via an ignored one-off probe; new login passed,
+old login was refused, all role flags remained unchanged. No secret is recorded
+in tracked artifacts; setup/app/other passwords were preserved. Future private
+checks use --tb=line, not full argument/locals dumps. Application error redaction
+and test-harness diagnostics are separate boundaries.
+
+Execution rulings continue D-020, in decision order:
+
+- Task 3: Ruling: the plan's 50ms connection setup can fail before the pool-contention control starts — create the same fixed-reader pool with normal finite connection bounds, then construct a trusted 50ms QueryExecutor over it for occupied-slot/recovery checks; do not relax production limits — cost if wrong: a separate cold-authentication regression could escape this contention control; deterministic acquisition/lifecycle controls and actual normal connections remain covered.
+- Task 3: Ruling: the plan's nested observer/executor contexts fail SIM117 — combine the contexts without changing entry/exit order — cost if wrong: accidental lifetime changes could affect cancellation cleanup; the real observer/backend-removal test must stay green.
+- Task 3: Ruling: a failed white-box connection test exposes its private argument in pytest's library traceback — use --tb=line for private checks and perform only Kunal's explicitly approved test-password rotation, verifying new/old authentication and unchanged role flags — cost if wrong: shorter diagnostics can hide useful failure detail, or cached local clients may retain the revoked password; investigate with sanitized evidence and reload the ignored test configuration.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

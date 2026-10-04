@@ -37,18 +37,18 @@ It is not a finished public service yet.
 - Small handwritten allowed queries have passed that guard and run with the
   restricted database login and short time limits. No AI output was run.
 - Answer-size checks now handle row, byte and cell limits without returning
-  a partial answer as a complete answer. The guarded runner is now built and
-  passes simulated tests; its real database recovery tests are next.
-- The latest completed code checkpoint has 511 passing tests, including 123
+  a partial answer as a complete answer. The guarded runner now also passes
+  real database tests for timeouts, cancellation and recovery.
+- The latest completed code checkpoint has 529 passing tests, including 141
   tests that connect to the real local PostgreSQL database.
 
-The AI question-answering flow, fully verified runner, evaluation
+The AI question-answering flow, evaluation
 scores, website and public release are not finished yet. G0, the foundation group,
 is still in progress. No AI-generated SQL has been executed.
 
 Where we are: 6 of the 12 numbered foundation tasks are complete. Inside the
-next task, the query guard is finished and the guarded runner passes simulated
-checks. Real runner checks are next. This does not mean half the project is done: the agent,
+next task, the query guard and limited runner now pass their real database checks.
+The runner's final review is next. This does not mean half the project is done: the agent,
 experiments, website and release still come later. We are building the first
 small working demonstration before expanding.
 
@@ -397,6 +397,38 @@ No AI SQL, new package, data change, password change or model load occurred.
 
 Next: run the planned handwritten checks through this runner on real PostgreSQL.
 
+### G0.7a, executor Task 3 — Check the runner with real PostgreSQL
+
+What was done: ran 18 new checks using the real restricted login and our real
+school data. Checked complete answers, empty answers, missing values, duplicate
+column names, ordering and exact size limits. Large answers return no first-page
+prefix. Queries rejected by the guard still do not run.
+
+We also made a bounded handwritten query run long enough to cancel it. The test
+watched the database process disappear, then confirmed that the same pool could
+run the next query. A separate short timeout test also recovered. Temporary
+time settings reset and no transaction was left open after normal release.
+
+One full run found a test-setup issue: its very short waiting limit also applied
+while making the first database connection. The test now separates opening the
+connection from waiting for an occupied slot. The actual runner's limits were
+not increased. The corrected waiting test passed five repeated runs.
+
+That failed test also printed a private test password through a library error
+report. With your approval, only that test-login password was replaced. The new
+password works, the old one is rejected, and permissions were not changed.
+Future test output uses short failure lines to avoid dumping connection details.
+Passwords remain in ignored local files, never in Git or AI prompts.
+
+Checked after the fix and rotation: all 18 runner database checks pass, and the
+full suite has 529 passes with no skipped tests. Of these, 141 use real PostgreSQL.
+The package lock and code-style checks pass. Your data and other passwords are
+unchanged, no model is loaded, and nothing has been uploaded.
+
+This finishes the runner's three build/test subtasks. One final read-only review
+comes next. The answer checker and command-line demonstration are still needed
+before the AI can safely run a database query.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -645,8 +677,8 @@ feature has already been implemented.
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
 final review fixes, are complete. You approved the runner plan, and its answer-size
-rules and guarded workflow are built. Next are the real database recovery tests
-and one final runner review.
+rules, guarded workflow and real recovery tests are complete. Next is one final
+runner review.
 After that come the answer checker and a small command-line
 question-to-database demonstration. The rest
 of the data, agent loop, website, broader attack suite and release come later.

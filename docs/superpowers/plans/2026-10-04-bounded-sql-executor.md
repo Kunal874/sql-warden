@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 4–6 and 11; [AGENTS](../../../AGENTS.md); [DECISIONS](../../DECISIONS.md), D-003/D-015–D-018. The already approved specification supplies the design; this plan does not change the benchmark or authorize a model-connected SQL run.
 
-**Status:** Kunal's "continue with progress" after the written handoff approves native execution on 2026-10-04. Tasks 1–2 are complete: 88 result/config and 94 executor scoped passes; the latest full suite has 511 passes with the 123 existing PostgreSQL checks. Task 3's actual executor checks and final review remain. Implementation baseline: clean feat/foundation at df07434, 407 passes including 123 actual PostgreSQL checks. Comparator and CLI remain separate.
+**Status:** Kunal's "continue with progress" after the written handoff approves native execution on 2026-10-04. Tasks 1–3 are complete: 94 executor units, 50 limits controls and 18 actual executor checks; latest full suite 529 passes with 141 actual PostgreSQL checks and zero skips. The final read-only review remains. D-020/D-021 record style/fixture deviations and the separately approved test-password rotation; private pytest runs now use --tb=line. Implementation baseline: clean feat/foundation at df07434, 407 passes including 123 actual PostgreSQL checks. Comparator and CLI remain separate.
 
 ## Global Constraints
 
@@ -1119,7 +1119,7 @@ Reuse the existing `california_connected()` gate from test_bird_load, including 
 fixed local target/port and absence-of-credentials skip. No admin/setup identity
 enters the executor; test environments are never runtime configuration.
 
-- [ ] **Step 1: Write the real checks first.** Use module integration marker and
+- [x] **Step 1: Write the real checks first.** Use module integration marker and
 this fixture/pattern. Never log passwords/results or execute generated/gold SQL:
 
 ```python
@@ -1235,7 +1235,7 @@ async def test_real_query_timeout_discards_then_replaces_connection():
         assert (await executor.execute("SELECT 1 AS n")).status == "ok"
 ```
 
-- [ ] **Step 2: Pin actual cancellation and state reset.** Add this observer-based
+- [x] **Step 2: Pin actual cancellation and state reset.** Add this observer-based
 test without production test hooks. Both connections use the same restricted role;
 two is its existing hard limit. The observer query is trusted test-only metadata,
 not guard-approved runtime SQL. Always cancel/join the task in finally:
@@ -1336,7 +1336,7 @@ async def test_real_guard_denial_never_returns_data(sql):
         assert (await executor.execute("SELECT 1 AS n")).status == "ok"
 ```
 
-- [ ] **Step 3: Observe real results, investigate failures, then correct only proven defects.**
+- [x] **Step 3: Observe real results, investigate failures, then correct only proven defects.**
 
 ```powershell
 uv run --env-file .env.setup --env-file .env.california pytest tests/test_executor_postgres.py -q
@@ -1349,7 +1349,7 @@ if actual estimates contradict that assumption, use a known deterministic local
 control and record its exact observed estimate without executing gold SQL or
 loosening the gate. No sleeps/unbounded query may be introduced to force timing.
 
-- [ ] **Step 4: Verify all modes and record truthful evidence.**
+- [x] **Step 4: Verify all modes and record truthful evidence.**
 
 ```powershell
 uv sync --locked
@@ -1367,7 +1367,7 @@ pass. Record actual counts/timings/failures, not forecasts. Recheck native sourc
 fingerprints via the existing full suite, original planning inputs, empty remote,
 healthy named-volume PostgreSQL and unloaded Ollama. No grants/data/file resets.
 
-- [ ] **Step 5: Document and commit actual completion.** PROGRESS records this
+- [x] **Step 5: Document and commit actual completion.** PROGRESS records this
 executor increment only, not completed G0.7a/CLI/EX or universal memory isolation.
 DECISIONS records provisional cost knobs, envelope/cancellation contracts, real
 results and residual allocation/server-log risks. Update the simple-English

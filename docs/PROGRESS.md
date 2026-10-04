@@ -4,15 +4,15 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed subtask: bounded executor Task 2,
-internally guarded restricted workflow. Last completed commit before this update: 3f005c8.
+Current group: G0. Last completed subtask: bounded executor Task 3,
+actual bounds and pool recovery. Last completed commit before this update: f52bbe6.
 The minimum SQL guard and its real acceptance/final fixes are complete.
 Kunal's "continue with progress" approves the presented runner plan.
-Next: native Task 3's real runner/recovery checks and one final review.
-The executor workflow is implemented; real executor verification is still pending.
+Next: one final whole-increment review before handing off the executor.
+The restricted runner's real bounds, cancellation and recovery checks pass.
 G0.7a is not complete.
 Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
-interview drill; the guard is finished inside the next item. This is checklist
+interview drill; the guard and runner are verified inside the next item. This is checklist
 coverage, not half the project's effort. G1–G5/G7 remain unfinished.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
@@ -48,7 +48,7 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Complete final read-only guard-plan review and resolve its findings.
   - [x] Prepare/self-review the bounded executor implementation plan.
   - [x] Review/approve that new executor plan; preserve native execution.
-  - [ ] Implement/verify the bounded executor against real PostgreSQL.
+  - [x] Implement/verify the bounded executor against real PostgreSQL.
   - [ ] Implement/verify the pinned EX comparator.
   - [ ] Build the safe one-database model/CLI flow; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
@@ -135,6 +135,46 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — bounded executor Task 3 / actual PostgreSQL recovery
+
+Task 2 committed at f52bbe6 with verified Kunal identities/body; task-done
+reran 94 checks (1.00s). Read the full Task 3 brief before writing its tests.
+The initial 18 actual executor checks passed (2.49s). They verify native count,
+duplicate column positions, empty/NULL answers, order, exact bytes, UTF-8 cells,
+row/cost/estimate overflow, sanitized errors, settings reset and recovery.
+Cancellation observes the active restricted backend, cancels the task and
+waits for that backend to disappear before the next query succeeds in the pool.
+Statement timeout also produces no result prefix and a subsequent query works.
+
+The first full run had 528 passes and one test-setup failure: its cold connection
+authentication exceeded the test's 50ms pool configuration before the contention
+test reached its target. Systematic debugging traced the nested connect/acquire
+bounds in locked asyncpg. Five isolated repeats passed, confirming intermittency.
+Keep finite normal connection creation and use a trusted QueryExecutor over the
+same pool to test 50ms slot contention; five more repeats and all real checks pass.
+No runtime limit or production implementation was relaxed or corrected.
+Combined the observer/executor contexts for SIM117; their close order is unchanged.
+
+That failed test's third-party traceback printed the restricted test credential
+in the local chat. Kunal explicitly approved rotating only that password.
+The ignored one-off local probe updated .env.california atomically; fresh login
+with the new password succeeded, the old one was refused, and all eight role flags
+were unchanged. No value is recorded here or committed. Setup/app/other credentials,
+data, grants and the named volume were not changed. Use --tb=line for future private
+test runs to prevent library argument dumps; never enable --showlocals.
+
+After rotation/fixes: 18 real executor checks passed (2.12s); no-env 388 passed /
+141 skipped (2.47s); setup-only 431 passed / 98 skipped (5.62s); full both-env
+529 passed, zero skips (16.07s), including 141 actual PostgreSQL checks.
+Locked sync, lint, 18-file format and whitespace pass. Existing source-fingerprint
+checks ran in the full suite. Historical inputs/lock/dependency files unchanged,
+no remote, healthy sqlwarden-postgres-1 with sqlwarden_pg16_data preserved,
+and Ollama has no loaded model. D-021 records all deviations and residual limits.
+
+Updated the learning notebook after this subtask. This completes executor tests,
+not G0.7a, the comparator/CLI or AI question-answering. One required read-only
+final review and any proven Important/Critical fixes remain before handoff.
 
 ### 2026-10-04 — bounded executor Task 2 / guarded restricted workflow
 
@@ -636,14 +676,15 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: approved bounded-executor Task 3 and one final whole-branch
-review. Use its plan-specific ignored ledger and task-start/task-done scripts;
-read each brief before work. Tasks 1–2 are implemented and scoped-test verified;
-Task 2 still needs actual executor PostgreSQL evidence in Task 3.
+Next: one approved bounded-executor final whole-increment read-only review,
+then a single test-first fix pass if needed. Tasks 1–3 are implemented and
+verified: 94 executor units, 50 limits controls, 18 actual executor checks;
+529 full-suite passes, zero skips, 141 actual PostgreSQL checks. No per-task or
+second final reviewer. Preserve its ignored ledger and scratch without deletion.
 The [bounded executor plan](superpowers/plans/2026-10-04-bounded-sql-executor.md)
 is approved by Kunal's continue response to its handoff. Keep native execution
 here; do not ask again about method/dependencies, redo guard/import work, or
-load a model. D-018 approval update and D-019/D-020 hold the current contracts.
+load a model. D-018 approval update and D-019–D-021 hold the current contracts.
 The [minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md)
 and its final review are complete: 193 guard checks, 56 real acceptance checks,
 407 full-suite passes (123 actual PostgreSQL), both Important findings fixed
@@ -703,7 +744,14 @@ Python checks (project virtual environment):
 
 Synthetic/bootstrap checks: `uv run --env-file .env.setup pytest -q`.
 Full PostgreSQL/California checks:
-`uv run --env-file .env.setup --env-file .env.california pytest -q`.
+`uv run --env-file .env.setup --env-file .env.california pytest -q --tb=line`.
+Use --tb=line for every private database test command below, including task-done.
+Third-party failure tracebacks can dump connection arguments; do not enable
+--showlocals. The California test password was rotated with explicit approval
+after one such dump. Do not rerun the ignored rotation probe without new approval.
+
+Executor-only pure/workflow checks: `uv run pytest tests/test_executor.py -q --tb=line`.
+Actual executor: `uv run --env-file .env.setup --env-file .env.california pytest tests/test_executor_postgres.py -q --tb=line`.
 
 Guard-only: `uv run pytest tests/test_guard.py -q`.
 Restricted PostgreSQL guard controls:
