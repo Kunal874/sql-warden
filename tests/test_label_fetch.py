@@ -97,3 +97,27 @@ def test_command_deadline_is_checked_during_stream(tmp_path, monkeypatch):
     assert len(calls) == 1
     assert not destination.exists()
     assert list(tmp_path.iterdir()) == []
+
+
+def test_trickling_body_checks_deadline_without_buffering(tmp_path, monkeypatch):
+    raw = b"x" * 1000
+    source = "data/arcwise_plat_sql_only_with_diff.json"
+    monkeypatch.setattr(
+        module, "RESOURCES", {source: ("sql.json", len(raw), hashlib.sha256(raw).hexdigest())}
+    )
+    elapsed = [0.0]
+    monkeypatch.setattr(module, "monotonic", lambda: elapsed[0])
+
+    class Trickle(httpx.SyncByteStream):
+        def __iter__(self):
+            for value in raw:
+                elapsed[0] += 1.0
+                yield bytes([value])
+
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, stream=Trickle()))
+    destination = tmp_path / "release"
+    with pytest.raises(module.IntakeError, match="acquisition deadline exceeded"):
+        module.fetch_sources(destination, transport=transport)
+    assert elapsed[0] == 120.0
+    assert not destination.exists()
+    assert list(tmp_path.iterdir()) == []

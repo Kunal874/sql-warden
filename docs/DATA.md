@@ -231,7 +231,7 @@ mapping. Schema-description inspection remains required separately.
 
 The [two-task intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md)
 was approved by Kunal on 2026-10-05. Both tasks' code/actual acceptance are checked;
-40 label tests and 8 fake-network tests pass, sole final review next.
+40 label tests and 9 fake-network tests pass, sole final review complete.
 Only the four pinned resources (645140 content bytes) were saved in this
 increment. No source SQL, SQLite gold,
 PostgreSQL gold or model request ran during this inspection. Conversion survival,
@@ -275,3 +275,12 @@ differences 81/86 and 147/152, corrected-pair union 148. Original difficulty cou
 SQL-only and 81/79 for full; these do not verify provenance of baseline rewrites.
 Gold execution/conversion survival, descriptions/imports, primary labels, ambiguity
 policy, exclusions, family splits and C1 remain unfinished. G0.5 is not complete.
+
+Sole final review of 399efed..676428f verified the six distinct source pins and
+fresh report/manifest equality. One Important body-deadline gap was reproduced
+test-first and fixed by unbuffered HTTPX raw iteration; byte/hash rules unchanged.
+No corruption or refetch: the acquired files and their acceptance record remain
+valid. Final combined tests 49 passed, configured full suite 768/zero skips,
+including 165 actual PostgreSQL checks; no gold SQL or new corpus validity claim.
+Cooperative bounds do not promise hard interruption inside DNS/TLS/header/file
+operations or crash durability; Windows/trusted-local-filesystem workflow only.

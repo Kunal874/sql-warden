@@ -45,9 +45,9 @@ It is not a finished public service yet.
   is complete; it reused existing Python tools without adding a package.
 - The local AI connection code now passes 67 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
-- The latest verified code checkpoint has 767 passing tests, including 165
+- The latest verified code checkpoint has 768 passing tests, including 165
   tests that connect to the real local PostgreSQL database.
-- The offline answer-file checker and small download tool pass 48 checks.
+- The offline answer-file checker and small download tool pass 49 checks.
   The four approved files match their saved fingerprints. Their summary lists
   missing items and changed wording; it does not contain the answer text.
 
@@ -70,7 +70,8 @@ All three parts' code and database checks pass, and the single real question
 worked. Model unload, independent review and verified corrections are complete.
 You approved the next two-part data-work plan. Its offline checker is built
 and checked, and the four approved small source files have been saved and checked.
-One independent final review is next. No extra model test or database import ran.
+The independent final review is complete. It found one time-limit gap, now fixed
+and checked. No extra model test or database import ran.
 
 ## 3. Completed work, one step at a time
 
@@ -866,6 +867,41 @@ Next: one fresh final review of these two tasks, then remaining descriptions,
 database imports and conversion/answer-validity work. Foundation stays at 7 of
 12 tasks because this finishes only one part of the larger data task.
 
+### G0.5, correction final review — Check time even when bytes arrive slowly
+
+What was done: one fresh reviewer checked the two completed tasks without
+changing files or running models. The source summary still matches the real
+files, all fingerprints pass, and the corrected hints keep their original values.
+
+The reviewer found one problem: the download library waited to collect 4096
+bytes before our code checked the time. Very slowly arriving bytes could keep
+that wait going. We first made a fake stream reproduce this, then changed the
+loop to check time after each delivered chunk. The fake test now stops at 120
+simulated seconds instead of waiting through 1000. No long real download was
+needed, and the four already checked source files were not downloaded again.
+
+Checked: 49 answer-file/download checks pass. The full corrected project passed
+768 tests, with zero skips, including 165 real PostgreSQL checks. Without private
+database settings, 603 passed and 165 were skipped. The review and its one fix
+pass are complete; no second review was needed and no minor finding is deferred.
+
+New words: a chunk is a small piece of incoming data. Buffering means collecting
+pieces before passing them on. An inactivity timeout notices a gap with no bytes;
+it does not notice a slow stream that keeps delivering bytes. A cooperative
+deadline works when our code can check time. It is not a promise that Windows
+will forcibly stop every blocked operation at that exact instant.
+
+Limitations kept visible: matching item numbers is not proof the SQL answer is
+right; we still have not chosen corrected answers, experiment splits or ambiguity
+rules. Only one database has a verified import. This local file workflow does
+not promise protection from an administrator changing files or crash durability.
+These are recorded limits, not claims that the remaining features are finished.
+
+Result: both approved data-intake tasks and their final review are saved locally
+under your Git identity. Progress remains 7 of 12 foundation tasks. Next comes
+the separate description/layout/import plan and later answer-validity decisions.
+No upload, model test, credential change or new database import happened here.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -1167,8 +1203,8 @@ live question returned the expected answer; model unload, final review and its
 verified parsing fixes are complete. Next we resume the remaining foundation:
 datasets and validity decisions, the second model, then split/evaluation/model
 choices. You approved the two-task correction-intake plan; its first checker
-and the four-file intake are complete. Next comes one final review, then the
-remaining descriptions/imports/answer-validity work. This intake uses existing
+and the four-file intake and their final review are complete. Next comes the
+remaining descriptions/layout/import plan and answer-validity work. This intake uses existing
 software and does not change the database
 or run the model. Each relevant new permission outside that scope needs review.
 The rest of the data, agent loop, website, broader attack suite and release come later.

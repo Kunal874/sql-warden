@@ -19,12 +19,13 @@ G0 data/validity/models/evaluation and G1–G5/G7 remain unfinished. No benchmar
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
-Both correction-intake tasks are implemented and checked: 40 offline label and
-8 fake-network checks; four approved files acquired once (645140 bytes), all pins
-and actual alignment assertions pass. Full configured suite 767 passed, zero
-skips (21.62s), including 165 actual PostgreSQL checks; no-env 602 passed/165
-skipped (5.71s). Sole final review next. Manifest/DATA/D-033/D-034 record evidence
-and the test-first nullable-hint correction. No runtime/import/model/gold SQL
+Both correction-intake tasks and the sole final review are complete: Task 1
+64f51e4, Task 2 676428f, one Important streaming deadline gap fixed test-first.
+40 offline label/9 fake-network checks; four files acquired once (645140 bytes),
+all pins/actual alignment assertions pass. Full configured suite 768 passed,
+zero skips (18.42s), including 165 actual PostgreSQL checks; no-env 603 passed/
+165 skipped (7.24s). No Critical/deferred Minor. Manifest/DATA/D-033–D-035 record
+evidence, nullable-hint correction and all 20 rulings/costs. No runtime/import/model/gold SQL
 step executed; G0 remains 7/12; labels/ambiguity/splits/validity still undecided.
 
 ## Preflight evidence (2026-10-03)
@@ -75,7 +76,8 @@ step executed; G0 remains 7/12; labels/ambiguity/splits/validity still undecided
   - [x] Sole final CLI review and one test-first parsing correction pass; 719 full checks pass.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
   - [x] Approved four-file correction intake and offline ID/text-difference manifest.
-  - [ ] Sole correction-intake review; remaining description/import/conversion work.
+  - [x] Sole correction-intake review and tested streaming-deadline fix.
+  - [ ] Remaining description/import/conversion work and validity manifest.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
 - [ ] G0.7: freeze split; E0 on the development slice; measured summaries with exact n.
@@ -159,6 +161,34 @@ step executed; G0 remains 7/12; labels/ambiguity/splits/validity still undecided
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-05 — sole correction-intake review / tested deadline fix and handoff
+
+Task 2 saved at 676428f; confirmed owner-only author/committer/body and clean tree.
+Task-done repeated 48 passes (0.18s). Sole fresh read-only review covered exact
+399efed..676428f, all five focus conditions and ledger. Reviewer repeated 48
+checks (0.20s), six distinct-text reorder probes, fresh report/manifest equality,
+all six source pins and null hint IDs, Ruff/31-file format/whitespace/identities.
+It did not rerun PostgreSQL, download data, execute SQL or call models.
+
+One Important finding: HTTPX iter_raw(chunk_size=4096) coalesces transport reads,
+so a continuous trickle can delay the cooperative body deadline check until
+4096 bytes/EOF, while avoiding inactivity timeout. Confirmed against installed
+library source, graded by actual prolonged-command effect; no data corruption
+claimed. New synthetic one-byte/second stream regression observed RED at 1000
+logical seconds rather than 120 (0.12s); use unbuffered iter_raw(), retaining
+pre-extension byte limits. GREEN 49 combined checks (0.18s), no real slow network
+operation or refetch. Cooperative DNS/TLS/header/file-operation limitations stay
+explicit, not an OS hard-termination claim. Single fix pass, no re-review.
+
+Fresh corrected-tree suite: no-env 603 passed/165 skipped (7.24s); configured
+768 passed/zero skips (18.42s), including 165 actual PostgreSQL checks. Ruff/
+31-file format pass. No Critical or deferred Minor. D-035 records all 14 declined
+scope judgments, each explicit ruling/cost, plus local-branch/scratch retention;
+D-033/D-034 hold four execution rulings. Notebook updated with completed review.
+Current feat/foundation and ignored plan scratch retained; no destructive cleanup,
+remote, push or publication. Only task-owned intake temporary staging was removed
+normally under approval. Both tasks/review done; G0 remains 7/12, G0.5/C1 unfinished.
 
 ### 2026-10-05 — correction intake Task 2 / pinned acquisition and actual alignment
 
@@ -1108,12 +1138,20 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: sole whole-increment final read-only review of Kunal's
+Current next action: read-only preparation of the next narrow remaining-G0.5
+description/layout/import increment, then new artifact review before its code
+or acquisition/import actions. Inspect all original SQLite/native-dump table
+layouts and the 75 corrected description-file contents/mapping within a newly
+reviewed scope; plan safe remaining extraction/import/content/type/key checks.
+Then conversion/result validity and C1, second model, split/E0/C2. Do not infer
+approval of those operations from this completed four-resource intake.
+
+Kunal's
 [corrected-label intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md),
-approved 2026-10-05 after preparation at 399efed. Both tasks' implementation is
-complete: Task 1 at 64f51e4; Task 2 code/acceptance awaiting its local commit and
-task-done gate, then fresh reviewer over 399efed..Task2HEAD, not older CLI work.
-D-032–D-034 record scope, checks and every ruling/cost. Do not repeat the tasks,
+approved 2026-10-05 after preparation at 399efed, is complete: Task 1 at 64f51e4,
+Task 2 at 676428f, both task-done gates and sole fresh review of 399efed..676428f.
+One Important body-buffering gap fixed in a single TDD pass; no second review.
+D-032–D-035 record scope, checks and every ruling/cost. Do not repeat the tasks,
 preparation or acquisition; no approved implementation left in the old CLI plan.
 Native sequential execution remains selected. Only four pinned correction/license
 resources (645140 bytes) were acquired; actual offline alignment passed. No new dependencies,
@@ -1126,9 +1164,10 @@ Use uv run python -m scripts.inspect_labels for offline report, no env needed.
 fetch_labels refuses the now-existing release; do not repeat it or repin changing
 bytes or overwrite existing artifacts automatically. Resume ledger
 .superpowers/sdd/2026-10-05-corrected-label-intake/progress.md, reconcile Git;
-complete the sole final review after both task commits. Fresh no-env regression
-602 passed/165 skipped (5.71s); full configured suite 767 passed/zero skips
-(21.62s), including 165 actual PG; label/fetch checks 48. Manifest records actual
+both tasks/review are DONE. Preserve scratch without deletion approval and do
+not dispatch another reviewer. Fresh no-env regression 603 passed/165 skipped
+(7.24s); full configured suite 768 passed/zero skips (18.42s), including 165 actual
+PG; label/fetch checks 49. Manifest records actual
 null hint support and original-to-correction drift, not semantic validity.
 Private tests always --tb=line, never --showlocals; no extra live inference.
 

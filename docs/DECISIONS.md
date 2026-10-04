@@ -988,6 +988,84 @@ database checks do not establish new corpus execution validity. Ruff/31-file
 format/locked sync pass. Task 2 implementation complete; sole final review next.
 G0 remains 7/12, G0.5/G0.5b not complete. No publication or remote configured.
 
+## D-035 — sole correction-intake review / one TDD fix and local handoff (2026-10-05)
+
+Context: both tasks saved at 64f51e4/676428f under confirmed sole owner identity.
+Both task-done gates pass, latest 48 checks (0.18s). Sole fresh read-only reviewer
+on most-capable explicit model covered 399efed..676428f, exact package, plan/spec,
+all five focus conditions and ledger. No parallel implementation/second review.
+
+Review evidence: 48 passes (0.20s), six distinct-text reorder probes, exact fresh
+report/manifest equality, all six source pins and nullable IDs, Ruff/31-file
+format/whitespace/owner identities. No download/database/model/SQL/source-text
+output or checkout mutation. Reviewer inspected, did not rerun, configured suite.
+
+Finding: one Important, no Critical/Minor. Installed HTTPX ByteChunker coalesces
+iter_raw(chunk_size=4096), hiding a continuous trickle from the cooperative body
+deadline until4096bytes/EOF; inactivity timeout does not stop active trickles.
+Regraded Important by command-overrun effect; not a data-corruption finding or
+an excuse to add hard-kill infrastructure. Regression observed RED1000logical
+seconds vs120 (0.12s); change only iter_raw() unbuffered, preserve pre-extension
+byte caps/exact pins. GREEN49 combined checks (0.18s), no-env603/165skips (7.24s),
+configured768/zero skips (18.42s), including165actualPG. Ruff/31-file format pass.
+Existing artifacts/manifest remain valid; no refetch/review repetition/gold SQL.
+
+### Exhaustive final rulings (decision order)
+
+Four earlier execution rulings are in D-033/D-034. These sixteen complete the
+20-ruling record. Every declined-to-judge item is explicitly decided, not dropped:
+
+1. Gold correctness/conversion survival: retain explicit deferral; no gold query
+   executed — cost if wrong: corpus result validity remains unknown.
+2. Label/exclusion/ambiguity/evidence policy/family splits: retain C1 gate and
+   undecided states — cost if wrong: no defensible benchmark score yet.
+3. Descriptions/remaining imports/content/type/key equivalence: outside this
+   four-resource scope — cost if wrong: only California has verified import.
+4. Future runtime label/null access: preserve current offline-only separation,
+   require later leakage/input review — cost if wrong: future wiring can leak
+   answer keys or mishandle absent hints.
+5. New DB-security/model-capability claims: no such changes/claims; existing
+   configured tests only — cost if wrong: no exhaustive security/model proof.
+6. Privileged/ancestor-link/concurrent filesystem tampering: retain trusted
+   local immutable-source workflow — cost if wrong: local tampering can invalidate
+   pre-use checks; not hostile-filesystem protection.
+7. Power loss/fsync/forced termination: normal-operation atomic visibility only,
+   not crash durability — cost if wrong: interrupted writes need manual inspection;
+   no automatic destructive recovery is authorized.
+8. POSIX empty-destination race: retain supported Windows rename/refusal workflow
+   — cost if wrong: a port can overwrite an empty raced target; cross-platform
+   guarantees require separate checks.
+9. DNS/TLS/header/blocked-file hard interruption: cooperative checks/I/O timeout
+   only, with delivered-body defect fixed — cost if wrong: blocked operations can
+   exceed wall-clock target; no OS hard-kill/memory-isolation promise.
+10. Arbitrary build_report/pin arguments: internal production callers use decoded
+    rows/fixed constants — cost if wrong: future bypass callers can get raw errors
+    or invalid reports and need separate validation.
+11. General JSON Unicode/scalar/uniform errors: pinned production bytes checked
+    before decode; reject malformed input, do not trust it — cost if wrong: future
+    unpinned use can raise ValueError on overlong integers or retain escaped
+    surrogates, not a uniform LabelError/general-purpose JSON guarantee.
+12. Anchor provenance/SQL-anchor semantics: retain observational-only report
+    — cost if wrong: upstream provenance/answer defects remain undiagnosed.
+13. General selection/retries/overwrite/recovery/repinning: retain fixed one-time
+    refusal workflow — cost if wrong: new release/failure needs separately approved
+    update; convenience intentionally absent.
+14. Publication licensing clearance: checked declared local license and pin,
+    defer distribution to G7 — cost if wrong: release needs additional licensing/
+    attribution work; nothing published now.
+15. Keep normal feat/foundation checkout local: user's local-only request and
+    AGENTS/D-003 select keep-as-is, no base branch/remote — cost if wrong:
+    integration postponed, no merge/publication inferred from completion.
+16. Retain own ignored plan scratch: destructive SDD cleanup has no owner
+    approval under AGENTS — cost if wrong: retained scratch uses disk. Only newly
+    owned intake staging was cleaned automatically under this plan's approval.
+
+Deferred minors: none. One verified fix pass, no re-review. Notebook/living records
+updated, completed branch kept locally. No remote/push/publication/credential/model/
+import/benchmark action. Next: separate reviewed description/layout/import plan,
+then conversion/result validity and C1, second model and split/E0/C2. G0 still
+7/12; G0.5/G0.5b remain incomplete, no benchmark score or changed denominator.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -68,7 +68,7 @@ def fetch_sources(destination: Path, *, transport: httpx.BaseTransport | None = 
                             != "identity"
                         ):
                             raise IntakeError("source encoding rejected")
-                        for chunk in response.iter_raw(chunk_size=4096):
+                        for chunk in response.iter_raw():
                             if monotonic() >= deadline:
                                 raise IntakeError("acquisition deadline exceeded")
                             if len(raw) + len(chunk) > size:

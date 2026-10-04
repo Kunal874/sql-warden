@@ -11,13 +11,18 @@
 **Spec:** docs/BUILD_SPEC.md sections 8, 10–12; AGENTS.md; D-032.
 This is the first bounded increment of remaining G0.5, not completion of G0.5/C1.
 
-**Status:** Approved 2026-10-05 by Kunal's proceed forward after artifact review.
+**Status:** Approved and completed 2026-10-05; both tasks and the sole final review.
 Native sequential execution; only this plan's two tasks/acquisition scope approved.
+Task commits 64f51e4/676428f; final Important fix verified test-first, 768 full
+configured passes/zero skips, no Critical/deferred Minor. See D-033–D-035.
 
 Execution schema correction: actual pinned correction sources have null evidence
 at IDs 1507/1528 in both sets. Accept null only in corrected evidence; preserve it,
 do not coerce it to an empty hint or omit records. Original evidence stays strict.
 The test-first correction and rationale/cost are recorded in D-034 and the ledger.
+Final-review correction: iterate raw transport chunks without HTTPX's 4096-byte
+coalescing, so each delivered body chunk checks the cooperative deadline. The
+trickle regression observed RED before this change; D-035 holds final evidence.
 
 ## Global Constraints
 
@@ -691,7 +696,7 @@ def fetch_sources(destination: Path, *, transport: httpx.BaseTransport | None = 
                             raise IntakeError("source HTTP status rejected")
                         if response.headers.get("content-encoding", "identity").lower() != "identity":
                             raise IntakeError("source encoding rejected")
-                        for chunk in response.iter_raw(chunk_size=4096):
+                        for chunk in response.iter_raw():
                             if monotonic() >= deadline:
                                 raise IntakeError("acquisition deadline exceeded")
                             if len(raw) + len(chunk) > size:
@@ -786,7 +791,7 @@ Inspect ignored raw files and the exact staged diff; commit exact message:
 feat(data): acquire and record pinned correction alignment
 Verify both identities/body. Keep everything local, no remote or push.
 
-- [ ] **Step 6: Complete the sole whole-increment review and Handoff.**
+- [x] **Step 6: Complete the sole whole-increment review and Handoff.**
 
 After both tasks, use the already selected native workflow's one fresh read-only
 final review of this plan's two commits, with all five focus conditions and the
