@@ -4,11 +4,11 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed subtask: bounded executor Task 3,
-actual bounds and pool recovery. Last completed commit before this update: f52bbe6.
+Current group: G0. Last completed subtask: bounded executor final review,
+three-task increment complete. Last completed commit before this update: 0e9df33.
 The minimum SQL guard and its real acceptance/final fixes are complete.
 Kunal's "continue with progress" approves the presented runner plan.
-Next: one final whole-increment review before handing off the executor.
+Next: prepare/review the pinned EX comparator plan, then the safe one-database CLI.
 The restricted runner's real bounds, cancellation and recovery checks pass.
 G0.7a is not complete.
 Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
@@ -49,6 +49,7 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Prepare/self-review the bounded executor implementation plan.
   - [x] Review/approve that new executor plan; preserve native execution.
   - [x] Implement/verify the bounded executor against real PostgreSQL.
+  - [x] Complete the single final executor review; no actionable findings.
   - [ ] Implement/verify the pinned EX comparator.
   - [ ] Build the safe one-database model/CLI flow; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
@@ -135,6 +136,34 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — bounded executor final review and handoff
+
+Task 3 committed at 0e9df33 with verified Kunal identities/body; task-done
+reran all 18 real runner checks (2.17s). The provided package covers all three
+approved executor commits df07434..0e9df33. One fresh read-only reviewer inspected
+the package, active spec/plan/decisions, guard interfaces and installed asyncpg
+behavior. It independently passed 144 executor/limits tests (0.89s) without
+private files, PostgreSQL, inference or checkout changes. No Critical, Important
+or Minor issue was reported. Its seven declined-to-judge items were each evaluated
+against actual scope and reasonable caller expectations; none becomes a hidden
+finding or broader safety claim. D-022 persists every ruling and cost, continuing
+D-020/D-021. No correction/fix pass was needed and no second review was dispatched.
+
+Fresh final full suite: 529 passed, zero skips (18.43s), including 141 actual
+PostgreSQL checks. Earlier final no-env 388/141 skipped and setup-only 431/98
+skipped apply to the same runtime/test code. Locked sync, lint, 18-file format,
+whitespace and historical-input/lock/dependency comparisons pass. PostgreSQL is
+healthy on 127.0.0.1:55432 with sqlwarden_pg16_data; no model is loaded; no remote.
+The exposed test password remains revoked after the approved rotation.
+
+Updated the notebook after final review. Retain local feat/foundation and this
+plan's ignored scratch under D-003/G7 and the destructive-work approval rule.
+All new commits have Kunal as sole author and committer, without extra body
+credits. No merge, remote, push, pull request, publication or new dependency.
+G0 still has six of twelve top-level numbered items complete plus guard/runner
+inside G0.7a. Comparator and safe CLI remain before model-generated SQL; no
+overall effort percentage or completed foundation/agent claim is made.
 
 ### 2026-10-04 — bounded executor Task 3 / actual PostgreSQL recovery
 
@@ -676,23 +705,29 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: one approved bounded-executor final whole-increment read-only review,
-then a single test-first fix pass if needed. Tasks 1–3 are implemented and
-verified: 94 executor units, 50 limits controls, 18 actual executor checks;
-529 full-suite passes, zero skips, 141 actual PostgreSQL checks. No per-task or
-second final reviewer. Preserve its ignored ledger and scratch without deletion.
+Next: prepare/self-review the pinned EX comparator implementation plan using
+EX_COMPARATOR.md's official source record and BUILD_SPEC; obtain review of that
+new written artifact before coding it. Reuse the complete typed QueryResult
+contract; unsuccessful/overflow results cannot score or vote. Then plan the safe
+one-database model/CLI slice. Do not run generated SQL yet.
+
+The bounded-executor Tasks 1–3 and their single final review are complete:
+94 executor units, 50 limits controls, 18 actual executor checks; 529 full-suite
+passes, zero skips, 141 actual PostgreSQL checks. No findings or deferred minors.
+Do not re-execute the plan, redo its review, or dispatch a second reviewer.
+Preserve ignored .superpowers/sdd/2026-10-04-bounded-sql-executor without deletion.
 The [bounded executor plan](superpowers/plans/2026-10-04-bounded-sql-executor.md)
-is approved by Kunal's continue response to its handoff. Keep native execution
-here; do not ask again about method/dependencies, redo guard/import work, or
-load a model. D-018 approval update and D-019–D-021 hold the current contracts.
+was approved by Kunal's continue response and is finished. Keep native execution
+here; do not ask again about method/dependencies or redo guard/import work.
+D-018 approval update and D-019–D-022 hold contracts, all rulings and their costs.
 The [minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md)
 and its final review are complete: 193 guard checks, 56 real acceptance checks,
 407 full-suite passes (123 actual PostgreSQL), both Important findings fixed
 test-first in one pass; no Critical or Minor findings. Do not redo its tasks or
 dispatch a second review. D-015/D-017 hold all rulings and their costs. Ignored
 .superpowers/sdd/2026-10-03-minimum-sql-guard is retained without deletion approval.
-G0.7a still requires the bounded executor, pinned EX comparator and safe CLI after
-the guard. EX_COMPARATOR.md contains only source-reference evidence.
+G0.7a still requires the pinned EX comparator and safe CLI after the completed
+guard/runner. EX_COMPARATOR.md contains only source-reference evidence.
 The previous native-import plan is complete; do not
 re-execute its tasks. The ignored review scratch was retained because host policy
 blocked cleanup; its ten rulings are preserved in DECISIONS.
@@ -740,12 +775,12 @@ No data download or inspection process remains running. Native extraction sessio
 
 Python checks (project virtual environment):
 
-`uv run pytest -q`
+`uv run pytest -q --tb=line`
 
-Synthetic/bootstrap checks: `uv run --env-file .env.setup pytest -q`.
+Synthetic/bootstrap checks: `uv run --env-file .env.setup pytest -q --tb=line`.
 Full PostgreSQL/California checks:
 `uv run --env-file .env.setup --env-file .env.california pytest -q --tb=line`.
-Use --tb=line for every private database test command below, including task-done.
+Use --tb=line for every private database test command, including task-done.
 Third-party failure tracebacks can dump connection arguments; do not enable
 --showlocals. The California test password was rotated with explicit approval
 after one such dump. Do not rerun the ignored rotation probe without new approval.
@@ -753,11 +788,11 @@ after one such dump. Do not rerun the ignored rotation probe without new approva
 Executor-only pure/workflow checks: `uv run pytest tests/test_executor.py -q --tb=line`.
 Actual executor: `uv run --env-file .env.setup --env-file .env.california pytest tests/test_executor_postgres.py -q --tb=line`.
 
-Guard-only: `uv run pytest tests/test_guard.py -q`.
+Guard-only: `uv run pytest tests/test_guard.py -q --tb=line`.
 Restricted PostgreSQL guard controls:
-`uv run --env-file .env.setup --env-file .env.california pytest tests/test_guard_postgres.py -q`.
+`uv run --env-file .env.setup --env-file .env.california pytest tests/test_guard_postgres.py -q --tb=line`.
 Trusted builtin catalog metadata only:
-`uv run --env-file .env.setup --env-file .env.california pytest tests/test_guard_postgres.py::test_actual_builtin_function_operator_and_type_inventory -q -s`.
+`uv run --env-file .env.setup --env-file .env.california pytest tests/test_guard_postgres.py::test_actual_builtin_function_operator_and_type_inventory -q --tb=line -s`.
 Do not use either private test environment to launch the runtime or prompt a model.
 
 Restart: `docker compose --env-file .env.setup up -d --wait`.
@@ -770,7 +805,7 @@ revocations; never grant a runtime login access outside sqlwarden.
 
 The original source-selection command was `uv run python scripts/fetch_data.py`;
 it has completed and must not be rerun against the existing destination. Current
-full checks are `uv run --env-file .env.setup --env-file .env.california pytest -q`.
+full checks are `uv run --env-file .env.setup --env-file .env.california pytest -q --tb=line`.
 The native extraction and one-time import have also completed; do not rerun them.
 
 `uv run ruff check .`

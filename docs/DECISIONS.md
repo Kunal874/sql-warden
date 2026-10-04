@@ -442,6 +442,41 @@ Execution rulings continue D-020, in decision order:
 - Task 3: Ruling: the plan's nested observer/executor contexts fail SIM117 — combine the contexts without changing entry/exit order — cost if wrong: accidental lifetime changes could affect cancellation cleanup; the real observer/backend-removal test must stay green.
 - Task 3: Ruling: a failed white-box connection test exposes its private argument in pytest's library traceback — use --tb=line for private checks and perform only Kunal's explicitly approved test-password rotation, verifying new/old authentication and unchanged role flags — cost if wrong: shorter diagnostics can hide useful failure detail, or cached local clients may retain the revoked password; investigate with sanitized evidence and reload the ignored test configuration.
 
+## D-022 — bounded executor final review and local-only handoff (2026-10-04)
+
+One fresh read-only reviewer examined the complete approved increment
+df07434..0e9df33, including all five Review Focus conditions and recorded
+execution rulings. No Critical, Important or Minor defect was found. Its own
+144 deterministic tests passed (0.89s); it did not read credentials, rerun
+PostgreSQL or inference, or modify the checkout. All seven declined-to-judge
+items are ruled on below. Re-grading by caller effects yields no new actionable
+finding; no correction pass or second review is needed. Deferred minors: none.
+
+Final implementer verification: 529 passed, zero skips (18.43s), including 141
+actual PostgreSQL checks; locked sync/lint/18-file format/whitespace pass.
+Historical planning inputs and dependency/lock files remain unchanged. Healthy
+fixed loopback database and named volume preserved, model unloaded, no remote.
+Kunal-only author/committer identities verified for each of the three commits.
+The exposed previous test password is revoked; no other credential changed.
+Notebook updated. Next: a separately reviewed EX comparator plan and safe CLI,
+not generated SQL, a completed G0.7a or a finished AI service.
+
+Final rulings continue D-020/D-021, in decision order:
+
+- Final: Ruling: no integration base branch exists for native feat/foundation — review all three commits of this approved executor increment against recorded df07434, reusing the earlier completed guard/import reviews and whole-suite checks — cost if wrong: an unchanged earlier-foundation issue can escape this incremental review; this is not a repository-wide audit.
+- Final: Ruling: hard process-memory or synchronous CPU isolation is not established — retain explicit decoded-value/transient-encoding and synchronous-validation limits; row/input/AST bounds and the PostgreSQL container are not a Python process-isolation guarantee — cost if wrong: large allowed values or expensive synchronous work can consume excess time or memory before rejection.
+- Final: Ruling: estimate calibration and benchmark coverage remain unreviewed — keep the two provisional defaults and defer development calibration/protocol decisions to their named checkpoints; estimates never replace runtime deadlines — cost if wrong: useful queries may be blocked or expensive work underestimated.
+- Final: Ruling: comparator, voting, model/CLI and web admission consumers are absent — preserve the complete-ok-only handoff contract and prohibit generated SQL until comparator/CLI checks pass; make no end-to-end or aggregate-request claim — cost if wrong: this component is not yet a usable question-answering service and future consumers can mishandle its results.
+- Final: Ruling: forged result objects, malicious custom pools/codecs and arbitrary trusted limits require internal Python control — retain the trusted constructor/configuration boundary; request input is SQL, not these objects or choices, and later wiring must preserve that separation — cost if wrong: exposing internal plumbing to requests could bypass execution or scoring boundaries.
+- Final: Ruling: other datasets, custom types/extensions, exhaustive routine safety and administrator privilege changes are not reviewed — retain the fixed California builtin/import/guard boundary and require review before expanding trusted policy or changing it — cost if wrong: unreviewed objects or privileged changes could weaken isolation.
+- Final: Ruling: PostgreSQL administrator logs and third-party test diagnostics are separate from runtime error redaction — keep stable application errors without SQL/log listeners, document server-log limits, and retain the approved rotation plus compact private-test output rather than changing server logging/grants — cost if wrong: server logs or future diagnostic harnesses may expose private SQL or connection details.
+- Final: Ruling: the reviewer did not independently repeat database recovery, credential rotation, source fingerprints or model state — retain the implementer's actual controls and fresh 529-pass suite with 141 PostgreSQL checks, verified new/old authentication/role flags and unloaded-model status; do not label them independently repeated review evidence — cost if wrong: environmental or intermittent failures can escape those specific controls.
+- Final: Ruling: retain feat/foundation in the required current checkout — D-003/AGENTS.md require this workspace, no base branch exists and G7 prohibits remote/push/publication; keep as-is without a merge or prohibited integration option — cost if wrong: integration remains postponed until an explicit owner decision.
+- Final: Ruling: retain this plan's ignored scratch instead of deleting it — AGENTS.md requires approval before destructive work and no deletion approval was given; preserve every ruling in committed DECISIONS — cost if wrong: small redundant local review files remain on disk, not in Git.
+
+All rulings are also retained in ignored .superpowers/sdd/2026-10-04-bounded-sql-executor.
+No merge, remote, push, pull request, publication, history edit or scratch deletion.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

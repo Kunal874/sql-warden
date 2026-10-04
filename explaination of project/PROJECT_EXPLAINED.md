@@ -48,7 +48,7 @@ is still in progress. No AI-generated SQL has been executed.
 
 Where we are: 6 of the 12 numbered foundation tasks are complete. Inside the
 next task, the query guard and limited runner now pass their real database checks.
-The runner's final review is next. This does not mean half the project is done: the agent,
+The runner's final review is complete. This does not mean half the project is done: the agent,
 experiments, website and release still come later. We are building the first
 small working demonstration before expanding.
 
@@ -429,6 +429,27 @@ This finishes the runner's three build/test subtasks. One final read-only review
 comes next. The answer checker and command-line demonstration are still needed
 before the AI can safely run a database query.
 
+### G0.7a, executor final review — Check the finished runner once more
+
+What was done: an independent read-only review checked the finished runner,
+its plan and tests. It found no concrete issue to fix and ran all 144 focused
+runner/settings checks successfully. It did not use your passwords or load a model.
+
+I then reran the full project tests: all 529 passed, including 141 checks using
+real PostgreSQL. The code-style and saved-package checks also passed. The database
+is healthy and the model remains unloaded. Your rotated test password works,
+and the previous one is no longer valid.
+
+What this does not prove: answer-size limits are not a guarantee that the program
+can never use too much memory. Work estimates can be wrong. Database administrator
+logs have their own rules. Other datasets, the answer checker, AI loop and website
+still need their own checks. These limits are recorded in the technical decisions.
+
+The code stays on your existing local branch. Nothing was uploaded, merged or
+deleted. The project reused its existing checker and database packages instead
+of adding new ones. The final review completes the limited runner, not the whole
+foundation group. Next is the answer checker, then the first command-line demo.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -677,9 +698,8 @@ feature has already been implemented.
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
 final review fixes, are complete. You approved the runner plan, and its answer-size
-rules, guarded workflow and real recovery tests are complete. Next is one final
-runner review.
-After that come the answer checker and a small command-line
+rules, guarded workflow, real recovery tests and final review are complete.
+Next come the answer checker and a small command-line
 question-to-database demonstration. The rest
 of the data, agent loop, website, broader attack suite and release come later.
 

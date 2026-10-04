@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 4–6 and 11; [AGENTS](../../../AGENTS.md); [DECISIONS](../../DECISIONS.md), D-003/D-015–D-018. The already approved specification supplies the design; this plan does not change the benchmark or authorize a model-connected SQL run.
 
-**Status:** Kunal's "continue with progress" after the written handoff approves native execution on 2026-10-04. Tasks 1–3 are complete: 94 executor units, 50 limits controls and 18 actual executor checks; latest full suite 529 passes with 141 actual PostgreSQL checks and zero skips. The final read-only review remains. D-020/D-021 record style/fixture deviations and the separately approved test-password rotation; private pytest runs now use --tb=line. Implementation baseline: clean feat/foundation at df07434, 407 passes including 123 actual PostgreSQL checks. Comparator and CLI remain separate.
+**Status:** Complete on 2026-10-04 after Kunal's continue approval, three native tasks and the single final read-only review. No Critical/Important/Minor finding; reviewer independently passed 144 deterministic checks. Executor units 94, limits controls 50, actual executor checks 18; fresh full suite 529 passes, 141 actual PostgreSQL, zero skips (18.43s). D-020–D-022 record all deviations/review rulings, residual limits and separately approved test-password rotation; private pytest runs use --tb=line. Implementation range df07434..0e9df33. Comparator/CLI remain separate and generated SQL remains prohibited. Do not rerun this plan or dispatch another review.
 
 ## Global Constraints
 
@@ -1383,6 +1383,13 @@ git log -1 --format=%B
 ```
 
 ## Final handoff after approved execution
+
+Execution completed: Tasks 1–3 committed at 3f005c8, f52bbe6 and 0e9df33.
+The single fresh review is complete; all seven declined-to-judge items are ruled
+on in D-022, with no actionable findings or deferred minors. Final suite and
+required checks pass. Retain the current branch and ignored scratch under the
+owner's workspace/G7/destructive-work rules; do not repeat tasks or review.
+The procedure below is retained as the original execution contract.
 
 Follow executing-plans: one fresh read-only whole-branch reviewer, re-grade findings,
 one RED-to-GREEN fix pass for Critical/Important issues, and ledger every ruling/
