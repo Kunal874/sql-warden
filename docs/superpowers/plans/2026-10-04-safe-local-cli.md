@@ -1291,7 +1291,7 @@ git status --short
 **Consumes:** exact Task 2 flow with a trusted fake provider for real PostgreSQL tests; real LocalQwen for only the frozen one-question smoke. No gold/comparator input.
 **Produces:** actual typed-result/failure/recovery evidence and one honest live outcome; no accuracy percentage, voting agreement, benchmark freeze or E0 result.
 
-- [ ] **Step 1: Write and run these actual controls before any live model SQL.**
+- [x] **Step 1: Write and run these actual controls before any live model SQL.**
 
 ```python
 import os
@@ -1364,7 +1364,7 @@ missing, fail rather than invent security evidence. These are fixed fake-provide
 controls, not live model accuracy. The independent guard/executor suite still owns
 backend cancellation/same-pool replacement; this CLI does not add an alternate pool.
 
-- [ ] **Step 2: Prepare only the new runtime file; verify separation without printing it.**
+- [x] **Step 2: Prepare only the new runtime file; verify separation without printing it.**
 
 ```powershell
 uv run python -m scripts.prepare_cli_runtime
@@ -1378,7 +1378,7 @@ If a file already exists or inherited WARDEN/setup variables are present, report
 the named configuration conflict; do not overwrite credentials or change global
 environment settings. Tests may sanitize their child environment, not the user's.
 
-- [ ] **Step 3: Freeze and execute exactly one live question.**
+- [x] **Step 3: Freeze and execute exactly one live question.**
 
 Freeze before calling: self-authored question `How many rows are in the schools table?`,
 db_id `california_schools`, expected offline scalar 17686 from the existing verified
@@ -1412,7 +1412,7 @@ native Ollama command, bounded by a 5s process timeout; observe `/api/ps`/`ollam
 If not confirmed unloaded, record the remaining state and request direction;
 never stop another model or claim client cancellation killed server work.
 
-- [ ] **Step 4: Verify all code and scope, update evidence, commit.**
+- [x] **Step 4: Verify all code and scope, update evidence, commit.**
 
 ```powershell
 uv sync --locked

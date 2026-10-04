@@ -761,6 +761,29 @@ the already recorded test-step-order/shared-private-key rulings in D-028; there
 is no additional architecture/dependency/scope ruling. Task 3 and sole final
 read-only review remain, so G0.7a is still open and G0 remains 6/12.
 
+## D-030 — actual CLI controls and one successful local demonstration (2026-10-04)
+
+All 7 fixed-provider CLI PostgreSQL controls and full 689-test configured suite
+passed before the only live generation. Authorized exclusive runtime copy
+contains only the existing restricted password under its runtime key, private/
+ignored, validated without setup/test envs. No password/grant/volume change.
+
+One frozen self-authored question answered/ok, matching offline scalar 17686,
+11.387s whole-process wall time, one preload/one generation, 89/18 actual tokens.
+Immutable guard and existing fixed executor were used; reference count/gold/data/
+credentials were not inference inputs. CLI_SMOKE records actual pins/hashes and
+limitations. This is not EX/accuracy/consensus/semantic correctness in general.
+
+- Task 3: Ruling: bounded Start-Process stop helper was tool-policy rejected before execution; do not retry via another launcher, observe finite keep-alive automatic unload through read-only /api/ps instead — preserve tool controls and actual cleanup evidence — cost if wrong: GPU stays occupied longer and acceptance stays incomplete if unload is unconfirmed; explicit stop timing is unavailable.
+
+Actual /api/ps after the answer showed only the project alias/context2048 and
+finite expiry 22:34:55.5704569+05:30. At 22:35:16.9458759+05:30, read-only /api/ps
+returned models=[]: automatic unload confirmed, no explicit stop timing claimed.
+Sole final review is pending; HTTP close alone was not used as GPU evidence.
+Post-live full configured suite 689/689 (27.37s); no-env 524/165 skipped, setup-only
+567/122 skipped. Lint/27-file format/whitespace pass. Historical inputs/existing
+boundaries unchanged, no remote/push. G0.7a still open pending remaining gates.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

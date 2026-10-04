@@ -6,9 +6,11 @@ versioned BIRD Mini-Dev evaluations and tests of database isolation and SQL cont
 
 ## Current status
 
-The foundation and local CLI pass 682 configured tests, including 158
-real PostgreSQL checks (2026-10-04) and 39 deterministic CLI flow checks;
-live acceptance is pending. The local database
+The foundation and local CLI pass 689 configured tests, including 165
+real PostgreSQL checks (2026-10-04) and 39 deterministic CLI flow checks.
+One bounded local AI/database question returned the expected count of 17,686;
+[compact evidence](docs/CLI_SMOKE.md) records the exact scope and limits.
+Automatic model unload is confirmed; final review is pending. The local database
 is PostgreSQL 16.15 on 127.0.0.1:55432.
 There are no text-to-SQL accuracy results or
 published security measurements yet. The first milestone is one real database
@@ -25,7 +27,8 @@ No downloaded SQL dump has been executed.
 
 The first local Qwen smoke passed six tiny warm requests, including text/JSON
 responses and an output cap; the first cold request timed out. [Model evidence](docs/MODELS.md)
-records the exact artifact, memory and limitations. No model-generated SQL has run.
+records the exact artifact, memory and limitations. The separate CLI demo has now
+run one guarded model-generated query, not an accuracy benchmark.
 
 The intended stack is Python 3.12, FastAPI, PostgreSQL 16, sqlglot and the official
 OpenAI Python SDK against native Ollama. React 18, TypeScript and Vite follow after
@@ -60,8 +63,9 @@ flow, separate 5s HTTP close, and existing database limits (1,000 rows, 2MiB,
 or heap isolation. HTTP close does not prove server cancellation or GPU unload.
 Interactive use retains Ollama's finite keep-alive; unload only this alias when
 finished and check `ollama ps`. No other model/apps/global settings are changed.
-Task 3 will run actual controls before the one approved live question; these
-commands have not run as live acceptance yet.
+Task 3 ran actual controls before the one approved live question. That question
+passed once; no automatic repeat/retry is authorized by this acceptance record.
+The runtime file exists locally: do not rerun the exclusive copy helper.
 
 ## Development
 

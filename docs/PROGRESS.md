@@ -6,12 +6,13 @@ amends their order and checks.
 
 Current group: G0. Kunal approved the dated safe-local-CLI plan, openai/httpx,
 exclusive runtime-only restricted credential copy and one bounded live test.
-Task 1 provider is committed at 227f869. Task 2 CLI/setup-helper passes 39
-deterministic flow checks; client + CLI 76/76. Latest full configured checkpoint
-is 682 passed/zero skips; Task 2 no-env suite 524 passed/158 skipped.
-Guard/runner/checker remain complete; actual CLI controls/live acceptance are next.
-Native sequential execution stays selected. No AI-generated SQL or benchmark
-score exists. G0.7a is not complete.
+Task 1 provider is committed at 227f869; Task 2 CLI at f8b8150. Task 3 actual
+CLI controls pass 7/7; full suite 689 passed/zero skips including 165 actual
+PostgreSQL checks. The sole approved live question answered the expected count
+17686 in 11.387s, one preload/one generation, 89/18 reported tokens. See CLI_SMOKE.
+Runtime-only copy is private/ignored. Explicit unload helper was tool-blocked;
+automatic unload confirmed at 22:35:16.9458759+05:30; sole final review is pending. G0.7a remains
+open, native sequential execution selected, no benchmark score exists.
 Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
 interview drill; guard, runner and comparator are complete inside the next item.
 This is checklist coverage, not half the project's effort. G1–G5/G7 remain unfinished.
@@ -146,6 +147,36 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — safe local CLI Task 3 / actual controls and sole live question
+
+Task 2 saved at f8b8150 (Kunal identity/body verified), task-done repeats all
+76 checks successfully. Actual fixed-provider CLI controls 7/7 (3.89s), full
+configured suite 689/689 (18.51s) BEFORE live inference. Read-only preflight:
+Ollama 0.35.1, existing exact pin, /api/ps empty; healthy PG loopback 55432 and
+sqlwarden_pg16_data retained. Setup helper exclusively creates new ignored
+.env.runtime; runtime-only validation passes, no displayed values/grant/rotation.
+
+Exactly one frozen self-authored question at 22:29:44.4410470+05:30: How many rows
+are in the schools table? Model receives SYSTEM + question only, not offline
+17686/gold/rows/password/labels. Actual exit 0 answered/ok; validate -> generate ->
+guard -> cost_execute -> answered, one complete scalar matches offline count.
+One admitted preload/one generation, usage 89 prompt/18 completion tokens,
+HTTP close confirmed. 11.387s is whole-process wall time, not isolated inference.
+No retry/repair/tuning/model fallback; compact fingerprints in CLI_SMOKE, no raw run.
+
+Bounded project-only Start-Process stop was rejected by tool policy before it ran.
+No alternative launcher attempted. Read-only /api/ps shows project alias alone,
+context 2048, 4628519320 GPU bytes and expiry 22:34:55.5704569+05:30. Actual
+automatic unload was then observed as recorded below; no explicit-stop latency.
+
+Post-live checks: locked sync; no-env 524 passed/165 skipped (5.11s); setup-only
+567 passed/122 skipped (8.40s); both private test environments 689 passed/zero
+skips (27.37s); lint/27-file format/whitespace pass. Original three planning
+files and guard/executor/comparator/config unchanged; no remote. Sole final
+read-only review follows Task 3 commit; G0.7a stays open. Read-only /api/ps
+at 22:35:16.9458759+05:30 returned models=[]: actual automatic unload confirmed.
+No explicit stop/process timing claimed; the blocked command was never retried.
 
 ### 2026-10-04 — safe local CLI Task 2 / validated one-shot flow
 
@@ -930,9 +961,11 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Active approved work: safe-local-CLI Task 1 provider/Task 2 CLI are verified;
-next Task 3 actual controls and exactly one live question. No runtime file or
-live AI/database call yet. Resume this plan's
+Active approved work: all three safe-local-CLI tasks' code/actual controls and
+the sole live question and automatic unload are verified; Task 3 commit and the
+sole final review are next. NEVER repeat the live question automatically.
+Runtime launcher is `uv run --env-file .env.runtime sqlwarden ask --db california_schools <question>`;
+never use setup/test envs. Resume this plan's
 ledger at .superpowers/sdd/2026-10-04-safe-local-cli/progress.md, reconcile Git.
 Do not repeat earlier reviews/import/rotation. Model remains unloaded; current
 test commands and explicit uv path below remain valid. SDK inherited private

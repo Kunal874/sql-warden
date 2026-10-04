@@ -35,7 +35,8 @@ It is not a finished public service yet.
 - A SQL guard checks query structure and allowed tables without connecting
   to a database or loading an AI model.
 - Small handwritten allowed queries have passed that guard and run with the
-  restricted database login and short time limits. No AI output was run.
+  restricted database login and short time limits. One AI-generated query has
+  now also passed the same guarded path and returned the expected school count.
 - Answer-size checks now handle row, byte and cell limits without returning
   a partial answer as a complete answer. The guarded runner now also passes
   real database tests for timeouts, cancellation and recovery.
@@ -44,12 +45,13 @@ It is not a finished public service yet.
   is complete; it reused existing Python tools without adding a package.
 - The local AI connection code now passes 37 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
-- The latest verified code checkpoint has 682 passing tests, including 158
+- The latest verified code checkpoint has 689 passing tests, including 165
   tests that connect to the real local PostgreSQL database.
 
-The AI question-answering flow, evaluation
-scores, website and public release are not finished yet. G0, the foundation group,
-is still in progress. No AI-generated SQL has been executed.
+The first narrow AI question-to-database flow works for one checked question.
+The full agent, evaluation scores, website and public release are not finished.
+G0, the foundation group, is still in progress. Model unload is confirmed;
+the final review is still needed for this demo's completion.
 
 Where we are: 6 of the 12 numbered foundation tasks are complete. Inside the
 next task, the query guard, limited runner and answer checker are checked and
@@ -61,8 +63,8 @@ You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
 actionable issues and repeated all 60 unit checks successfully.
 You approved the three-part AI command-line plan and its two software additions.
-The first two parts are checked: the bounded local AI connection and the safe
-command that connects it to the query runner. Trying one real question is next.
+All three parts' code and database checks pass, and the single real question
+worked. Model unload is confirmed; the final independent review is next.
 
 ## 3. Completed work, one step at a time
 
@@ -667,6 +669,33 @@ The **preview** shows at most 20 rows only after the whole bounded answer is
 received. It is a display shortcut, not a partial answer treated as complete.
 Token usage stays unavailable when the model does not report it.
 
+### G0.7a, AI demo Task 3 — Try one real question safely
+
+What happened: tried the agreed question, "How many rows are in the schools table?" The local
+AI suggested a query; the guard allowed it; the restricted runner executed it.
+It returned the expected count, 17,686. The entire command took 11.387 seconds,
+including startup and database work. There was one startup request and one AI
+answer request, with 89 input tokens and 18 output tokens reported by the model.
+We did not try again, change the prompt or send the expected answer to the AI.
+
+Before that: all seven real database command checks passed, then the whole
+689-test suite passed. Afterward it passed again, including 165 real database
+checks. A private runtime file holds only the existing restricted password;
+it was copied with your approval and is never uploaded or shown.
+
+An unload command was blocked by the tool before it ran. We are checking the
+model's automatic expiry instead; closing the connection is not proof the
+graphics memory is free. At 22:35:16, Ollama reported no loaded models, so
+automatic unload is confirmed. The final review is next.
+
+What this proves: our first small path works from an English question to a
+limited real database answer. What it does not prove: that the AI answers other
+questions correctly, that it is safe against every attack, or that the project
+is finished. An **acceptance check** means a particular agreed demonstration
+passed. A **benchmark** tests a frozen collection fairly and reports measured
+results; we have not done that yet. **Keep-alive** means Ollama temporarily
+keeps the model ready; it has a finite expiry rather than staying loaded forever.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -945,9 +974,9 @@ rules, guarded workflow, real recovery tests and final review are complete.
 The answer checker and its independent final review are also complete. It passes
 60 pure and 17 real database checks. The separate plan for a small command-line
 question-to-database demonstration is approved. Its local AI connection is now
-checked, and the safe command passes its flow tests. Next are real database
-controls for that command, a separate restricted-only settings file and exactly
-one limited local model question.
+checked, and the safe command passes its flow and real database tests. Its sole
+live question returned the expected answer and model unload is confirmed. Final
+review is next; afterward we resume the remaining foundation/data/model work.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date
