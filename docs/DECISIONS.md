@@ -634,6 +634,81 @@ review of that new artifact before implementation. Do not repeat the completed
 comparator, guard, executor or import tasks/reviews. Broader validity, voting,
 evaluation, tenant isolation, agent, UI and release remain their own milestones.
 
+## D-027 — safe local CLI preparation and review gate (2026-10-04)
+
+Context: the guard, executor and pinned comparator are complete/reviewed; the
+exact Handoff at 9b8205f is preparation of a separate safe one-database model/CLI
+plan. Kunal's current "proceed" authorizes that preparation. BUILD_SPEC already
+approves the architecture/native method, but no new artifact or direct dependency
+approval is inferred. G0 remains 6/12 numbered items; G0.7a is open.
+
+Decision: prepare/self-review
+[2026-10-04-safe-local-cli.md](superpowers/plans/2026-10-04-safe-local-cli.md), then
+pause for Kunal's review. Three sequential tasks: fixed local provider; validated
+single-candidate CLI and setup helper; real controls and one live demonstration.
+Ponytail keeps one provider and existing guard/executor without registry, cache,
+repair, retrieval, voting or orchestration framework. No online reference/comparator
+input, confidence/EX score, raw-SQL flag or expanded agent milestone.
+
+Options considered: standard-library HTTP spike, official SDK with HTTPX, or
+full provider/agent infrastructure. Recommend official SDK/HTTPX as the existing
+plan's public client/transport seam; the old smoke spike is not a second runtime.
+Proposed additions openai>=2,<3 and httpx>=0.28,<1 are absent locally and require
+explicit approval before uv resolves/locks them. Inspect installed public API,
+Python compatibility, transitive packages and license metadata before coding;
+do not claim the proposed calls ran or exact package versions are known now.
+Cost: a larger dependency tree than stdlib, justified by the approved SDK contract;
+no paid service, account, API key or hosted inference is requested.
+
+Initial prompt is generate_smoke_v1 with only verified native
+schools(cdscode, county, school, city) names/types. A 1024-byte content rule with
+128 output tokens leaves generous headroom in the unchanged 2048-context alias,
+but is not an exact tokenizer/provider-truncation proof. Report actual tiny
+request usage; reject overflow, never silently trim. Cost: only a narrow demo;
+no full 89-column schema, retrieval, full-schema baseline or general accuracy.
+G1.4 still owns the full versioned prompt-file set.
+
+Credential options: launch with setup/test files (rejected), manually retype the
+same restricted value, or exclusive setup-only copy into a new ignored .env.runtime.
+Recommend the copy after approval, containing only WARDEN_RUNTIME_CALIFORNIA_PASSWORD;
+refuse existing files and wrong/inherited setup keys, never import the helper from
+runtime. It reads only .env.california during setup and changes no database password
+or grant. Cost: one additional private local credential file; runtime never receives
+the administrator/test environment. No credential copy/display or runtime-file
+creation happened now; existing private configuration was used only by tests.
+
+Budget/readiness options: reuse a single 60s cold deadline, unlimited startup/
+retry, or separate finite phases. Prior cold startup exceeded 60s; recommend 90s
+readiness, 60s generation, 180s enclosing request, existing QueryLimits and 5s HTTP
+close. Optional one empty-prompt preload, one generation attempt, no SDK/transport
+retries/proxies/redirects and a 64KiB uncompressed response cap. Attempts admitted
+are not completed work; mock transport counts real HTTP calls. Unavailable usage
+or interrupted counters remain null. Cost: finite cold-start failure may still
+occur; cooperative/chunk bounds are not hard process/heap isolation.
+
+Cancellation/HTTP close does not prove Ollama stopped GPU/server work. The proposed
+one-question acceptance requires stopping only the existing project alias and
+observing actual unload; if unconfirmed, report it and ask. Never stop someone
+else's model, close apps, redownload weights or modify global Ollama settings.
+Local metadata pins assume trusted Ollama and do not lock out privileged/concurrent
+changes. Cost: residual races/server work remain possible and honestly documented.
+
+Evidence: unchanged code passes 606 configured tests (13.50s), zero skips,
+158 actual PostgreSQL checks; no-env 448/158 skipped (3.32s), setup-only 491/115
+skipped (3.91s); locked sync/lint/21-file format/whitespace pass. Eight plan fences
+parse and six assembled proposed files pass static lint/format only. Self-review
+fixed planned callback bindings and mapped all five Review Focus tests; no SDK,
+future tests or model/CLI snippets were executed. No independent preparation
+reviewer, repeated foundation review or parallel implementation.
+
+Pending: Kunal's review of this new plan, direct additions, exclusive runtime-only
+copy and exactly one frozen question: "How many rows are in the schools table?"
+Expected offline scalar 17686 is not sent to the model. Run actual PostgreSQL
+controls first; failed/blocked/wrong live output keeps G0.7a open, no silent retry.
+One final read-only review after all three tasks, not per-task reviews. Current
+work changes only preparation/progress/decision/learning documents; no code,
+dependency, credential, model, database, benchmark, remote/push or release action.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

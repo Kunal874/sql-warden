@@ -58,7 +58,9 @@ small working demonstration before expanding.
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
 actionable issues and repeated all 60 unit checks successfully.
-The AI command-line demo is not built yet.
+The AI command-line demo is not built yet. Its separate three-part plan is now
+written and checked. Your review of that plan and its two software additions is
+needed before building it.
 
 ## 3. Completed work, one step at a time
 
@@ -574,6 +576,47 @@ New term: **read-only code review** means checking the code and evidence without
 changing project files, passwords or data. It gives another check, not a promise
 that every possible problem has been found.
 
+### G0.7a, AI demo preparation — Plan the first question-to-database flow
+
+What was done: wrote and checked a three-part plan. First, build the small piece
+that talks to the existing local Qwen model. Second, connect it to a command-line
+tool that accepts one question and uses the already tested guard and query runner.
+Third, check that flow with the real database, then try just one real model question.
+Nothing in that new plan has been built or run yet.
+
+Why: the model must not get extra permissions just because it writes the SQL.
+The first demo will use the same restricted login, query checks and answer-size
+limits as the handwritten tests. It has no "run any SQL" switch or unlimited
+retry. One successful answer would show the pieces work together; it would not
+prove the AI answers most questions correctly.
+
+The first model prompt will describe only four columns of the schools table.
+It is like giving someone a small, clear map for one exercise, not the full map
+of the database. The proposed question is "How many rows are in the schools
+table?" The model will not be told the expected answer or the database password.
+
+The plan proposes two packages, openai and httpx. A package is reusable software.
+The first gives a standard way to send model requests; the second carries those
+requests. Despite the openai package name, this plan sends the prompt only to
+Ollama on your laptop, not a paid online service. They are not installed yet.
+Their actual versions and behavior will be checked after your approval.
+
+The demo would also get its own private runtime settings file. A setup-only
+helper would copy just the existing restricted password into that new file,
+without changing the password or copying administrator settings. It will refuse
+to overwrite an existing file. No new settings file was created, and no password
+was copied or shown in this step. Existing private settings were used only for tests.
+
+Checked: all eight Python examples in the plan have valid syntax, and the six
+planned files pass static style checks. This is checking the instructions, not
+running the future feature. The existing project still passes 606 tests, including
+158 real database checks. No new model question or AI-written SQL was run.
+
+Next: review the [AI demo plan](../docs/superpowers/plans/2026-10-04-safe-local-cli.md).
+After approval, build and test its three small parts one at a time. The foundation
+is still 6 of 12 numbered tasks complete; the rest of the agent, experiments and
+website are not finished. The plan keeps the demo small and reuses existing code.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -637,6 +680,20 @@ feature has already been implemented.
   such as SQL referring to a column that does not exist.
 - **Smoke test:** a small check that something starts and responds. It is
   not a full accuracy test or proof that it works for every question.
+- **SDK (software development kit):** a toolbox of ready-made code for talking
+  to a system. An SDK's brand name does not decide where a request is sent.
+- **Model client:** the part of our program that sends a request to the model
+  and reads its reply. It does not give the model database permissions.
+- **Schema capsule:** a small description of chosen tables and columns. This
+  demo's capsule is not the full database description or a search system.
+- **Warmup / preload:** loading the model into working memory before asking a
+  question. It can take time and is counted separately from a question attempt.
+- **Output cap:** a maximum answer size. If an answer stops because it hits the
+  cap, we must not pretend the incomplete text is a complete SQL query.
+- **Token usage:** the number of text pieces reported for the input and output.
+  If that number is missing, `null` means "we do not know," not "it used zero."
+- **Attempt budget:** the maximum number of requests we allow. Starting one
+  attempt does not mean the server finished it or produced a correct answer.
 
 ### How the future SQLWarden agent will work
 
@@ -836,10 +893,11 @@ G0.6a's first model smoke and G0.7a's guard, including real-database checks and
 final review fixes, are complete. You approved the runner plan, and its answer-size
 rules, guarded workflow, real recovery tests and final review are complete.
 The answer checker and its independent final review are also complete. It passes
-60 pure and 17 real database checks. Next is a separate reviewed plan for a small
-command-line question-to-database demonstration, followed by its implementation.
-The rest
-of the data, agent loop, website, broader attack suite and release come later.
+60 pure and 17 real database checks. The separate plan for a small command-line
+question-to-database demonstration is prepared and checked; your review is next.
+It includes the two proposed packages, a separate restricted-only settings file
+and one limited local model question. Implementation starts after approval.
+The rest of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date
 

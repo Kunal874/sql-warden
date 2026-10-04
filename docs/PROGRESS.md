@@ -5,12 +5,13 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 amends their order and checks.
 
 Current group: G0. Last completed implementation commit: comparator Task 2 at
-7d26e77; both tasks and their task-done gates are complete. The single final
-read-only review found no actionable findings. Latest full suite: 606 passed,
-zero skips, including 158 actual PostgreSQL checks. Kunal's "yes do it" approved
-this plan; native execution/dependencies stay selected. Guard/runner/checker are complete.
-The safe CLI follows separately; no AI-generated SQL or benchmark score exists.
-G0.7a is not complete.
+7d26e77; its sole final review and learning handoff are recorded at 9b8205f.
+Guard/runner/checker are complete. Latest full suite: 606 passed, zero skips,
+including 158 actual PostgreSQL checks. The separate safe local CLI plan is
+prepared/self-reviewed, not implemented or approved. Its new dependency pair,
+runtime-only credential copy and one bounded live question need Kunal's review.
+Native sequential execution stays selected. No AI-generated SQL or benchmark
+score exists. G0.7a is not complete.
 Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
 interview drill; guard, runner and comparator are complete inside the next item.
 This is checklist coverage, not half the project's effort. G1–G5/G7 remain unfinished.
@@ -56,6 +57,8 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Verify comparator acceptance with actual restricted PostgreSQL (17 checks).
   - [x] Complete the single final comparator review; no actionable findings.
   - [x] Implement/verify the pinned EX comparator.
+  - [x] Prepare/self-review the separate safe local model/CLI plan.
+  - [ ] Review/approve that new artifact, openai/httpx additions and bounded acceptance operations.
   - [ ] Build the safe one-database model/CLI flow; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
@@ -141,6 +144,54 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — safe local CLI preparation and review gate
+
+Resumed the exact comparator Handoff at clean feat/foundation, 9b8205f; read
+BUILD_SPEC/PROGRESS/DECISIONS and reconciled the completed guard/runner/checker
+with Git. No reimplementation, new worktree, reviewer or parallel implementation.
+Architecture/native execution stay approved; a new artifact is not automatically
+approved by the earlier comparator approval or current "proceed".
+
+Prepared/self-reviewed [safe local CLI plan](superpowers/plans/2026-10-04-safe-local-cli.md):
+three sequential tasks for the fixed local SDK provider, validated one-shot CLI,
+then actual PostgreSQL controls and one frozen live question. Reuse guard/executor;
+no raw-SQL flag, cache, retrieval, voting, repair, gold/reference input or hosted
+fallback. Proposed direct additions are openai>=2,<3 and httpx>=0.28,<1; both are
+absent locally. Installed public API/license/lock checks occur only after approval.
+Official SDK, Ollama and HTTPX source links are saved in the plan.
+
+The fixed four-column native schema capsule is not the full schema or E0 baseline.
+Input bytes/output tokens, startup/generation/enclosing/cleanup deadlines, one
+admitted generation attempt and optional one preload are explicit. Mock transport
+tests own actual HTTP-request counts. Unknown usage/attempts are null, not zero.
+HTTP close is separate from GPU unload; observe the project alias unloaded after
+the one live acceptance probe. No inference requests, model load or generated SQL this turn.
+
+Proposed setup-only helper exclusively creates ignored .env.runtime with only the
+existing restricted credential under WARDEN_RUNTIME_CALIFORNIA_PASSWORD. It never
+changes a password/grant or launches inference with .env.setup/.env.california.
+No credential was displayed/copied and no runtime file was created during preparation.
+The existing private test configuration was consumed only by the test launcher.
+
+Inline self-review mapped all five Review Focus conditions to concrete tests,
+checked interfaces, fixed planned callbacks' unbound loop variables and clarified
+attempt/cleanup semantics. All eight Python fences parse; six assembled proposed
+files pass static lint/format using the existing tools, without executing/importing
+their snippets. These checks do not prove SDK or future CLI behavior. A checker-only
+mixed-line-ending mismatch from PowerShell stdin was corrected without source edits.
+
+Current unchanged code: locked sync passes; no-env 448 passed/158 skipped (3.32s),
+setup-only 491 passed/115 skipped (3.91s), full both-env 606 passed/zero skips
+(13.50s), including 158 actual PostgreSQL checks. Lint, 21-file format and whitespace
+pass. PostgreSQL remains healthy on loopback 55432 with sqlwarden_pg16_data;
+Ollama has no loaded model. No source/test/dependency/lock, historical input, data,
+grant/credential, model, remote/push/publication, history edit or deletion.
+
+D-027 records choices, tradeoffs, residual limits and the pending approval gate.
+Learning notebook updated for the completed preparation only. G0 remains 6/12
+numbered top-level items complete; G0.7a and the model/CLI remain open. Pause for
+Kunal's review of the new written artifact and proposed additions/operations.
 
 ### 2026-10-04 — comparator final review and local-only handoff
 
@@ -834,13 +885,21 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: prepare/self-review a separate safe one-database model/CLI plan against
-BUILD_SPEC, then request Kunal's review of that new artifact before coding. The
+Next: obtain Kunal's review of the prepared/self-reviewed
+[safe local CLI plan](superpowers/plans/2026-10-04-safe-local-cli.md), proposed
+openai>=2,<3/httpx>=0.28,<1 direct additions, exclusive runtime-only credential
+copy and one bounded self-authored live question. Implementation is pending:
+do not install/import new packages, create .env.runtime, load the model or run
+generated SQL before that approval. After approval, execute the three tasks
+sequentially here, tests first; inspect the resolved SDK contract before using it.
+Keep the already selected native method; do not reopen method or completed-plan
+dependency decisions. D-027 contains the preparation choices and residual limits.
+The
 [comparator plan](superpowers/plans/2026-10-04-ex-comparator.md) is complete:
 Task 1 at a7be998, Task 2 at 7d26e77, both task-done gates and the sole final
 read-only review of 1ffb81d..7d26e77 pass. No actionable findings or deferred minors.
 60 pure checks and 17 actual comparator controls; latest full configured suite
-606 passed, zero skips (17.51s), including 158 actual PostgreSQL checks.
+606 passed, zero skips (13.50s in CLI preparation), including 158 actual PostgreSQL checks.
 Do not redo the tasks or dispatch another comparator reviewer. Preserve ignored
 .superpowers/sdd/2026-10-04-ex-comparator without deletion. D-023–D-026 hold scope,
 evidence and every ruling/cost; no method/dependency question remains for this
