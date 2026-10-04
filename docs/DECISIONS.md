@@ -477,6 +477,60 @@ Final rulings continue D-020/D-021, in decision order:
 All rulings are also retained in ignored .superpowers/sdd/2026-10-04-bounded-sql-executor.
 No merge, remote, push, pull request, publication, history edit or scratch deletion.
 
+## D-023 — pinned EX comparator preparation and review gate (2026-10-04)
+
+Context: Kunal asks to continue after the completed executor increment at
+92ad554. G0.7a next needs the official EX checker before a safe model/CLI slice.
+The approved BUILD_SPEC already specifies this architectural subsystem; native
+sequential execution remains selected in the existing checkout under D-003.
+The Handoff and writing-plans require review of a newly written plan before coding.
+
+Options: independently reproduce the tiny pinned equality rule over complete
+typed results; copy/run the upstream database/evaluation runner; or introduce
+rounding/type-tag/duplicate-preserving canonicalization for all comparisons.
+The latter two would add inappropriate drivers/connection paths or change EX.
+
+Preparation choice: write/self-review a two-task plan using existing QueryResult
+and stdlib sets; do not implement it before Kunal reviews the new artifact. Source
+revision abd11b6db92a1c9f809b32f7564c7c71b34d67f0 and both in-memory byte/hash
+checks match EX_COMPARATOR.md. Preserve row-set/Python equality without extra
+rounding, column matching or normalization. Retain primary citations without
+vendoring or executing the upstream runner. No direct dependency or benchmark
+change is proposed. Ponytail favors this existing-container/small-function design.
+
+Proposed wrapper: usable reference first; successful complete row sets produce
+match=1 or mismatch=0. Non-ok predictions produce prediction_failed=0 even with
+a matching retained prefix; ordinary malformed/hash errors produce comparison_error=0.
+A failed/malformed reference produces gold_invalid=None, not an automatic
+exclusion. The later frozen validity manifest owns reference failures/denominators;
+pending/interrupted jobs remain pending in the future orchestration. Voting stays
+separate and must not see reference data. These are proposed implementation
+contracts consistent with BUILD_SPEC, not approval to freeze/exclude/score data.
+
+Rationale: compare complete typed cells, not the executor's sizing strings, and
+keep errors fixed and private. All five Review Focus conditions have concrete
+planned controls: 60 units and 17 restricted PostgreSQL cases. Three Python
+fences pass syntax and snippet lint/format without execution; the proposed absent
+module's first-party classification is explicit only in that lint invocation.
+All 24 successful-pair SQL inputs pass the pure guard without database I/O.
+No new test or runtime module exists yet. Existing full verification passes 529
+tests, including 141 actual PostgreSQL controls, with zero skips (13.14s).
+
+Cost if wrong: a caller could forge an internal ok result, expose the offline
+reference path, silently discard gold-invalid items, or mistake EX for voting.
+Native cell types can differ from source-dialect results; this does not establish
+conversion validity or an official leaderboard score. Set construction allocates
+additional memory and has no hard Python process deadline. Keep the trusted
+constructor/offline boundaries and require later cache/manifest/CLI wiring checks.
+These bounded checks are not an exhaustive SQL or information-flow audit.
+
+Approval state: awaiting Kunal's review of
+docs/superpowers/plans/2026-10-04-ex-comparator.md. No execution-method/dependency
+question is reopened, and no parallel implementation or preparation reviewer
+was used. Data, credentials, grants, dependency files and historical plans remain
+unchanged; no generated SQL, model load, benchmark run, remote/push/publication,
+history edit or deletion. Comparator/CLI and G0.7a remain unfinished.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

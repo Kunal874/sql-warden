@@ -52,6 +52,10 @@ The runner's final review is complete. This does not mean half the project is do
 experiments, website and release still come later. We are building the first
 small working demonstration before expanding.
 
+The next answer-checker plan is now written and checked. It needs your review
+before coding starts. The answer checker itself and AI command-line demo are
+not built yet.
+
 ## 3. Completed work, one step at a time
 
 ### G0.1 — Check the laptop and agree on the basics
@@ -450,6 +454,37 @@ deleted. The project reused its existing checker and database packages instead
 of adding new ones. The final review completes the limited runner, not the whole
 foundation group. Next is the answer checker, then the first command-line demo.
 
+### G0.7a, answer-checker preparation — Plan how to check an answer
+
+What was done: wrote the next two-part plan. First, build a small answer checker.
+Then, check it using small handwritten queries on the real database. The checker
+will use the complete answers from our existing runner, not just the first page.
+No new package, AI model load or database change was needed for this preparation.
+
+Why: we need a clear rule before saying an AI answer is correct. I rechecked the
+saved BIRD rule: row order and repeated copies of a row do not matter, but the
+order of values inside a row does. For example, rows [1, 2] and [2, 1] are not
+the same two-column answer. Close-looking numbers will not be rounded into a match.
+An empty answer can be correct. A failed or oversized answer cannot count as correct.
+
+If the reference answer fails, the checker will flag it as not ready for scoring.
+That does not mean deleting the question or changing the number of test questions.
+Those decisions belong to the later fixed benchmark rules. The reference answer
+must never be shown to the AI while it is answering or fixing a query.
+
+Checked: the original comparison files still have their saved fingerprints.
+The three planned Python examples pass syntax and code-style checks without being
+run. The plan contains 60 future unit checks and 17 future real-database checks;
+these have not passed yet because the checker has not been implemented.
+All 529 existing project tests passed again, including 141 real database checks.
+Without private test configuration, 388 passed and 141 skipped; with setup only,
+431 passed and 98 skipped. No AI SQL or benchmark question was run.
+
+Read the [answer-checker plan](../docs/superpowers/plans/2026-10-04-ex-comparator.md).
+The writing-plans skill requires your review of this new plan before implementation.
+The already selected single-worker approach stays the same. This completes only
+the preparation subtask, not the checker or the foundation group.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -561,6 +596,12 @@ feature has already been implemented.
 - **Evaluation:** checking actual outputs against a fixed test method.
 - **EX (execution accuracy):** checking whether the generated query produces
   the expected result under the chosen comparison rules. No EX score exists yet.
+- **Comparator / answer checker:** code that decides whether two complete
+  answers match under a specific rule. It is not another AI model.
+- **Reference failure / gold validity:** the supplied answer can fail too.
+  We must check it and record the reason before measuring the AI's answers.
+- **Denominator:** the number of test questions a rate is measured over.
+  Quietly removing failed questions can make a score look better than it is.
 - **Baseline:** a simple starting version used for comparison with later changes.
 - **Ablation:** changing one part to measure its effect. Turning off security
   controls is allowed only in the separately controlled disposable attack setup.
@@ -649,6 +690,12 @@ feature has already been implemented.
 - **Tuple / set / multiset:** a row tuple keeps values in column order. A set
   keeps each distinct row once; a multiset also keeps how often a row repeats.
   The inspected BIRD EX rule uses sets, not multisets.
+- **Float / decimal:** a float stores an approximate number using binary digits.
+  A decimal can store an exact base-10 value. Two displayed numbers can look the
+  same but differ inside the computer; the planned checker will not hide that.
+- **NaN (not a number):** a special numeric value, not a blank or missing value.
+  Ordinary NaN values do not equal each other. Python's containers can still
+  recognize the very same NaN object; the checker must preserve the saved rule.
 - **Sandbox / restricted executor:** the controlled place where permitted
   queries will run with strict permissions and time/output limits.
 - **Connection pool:** a small set of database connections kept ready for reuse.
@@ -699,8 +746,9 @@ feature has already been implemented.
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
 final review fixes, are complete. You approved the runner plan, and its answer-size
 rules, guarded workflow, real recovery tests and final review are complete.
-Next come the answer checker and a small command-line
-question-to-database demonstration. The rest
+The answer-checker plan is prepared and awaits your review; coding and real checks
+come after that. A small command-line question-to-database demonstration follows.
+The rest
 of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date
