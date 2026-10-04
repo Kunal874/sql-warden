@@ -163,7 +163,7 @@ in that subset. Its sorted IDs are:
 | thrombosis_prediction | 50 |
 | toxicology | 40 |
 
-Persisted corrected Arcwise intake, schema corrections, gold execution/conversion validity,
+Persisted corrected Arcwise intake (approved, Task 2 next), schema corrections, gold execution/conversion validity,
 split freezing and C1 decisions remain pending. No benchmark score, PostgreSQL
 gold-validity rate, ambiguity label or native/SQLite equivalence is claimed.
 
@@ -230,9 +230,18 @@ this inventory does not establish physical-table changes or correct column
 mapping. Schema-description inspection remains required separately.
 
 The [two-task intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md)
-is prepared for artifact review, not yet approved or implemented. It proposes
-saving only the four pinned resources (645,140 content bytes), strict offline
-ID/text-difference reporting and fake-network tests. No source SQL, SQLite gold,
+was approved by Kunal on 2026-10-05. Task 1's strict offline checker is implemented
+and passes 39 synthetic checks; Task 2's acquisition/actual acceptance is next.
+Only the four pinned resources (645,140 content bytes) may be saved in this
+increment. No source SQL, SQLite gold,
 PostgreSQL gold or model request ran during this inspection. Conversion survival,
 validity/exclusion policy, primary labels, ambiguity labels, family splits and C1
 remain undecided. No benchmark denominator or score has been changed.
+
+Task 1 accepts integer original IDs and strictly decimal corrected string IDs,
+rejects duplicate keys/IDs and malformed or unreviewed fields, and verifies exact
+local byte/hash pins before reporting. It matches by numeric ID and separately
+records database mismatches; identity alignment is not semantic alignment.
+Output contains aggregate counts and difference IDs, not question/evidence/SQL
+values. original_* anchors remain observational. No real correction bytes have
+been saved/accepted through this script yet, nor has any gold SQL been executed.

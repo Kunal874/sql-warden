@@ -18,11 +18,13 @@ interview drill. This is checklist coverage, not overall project effort.
 G0 data/validity/models/evaluation and G1–G5/G7 remain unfinished. No benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
-2026-10-05 continuation: completed remaining-G0.5 read-only preparation and
-prepared the two-task corrected-label intake plan for required artifact review.
-Fresh unchanged suite: 719 passes, zero skips (165 actual PostgreSQL, 19.64s).
-No new runtime/data-import/model step executed; G0 remains 7/12. D-032/DATA hold
-new source pins and baseline text drift; intake implementation awaits approval.
+2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
+Task 1's strict offline checker is implemented: 39 checks pass; no-env full suite
+593 passed/165 skipped (4.86s). Those skips are database checks, not passes.
+Last actual PostgreSQL checkpoint remains 719/719 before this change (19.64s).
+Task 2's four-file acquisition/actual alignment and sole final review come next.
+No new runtime/import/model step executed; G0 remains 7/12. D-032/D-033/DATA
+record scope, pins, boundaries and test-runner correction; no benchmark choice.
 
 ## Preflight evidence (2026-10-03)
 
@@ -154,6 +156,34 @@ new source pins and baseline text drift; intake implementation awaits approval.
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-05 — correction intake Task 1 / strict offline inspection
+
+Resumed clean feat/foundation at 399efed after Kunal's explicit proceed forward
+approved the existing two-task artifact. Reused this checkout under AGENTS/D-003;
+native sequential execution, no new dependency. Wrote all planned tests first;
+RED was the absent scripts.inspect_labels module (0.18s).
+
+Implemented bounded pinned reads, strict JSON/field/ID checks, exact ID/db joins,
+original per-database/difficulty counts and text/anchor-difference IDs only.
+Duplicate IDs/JSON keys, malformed IDs/types/required text, unreviewed fields,
+sizes/hashes and corruption are rejected. No source text, SQL or credentials in
+the report/errors. Gold labels remain offline; execution validity, primary labels,
+ambiguity classification and splits remain explicitly undecided. No correction
+corpus acquired or SQL/model/database operation run in this task.
+
+First GREEN attempt: 38 passed, two errors in one case's setup/teardown. Diagnostic
+reproduction traced pytest's default 600001-byte parameter name to Windows'
+32767-character environment-variable limit. Short explicit case IDs fixed the
+runner without changing the oversized fixture or decoder limit. The interim
+no-env suite was 592 passed/165 skipped/two errors; that failure is not hidden.
+Ruff's equivalent key-comparison orientation was also corrected. D-033 and the
+ignored task ledger record both rulings/costs.
+
+Verified: 39 label checks (0.10s); no-env suite 593 passed/165 skipped (4.86s),
+Ruff check and 29-file format check pass. Database tests were not rerun for this
+pure task; last actual checkpoint remains 719/719. Task 1 only is complete;
+Task 2 acceptance/review and remaining G0.5/C1 are unfinished. Notebook updated.
 
 ### 2026-10-05 — remaining G0.5 read-only preparation / new artifact checkpoint
 
@@ -1039,13 +1069,13 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: Kunal's artifact review of the new
+Current next action: Task 2 of Kunal's approved
 [corrected-label intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md),
-prepared 2026-10-05 at the preceding CLI checkpoint e46c4ba. D-032 records the
-required approval boundary. No approved implementation task is left in the old
+approved 2026-10-05 after preparation at 399efed. D-032/D-033 record its scope
+and Task 1's completed strict offline checker (39 passing checks). Do not repeat
+Task 1 or the preparation. No approved implementation task is left in the old
 CLI plan; do not replay it. Native sequential execution remains selected.
-After this exact artifact is approved, implement its two tasks test-first:
-strict offline report, then only the four pinned correction/license resources
+Implement Task 2 test-first: only the four pinned correction/license resources
 (645,140 content bytes) and actual offline acceptance. No new dependencies,
 database import/permissions/secret changes, model/SQL runs, benchmark selection,
 split freezing or publication. Raw sources stay ignored. Source pins, missing
@@ -1054,8 +1084,11 @@ in DATA; inspect descriptions and remaining import/conversion work in a later
 reviewed increment. G0.5/G0.5b remain incomplete, overall G0 checklist 7/12.
 Use uv run python -m scripts.fetch_labels / scripts.inspect_labels only after
 those scripts exist and approval; no env files needed. Do not repin changing
-bytes or overwrite existing artifacts automatically. Current fresh regression
-evidence is 719/719 with both setup/test envs, 165 actual PG, zero skips, 19.64s.
+bytes or overwrite existing artifacts automatically. Resume ledger
+.superpowers/sdd/2026-10-05-corrected-label-intake/progress.md, reconcile Git;
+complete the sole final review after both task commits. Fresh no-env regression
+593 passed/165 skipped (4.86s); last configured suite before Task 1 was 719/719
+with both setup/test envs, 165 actual PG, zero skips, 19.64s. Task 2 reruns it.
 Private tests always --tb=line, never --showlocals; no extra live inference.
 
 Safe-local-CLI plan is complete: tasks 227f869/f8b8150/3e1f72e and sole review's

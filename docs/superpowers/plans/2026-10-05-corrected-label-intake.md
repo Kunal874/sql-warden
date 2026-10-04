@@ -11,8 +11,8 @@
 **Spec:** docs/BUILD_SPEC.md sections 8, 10–12; AGENTS.md; D-032.
 This is the first bounded increment of remaining G0.5, not completion of G0.5/C1.
 
-**Status:** Prepared 2026-10-05; awaiting Kunal's artifact review/approval.
-The completed safe-CLI approval does not approve this acquisition or implementation.
+**Status:** Approved 2026-10-05 by Kunal's proceed forward after artifact review.
+Native sequential execution; only this plan's two tasks/acquisition scope approved.
 
 ## Global Constraints
 
@@ -117,7 +117,7 @@ A report labels execution_validity as not_run, primary_labels as not_selected,
 splits as not_frozen and ambiguity_labels as not_classified. identity_aligned_count
 checks ID/database only; it is not verified question or result validity.
 
-- [ ] **Step 1: Write all failing tests before source.**
+- [x] **Step 1: Write all failing tests before source.**
 
 Create tests/test_labels.py:
 
@@ -206,7 +206,11 @@ def test_fields_reject_unreviewed_shapes(change):
         parsed([record(**change)])
 
 
-@pytest.mark.parametrize("raw", [b"null", b"{}", b"[]", b"[NaN]", b"[", b"\xff", b" " * 600001])
+@pytest.mark.parametrize(
+    "raw",
+    [b"null", b"{}", b"[]", b"[NaN]", b"[", b"\xff", b" " * 600001],
+    ids=["null", "object", "empty", "constant", "broken", "invalid_utf8", "oversize"],
+)
 def test_invalid_documents_are_rejected(raw):
     with pytest.raises(LabelError):
         decode_labels(raw, corrected=False)
@@ -278,14 +282,14 @@ def test_local_inspection_checks_every_pin(tmp_path, monkeypatch):
         module.inspect_local(tmp_path)
 ~~~
 
-- [ ] **Step 2: Observe RED.**
+- [x] **Step 2: Observe RED.**
 
 Run uv run pytest tests/test_labels.py --tb=line.
 Expected import/collection failure because scripts.inspect_labels does not exist.
 If unrelated import/environment failure occurs, diagnose it rather than treating
 it as proof of these assertions.
 
-- [ ] **Step 3: Add the minimal complete offline implementation.**
+- [x] **Step 3: Add the minimal complete offline implementation.**
 
 Create scripts/inspect_labels.py:
 
@@ -473,7 +477,7 @@ if __name__ == "__main__":
     raise SystemExit(main())
 ~~~
 
-- [ ] **Step 4: Observe GREEN and run checks.**
+- [x] **Step 4: Observe GREEN and run checks.**
 
 Run uv run pytest tests/test_labels.py --tb=line.
 Then uv run ruff check . and uv run ruff format . followed by format --check.
@@ -482,7 +486,7 @@ No data acquisition for Task 1; absent correction files are expected until Task 
 The Step 1 local-file test checks every pin and rejects corruption before a
 report is returned; it belongs to the same RED gate as the pure tests.
 
-- [ ] **Step 5: Update notebook/progress/decisions, inspect and commit.**
+- [x] **Step 5: Update notebook/progress/decisions, inspect and commit.**
 
 Record actual tests and task-only completion; no G0.5 checkbox completion.
 Inspect git diff --check and entire staged diff (only these new files and four

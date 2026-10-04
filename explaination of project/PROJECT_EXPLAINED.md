@@ -47,6 +47,9 @@ It is not a finished public service yet.
   can make only one limited SQL suggestion and refuses unexpected model settings.
 - The latest verified code checkpoint has 719 passing tests, including 165
   tests that connect to the real local PostgreSQL database.
+- The new offline answer-file checker passes 39 checks. The latest run without
+  private test settings passed 593 tests and skipped 165 database checks; the
+  earlier 719-test real-database checkpoint above is not a fresh database run.
 
 The first narrow AI question-to-database flow works for one checked question.
 The full agent, evaluation scores, website and public release are not finished.
@@ -65,9 +68,9 @@ actionable issues and repeated all 60 unit checks successfully.
 You approved the three-part AI command-line plan and its two software additions.
 All three parts' code and database checks pass, and the single real question
 worked. Model unload, independent review and verified corrections are complete.
-The next data-work preparation is complete. Its new implementation plan needs
-the required review before building the offline correction checker. No extra
-model test or database import was run in this preparation.
+You approved the next two-part data-work plan. Its offline checker is built
+and checked. Saving and checking the four approved small source files comes
+next. No extra model test or database import was run.
 
 ## 3. Completed work, one step at a time
 
@@ -797,6 +800,33 @@ not a request to repeat completed work. We remain at 7 of 12 foundation tasks;
 the full foundation group is not finished.
 
 
+### G0.5, correction Task 1 — Build the offline answer-file checker
+
+What was done: built a small program that checks file fingerprints, then reads
+the answer files and pairs items by their number. It refuses repeated numbers,
+repeated JSON fields, wrong kinds of values and files that exceed their limits.
+It lists missing items and changed wording using item numbers only.
+
+Why: the answer key must be checked before we use it to judge the AI. Finding
+the same item number and database name does not prove its wording or answer is
+correct. This checker does not run SQL, ask the model or choose our answer key.
+The full answer text stays out of the saved summary and the future AI prompt.
+
+Checked: all 39 new checks pass. The full run without private database settings
+passed 593 tests and skipped 165 database tests. We have not rerun those real
+database checks yet in this task. One very large test first failed because
+Windows could not store its huge test name. Giving it a short name fixed that;
+the large input and the file-size rule stayed exactly the same.
+
+New words: a parser turns stored text into values a program can use. JSON is
+one common way to store lists and named fields. A duplicate field repeats the
+same name; different readers might disagree about which value to keep, so we
+refuse it. A difference report lists changes; it is not an exam score.
+
+Next: save only the four approved correction/license files, check their exact
+fingerprints and record actual item differences. We have not saved those files
+in this task. The final review and the rest of the foundation still remain.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -1097,9 +1127,10 @@ checked, and the safe command passes its flow and real database tests. Its sole
 live question returned the expected answer; model unload, final review and its
 verified parsing fixes are complete. Next we resume the remaining foundation:
 datasets and validity decisions, the second model, then split/evaluation/model
-choices. The next two-task correction-intake plan is now written and needs your
-required artifact review. It uses the existing software and does not change
-the database or run the model. Each relevant new permission still needs review.
+choices. You approved the two-task correction-intake plan; its first checker
+is complete. Next comes the approved four-file intake and its offline checks,
+then one final review. It uses existing software and does not change the database
+or run the model. Each relevant new permission outside that scope needs review.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date

@@ -848,6 +848,11 @@ in this plan's ignored scratch because destructive cleanup was not approved.
 
 ## D-032 — remaining G0.5 intake preparation and artifact-review checkpoint (2026-10-05)
 
+Approval update: Kunal's proceed forward after this exact artifact was linked
+approves the two-task correction-intake plan and its four pinned resource files.
+Native sequential execution retained; C1/benchmark/schema/import/model decisions
+and all exclusions below remain outside that approval.
+
 Context: resumed clean feat/foundation at e46c4ba. The approved three-task safe-CLI
 increment and sole review are complete. Its Handoff explicitly requires a new
 multi-step plan's artifact approval; earlier approval does not authorize more
@@ -906,6 +911,40 @@ none. Self-review moved local-pin tests to the initial RED gate and rejected
 malformed optional difficulty in the planned example. No fresh reviewer
 dispatched for plan preparation; no new implementation test claims.
 
+
+## D-033 — approved offline label checker / Task 1 (2026-10-05)
+
+Context: Kunal approved the reviewed two-task artifact with proceed forward.
+Reconciled clean feat/foundation at 399efed; baseline locked sync checked 27
+packages, no-env suite 554 passed/165 skipped (7.00s). No broader G0.5/C1 approval.
+
+Decision: implement the planned offline dictionary-based checker with stdlib
+only. Exact local pins precede strict JSON/record checks and ID/db alignment.
+Report counts and changed IDs, never gold text; source SQL is neither executed
+nor exposed to the runtime. Text/anchor differences are observations, not an
+ambiguity classifier or label selection. Four policy/validity states stay unset.
+No acquisition, database mutation, credential operation, model or SQL run here.
+
+Tests first: missing-module RED (0.18s), then first GREEN 38 passes/two errors
+in the oversize case's setup/teardown; interim no-env suite 592 passes/165 skips/
+two errors. Reproduced Windows rejecting pytest's 600001-character default
+parameter ID in PYTEST_CURRENT_TEST. Corrected only the test name, retaining
+the entire fixture and 600000-byte decoder cap. Fresh verification: 39 label
+checks (0.10s); no-env 593 passes/165 database skips (4.86s); Ruff/29-file format
+pass. Last actual PostgreSQL checkpoint remains the pre-change 719/719, not a
+claim that today's skipped database tests passed.
+
+Rulings in order:
+
+- Setup: reuse current checkout under AGENTS/D-003 — cost if wrong: no separate
+  checkout isolation. Sequential execution and current-task scope preserved.
+- Task 1: short explicit raw-parameter IDs avoid Windows' 32767-character env
+  limit — cost if wrong: diagnostic names omit raw fixtures; test bytes unchanged.
+- Task 1: reverse the equivalent required-key comparison for Ruff SIM300 — cost
+  if wrong: none intended; existing malformed-field checks remain required.
+
+Task 1 only is complete. Task 2's fake-network tests, four-file intake/actual
+alignment and sole whole-increment review remain. G0 remains 7/12; G0.5/C1 not done.
 
 ## Native-import execution and final-review rulings
 
