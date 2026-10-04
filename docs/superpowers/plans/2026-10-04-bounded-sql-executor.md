@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 4–6 and 11; [AGENTS](../../../AGENTS.md); [DECISIONS](../../DECISIONS.md), D-003/D-015–D-018. The already approved specification supplies the design; this plan does not change the benchmark or authorize a model-connected SQL run.
 
-**Status:** Kunal's "continue with progress" after the written handoff approves native execution on 2026-10-04. Task 1's pure budgets are complete (88 scoped / 455 full passes); Tasks 2–3 and the final review remain. Implementation baseline: clean feat/foundation at df07434, 407 passes including 123 actual PostgreSQL checks. Comparator and CLI remain separate.
+**Status:** Kunal's "continue with progress" after the written handoff approves native execution on 2026-10-04. Tasks 1–2 are complete: 88 result/config and 94 executor scoped passes; the latest full suite has 511 passes with the 123 existing PostgreSQL checks. Task 3's actual executor checks and final review remain. Implementation baseline: clean feat/foundation at df07434, 407 passes including 123 actual PostgreSQL checks. Comparator and CLI remain separate.
 
 ## Global Constraints
 
@@ -480,7 +480,7 @@ git log -1 --format=%B
 and `open_california_executor(password, limits)` with the signatures in the header.
 The constructor's pool is trusted internal/test plumbing, not an API request input.
 
-- [ ] **Step 1: Write the driver-contract tests before the executor.** Add a
+- [x] **Step 1: Write the driver-contract tests before the executor.** Add a
 test-only fake driver; never put injection/debug methods in production. Use actual
 asyncpg Attribute/Type objects for prepared metadata, and events for delayed awaits.
 The fake must implement this full consumed surface, with each phase recorded:
@@ -679,7 +679,7 @@ async def test_external_cancellation_is_not_a_successful_result():
     assert pool.conn.terminated and not pool.leased
 ```
 
-- [ ] **Step 2: Observe RED.**
+- [x] **Step 2: Observe RED.**
 
 ```powershell
 uv run pytest tests/test_executor.py -q
@@ -688,7 +688,7 @@ uv run pytest tests/test_executor.py -q
 Expected: QueryExecutor missing first, then meaningful contract failures. The fake
 does not prove PostgreSQL enforcement; Task 3 is mandatory before that claim.
 
-- [ ] **Step 3: Extend executor.py with the bounded workflow.** Keep Task 1's
+- [x] **Step 3: Extend executor.py with the bounded workflow.** Keep Task 1's
 contracts. Add the imports/context manager and this small runtime surface:
 
 ```python
@@ -854,7 +854,7 @@ with suppressed chaining. Caller body exceptions/cancellation retain their origi
 identity and terminate the pool without an awaited close. No runtime secrets loader
 is added; these boundaries do not redact a caller's own unrelated exception.
 
-- [ ] **Step 4: Add failure/cleanup/opener controls before correcting uncovered paths.**
+- [x] **Step 4: Add failure/cleanup/opener controls before correcting uncovered paths.**
 Extend the fake tests using literal outcomes:
 
 ```python
@@ -1093,7 +1093,7 @@ Expected: all deterministic/scoped/full tests pass without leaked synthetic cana
 existing real checks run. Newly constructed fake settings must match their configured
 limits, not hard-coded defaults. This step does not establish real executor recovery.
 
-- [ ] **Step 5: Document and commit the tested workflow.** Record actual counts,
+- [x] **Step 5: Document and commit the tested workflow.** Record actual counts,
 the one top-level sanitized error boundary and explicit residual allocations/logs.
 Notebook explains pool, cursor, read-only transaction, cancellation and rollback.
 Inspect staged diff/message, then verify both owner identities and clean body:

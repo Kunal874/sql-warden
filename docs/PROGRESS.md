@@ -4,12 +4,13 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed subtask: bounded executor Task 1,
-complete-result and plan budgets. Last completed commit before this update: df07434.
+Current group: G0. Last completed subtask: bounded executor Task 2,
+internally guarded restricted workflow. Last completed commit before this update: 3f005c8.
 The minimum SQL guard and its real acceptance/final fixes are complete.
 Kunal's "continue with progress" approves the presented runner plan.
-Next: native Task 2, internally guarded restricted-pool workflow, then real
-Task 3 and one final review. No database executor exists yet. G0.7a is not complete.
+Next: native Task 3's real runner/recovery checks and one final review.
+The executor workflow is implemented; real executor verification is still pending.
+G0.7a is not complete.
 Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
 interview drill; the guard is finished inside the next item. This is checklist
 coverage, not half the project's effort. G1–G5/G7 remain unfinished.
@@ -134,6 +135,36 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — bounded executor Task 2 / guarded restricted workflow
+
+Task 1 committed at 3f005c8 with verified Kunal author/committer and empty extra
+body; task-done reran 88 scoped tests successfully. Read Task 2's full brief and
+continued natively. New driver-contract tests observed missing QueryExecutor
+RED before the workflow implementation; initial 54 executor checks passed.
+Additional failure, lifecycle and cleanup controls were written before evaluating
+their paths; all 94 executor tests now pass (1.06s).
+
+Implemented internal fixed-policy guarding, one bounded pool connection and one
+read-only transaction for settings, identity, EXPLAIN and unchanged SQL. Fetch(1)
+preserves complete-result semantics and detects cap-plus-one. Acquisition through
+release shares the total deadline. Stable errors contain no driver text; external
+cancellation propagates. Error/cancellation discards the connection synchronously.
+The fixed-reader opener accepts a trusted reader password but loads no environment
+file or setup credential. Its normal close has a separate finite bound.
+
+Full suite: 511 passed, zero skips (14.67s), including the 123 existing actual
+PostgreSQL checks; these are not real executor tests yet. Lint, 17-file format
+and whitespace checks pass. The plan's B008/SIM105 style was corrected without
+changing behavior; D-020 records the execution ruling and its cost. No raw
+error-canary appeared in captured application output or rendered lifecycle errors.
+The decoded row/cell/plan and transient JSON-allocation limits remain explicit;
+application redaction does not establish server-log redaction.
+
+Updated the learning notebook after this subtask. No dependency, model inference,
+data/grant/password change, benchmark run or generated SQL execution occurred.
+Task 3 follows under the same approval; PostgreSQL cancellation/replacement and
+settings reset remain required before calling the executor verified.
 
 ### 2026-10-04 — bounded executor Task 1 / complete-result budgets
 
@@ -605,13 +636,14 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: approved bounded-executor Task 2, then Task 3 and one final whole-branch
+Next: approved bounded-executor Task 3 and one final whole-branch
 review. Use its plan-specific ignored ledger and task-start/task-done scripts;
-read each brief before work. Task 1's pure result/plan contracts are complete.
+read each brief before work. Tasks 1–2 are implemented and scoped-test verified;
+Task 2 still needs actual executor PostgreSQL evidence in Task 3.
 The [bounded executor plan](superpowers/plans/2026-10-04-bounded-sql-executor.md)
 is approved by Kunal's continue response to its handoff. Keep native execution
 here; do not ask again about method/dependencies, redo guard/import work, or
-load a model. D-018 approval update and D-019 hold the current contracts.
+load a model. D-018 approval update and D-019/D-020 hold the current contracts.
 The [minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md)
 and its final review are complete: 193 guard checks, 56 real acceptance checks,
 407 full-suite passes (123 actual PostgreSQL), both Important findings fixed

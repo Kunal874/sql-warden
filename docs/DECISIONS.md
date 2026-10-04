@@ -389,6 +389,27 @@ Verification: missing-module RED plus 10 new config-field failures, then initial
 skips, with 123 actual PostgreSQL checks after formatting; lint/format/diff pass.
 This task does not yet produce a runner, database execution or model SQL.
 
+## D-020 — internally guarded restricted executor (2026-10-04)
+
+Context: approved runner Task 2 consumes the pure contracts from D-019.
+Decision: reuse the guard internally and a trusted, fixed California reader
+pool (maximum one connection). One read-only transaction checks actual identity
+and settings before EXPLAIN and unchanged prepared SQL; fetch one row at a time.
+Normal completion/budget rejection rolls back before bounded release. Unexpected
+failure or cancellation terminates the connection; external cancellation keeps
+its original meaning. A single public error boundary returns fixed categories,
+not SQL, credentials, rows or driver exception text. The opener loads no env file.
+
+Verification: missing QueryExecutor RED, then 54 initial and 94 final scoped
+passes. Full suite 511 passed, zero skips (14.67s), with 123 existing real database
+checks; actual executor recovery remains Task 3. Lint/format/whitespace pass.
+No dependency, grant, data, credential, benchmark or inference change. Keep
+D-018's decoded-value/transient-memory/server-log residual limitations.
+
+Execution ruling, in decision order:
+
+- Task 2: Ruling: Ruff rejects the plan's function-call default and try/except/pass cleanup style — use one module-level frozen QueryLimits default and contextlib.suppress for exactly InterfaceError, preserving the same behavior — cost if wrong: a shared default or cleanup exception policy could change behavior; the default is immutable and existing opener/detached tests must remain green.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

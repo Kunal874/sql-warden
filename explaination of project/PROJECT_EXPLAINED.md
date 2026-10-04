@@ -37,17 +37,18 @@ It is not a finished public service yet.
 - Small handwritten allowed queries have passed that guard and run with the
   restricted database login and short time limits. No AI output was run.
 - Answer-size checks now handle row, byte and cell limits without returning
-  a partial answer as a complete answer. The runner itself is still next.
-- The latest completed code checkpoint has 455 passing tests, including 123
+  a partial answer as a complete answer. The guarded runner is now built and
+  passes simulated tests; its real database recovery tests are next.
+- The latest completed code checkpoint has 511 passing tests, including 123
   tests that connect to the real local PostgreSQL database.
 
-The AI question-answering flow, limited query runner, evaluation
-scores, website and public release are not built yet. G0, the foundation group,
+The AI question-answering flow, fully verified runner, evaluation
+scores, website and public release are not finished yet. G0, the foundation group,
 is still in progress. No AI-generated SQL has been executed.
 
 Where we are: 6 of the 12 numbered foundation tasks are complete. Inside the
-next task, the query guard is finished and the runner's first budget component
-is built and tested. This does not mean half the entire project is done: the agent,
+next task, the query guard is finished and the guarded runner passes simulated
+checks. Real runner checks are next. This does not mean half the project is done: the agent,
 experiments, website and release still come later. We are building the first
 small working demonstration before expanding.
 
@@ -372,6 +373,30 @@ checks pass. These are still pure budget rules, not a running AI-to-database flo
 No new package or model was installed or loaded. Your data and passwords were
 not changed. Next is wiring these rules to one restricted database connection.
 
+### G0.7a, executor Task 2 — Build the guarded query runner
+
+What was done: connected the safety checker and size rules into one small
+runner. It first checks the query, then uses only the restricted California
+Schools login. It checks the actual login and time settings, asks the database
+for a rough work estimate, and collects the answer one row at a time.
+
+Why: a caller must not be able to skip the checker or choose a powerful login.
+The runner must also finish on time, reject an oversized answer without keeping
+its first rows, and hide private database error messages.
+
+If work is cancelled or fails, the runner closes that connection immediately.
+For normal completion it rolls back the temporary work and returns the connection
+for reuse. Real tests must still prove that the database stops the cancelled
+work and that the next query gets a working connection.
+
+Checked: the new tests first found the missing runner. All 94 simulated runner
+checks now pass, including waiting, cancellation, errors, wrong settings and
+pool opening/closing. The full suite has 511 passes, including 123 earlier
+real-database checks. Those earlier checks do not prove this new runner yet.
+No AI SQL, new package, data change, password change or model load occurred.
+
+Next: run the planned handwritten checks through this runner on real PostgreSQL.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -574,9 +599,11 @@ feature has already been implemented.
 - **Sandbox / restricted executor:** the controlled place where permitted
   queries will run with strict permissions and time/output limits.
 - **Connection pool:** a small set of database connections kept ready for reuse.
-  This runner is planned to use at most one, rather than opening unlimited links.
+  This runner uses at most one, rather than opening unlimited links.
 - **Cursor:** a way to collect an answer gradually, instead of loading all rows
-  into the program at once. Our plan requests one row at a time.
+  into the program at once. Our runner requests one row at a time.
+- **Rollback:** end a transaction without keeping its changes. Here it also
+  clears temporary query settings before the connection is reused.
 - **Budget / deadline / timeout:** a budget is a maximum amount allowed, such as
   rows, bytes or time. A deadline is the latest finishing time. A timeout means
   the time limit was reached, not that the database returned a correct answer.
@@ -618,7 +645,8 @@ feature has already been implemented.
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
 final review fixes, are complete. You approved the runner plan, and its answer-size
-rules are built. Next is the restricted query workflow and real recovery tests.
+rules and guarded workflow are built. Next are the real database recovery tests
+and one final runner review.
 After that come the answer checker and a small command-line
 question-to-database demonstration. The rest
 of the data, agent loop, website, broader attack suite and release come later.
