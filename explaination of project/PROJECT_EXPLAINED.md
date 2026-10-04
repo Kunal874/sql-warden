@@ -52,9 +52,9 @@ The runner's final review is complete. This does not mean half the project is do
 experiments, website and release still come later. We are building the first
 small working demonstration before expanding.
 
-The next answer-checker plan is now written and checked. It needs your review
-before coding starts. The answer checker itself and AI command-line demo are
-not built yet.
+You approved the answer-checker plan. Its small comparison function is now built
+and passes 60 unit checks. Real database checks and its final review are next.
+The AI command-line demo is not built yet.
 
 ## 3. Completed work, one step at a time
 
@@ -485,6 +485,36 @@ The writing-plans skill requires your review of this new plan before implementat
 The already selected single-worker approach stays the same. This completes only
 the preparation subtask, not the checker or the foundation group.
 
+### G0.7a, answer-checker Task 1 — Build the small comparison function
+
+What was done: built the checker you approved. It receives two complete answers
+from the runner and returns only a match, mismatch or short failure category.
+It does not ask an AI model, run a query, read a password or show the reference rows.
+The project reused its existing answer type and Python's built-in sets; no new
+package was needed.
+
+Why: different SQL text can produce the same answer. We must check the results
+using the saved rule, not guess from the query text. Repeated rows and row order
+are ignored; column positions matter. Empty answers and missing values can be
+correct. Very close numbers are not rounded into a match.
+
+A failed or oversized prediction gets zero, even if its first rows would match.
+A failed reference gets a "reference not usable" marker, not a permission to
+delete that question. The later benchmark rules will handle it openly. This
+checker is not the future voting rule and does not calculate an AI accuracy score.
+
+Checked: wrote the tests first and saw them fail because the checker did not
+exist. After building it, all 60 unit checks passed. They cover complete/failed
+answers, repeated/order-swapped rows, column positions, missing values, numbers,
+dates and safe failure output. The whole project without private database test
+files has 448 passing tests and 141 skips. Style/format checks pass. The 17 planned
+real-database checks and one independent final review come next, without needing
+another approval from you. No AI-generated SQL has run.
+
+New term: **immutable result** means the returned record cannot be changed in
+place after the checker creates it. It holds just a score and short reason, not
+the full reference answer or a private error message.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -746,8 +776,9 @@ feature has already been implemented.
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
 final review fixes, are complete. You approved the runner plan, and its answer-size
 rules, guarded workflow, real recovery tests and final review are complete.
-The answer-checker plan is prepared and awaits your review; coding and real checks
-come after that. A small command-line question-to-database demonstration follows.
+You approved the checker plan; its pure comparison function now passes 60 checks.
+Real database acceptance and the single final review are next. A small command-line
+question-to-database demonstration follows.
 The rest
 of the data, agent loop, website, broader attack suite and release come later.
 

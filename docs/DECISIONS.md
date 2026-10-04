@@ -524,12 +524,43 @@ additional memory and has no hard Python process deadline. Keep the trusted
 constructor/offline boundaries and require later cache/manifest/CLI wiring checks.
 These bounded checks are not an exhaustive SQL or information-flow audit.
 
-Approval state: awaiting Kunal's review of
+Approval state at preparation: awaiting Kunal's review of
 docs/superpowers/plans/2026-10-04-ex-comparator.md. No execution-method/dependency
 question is reopened, and no parallel implementation or preparation reviewer
 was used. Data, credentials, grants, dependency files and historical plans remain
 unchanged; no generated SQL, model load, benchmark run, remote/push/publication,
 history edit or deletion. Comparator/CLI and G0.7a remain unfinished.
+
+Approval update: Kunal's "yes do it" on 2026-10-04 approves this written plan.
+Native execution and existing dependencies remain selected; implementation
+evidence continues D-024 onward. No benchmark, inference or publication approval.
+
+## D-024 — complete-result EX implementation / Task 1 (2026-10-04)
+
+Context: the approved comparator plan proceeds natively from 1ffb81d. Options,
+source rule and invalid-gold/denominator contract remain D-023; no new package,
+cell-normalization rule, benchmark definition or result-authority framework.
+Decision: implement the exact pure QueryResult -> EXComparison interface, using
+stdlib row sets. Reference checked first; prediction failures score zero, invalid
+gold returns None, and only equal complete row sets score one. Fixed reasons are
+match/mismatch/prediction_failed/gold_invalid/comparison_error; no raw data/error
+output or database/model/file/env I/O. Future voting remains separate.
+
+Evidence: planned missing-module RED (0.39s) before production source; 60 units
+GREEN (0.19s), full no-env 448 passed / 141 skipped (2.24s), lint/20-file format
+pass. All five Review Focus controls exist on the pure side. Native acceptance
+and the single final read-only reviewer remain Task 2/final gates.
+
+Execution ruling, in decision order:
+
+- Setup: Ruling: stay in D:/PROJECTS/SQLWARDEN on feat/foundation rather than create a worktree — AGENTS.md and D-003 explicitly require this current checkout; it is clean and not main/master — cost if wrong: this work is not isolated from later edits made in this checkout; preserve unrelated changes and do not assume branch isolation.
+
+Rationale/limits: reuse the trusted executor's EOF/typed-cell contract, not its
+JSON sizing strings. Arbitrary forged internal results/custom hashing code and
+hard process-memory/time isolation remain outside this function's guarantee.
+These tests do not establish a benchmark score, valid conversion, online inference
+noninterference or real database acceptance. Task 2 is next without another
+approval request; no change to data, credentials, grants or original inputs.
 
 ## Native-import execution and final-review rulings
 

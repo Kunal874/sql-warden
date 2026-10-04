@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 4, 6–8 and 11; [AGENTS](../../../AGENTS.md); [EX source record](../../EX_COMPARATOR.md); [DECISIONS](../../DECISIONS.md), D-003/D-022/D-023. Reuse the approved architectural design; this plan is only its comparator subsystem, not a new benchmark definition.
 
-**Status:** Prepared and self-reviewed on 2026-10-04; awaiting Kunal's review of this new written artifact before implementation. Native execution is already selected. No comparator code or new test has been added or executed. Existing tests and source/proposed-syntax checks are preparation evidence, not proof of this future component.
+**Status:** Approved by Kunal's "yes do it" on 2026-10-04. Task 1's planned RED and 60-unit GREEN are verified; Task 2 and the single final review remain. Native execution stays selected. No generated SQL or benchmark score is authorized by this comparator increment.
 
 ## Global Constraints
 
@@ -127,7 +127,7 @@ update the four evidence/notebook files listed above. No existing runtime edit.
 EXComparison record and compare_ex signature defined in File map; no SQL execution,
 gold-file loading, environment read, rounding, log listener or model call.
 
-- [ ] **Step 1: Write the complete unit controls before creating the module.**
+- [x] **Step 1: Write the complete unit controls before creating the module.**
 
 Add `tests/test_comparator.py`:
 
@@ -288,14 +288,14 @@ def test_comparison_does_not_open_a_pool_connect_or_guard(monkeypatch):
     assert compare_ex(complete(((1,),)), complete(((1,),))) == EXComparison(1, "match")
 ```
 
-- [ ] **Step 2: Observe real RED before implementation.**
+- [x] **Step 2: Observe real RED before implementation.**
 
 Run `uv run pytest tests/test_comparator.py -q --tb=line`.
 Expected: collection fails because sqlwarden.comparator does not exist. If the
 file already exists, reconcile Git/Handoff rather than overwriting or treating a
 different import/environment failure as the intended RED.
 
-- [ ] **Step 3: Add the small independent implementation.**
+- [x] **Step 3: Add the small independent implementation.**
 
 Create `src/sqlwarden/comparator.py`:
 
@@ -347,7 +347,7 @@ external cancellation. Do not stringify, log or return the caught exception.
 The accepted Cell union contains no user-defined hashing/equality code; adversarial
 Python objects are outside the trusted constructor contract. No executor change.
 
-- [ ] **Step 4: Verify GREEN and the existing deterministic suite.**
+- [x] **Step 4: Verify GREEN and the existing deterministic suite.**
 
 Run `uv run pytest tests/test_comparator.py -q --tb=line`, then
 `uv run pytest -q --tb=line`, `uv run ruff check .`,
@@ -625,6 +625,6 @@ Do not execute model-generated SQL during this plan or report a benchmark score.
 - Review Focus: all five conditions map to named literal/status/malformed/no-I/O unit controls and bounded real pair/overflow/error/guard controls. No claim of proof beyond those checks.
 - Syntax-only preparation checks parse the three Python fences without executing them. Snippet lint/format checks classify the proposed sqlwarden module as first-party explicitly because it does not exist yet; production configuration is unchanged. AST inspection counts 60 planned unit cases and 17 planned integration cases, not test passes. Native semantics probes use synthetic Python values, and guard preflight performs no database I/O. Actual comparator RED/GREEN and the 17 new integration tests await plan approval.
 
-**Review requested:** Does this plan capture the intended answer checker? After
-Kunal reviews it, preserve native sequential execution; do not ask again about the
-execution method or previously approved dependencies.
+**Review approval:** Kunal's "yes do it" approves this artifact. Preserve native
+sequential execution; do not ask again about the execution method or previously
+approved dependencies. Task 2 and the single final review remain before completion.

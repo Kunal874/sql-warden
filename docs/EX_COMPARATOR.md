@@ -1,7 +1,8 @@
 # BIRD EX source reference
 
-Checked on 2026-10-03 for G0.7a preparation. This pins an inspected reference;
-no comparator implementation, gold execution, benchmark freeze or score exists yet.
+Source checked on 2026-10-03 for G0.7a preparation and rechecked on 2026-10-04.
+The pure comparator is now implemented; actual native acceptance is next.
+No gold execution, benchmark freeze or aggregate accuracy score exists yet.
 The selected data remains the 500-item Mini-Dev track in [DATA](DATA.md).
 
 ## Exact upstream source
@@ -41,6 +42,8 @@ all software there. Retain citations when independently reproducing the rule.
 
 ## Preparation update (2026-10-04)
 
+This records the pre-approval preparation snapshot; current evidence follows below.
+
 Both pinned source files were fetched into memory again and their byte lengths
 and SHA-256 hashes match the table above. No source was saved, executed or vendored.
 The equality rule is unchanged. Synthetic Python probes confirm native numeric
@@ -69,3 +72,32 @@ the Python dataclass itself is not an unforgeable completion token. Sets require
 additional memory, and arbitrary internal Python objects are not sandboxed.
 Future voting needs separate duplicate-preserving semantics. Do not expose these
 constructors, gold rows or a reference loader to model/request-controlled code.
+
+## Implementation: Task 1 (2026-10-04)
+
+Kunal's "yes do it" approved the written plan. `sqlwarden.comparator.compare_ex`
+now consumes the existing complete typed QueryResult objects, independently
+reproducing the pinned row-tuple set equality without sorting or normalization.
+The frozen/slotted EXComparison record contains only score and fixed reason:
+
+| Condition, reference checked first | score | reason |
+| --- | --- | --- |
+| Unsuccessful/malformed reference | None | gold_invalid |
+| Unsuccessful/missing prediction | 0 | prediction_failed |
+| Malformed/unhashable prediction rows | 0 | comparison_error |
+| Equal complete row sets | 1 | match |
+| Unequal complete row sets | 0 | mismatch |
+
+There is no database/model I/O, SQL/file/env loader, gold-row output or raw error
+message. Column names and sizing bytes are metadata, not comparison inputs.
+Non-ok statuses are checked even when a synthetic fixture retains a matching
+prefix. Reference failure cannot authorize dropping an item; C1/G0.7's frozen
+manifest owns that decision. Do not call this function for pending jobs or use
+it for the future online vote.
+
+Observed RED: the new unit file failed collection because the comparator module
+did not exist (0.39s). After the small implementation, all 60 units passed (0.19s).
+Full no-env suite: 448 passed, 141 skipped (2.24s); lint/20-file format pass.
+The new native tests and single final review have not run yet. Unit checks do not
+establish PostgreSQL acceptance or an official benchmark score. Trusted-constructor,
+native-type adaptation and set-allocation residuals above still apply.
