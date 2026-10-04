@@ -4,12 +4,11 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed implementation commit: comparator Task 2 at
-7d26e77; its sole final review and learning handoff are recorded at 9b8205f.
-Guard/runner/checker are complete. Latest full suite: 606 passed, zero skips,
-including 158 actual PostgreSQL checks. The separate safe local CLI plan is
-prepared/self-reviewed, not implemented or approved. Its new dependency pair,
-runtime-only credential copy and one bounded live question need Kunal's review.
+Current group: G0. Kunal approved the dated safe-local-CLI plan, openai/httpx,
+exclusive runtime-only restricted credential copy and one bounded live test.
+Task 1's pinned local provider passes 37 deterministic SDK/HTTP tests. Latest
+full suite: 643 passed, zero skips, including 158 actual PostgreSQL checks.
+Guard/runner/checker remain complete; CLI wiring and live acceptance are next.
 Native sequential execution stays selected. No AI-generated SQL or benchmark
 score exists. G0.7a is not complete.
 Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
@@ -58,7 +57,8 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Complete the single final comparator review; no actionable findings.
   - [x] Implement/verify the pinned EX comparator.
   - [x] Prepare/self-review the separate safe local model/CLI plan.
-  - [ ] Review/approve that new artifact, openai/httpx additions and bounded acceptance operations.
+  - [x] Review/approve that new artifact, openai/httpx additions and bounded acceptance operations.
+  - [x] Build/test the pinned bounded local provider (37 deterministic checks).
   - [ ] Build the safe one-database model/CLI flow; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
@@ -144,6 +144,27 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — safe local CLI Task 1 / pinned provider
+
+Added only the approved direct openai>=2,<3 and httpx>=0.28,<1 pair;
+uv.lock resolves openai 2.54.0 / httpx 0.28.1 and 27 total packages. Inspected
+installed public APIs, Python requirements and licenses. uv's cross-drive
+hardlink warning used its ordinary copy fallback; no global setting changed.
+Pinned loopback-only transport, 64KiB identity-response cap, zero retries/proxy/
+redirect, separate 90s readiness/60s generation and 5s HTTP-close bounds. One
+optional preload and one JSON SQL attempt; no database/reference input.
+Reported missing usage remains null and HTTP close is not GPU unload evidence.
+
+TDD: absent-module RED, 34 planned checks GREEN; installed SDK inherited-header/
+admin/webhook settings produced 3 additional RED cases, then refusal before
+client/network made all 37 pass (1.94s). No real network/model call occurred.
+No-env suite 485 passed/158 skipped (5.72s). Initial full configured suite:
+642 passed/1 existing external-cancellation timeout (26.36s). Debug inspection
+found the test's original 2s active-observation and 1s disappearance bounds;
+isolated control passed (1.20s), executor group 18/18 (2.79s), final full rerun
+643/643 (17.76s). Cause was not proven; no production code or test bound changed.
+Locked sync, lint, 23-file format and whitespace pass. D-028 records the rulings.
 
 ### 2026-10-04 — safe local CLI preparation and review gate
 
@@ -884,6 +905,15 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+Active approved work: safe-local-CLI Task 1 provider is verified; implement
+Task 2 CLI/setup helper sequentially, then Task 3 actual controls and exactly one
+live question. No runtime file or live AI/database call yet. Resume this plan's
+ledger at .superpowers/sdd/2026-10-04-safe-local-cli/progress.md, reconcile Git.
+Do not repeat earlier reviews/import/rotation. Model remains unloaded; current
+test commands and explicit uv path below remain valid. SDK inherited private
+keys in D-028 must be rejected by the CLI before any I/O. The previous comparator
+handoff below is historical, superseded by this approved work.
 
 Next: obtain Kunal's review of the prepared/self-reviewed
 [safe local CLI plan](superpowers/plans/2026-10-04-safe-local-cli.md), proposed

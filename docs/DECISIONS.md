@@ -709,6 +709,34 @@ One final read-only review after all three tasks, not per-task reviews. Current
 work changes only preparation/progress/decision/learning documents; no code,
 dependency, credential, model, database, benchmark, remote/push or release action.
 
+Approval update (2026-10-04): Kunal explicitly approved this dated plan, adding
+openai/httpx, copying the existing restricted credential into a runtime-only file
+and exactly one bounded guarded local AI/database test. Implement sequentially
+and update the notebook after each completed task. Native execution stays chosen;
+no hosted, remote/push, extra live retry, credential rotation or release approval.
+
+## D-028 — approved safe local provider (2026-10-04)
+
+Kunal explicitly approved the dated plan and both direct additions. Installed
+openai 2.54.0 (Apache-2.0, Python >=3.10) / httpx 0.28.1 (BSD-3-Clause,
+Python >=3.8), inspected their public interfaces and resolved metadata. Only
+the approved pair was added directly; 27 packages are locked. Local-only
+inference remains selected, with no account/key/hosted request or real model
+call in Task 1. 37 mocked-SDK checks and full 643-test configured suite pass.
+The initial full suite had one existing cancellation-observation timeout;
+isolated/group/full repeats passed unchanged. Root cause remains unproven.
+
+Execution rulings in order (costs retained for final handoff):
+
+- Setup: Ruling: stay in the existing feat/foundation checkout — AGENTS/D-003/approved plan require this workspace — cost if wrong: no extra checkout isolation; inspect Git before tasks/commits.
+- Task 1: Ruling: write Step 4 budget/readiness tests with Step 2 before full Step 3 source — preserve tests-first for all planned behavior — cost if wrong: test-step order changes, not scope/contract.
+- Task 2: Ruling: likewise move terminal/privacy tests before CLI/setup source — preserve tests-first — cost if wrong: test-step order changes, not security/scope.
+- Task 1: Ruling: refuse OPENAI_CUSTOM_HEADERS, OPENAI_ADMIN_KEY and OPENAI_WEBHOOK_SECRET before client/network, sharing forbidden keys with Task 2 — installed SDK auto-reads them even with fixed local URL/key; all three cases failed first — cost if wrong: the local demo rejects inherited hosted SDK settings; no global environment is edited.
+
+The four-column capsule and conservative byte rule are not full-schema retrieval
+or an exact tokenizer. HTTP cleanup is independent of server/GPU unloading.
+Task 2 is next; G0.7a and all model accuracy/benchmark claims remain open.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

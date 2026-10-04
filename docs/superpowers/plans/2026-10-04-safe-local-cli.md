@@ -12,6 +12,11 @@
 
 **Status:** Preparation only, 2026-10-04, from completed comparator checkpoint 9b8205f. No CLI/client/test implementation, dependency addition, credential copy, model load or generated SQL execution yet. Kunal's current "proceed" permits this preparation, not approval of this newly written plan.
 
+**Approval update (2026-10-04):** Kunal explicitly approved this plan, the two
+direct additions, restricted-only runtime copy and one bounded guarded local
+AI/database test. Execute sequentially here and update the learning notebook
+after each completed task. The preparation status above is historical.
+
 ## Global Constraints
 
 - Workspace: `D:/PROJECTS/SQLWARDEN`. Use the current workspace; do not create a nested `sqlwarden` directory.
@@ -114,7 +119,7 @@ Task 3 consumes these exact interfaces and existing
 **Consumes:** pinned model alias/digest in MODELS; HTTPX public transport API and official SDK. No database, password or reference input.
 **Produces:** `Generation` and async `LocalQwen.generate(question)` above. Stable reasons: ok, prompt_limit, model_configuration, model_timeout, model_unavailable, model_output_invalid, model_output_incomplete. Transport-cap errors become a fixed configuration/unavailable outcome, never raw response text.
 
-- [ ] **Step 1: After explicit plan/dependency approval, resolve the two additions and inspect them.**
+- [x] **Step 1: After explicit plan/dependency approval, resolve the two additions and inspect them.**
 
 ```powershell
 uv add 'openai>=2,<3' 'httpx>=0.28,<1'
@@ -129,7 +134,7 @@ client/base_url, max_retries, and async close. If the resolved API contradicts t
 code below, stop with the exact mismatch; do not silently change providers/stack.
 These new package versions are locked, not assumed installed during preparation.
 
-- [ ] **Step 2: Write this test file before the provider module.**
+- [x] **Step 2: Write this test file before the provider module.**
 
 ```python
 import asyncio
@@ -313,7 +318,7 @@ async def test_cancellation_propagates_instead_of_becoming_a_failed_generation()
         await task
 ```
 
-- [ ] **Step 3: Observe RED, then add the full minimal provider below.**
+- [x] **Step 3: Observe RED, then add the full minimal provider below.**
 
 Run `uv run pytest tests/test_llm.py -q --tb=line`; expected missing
 `sqlwarden.llm`, not a network failure. Then create:
@@ -554,7 +559,7 @@ The source deliberately creates no SDK abstraction/factory/registry. Before GREE
 add concrete warmup and deadline controls in Step 4; do not confuse a response
 cap with heap isolation. Formatting may mechanically split the long conditions.
 
-- [ ] **Step 4: Add the remaining readiness/budget tests first, then verify.**
+- [x] **Step 4: Add the remaining readiness/budget tests first, then verify.**
 
 ```python
 async def test_empty_server_has_exactly_one_preload_before_one_chat():
@@ -729,7 +734,7 @@ Inspect real SDK behavior against the tests. Correct only demonstrated defects,
 test-first; any contract/dependency expansion needs a recorded owner decision.
 No live model, private environment or generated SQL is needed for this task.
 
-- [ ] **Step 5: Document and commit this independently tested client.**
+- [x] **Step 5: Document and commit this independently tested client.**
 
 Update PROGRESS/DECISIONS/notebook with actual RED/GREEN, resolved versions/licenses,
 local-only transport, attempts, unavailable usage, startup and cleanup limitations.

@@ -42,7 +42,9 @@ It is not a finished public service yet.
 - The answer checker compares two complete database answers using the saved
   rule. Failed or oversized answers cannot be marked correct. Its final review
   is complete; it reused existing Python tools without adding a package.
-- The latest verified code checkpoint has 606 passing tests, including 158
+- The local AI connection code now passes 37 checks using fake replies. It
+  can make only one limited SQL suggestion and refuses unexpected model settings.
+- The latest verified code checkpoint has 643 passing tests, including 158
   tests that connect to the real local PostgreSQL database.
 
 The AI question-answering flow, evaluation
@@ -58,9 +60,9 @@ small working demonstration before expanding.
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
 actionable issues and repeated all 60 unit checks successfully.
-The AI command-line demo is not built yet. Its separate three-part plan is now
-written and checked. Your review of that plan and its two software additions is
-needed before building it.
+You approved the three-part AI command-line plan and its two software additions.
+The first part, the bounded local AI connection, is checked. Connecting it to
+the safe query runner and trying one real question are next.
 
 ## 3. Completed work, one step at a time
 
@@ -617,6 +619,30 @@ After approval, build and test its three small parts one at a time. The foundati
 is still 6 of 12 numbered tasks complete; the rest of the agent, experiments and
 website are not finished. The plan keeps the demo small and reuses existing code.
 
+### G0.7a, AI demo Task 1 — Build the limited local AI connection
+
+What changed: added the approved OpenAI SDK and HTTPX packages. Here the SDK
+talks only to Ollama on your laptop; it does not send your question to OpenAI.
+The code checks the exact saved Qwen model and allows one SQL suggestion.
+It allows one short model startup request if needed, then one answer request,
+with time and size limits. It never receives a database password or an answer key.
+
+Checked: wrote tests before the code. All 37 AI-connection checks pass with fake
+HTTP replies, so these tests did not load a model. The full suite passes 643 tests,
+including 158 real database checks. One existing stop-query timing check failed
+once, then passed alone, with its whole group and with the full suite; we did
+not change its time limit, and have not proved why that first timeout occurred.
+
+Why it matters: a model name alone is not enough. We also check its fingerprint
+and small context limit. Unexpected inherited SDK settings are refused before
+connecting, because they could put extra private information in a request.
+
+New words: **transport** is the part that carries a request to another program.
+**JSON** is a structured text format; here we accept exactly one field called sql.
+**Retry** means trying again after a problem; this demo does not automatically
+retry. **Cleanup confirmation** means the HTTP connection closed; it does not
+mean the model stopped using the graphics card. We check that separately later.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -894,9 +920,9 @@ final review fixes, are complete. You approved the runner plan, and its answer-s
 rules, guarded workflow, real recovery tests and final review are complete.
 The answer checker and its independent final review are also complete. It passes
 60 pure and 17 real database checks. The separate plan for a small command-line
-question-to-database demonstration is prepared and checked; your review is next.
-It includes the two proposed packages, a separate restricted-only settings file
-and one limited local model question. Implementation starts after approval.
+question-to-database demonstration is approved. Its local AI connection is now
+checked. Next are the safe command, a separate restricted-only settings file
+and one limited local model question, after real database controls pass.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date
