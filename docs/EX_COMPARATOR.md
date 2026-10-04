@@ -1,7 +1,7 @@
 # BIRD EX source reference
 
 Source checked on 2026-10-03 for G0.7a preparation and rechecked on 2026-10-04.
-The pure comparator is now implemented; actual native acceptance is next.
+The comparator is implemented and passes actual native checks; final review is next.
 No gold execution, benchmark freeze or aggregate accuracy score exists yet.
 The selected data remains the 500-item Mini-Dev track in [DATA](DATA.md).
 
@@ -101,3 +101,25 @@ Full no-env suite: 448 passed, 141 skipped (2.24s); lint/20-file format pass.
 The new native tests and single final review have not run yet. Unit checks do not
 establish PostgreSQL acceptance or an official benchmark score. Trusted-constructor,
 native-type adaptation and set-allocation residuals above still apply.
+
+## Native acceptance: Task 2 (2026-10-04)
+
+All 17 comparator integration controls pass on actual PostgreSQL (2.19s), using
+only the existing fixed California reader/executor for handwritten test SQL.
+They cover the known schools count, order/duplicate handling, swapped columns,
+empty outputs of different widths, NULL, native Decimal/int and date/text values,
+distinct NaN objects and adjacent floats. They also verify overflow and engine
+failure on either side, guard-denied prediction, fixed private output and a
+successful next query from the same pool after failure. No reference/generation
+benchmark item, new login, SQL rewrite or privilege change was needed.
+
+Full configured suite: 606 passed, zero skips (15.36s), including 158 actual
+PostgreSQL tests. Without private configuration: 448 passed / 158 skipped (2.12s);
+setup only: 491 passed / 115 skipped (3.70s). Locked sync, lint/21-file format and
+whitespace checks pass. Original inputs, dependency files and existing runtime
+modules remain unchanged. The single final read-only review is pending.
+
+This proves the bounded native handoff for these controls, not official dataset
+scores, conversion validity, a frozen exclusion manifest or inference isolation.
+The trusted-result/offline/set-allocation limitations remain; no aggregate metric,
+voting comparator, cache loader or model/CLI path has been implemented here.

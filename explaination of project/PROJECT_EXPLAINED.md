@@ -39,7 +39,7 @@ It is not a finished public service yet.
 - Answer-size checks now handle row, byte and cell limits without returning
   a partial answer as a complete answer. The guarded runner now also passes
   real database tests for timeouts, cancellation and recovery.
-- The latest completed code checkpoint has 529 passing tests, including 141
+- The latest verified code checkpoint has 606 passing tests, including 158
   tests that connect to the real local PostgreSQL database.
 
 The AI question-answering flow, evaluation
@@ -52,8 +52,8 @@ The runner's final review is complete. This does not mean half the project is do
 experiments, website and release still come later. We are building the first
 small working demonstration before expanding.
 
-You approved the answer-checker plan. Its small comparison function is now built
-and passes 60 unit checks. Real database checks and its final review are next.
+You approved the answer-checker plan. Its small comparison function passes
+60 unit checks and 17 real database checks. One final independent review is next.
 The AI command-line demo is not built yet.
 
 ## 3. Completed work, one step at a time
@@ -515,6 +515,35 @@ New term: **immutable result** means the returned record cannot be changed in
 place after the checker creates it. It holds just a score and short reason, not
 the full reference answer or a private error message.
 
+### G0.7a, answer-checker Task 2 — Check real database answers
+
+What was done: added and ran all 17 planned checks on the real PostgreSQL
+database using the existing restricted login and runner. These were fixed test
+queries, not SQL from SQLWarden's Qwen model. No benchmark question or reference
+query was run.
+
+Why: a small Python example can pass while the real database returns a different
+kind of value. We checked real numbers, dates, text, missing values and empty
+answers. Repeated rows and row order behave as planned; swapping column values
+does not match. Close numbers are not rounded into a match, and dates are not
+secretly compared as text.
+
+The tests also force an oversized answer and an ordinary query error on each
+side. A bad prediction is not correct. A broken reference gets flagged, not
+quietly removed. After a failed query, the same runner can answer the next query.
+Private error-canary text does not appear in the returned messages or captured logs.
+An attempted DELETE is rejected by the guard; the database does not run it.
+
+Checked: all 17 real checks passed. The full project now has 606 passing tests,
+including 158 real PostgreSQL checks, with no skips when both private test files
+are supplied. Without them, 448 pass and 158 skip; with setup only, 491 pass and
+115 skip. The saved-package, style and format checks also pass. No new package,
+model load, password, permission or imported-data change was needed.
+
+These are checks of code behavior, not an AI accuracy score. One final independent
+read-only review of both checker tasks comes next. The AI command-line demo,
+later benchmark rules, voting, website and release are still unfinished.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -776,8 +805,8 @@ feature has already been implemented.
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
 final review fixes, are complete. You approved the runner plan, and its answer-size
 rules, guarded workflow, real recovery tests and final review are complete.
-You approved the checker plan; its pure comparison function now passes 60 checks.
-Real database acceptance and the single final review are next. A small command-line
+You approved the checker plan; it passes 60 pure and 17 real database checks.
+The single final review is next. A small command-line
 question-to-database demonstration follows.
 The rest
 of the data, agent loop, website, broader attack suite and release come later.

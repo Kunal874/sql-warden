@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 4, 6–8 and 11; [AGENTS](../../../AGENTS.md); [EX source record](../../EX_COMPARATOR.md); [DECISIONS](../../DECISIONS.md), D-003/D-022/D-023. Reuse the approved architectural design; this plan is only its comparator subsystem, not a new benchmark definition.
 
-**Status:** Approved by Kunal's "yes do it" on 2026-10-04. Task 1's planned RED and 60-unit GREEN are verified; Task 2 and the single final review remain. Native execution stays selected. No generated SQL or benchmark score is authorized by this comparator increment.
+**Status:** Approved by Kunal's "yes do it" on 2026-10-04. Task 1 committed at a7be998 with a passing task-done gate; all 17 Task 2 real controls pass. Whole suite 606 passed, zero skips, including 158 actual PostgreSQL checks (15.36s). Task 2 commit/completion and the single final review remain. Native execution stays selected; no generated SQL or benchmark score.
 
 ## Global Constraints
 
@@ -357,7 +357,7 @@ database tests skip without private configuration; lint/format/whitespace pass.
 Record actual counts, skips and timings. Fix a real new failure test-first, not
 by relaxing expected semantics. No PostgreSQL acceptance claim from this step.
 
-- [ ] **Step 5: Save evidence and the learning entry, then commit Task 1.**
+- [x] **Step 5: Save evidence and the learning entry, then commit Task 1.**
 
 Update EX_COMPARATOR with the exact five outcomes, pending-denominator boundary
 and remaining native verification. Add a dated PROGRESS entry with RED/GREEN,
@@ -399,7 +399,7 @@ test-only california_connected context gates the dedicated target/reader. Runtim
 code still cannot read either test environment file. All SQL below is handwritten
 test control input, not generated SQL or a benchmark question/reference pair.
 
-- [ ] **Step 1: Write these real controls before considering any corrective code.**
+- [x] **Step 1: Write these real controls before considering any corrective code.**
 
 Create `tests/test_comparator_postgres.py`:
 
@@ -536,7 +536,7 @@ The 17 integration cases test the production handoff, not a new algorithm; Task 
 owns the required initial RED. Do not alter working production code or loosen
 the database boundary merely to manufacture an integration RED.
 
-- [ ] **Step 2: Run the actual restricted controls.**
+- [x] **Step 2: Run the actual restricted controls.**
 
 Run `uv run --env-file .env.setup --env-file .env.california pytest tests/test_comparator_postgres.py -q --tb=line`.
 Expected: 17 pass, zero skips on the existing dedicated target. A skipped run is
@@ -545,7 +545,7 @@ or model output is needed. If native behavior differs, inspect sanitized type an
 fixed-category evidence before changing code; preserve the pinned rule. Write a
 unit regression before any necessary correction and record its rationale/cost.
 
-- [ ] **Step 3: Recheck the whole increment and unchanged boundaries.**
+- [x] **Step 3: Recheck the whole increment and unchanged boundaries.**
 
 Run, as separate commands with each exit code captured:
 
@@ -619,6 +619,8 @@ Do not execute model-generated SQL during this plan or report a benchmark score.
 
 ## Preparation self-review record
 
+This is the pre-approval preparation snapshot; current execution status is above.
+
 - Spec coverage: complete-only result use, pinned duplicates/order/NULL/floats/empty/error semantics, fixed private outcomes, local restricted acceptance, test-first workflow and notebook are owned by Tasks 1–2. Voting, validity manifest, aggregate/resumable evaluation, model/CLI, tenant RLS and release are explicit separate milestones, not missing comparator steps.
 - Placeholder scan: every code step has complete source/tests; commands, paths, outcomes and commit messages are concrete. Checkboxes are unchecked because implementation has not run.
 - Type consistency: both tasks use existing QueryResult/Row and the same compare_ex/EXComparison interface; no sizing-string conversion, nonexistent type, new credential loader or guard shortcut.
@@ -627,4 +629,4 @@ Do not execute model-generated SQL during this plan or report a benchmark score.
 
 **Review approval:** Kunal's "yes do it" approves this artifact. Preserve native
 sequential execution; do not ask again about the execution method or previously
-approved dependencies. Task 2 and the single final review remain before completion.
+approved dependencies. The single final review remains after Task 2's completion gate.

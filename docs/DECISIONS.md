@@ -562,6 +562,35 @@ These tests do not establish a benchmark score, valid conversion, online inferen
 noninterference or real database acceptance. Task 2 is next without another
 approval request; no change to data, credentials, grants or original inputs.
 
+## D-025 — restricted native EX acceptance / Task 2 (2026-10-04)
+
+Context: Task 1 at a7be998 has 60 pure passes and its successful task-done gate;
+the approved plan requires actual native controls before comparator acceptance.
+Decision: retain the exact comparator/executor interfaces and all original
+semantics. The 17 handwritten controls pass without a production correction,
+SQL rewrite, new login, policy/limit change, dependency, import or credential update.
+Task 1's initial RED owns the new comparison logic; Task 2 adds integration
+evidence rather than deliberately breaking working code to manufacture RED.
+
+Evidence: 17 actual comparator controls passed, zero skips (2.19s); full suite
+606 passed / zero skips (15.36s), including 158 actual PostgreSQL checks. No-env
+448/158 skipped (2.12s), setup-only 491/115 skipped (3.70s); locked sync, lint,
+21-file format and whitespace pass. Historical plans/dependencies/existing runtime
+remain unchanged; loopback volume healthy/preserved, no loaded model or remote.
+No new execution ruling or runtime deviation; D-024's setup ruling still applies.
+
+Rationale: check the true typed result handoff, normal failures, nonmatching
+overflow and connection recovery using the real fixed reader, without reference
+datasets or models. Gold-invalid None still cannot authorize exclusions or select
+a denominator. Native-type controls do not establish converted-label validity or
+official leaderboard equivalence. Future aggregate metrics, caches, voting and
+online model/CLI consumers need their own bounds and leakage checks.
+
+State: one final fresh read-only review of the complete comparator increment is
+next, not a finished G0.7a or AI agent. No Critical/Important/Minor review result
+is claimed before it runs. Preserve named data volume, private env files and the
+PostgreSQL 17 service; generated SQL, publication and destructive work remain out.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
