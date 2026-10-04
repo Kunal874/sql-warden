@@ -7,7 +7,7 @@ amends their order and checks.
 Current group: G0. G0.7a's first thin slice is complete: guard, bounded executor,
 pinned comparator and safe local single-candidate CLI. Tasks saved at 227f869,
 f8b8150 and 3e1f72e; sole final read-only review found two Important parsing gaps,
-both fixed in one TDD pass. Latest full suite 719/719, zero skips, including 165
+both fixed in one TDD pass. CLI checkpoint full suite 719/719, zero skips, including 165
 actual PostgreSQL checks; provider 67/CLI 39 checks. No Critical/deferred Minor.
 The sole approved live question matched 17686 in 11.387s, one preload/generation,
 89/18 reported tokens. Runtime-only copy is private/ignored; automatic model
@@ -19,12 +19,13 @@ G0 data/validity/models/evaluation and G1–G5/G7 remain unfinished. No benchmar
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
-Task 1's strict offline checker is implemented: 39 checks pass; no-env full suite
-593 passed/165 skipped (4.86s). Those skips are database checks, not passes.
-Last actual PostgreSQL checkpoint remains 719/719 before this change (19.64s).
-Task 2's four-file acquisition/actual alignment and sole final review come next.
-No new runtime/import/model step executed; G0 remains 7/12. D-032/D-033/DATA
-record scope, pins, boundaries and test-runner correction; no benchmark choice.
+Both correction-intake tasks are implemented and checked: 40 offline label and
+8 fake-network checks; four approved files acquired once (645140 bytes), all pins
+and actual alignment assertions pass. Full configured suite 767 passed, zero
+skips (21.62s), including 165 actual PostgreSQL checks; no-env 602 passed/165
+skipped (5.71s). Sole final review next. Manifest/DATA/D-033/D-034 record evidence
+and the test-first nullable-hint correction. No runtime/import/model/gold SQL
+step executed; G0 remains 7/12; labels/ambiguity/splits/validity still undecided.
 
 ## Preflight evidence (2026-10-03)
 
@@ -73,6 +74,8 @@ record scope, pins, boundaries and test-runner correction; no benchmark choice.
   - [x] Actual CLI controls, exclusive runtime copy, one bounded live question and confirmed unload.
   - [x] Sole final CLI review and one test-first parsing correction pass; 719 full checks pass.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
+  - [x] Approved four-file correction intake and offline ID/text-difference manifest.
+  - [ ] Sole correction-intake review; remaining description/import/conversion work.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
 - [ ] G0.7: freeze split; E0 on the development slice; measured summaries with exact n.
@@ -156,6 +159,42 @@ record scope, pins, boundaries and test-runner correction; no benchmark choice.
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-05 — correction intake Task 2 / pinned acquisition and actual alignment
+
+Task 1 committed at 64f51e4 under confirmed sole owner identity; task-done repeated
+39 passes (0.11s). Wrote all eight fake-network tests before fetch_labels existed;
+expected missing-module RED (0.19s), then 47 combined passes (0.17s). No new
+dependency; locked sync 27 packages. Ruff and 31-file format pass.
+
+Read-only preflight: destination absent and ignored, fixed revision/URLs/four
+pins total 645140 bytes, D: 46327619584 bytes free. Ran the approved fetch once
+without any env file. It checked identity encoding, exact bytes/SHA-256 and
+published only after all four files passed. No overwrite/refetch/alternate source.
+Its temporary staging is task-owned, removed normally; previous artifacts remain.
+
+First offline acceptance failed at a text-type check, not a hash. Systematic
+read-only field/type inspection found corrected evidence null at IDs 1507/1528
+in both sets, all other text fields strings. One regression observed RED
+(invalid text field, 0.05s); permit null only for corrected evidence, preserve
+None versus empty string and leave original parsing strict. Raw bytes/pins and
+all records unchanged. D-034/ledger record this schema-support ruling/cost.
+Combined checks now 48 passed (0.22s), including this regression.
+
+Actual pinned acceptance passed: original sources 500 each, both corrections 498,
+missing [119,120], no unexpected/database/difficulty mismatches. Question/evidence
+differences are 81/86 and 147/152, corrected-pair union 148. SQL text changes
+180/215 are not executed-result comparisons; anchor observations remain separate.
+Saved metadata/counts/IDs-only label-alignment-manifest.json, including exact
+sources/license/pins, acceptance Git state, procedure, original db/difficulty
+counts and all four undecided states. No gold text, SQL or credentials committed.
+
+Regressions: no-env 602 passed/165 skipped (5.71s); both private setup/test envs
+767 passed/zero skips (21.62s), including 165 actual local PostgreSQL checks.
+No runtime env or AI inference; existing database security tests only, no new
+security/equivalence claim. Ruff/31-file format/locked sync pass. Task 2 code and
+actual acceptance complete, sole whole-increment review is next; G0 still 7/12.
+DATA/DECISIONS/notebook updated for this completed subtask.
 
 ### 2026-10-05 — correction intake Task 1 / strict offline inspection
 
@@ -1069,26 +1108,28 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: Task 2 of Kunal's approved
+Current next action: sole whole-increment final read-only review of Kunal's
 [corrected-label intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md),
-approved 2026-10-05 after preparation at 399efed. D-032/D-033 record its scope
-and Task 1's completed strict offline checker (39 passing checks). Do not repeat
-Task 1 or the preparation. No approved implementation task is left in the old
-CLI plan; do not replay it. Native sequential execution remains selected.
-Implement Task 2 test-first: only the four pinned correction/license resources
-(645,140 content bytes) and actual offline acceptance. No new dependencies,
+approved 2026-10-05 after preparation at 399efed. Both tasks' implementation is
+complete: Task 1 at 64f51e4; Task 2 code/acceptance awaiting its local commit and
+task-done gate, then fresh reviewer over 399efed..Task2HEAD, not older CLI work.
+D-032–D-034 record scope, checks and every ruling/cost. Do not repeat the tasks,
+preparation or acquisition; no approved implementation left in the old CLI plan.
+Native sequential execution remains selected. Only four pinned correction/license
+resources (645140 bytes) were acquired; actual offline alignment passed. No new dependencies,
 database import/permissions/secret changes, model/SQL runs, benchmark selection,
 split freezing or publication. Raw sources stay ignored. Source pins, missing
 IDs 119/120, baseline text drift and 75 upstream description-file inventory are
 in DATA; inspect descriptions and remaining import/conversion work in a later
 reviewed increment. G0.5/G0.5b remain incomplete, overall G0 checklist 7/12.
-Use uv run python -m scripts.fetch_labels / scripts.inspect_labels only after
-those scripts exist and approval; no env files needed. Do not repin changing
+Use uv run python -m scripts.inspect_labels for offline report, no env needed.
+fetch_labels refuses the now-existing release; do not repeat it or repin changing
 bytes or overwrite existing artifacts automatically. Resume ledger
 .superpowers/sdd/2026-10-05-corrected-label-intake/progress.md, reconcile Git;
 complete the sole final review after both task commits. Fresh no-env regression
-593 passed/165 skipped (4.86s); last configured suite before Task 1 was 719/719
-with both setup/test envs, 165 actual PG, zero skips, 19.64s. Task 2 reruns it.
+602 passed/165 skipped (5.71s); full configured suite 767 passed/zero skips
+(21.62s), including 165 actual PG; label/fetch checks 48. Manifest records actual
+null hint support and original-to-correction drift, not semantic validity.
 Private tests always --tb=line, never --showlocals; no extra live inference.
 
 Safe-local-CLI plan is complete: tasks 227f869/f8b8150/3e1f72e and sole review's

@@ -105,7 +105,11 @@ def decode_labels(raw: bytes, *, corrected: bool) -> dict[int, dict]:
         if identifier in result:
             raise LabelError("duplicate ID")
         for field in (REQUIRED | OPTIONAL) - {"question_id", "difficulty"}:
-            if field in row and not isinstance(row[field], str):
+            if (
+                field in row
+                and not isinstance(row[field], str)
+                and not (corrected and field == "evidence" and row[field] is None)
+            ):
                 raise LabelError("invalid text field")
         if not row["question"].strip() or not row["SQL"].strip() or row["db_id"] not in DATABASES:
             raise LabelError("invalid required value")

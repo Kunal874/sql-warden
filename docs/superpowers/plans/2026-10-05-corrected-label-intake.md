@@ -14,6 +14,11 @@ This is the first bounded increment of remaining G0.5, not completion of G0.5/C1
 **Status:** Approved 2026-10-05 by Kunal's proceed forward after artifact review.
 Native sequential execution; only this plan's two tasks/acquisition scope approved.
 
+Execution schema correction: actual pinned correction sources have null evidence
+at IDs 1507/1528 in both sets. Accept null only in corrected evidence; preserve it,
+do not coerce it to an empty hint or omit records. Original evidence stays strict.
+The test-first correction and rationale/cost are recorded in D-034 and the ledger.
+
 ## Global Constraints
 
 - Work in this directory. Implement only the current task; keep a safe thin slice first.
@@ -381,7 +386,11 @@ def decode_labels(raw: bytes, *, corrected: bool) -> dict[int, dict]:
         if identifier in result:
             raise LabelError("duplicate ID")
         for field in (REQUIRED | OPTIONAL) - {"question_id", "difficulty"}:
-            if field in row and not isinstance(row[field], str):
+            if (
+                field in row
+                and not isinstance(row[field], str)
+                and not (corrected and field == "evidence" and row[field] is None)
+            ):
                 raise LabelError("invalid text field")
         if not row["question"].strip() or not row["SQL"].strip() or row["db_id"] not in DATABASES:
             raise LabelError("invalid required value")
@@ -507,7 +516,7 @@ Produces fetch_sources(destination: Path, *, transport: httpx.BaseTransport | No
 credentials. Optional transport exists only for fake-network tests.
 New ignored raw release directory is all-or-nothing; re-running refuses it.
 
-- [ ] **Step 1: Write all fake-network tests before source.**
+- [x] **Step 1: Write all fake-network tests before source.**
 
 Create tests/test_label_fetch.py:
 
@@ -609,13 +618,13 @@ def test_command_deadline_is_checked_during_stream(tmp_path, monkeypatch):
     assert list(tmp_path.iterdir()) == []
 ~~~
 
-- [ ] **Step 2: Observe RED.**
+- [x] **Step 2: Observe RED.**
 
 Run uv run pytest tests/test_label_fetch.py --tb=line.
 Expected import/collection failure from missing scripts.fetch_labels, not unrelated
 environment issues.
 
-- [ ] **Step 3: Add the complete bounded acquisition script.**
+- [x] **Step 3: Add the complete bounded acquisition script.**
 
 Create scripts/fetch_labels.py:
 
@@ -720,7 +729,7 @@ resolves from repository root. Inspect likewise with
 uv run python -m scripts.inspect_labels. Do not launch either with .env.setup,
 .env.california or .env.runtime; they need no secrets.
 
-- [ ] **Step 4: Observe GREEN; run the four-file acquisition once after approval.**
+- [x] **Step 4: Observe GREEN; run the four-file acquisition once after approval.**
 
 Run uv run pytest tests/test_labels.py tests/test_label_fetch.py --tb=line.
 Run lint/format and locked sync. Check free disk, fixed URLs/revision/pins,
@@ -766,7 +775,7 @@ URLs/hashes, observed bytes, procedure and check date; never claim conversion
 survival from this ID report. Full original/corrected/messy family splits remain
 unfrozen; no scoring or runtime prompt construction occurs.
 
-- [ ] **Step 5: Run regressions, update all records and commit.**
+- [x] **Step 5: Run regressions, update all records and commit.**
 
 Run uv sync --locked, uv run pytest --tb=line,
 uv run --env-file .env.setup --env-file .env.california pytest --tb=line,

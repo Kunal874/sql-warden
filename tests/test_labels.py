@@ -128,6 +128,17 @@ def test_original_fields_are_observations_not_trusted_overrides():
     assert build_report(data)["by_source"]["arcwise_full"]["question_anchor_mismatch_ids"] == [1]
 
 
+def test_corrected_null_evidence_is_preserved_and_reported():
+    data = sources()
+    data["arcwise_sql"] = parsed([record(1, evidence=None), record(2)], corrected=True)
+    assert data["arcwise_sql"][1]["evidence"] is None
+    report = build_report(data)
+    assert report["by_source"]["arcwise_sql"]["evidence_difference_ids"] == [1]
+    assert report["corrected_pair_text_difference_ids"] == [1]
+    assert report["primary_labels"] == "not_selected"
+    assert report["ambiguity_labels"] == "not_classified"
+
+
 def test_pinned_reader_rejects_bad_size_or_digest(tmp_path):
     path = tmp_path / "labels.json"
     path.write_bytes(b"[]")

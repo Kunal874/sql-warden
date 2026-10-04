@@ -163,7 +163,7 @@ in that subset. Its sorted IDs are:
 | thrombosis_prediction | 50 |
 | toxicology | 40 |
 
-Persisted corrected Arcwise intake (approved, Task 2 next), schema corrections, gold execution/conversion validity,
+Corrected Arcwise intake and offline manifest are now checked below. Schema corrections, gold execution/conversion validity,
 split freezing and C1 decisions remain pending. No benchmark score, PostgreSQL
 gold-validity rate, ambiguity label or native/SQLite equivalence is claimed.
 
@@ -230,9 +230,9 @@ this inventory does not establish physical-table changes or correct column
 mapping. Schema-description inspection remains required separately.
 
 The [two-task intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md)
-was approved by Kunal on 2026-10-05. Task 1's strict offline checker is implemented
-and passes 39 synthetic checks; Task 2's acquisition/actual acceptance is next.
-Only the four pinned resources (645,140 content bytes) may be saved in this
+was approved by Kunal on 2026-10-05. Both tasks' code/actual acceptance are checked;
+40 label tests and 8 fake-network tests pass, sole final review next.
+Only the four pinned resources (645140 content bytes) were saved in this
 increment. No source SQL, SQLite gold,
 PostgreSQL gold or model request ran during this inspection. Conversion survival,
 validity/exclusion policy, primary labels, ambiguity labels, family splits and C1
@@ -243,5 +243,35 @@ rejects duplicate keys/IDs and malformed or unreviewed fields, and verifies exac
 local byte/hash pins before reporting. It matches by numeric ID and separately
 records database mismatches; identity alignment is not semantic alignment.
 Output contains aggregate counts and difference IDs, not question/evidence/SQL
-values. original_* anchors remain observational. No real correction bytes have
-been saved/accepted through this script yet, nor has any gold SQL been executed.
+values. original_* anchors remain observational. Actual correction bytes are now
+saved and accepted through the scripts below; no gold SQL has been executed.
+
+## Actual pinned offline correction acceptance (2026-10-05)
+
+Ran uv run python -m scripts.fetch_labels once, without an env file, after fake
+controls and read-only absent/ignored-destination/disk/pin checks. All four
+resources above passed exact size/SHA-256 before publishing the new ignored
+data/corrections/arcwise-fe766045 directory; all four were rechecked offline.
+Original raw label files were reused unchanged. No redirects, proxy inheritance,
+source SQL execution, retry/repin or overwrite; task-owned temporary staging
+was cleaned by its context manager, not any prior artifact.
+
+The first strict parse identified evidence null at IDs 1507/1528 in both corrected
+sets. Read-only shape checks and a failing regression established the cause.
+Permit null only for corrected evidence and retain it exactly; original evidence
+remains string-only. Do not normalize null to empty, omit rows or infer an input
+policy. All other present text fields are strings. Source pins are unchanged.
+
+The [compact alignment manifest](label-alignment-manifest.json) records actual
+pins/URLs/license, observed bytes, check date/procedure and acceptance Git state
+(64f51e4 plus dirty Task 2/schema-support changes, before its commit). It includes
+all difference/mismatch IDs, original database/difficulty counts and four
+undecided states. No raw question/evidence/SQL values are in the manifest.
+
+All planned actual assertions pass: 500 originals per dialect, 498 corrections
+each, missing 119/120 only, no unexpected/db/difficulty mismatch; question/evidence
+differences 81/86 and 147/152, corrected-pair union 148. Original difficulty counts
+148 simple/250 moderate/102 challenging. Anchor mismatch counts are 81/86 for
+SQL-only and 81/79 for full; these do not verify provenance of baseline rewrites.
+Gold execution/conversion survival, descriptions/imports, primary labels, ambiguity
+policy, exclusions, family splits and C1 remain unfinished. G0.5 is not complete.

@@ -1,0 +1,163 @@
+{
+  "format_version": 1,
+  "checked_on": "2026-10-05",
+  "purpose": "Offline source identity and literal text differences only; not SQL execution validity or a benchmark score",
+  "git_state": {
+    "head": "64f51e4dc56794f7c6adf2e19e7574124f1c4281",
+    "dirty": true,
+    "description": "Task 2 working tree at acceptance; nullable corrected evidence fix present. This manifest is committed afterward, not a self-referential commit hash."
+  },
+  "correction_revision": "fe766045c55b6875a43b30e9ac7683df5582f8cf",
+  "correction_license": {
+    "declared": "CC BY-SA 4.0",
+    "url": "https://raw.githubusercontent.com/uiuc-kang-lab/text_to_sql_benchmarks/fe766045c55b6875a43b30e9ac7683df5582f8cf/LICENSE",
+    "local_path": "data/corrections/arcwise-fe766045/LICENSE"
+  },
+  "original_revision": "f65faf4ae3b638c1fa6df1d3370c8d92c8366301",
+  "original_license": {
+    "declared": "CC BY-SA 4.0",
+    "provenance": "docs/DATA.md"
+  },
+  "correction_total_bytes": 645140,
+  "original_sources": [
+    {
+      "path": "data/raw/mini_dev_sqlite.json",
+      "bytes": 278513,
+      "sha256": "88ceb0710163cae46a256ecea8f0a8c98286599530b60587fda5c3cfe57d45d2",
+      "revision": "f65faf4ae3b638c1fa6df1d3370c8d92c8366301",
+      "url": "https://huggingface.co/datasets/birdsql/bird_mini_dev/resolve/f65faf4ae3b638c1fa6df1d3370c8d92c8366301/data/mini_dev_sqlite-00000-of-00001.json",
+      "acquisition": "existing raw file reused; exact pin checked"
+    },
+    {
+      "path": "data/raw/mini_dev_pg.json",
+      "bytes": 283551,
+      "sha256": "7fa740ef9225389cff6c34432120e8325d0ca3008d73db1ae38731234bc10da7",
+      "revision": "f65faf4ae3b638c1fa6df1d3370c8d92c8366301",
+      "url": "https://huggingface.co/datasets/birdsql/bird_mini_dev/resolve/f65faf4ae3b638c1fa6df1d3370c8d92c8366301/data/mini_dev_pg-00000-of-00001.json",
+      "acquisition": "existing raw file reused; exact pin checked"
+    }
+  ],
+  "correction_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/uiuc-kang-lab/text_to_sql_benchmarks/fe766045c55b6875a43b30e9ac7683df5582f8cf/data/arcwise_plat_sql_only_with_diff.json",
+      "path": "data/corrections/arcwise-fe766045/arcwise_plat_sql_only_with_diff.json",
+      "bytes": 287718,
+      "sha256": "e7bf76408f99266506ea558d84982c69422e5db3dfecab5f08a3a8d3900e8395",
+      "acquisition": "new exclusive fixed-source fetch; exact size/SHA-256 checked before publication and rechecked offline"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/uiuc-kang-lab/text_to_sql_benchmarks/fe766045c55b6875a43b30e9ac7683df5582f8cf/data/arcwise_plat_full_with_diff.json",
+      "path": "data/corrections/arcwise-fe766045/arcwise_plat_full_with_diff.json",
+      "bytes": 332246,
+      "sha256": "baefe2ca4fbab86c000df72aad9eaa563f7d422e425af2cbff071f656ea4eea8",
+      "acquisition": "new exclusive fixed-source fetch; exact size/SHA-256 checked before publication and rechecked offline"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/uiuc-kang-lab/text_to_sql_benchmarks/fe766045c55b6875a43b30e9ac7683df5582f8cf/README.md",
+      "path": "data/corrections/arcwise-fe766045/README.md",
+      "bytes": 5038,
+      "sha256": "7aefaba8da2792a8edde1cb534dde1f89c3228e87ac5b923838ba68bb56cf0f5",
+      "acquisition": "new exclusive fixed-source fetch; exact size/SHA-256 checked before publication and rechecked offline"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/uiuc-kang-lab/text_to_sql_benchmarks/fe766045c55b6875a43b30e9ac7683df5582f8cf/LICENSE",
+      "path": "data/corrections/arcwise-fe766045/LICENSE",
+      "bytes": 20138,
+      "sha256": "28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5",
+      "acquisition": "new exclusive fixed-source fetch; exact size/SHA-256 checked before publication and rechecked offline"
+    }
+  ],
+  "procedure": ["Run uv run python -m scripts.fetch_labels once, without env files; fixed HTTPS sources, no redirects/proxy inheritance, identity encoding, bounded exact pins, publish new directory only when all four pass.","Run scripts.inspect_labels.inspect_local(Path('data')) and verify all four label-source pins before decoding; join by strictly parsed numeric question ID, record database mismatches separately.","Compare exact unnormalized Python field values; preserve corrected null evidence, do not coerce it to empty or drop rows. original_* anchors are observations only.","Assert original counts 500 each; correction counts 498, missing IDs 119/120, no unexpected/database mismatches; question/evidence differences 81/86 and 147/152; corrected-pair text union 148.","Store only metadata/counts/IDs here, never question/evidence/SQL values; no database query, model request, scoring, label selection or split freezing."],
+  "schema_observations": {
+    "corrected_evidence_null_ids": {
+      "arcwise_sql": [1507,1528],
+      "arcwise_full": [1507,1528]
+    },
+    "null_evidence_policy": "Preserve upstream null in corrected evidence only. This is parsing support, not a benchmark input/label policy."
+  },
+  "alignment": {
+    "format_version": 1,
+    "original_count": 500,
+    "per_database": {
+      "california_schools": 30,
+      "card_games": 52,
+      "codebase_community": 49,
+      "debit_card_specializing": 30,
+      "european_football_2": 51,
+      "financial": 32,
+      "formula_1": 66,
+      "student_club": 48,
+      "superhero": 52,
+      "thrombosis_prediction": 50,
+      "toxicology": 40
+    },
+    "per_difficulty": {
+      "challenging": 102,
+      "moderate": 250,
+      "simple": 148
+    },
+    "by_source": {
+      "arcwise_full": {
+        "count": 498,
+        "identity_aligned_count": 498,
+        "missing_ids": [119,120],
+        "unexpected_ids": [],
+        "database_mismatch_ids": [],
+        "difficulty_mismatch_ids": [],
+        "question_difference_ids": [17,25,26,27,31,32,37,46,62,72,83,87,92,93,94,95,125,128,129,145,152,159,168,169,186,189,197,198,200,201,208,215,219,231,240,242,244,247,248,255,260,263,340,341,344,347,349,402,465,469,473,529,530,549,557,565,571,584,587,595,634,639,672,683,685,726,728,751,766,772,862,865,866,877,892,894,896,906,928,930,937,940,944,954,955,959,962,967,978,989,1011,1014,1029,1035,1037,1058,1080,1084,1088,1092,1094,1124,1133,1134,1135,1141,1144,1146,1147,1148,1149,1152,1166,1168,1171,1175,1179,1187,1189,1195,1205,1225,1232,1235,1241,1242,1243,1247,1254,1255,1338,1339,1387,1389,1399,1404,1405,1426,1482,1486,1490,1500,1501,1505,1524,1525,1529],
+        "evidence_difference_ids": [11,12,23,25,28,31,32,41,46,48,62,77,83,85,118,125,128,129,145,152,186,194,197,198,201,208,219,226,227,228,230,231,236,242,247,249,255,273,281,282,341,347,356,366,371,377,397,402,405,408,412,424,473,474,486,487,529,533,557,563,581,584,595,637,639,672,701,716,724,743,747,772,788,801,846,861,862,877,880,881,892,896,898,902,904,906,930,940,944,950,954,962,971,978,994,1002,1003,1014,1031,1032,1035,1036,1091,1094,1115,1116,1133,1134,1147,1148,1149,1155,1156,1162,1166,1168,1171,1175,1179,1185,1189,1198,1201,1209,1225,1227,1229,1232,1235,1239,1241,1242,1243,1254,1257,1270,1275,1331,1350,1376,1378,1389,1392,1403,1426,1473,1482,1500,1501,1507,1528,1529],
+        "sql_difference_ids": [5,11,12,17,23,24,25,26,28,31,32,36,37,40,41,46,48,50,62,72,77,82,83,85,92,94,95,112,115,125,129,145,149,152,173,186,194,197,198,207,212,213,215,218,219,234,242,244,247,248,255,260,263,281,341,347,349,352,356,366,371,383,397,402,416,465,469,473,484,529,530,565,571,586,587,595,633,634,637,639,640,671,672,682,683,694,710,716,726,736,743,744,747,750,751,761,766,773,786,788,791,794,829,846,847,862,877,880,881,892,896,898,906,928,930,937,940,944,950,951,954,955,962,963,972,1011,1028,1029,1031,1032,1036,1037,1039,1040,1058,1068,1080,1091,1094,1102,1103,1105,1107,1110,1113,1114,1115,1133,1136,1139,1144,1148,1155,1156,1162,1164,1166,1168,1169,1171,1175,1179,1185,1189,1192,1205,1209,1225,1227,1229,1232,1235,1239,1241,1242,1243,1247,1251,1252,1254,1255,1256,1257,1265,1267,1270,1302,1322,1323,1331,1339,1362,1376,1378,1389,1392,1399,1403,1404,1422,1427,1464,1473,1481,1482,1490,1500,1501,1505,1509,1524,1525,1526,1529,1531],
+        "question_anchor_mismatch_ids": [17,25,27,37,72,83,87,94,95,125,128,129,145,152,168,169,189,198,215,219,231,244,248,340,341,344,349,402,465,469,473,529,530,565,584,595,634,672,683,728,751,766,865,866,892,894,906,928,930,944,955,959,962,967,978,989,1011,1014,1058,1092,1134,1135,1141,1144,1152,1166,1168,1171,1205,1232,1243,1247,1338,1389,1399,1404,1405,1482,1500,1501,1529],
+        "evidence_anchor_mismatch_ids": [11,12,23,25,28,31,32,41,62,77,83,85,125,128,145,152,197,198,201,208,230,231,249,273,281,341,371,402,408,412,424,473,529,533,584,595,637,716,788,801,881,896,902,904,906,944,950,994,1003,1014,1032,1035,1036,1091,1094,1116,1133,1134,1148,1168,1171,1175,1185,1189,1198,1201,1227,1232,1239,1241,1254,1275,1473,1482,1500,1501,1507,1528,1529]
+      },
+      "arcwise_sql": {
+        "count": 498,
+        "identity_aligned_count": 498,
+        "missing_ids": [119,120],
+        "unexpected_ids": [],
+        "database_mismatch_ids": [],
+        "difficulty_mismatch_ids": [],
+        "question_difference_ids": [17,25,27,37,72,83,87,94,95,125,128,129,145,152,168,169,189,198,215,219,231,244,248,340,341,344,349,402,465,469,473,529,530,565,584,595,634,672,683,728,751,766,865,866,892,894,906,928,930,944,955,959,962,967,978,989,1011,1014,1058,1092,1134,1135,1141,1144,1152,1166,1168,1171,1205,1232,1243,1247,1338,1389,1399,1404,1405,1482,1500,1501,1529],
+        "evidence_difference_ids": [11,12,23,25,28,31,32,41,62,77,83,85,125,128,145,152,197,198,201,208,230,231,247,249,273,281,341,371,402,408,412,424,473,529,533,584,595,637,716,788,801,881,896,902,904,906,944,950,954,994,1003,1014,1031,1032,1035,1036,1091,1094,1116,1133,1134,1148,1168,1171,1175,1185,1189,1198,1201,1227,1232,1235,1239,1241,1242,1243,1254,1257,1275,1473,1482,1500,1501,1507,1528,1529],
+        "sql_difference_ids": [5,11,12,17,23,24,25,26,28,31,32,36,37,40,41,46,48,50,62,72,77,83,85,94,112,115,125,128,129,149,152,159,173,186,194,197,198,207,212,213,215,218,234,244,247,248,260,263,281,341,347,349,352,371,383,402,416,465,469,473,484,529,530,557,565,571,586,587,595,633,634,637,640,671,672,682,683,694,710,716,726,736,743,744,750,751,761,766,773,786,788,791,794,829,847,880,892,928,937,944,951,955,962,963,972,1011,1028,1029,1031,1032,1036,1037,1039,1040,1058,1068,1080,1091,1102,1103,1105,1107,1110,1113,1114,1115,1133,1136,1139,1144,1148,1149,1164,1166,1168,1169,1171,1179,1185,1189,1192,1205,1225,1227,1232,1241,1242,1243,1247,1251,1252,1254,1255,1256,1265,1267,1302,1322,1323,1362,1376,1387,1389,1399,1404,1422,1427,1464,1473,1481,1482,1490,1500,1501,1505,1509,1525,1526,1529,1531],
+        "question_anchor_mismatch_ids": [17,25,27,37,72,83,87,94,95,125,128,129,145,152,168,169,189,198,215,219,231,244,248,340,341,344,349,402,465,469,473,529,530,565,584,595,634,672,683,728,751,766,865,866,892,894,906,928,930,944,955,959,962,967,978,989,1011,1014,1058,1092,1134,1135,1141,1144,1152,1166,1168,1171,1205,1232,1243,1247,1338,1389,1399,1404,1405,1482,1500,1501,1529],
+        "evidence_anchor_mismatch_ids": [11,12,23,25,28,31,32,41,62,77,83,85,125,128,145,152,197,198,201,208,230,231,247,249,273,281,341,371,402,408,412,424,473,529,533,584,595,637,716,788,801,881,896,902,904,906,944,950,954,994,1003,1014,1031,1032,1035,1036,1091,1094,1116,1133,1134,1148,1168,1171,1175,1185,1189,1198,1201,1227,1232,1235,1239,1241,1242,1243,1254,1257,1275,1473,1482,1500,1501,1507,1528,1529]
+      },
+      "bird_pg": {
+        "count": 500,
+        "identity_aligned_count": 500,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "database_mismatch_ids": [],
+        "difficulty_mismatch_ids": [],
+        "question_difference_ids": [937,964],
+        "evidence_difference_ids": [402,682,765,964,988,1175,1476,1498,1524,1526],
+        "sql_difference_ids": [11,12,17,23,24,25,26,27,28,31,32,36,37,39,40,41,46,47,48,50,62,72,77,79,82,83,85,87,92,94,95,98,99,100,115,116,117,118,119,120,125,128,129,138,145,149,152,168,169,173,186,189,194,195,197,198,201,208,212,215,218,219,220,226,227,228,231,232,239,242,243,244,245,247,255,263,273,281,282,327,340,349,352,368,371,377,397,402,407,412,415,416,424,459,462,465,469,472,473,474,484,486,487,518,528,529,530,531,532,533,557,565,571,587,592,598,604,629,633,634,639,640,665,669,671,678,682,683,687,694,701,707,716,726,728,730,732,736,738,743,760,761,766,769,775,786,788,790,791,794,800,801,819,824,846,847,865,869,877,879,880,881,884,892,894,896,897,898,901,904,906,909,915,930,931,937,940,944,948,950,951,954,955,959,960,962,963,967,971,972,977,981,988,990,994,1001,1002,1003,1011,1014,1025,1028,1029,1030,1031,1032,1036,1037,1039,1040,1042,1048,1057,1058,1068,1076,1078,1079,1084,1091,1092,1094,1096,1098,1102,1103,1105,1107,1110,1113,1114,1115,1116,1135,1136,1139,1144,1145,1146,1147,1148,1149,1150,1152,1156,1162,1164,1166,1168,1169,1171,1175,1179,1185,1189,1192,1201,1205,1209,1225,1227,1229,1231,1232,1235,1238,1239,1242,1243,1252,1254,1255,1256,1257,1267,1281,1323,1359,1376,1381,1389,1390,1392,1398,1403,1404,1405,1410,1432,1435,1457,1471,1472,1473,1476,1479,1480,1481,1482,1484,1486,1490,1493,1498,1509,1524,1525,1526,1528,1529,1531,1533],
+        "question_anchor_mismatch_ids": [937,964],
+        "evidence_anchor_mismatch_ids": [402,682,765,964,988,1175,1476,1498,1524,1526]
+      },
+      "bird_sqlite": {
+        "count": 500,
+        "identity_aligned_count": 500,
+        "missing_ids": [],
+        "unexpected_ids": [],
+        "database_mismatch_ids": [],
+        "difficulty_mismatch_ids": [],
+        "question_difference_ids": [],
+        "evidence_difference_ids": [],
+        "sql_difference_ids": [],
+        "question_anchor_mismatch_ids": [],
+        "evidence_anchor_mismatch_ids": []
+      }
+    },
+    "corrected_pair_missing_from_sql_ids": [],
+    "corrected_pair_missing_from_full_ids": [],
+    "corrected_pair_database_mismatch_ids": [],
+    "corrected_pair_text_difference_ids": [26,27,31,32,46,48,62,87,92,93,95,118,128,129,145,159,168,186,189,194,197,200,201,208,215,219,226,227,228,236,240,242,247,255,260,263,273,282,347,356,366,377,397,402,405,412,474,486,487,549,557,563,571,581,587,639,672,685,701,724,726,743,747,772,846,861,862,877,880,881,892,896,898,906,930,937,940,944,950,954,955,959,962,971,978,1002,1029,1031,1035,1037,1080,1084,1088,1094,1115,1124,1133,1134,1141,1144,1146,1147,1148,1149,1155,1156,1162,1166,1168,1171,1175,1179,1187,1189,1195,1209,1225,1227,1229,1232,1235,1239,1241,1242,1243,1254,1255,1257,1270,1331,1338,1339,1350,1376,1378,1387,1389,1392,1403,1405,1426,1482,1486,1490,1505,1524,1525,1529],
+    "execution_validity": "not_run",
+    "primary_labels": "not_selected",
+    "ambiguity_labels": "not_classified",
+    "splits": "not_frozen"
+  },
+  "limitations": ["Identity alignment checks only IDs/database names, not verified question or SQL semantics.","Text and SQL differences are literal changes, not ambiguity labels or result equivalence.","Anchor differences do not prove where upstream baseline drift originated.","Conversion survival, exclusions, primary labels, ambiguity policy and family splits remain undecided; no denominator changed.","75 corrected description CSVs and remaining database imports are not part of this intake.","HTTP deadlines are cooperative, not OS hard termination; local sources/filesystem are trusted, not protected from privileged concurrent tampering."]
+}

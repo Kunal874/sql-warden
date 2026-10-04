@@ -45,11 +45,11 @@ It is not a finished public service yet.
   is complete; it reused existing Python tools without adding a package.
 - The local AI connection code now passes 67 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
-- The latest verified code checkpoint has 719 passing tests, including 165
+- The latest verified code checkpoint has 767 passing tests, including 165
   tests that connect to the real local PostgreSQL database.
-- The new offline answer-file checker passes 39 checks. The latest run without
-  private test settings passed 593 tests and skipped 165 database checks; the
-  earlier 719-test real-database checkpoint above is not a fresh database run.
+- The offline answer-file checker and small download tool pass 48 checks.
+  The four approved files match their saved fingerprints. Their summary lists
+  missing items and changed wording; it does not contain the answer text.
 
 The first narrow AI question-to-database flow works for one checked question.
 The full agent, evaluation scores, website and public release are not finished.
@@ -69,8 +69,8 @@ You approved the three-part AI command-line plan and its two software additions.
 All three parts' code and database checks pass, and the single real question
 worked. Model unload, independent review and verified corrections are complete.
 You approved the next two-part data-work plan. Its offline checker is built
-and checked. Saving and checking the four approved small source files comes
-next. No extra model test or database import was run.
+and checked, and the four approved small source files have been saved and checked.
+One independent final review is next. No extra model test or database import ran.
 
 ## 3. Completed work, one step at a time
 
@@ -827,6 +827,45 @@ Next: save only the four approved correction/license files, check their exact
 fingerprints and record actual item differences. We have not saved those files
 in this task. The final review and the rest of the foundation still remain.
 
+### G0.5, correction Task 2 — Save and check the small approved answer files
+
+What was done: saved the two correction files and their README/license in a
+private-to-this-project folder that Git ignores. Total new source content is
+about 645 KB. The tool accepts only the four saved URLs and fingerprints,
+refuses an existing folder, and shows the final folder only when all files pass.
+
+Why: an incomplete or changed answer key must not look ready for use. We also
+need a small record of where the answer files came from and which checks passed.
+That record contains item numbers and counts, not the full answer text.
+
+What we found: both correction sets have 498 items, missing 119 and 120 from
+the original 500. The database names line up. Their question/hint wording
+differs from the original on 141 and 229 items. Between the correction sets,
+148 items have different question or hint text. None of these counts is an
+AI accuracy score or a decision that those questions are ambiguous.
+
+Two corrected items, 1507 and 1528, store their hint as null. Null means no
+value was supplied; it is not automatically the same as an empty string.
+The checker initially refused this format. A new test failed first, then
+passed after supporting null only for corrected hints and keeping it unchanged.
+We did not edit the source files, remove items or choose a new exam policy.
+
+Checked: 40 answer-file checks and 8 fake-download checks pass. The real files
+passed all fingerprints and expected alignment checks. The full project passed
+767 tests, with no skips, including 165 real PostgreSQL checks. Without private
+database settings, 602 passed and 165 were skipped. No AI request or gold-answer
+SQL ran; the database tests checked the already built project controls.
+
+New words: staging is a temporary work area before files are marked ready.
+All-or-nothing publication means either the whole checked folder appears or
+none of it does. Identity alignment means item numbers and database names agree;
+it does not prove the question or SQL answer is correct. A null hint stays a
+null hint until we explicitly decide how a later experiment should use it.
+
+Next: one fresh final review of these two tasks, then remaining descriptions,
+database imports and conversion/answer-validity work. Foundation stays at 7 of
+12 tasks because this finishes only one part of the larger data task.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -1128,8 +1167,9 @@ live question returned the expected answer; model unload, final review and its
 verified parsing fixes are complete. Next we resume the remaining foundation:
 datasets and validity decisions, the second model, then split/evaluation/model
 choices. You approved the two-task correction-intake plan; its first checker
-is complete. Next comes the approved four-file intake and its offline checks,
-then one final review. It uses existing software and does not change the database
+and the four-file intake are complete. Next comes one final review, then the
+remaining descriptions/imports/answer-validity work. This intake uses existing
+software and does not change the database
 or run the model. Each relevant new permission outside that scope needs review.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 

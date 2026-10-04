@@ -946,6 +946,48 @@ Rulings in order:
 Task 1 only is complete. Task 2's fake-network tests, four-file intake/actual
 alignment and sole whole-increment review remain. G0 remains 7/12; G0.5/C1 not done.
 
+## D-034 — exclusive correction intake / Task 2 and nullable-hint ruling (2026-10-05)
+
+Context: Task 1 saved at 64f51e4, confirmed Kunal author/committer/body; task-done
+39 passes (0.11s). Task 2 is within the approved two-task/four-resource scope.
+
+Decision: fixed four HTTPS URLs at the approved revision; existing httpx only,
+no redirect/proxy inheritance, identity encoding, exact per-file byte/hash pins,
+20s or remaining-budget I/O timeout, cooperative 120s deadline and new-release
+publication only after all pins pass. Refuse pre-existing destinations before
+network I/O and recheck before rename; never overwrite or change approved pins.
+The trusted local filesystem/cooperative deadline limitations remain explicit.
+
+Tests first: missing fetch_labels RED (0.19s), eight fake controls implemented;
+47 combined passes (0.17s), locked sync 27 packages, Ruff/31-file format pass.
+Preflight showed ignored destination absent, 46327619584 D: bytes free and fixed
+645140 bytes. Sole actual acquisition passed; only newly owned temporary staging
+cleaned. Four local pins rechecked, original labels reused, no extra fetch.
+
+First actual alignment failed invalid text field. Read-only types/IDs-only
+inspection established evidence null at corrected IDs 1507/1528 in both sources;
+all other text fields strings. Regression observed invalid-text RED (0.05s).
+Ruling: allow null only for corrected evidence, retain its exact value — it is
+present in the approved pinned source schema, not corrupt or changing bytes —
+cost if wrong: downstream readers may confuse absent and empty hints; these
+must remain exact differences until C1 chooses an input policy. Original evidence
+and all other text types stay strict. No row dropping, normalization or repin.
+This is parsing support, not benchmark/ambiguity/label selection. Combined GREEN
+48 passes (0.22s); original null rejection remains in the existing test matrix.
+
+Actual assertions match earlier read-only observations: 500 originals, corrections
+498 each/missing119,120, no unexpected/db/difficulty mismatch, question/evidence
+81/86 and147/152, corrected-pair union148. SQL180/215 is text only, not EX. Manifest
+records source/license/pins, observed bytes and exact pre-commit acceptance Git
+state plus procedure/counts/IDs/anchor observations and undecided states; no gold
+text. DATA/notebook updated. No query/model/secret/import/benchmark action.
+
+Fresh regressions: no-env 602 passes/165 skips (5.71s), configured full suite
+767 passes/zero skips (21.62s), including 165 actual PostgreSQL checks. Existing
+database checks do not establish new corpus execution validity. Ruff/31-file
+format/locked sync pass. Task 2 implementation complete; sole final review next.
+G0 remains 7/12, G0.5/G0.5b not complete. No publication or remote configured.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
