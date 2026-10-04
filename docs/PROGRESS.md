@@ -6,9 +6,10 @@ amends their order and checks.
 
 Current group: G0. Kunal approved the dated safe-local-CLI plan, openai/httpx,
 exclusive runtime-only restricted credential copy and one bounded live test.
-Task 1's pinned local provider passes 37 deterministic SDK/HTTP tests. Latest
-full suite: 643 passed, zero skips, including 158 actual PostgreSQL checks.
-Guard/runner/checker remain complete; CLI wiring and live acceptance are next.
+Task 1 provider is committed at 227f869. Task 2 CLI/setup-helper passes 39
+deterministic flow checks; client + CLI 76/76. Latest full configured checkpoint
+is 682 passed/zero skips; Task 2 no-env suite 524 passed/158 skipped.
+Guard/runner/checker remain complete; actual CLI controls/live acceptance are next.
 Native sequential execution stays selected. No AI-generated SQL or benchmark
 score exists. G0.7a is not complete.
 Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
@@ -59,7 +60,8 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Prepare/self-review the separate safe local model/CLI plan.
   - [x] Review/approve that new artifact, openai/httpx additions and bounded acceptance operations.
   - [x] Build/test the pinned bounded local provider (37 deterministic checks).
-  - [ ] Build the safe one-database model/CLI flow; no generated SQL yet.
+  - [x] Build/test the safe one-database model/CLI flow (39 flow checks; no live SQL yet).
+  - [ ] Actual CLI controls, exclusive runtime copy, one bounded live question and final review.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -144,6 +146,28 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — safe local CLI Task 2 / validated one-shot flow
+
+Provider Task 1 is saved at 227f869 (verified Kunal author/committer/body).
+Wrote planned input/environment/guard/result/preview/cancellation/error/setup
+tests and 3 inherited private-SDK-key checks before source; absent setup module
+RED (0.21s), client/CLI 76 GREEN (1.96s), including 39 CLI checks. CLI validates
+before construction/I/O; one generation -> immutable guard -> fixed restricted
+executor (which independently guards again), no online comparator/reference.
+Setup helper exclusively copies the one existing restricted key; not run yet.
+Runtime rejects other WARDEN_/admin/test/private SDK settings. Failed/blocked
+results expose neither SQL nor partial rows; complete results get an escaped
+20-row preview, null unavailable counters/usage, separate HTTP-cleanup status.
+No raw-SQL/security-off/provider/model flags, retries, repair or confidence score.
+
+Locked sync and both installed CLI help commands pass without model/database
+I/O. No-env suite 524 passed/158 skipped (3.91s), lint/26-file format/whitespace
+pass. Full configured suite 682/682 (15.39s), no skips. No dependency change
+beyond Task 1; added only installed CLI entrypoint.
+README and notebook explain scope and exact safe commands. .env.runtime still
+does not exist; no actual credential copy or live question happened in Task 2.
+Task 2 shares Task 1's private-key refusal as recorded in D-028, no new ruling.
 
 ### 2026-10-04 — safe local CLI Task 1 / pinned provider
 
@@ -906,9 +930,9 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Active approved work: safe-local-CLI Task 1 provider is verified; implement
-Task 2 CLI/setup helper sequentially, then Task 3 actual controls and exactly one
-live question. No runtime file or live AI/database call yet. Resume this plan's
+Active approved work: safe-local-CLI Task 1 provider/Task 2 CLI are verified;
+next Task 3 actual controls and exactly one live question. No runtime file or
+live AI/database call yet. Resume this plan's
 ledger at .superpowers/sdd/2026-10-04-safe-local-cli/progress.md, reconcile Git.
 Do not repeat earlier reviews/import/rotation. Model remains unloaded; current
 test commands and explicit uv path below remain valid. SDK inherited private

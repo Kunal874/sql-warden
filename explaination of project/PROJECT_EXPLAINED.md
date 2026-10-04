@@ -44,7 +44,7 @@ It is not a finished public service yet.
   is complete; it reused existing Python tools without adding a package.
 - The local AI connection code now passes 37 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
-- The latest verified code checkpoint has 643 passing tests, including 158
+- The latest verified code checkpoint has 682 passing tests, including 158
   tests that connect to the real local PostgreSQL database.
 
 The AI question-answering flow, evaluation
@@ -61,8 +61,8 @@ You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
 actionable issues and repeated all 60 unit checks successfully.
 You approved the three-part AI command-line plan and its two software additions.
-The first part, the bounded local AI connection, is checked. Connecting it to
-the safe query runner and trying one real question are next.
+The first two parts are checked: the bounded local AI connection and the safe
+command that connects it to the query runner. Trying one real question is next.
 
 ## 3. Completed work, one step at a time
 
@@ -643,6 +643,30 @@ New words: **transport** is the part that carries a request to another program.
 retry. **Cleanup confirmation** means the HTTP connection closed; it does not
 mean the model stopped using the graphics card. We check that separately later.
 
+### G0.7a, AI demo Task 2 — Connect the question to the safe runner
+
+What changed: added the sqlwarden terminal command. It checks your question
+and settings first, asks the local model once, checks the suggested SQL and
+uses the existing restricted database runner. A separate setup helper will
+make a private runtime settings file; it never gives the runtime an admin login.
+The real settings copy and real AI question have not happened yet.
+
+Checked: 39 command-flow tests pass, alongside the 37 AI-connection tests.
+The whole suite without private settings passes 524 checks and skips the 158
+real database checks. The full configured suite also passes all 682 checks.
+Help commands work without contacting a model or database.
+Tests cover bad questions/settings, dangerous SQL, cancellation, empty answers,
+missing values, oversized answers, and errors without private information.
+
+In simple words: **one candidate** means the AI offers one possible query, not
+several answers voting together. **Answered** means the permitted query ran and
+returned its whole result; it does not prove the AI understood your question.
+**Blocked** means a safety check refused it. **Failed** means another limit or
+problem prevented an answer. There is no made-up confidence or accuracy number.
+The **preview** shows at most 20 rows only after the whole bounded answer is
+received. It is a display shortcut, not a partial answer treated as complete.
+Token usage stays unavailable when the model does not report it.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -921,8 +945,9 @@ rules, guarded workflow, real recovery tests and final review are complete.
 The answer checker and its independent final review are also complete. It passes
 60 pure and 17 real database checks. The separate plan for a small command-line
 question-to-database demonstration is approved. Its local AI connection is now
-checked. Next are the safe command, a separate restricted-only settings file
-and one limited local model question, after real database controls pass.
+checked, and the safe command passes its flow tests. Next are real database
+controls for that command, a separate restricted-only settings file and exactly
+one limited local model question.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date

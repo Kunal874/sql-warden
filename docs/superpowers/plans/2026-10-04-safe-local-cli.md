@@ -759,7 +759,7 @@ git status --short
 **Consumes:** Task 1 `Generation`/`LocalQwen.generate`; existing `guard_sql`, `CALIFORNIA_POLICY`, `open_california_executor(password, limits)` and complete `QueryResult`.
 **Produces:** `ask_once`, `render`, `runtime_password`, `validate_question`, `main` above; one escaped JSON terminal record, preview <=20 rows, no confidence or gold score.
 
-- [ ] **Step 1: Write the control-flow/config/output tests first.**
+- [x] **Step 1: Write the control-flow/config/output tests first.**
 
 ```python
 import asyncio
@@ -939,7 +939,7 @@ def test_unknown_db_raw_sql_and_invalid_args_have_no_echo_or_io(monkeypatch, cap
         assert "CANARY" not in output.out + output.err
 ```
 
-- [ ] **Step 2: Run RED before adding CLI/setup code.**
+- [x] **Step 2: Run RED before adding CLI/setup code.**
 
 `uv run pytest tests/test_cli.py -q --tb=line` must fail for the absent new modules,
 not use a model or private test credential. Then create:
@@ -1157,7 +1157,7 @@ WARDEN_CALIFORNIA_PASSWORD=
 WARDEN_RUNTIME_CALIFORNIA_PASSWORD=
 ```
 
-- [ ] **Step 3: Add terminal/privacy tests and run GREEN.**
+- [x] **Step 3: Add terminal/privacy tests and run GREEN.**
 
 ```python
 async def test_library_error_is_fixed_without_canary_or_credential_echo(monkeypatch, caplog):
@@ -1266,7 +1266,7 @@ Existing `.env.runtime` must refuse overwrite; investigate, do not delete/recrea
 or rotate a password. Existing synthetic `.env` remains unchanged and is not this
 CLI's launcher. The copy helper is setup-only, not an inference import.
 
-- [ ] **Step 4: Update notebook/evidence and commit tested flow.**
+- [x] **Step 4: Update notebook/evidence and commit tested flow.**
 
 Explain normal-language question, schema capsule, one candidate, blocked/failed/
 answered, complete result versus preview, unavailable token usage and why no

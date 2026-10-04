@@ -11,6 +11,9 @@ dependencies = [
     "sqlglot==30.21.0",
 ]
 
+[project.scripts]
+sqlwarden = "sqlwarden.cli:main"
+
 [build-system]
 requires = ["uv_build==0.12.22"]
 build-backend = "uv_build"

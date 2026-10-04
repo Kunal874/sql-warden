@@ -737,6 +737,30 @@ The four-column capsule and conservative byte rule are not full-schema retrieval
 or an exact tokenizer. HTTP cleanup is independent of server/GPU unloading.
 Task 2 is next; G0.7a and all model accuracy/benchmark claims remain open.
 
+## D-029 — validated one-shot CLI and exclusive setup helper (2026-10-04)
+
+Task 2 reuses the fixed provider, immutable guard and restricted California
+executor. It adds no registry/framework/repair/voting/reference-loader and no
+new dependency. Only the server-owned db/model/limits exist; bad inputs/config
+stop before I/O, failures expose no SQL/rows, output is escaped JSON with a
+labelled 20-row display preview of a complete result. Null usage/counters are
+unknown, not zero; HTTP cleanup is not GPU cleanup.
+
+Runtime accepts only WARDEN_RUNTIME_CALIFORNIA_PASSWORD for database credentials
+and rejects all other WARDEN_/admin/test keys plus inherited private SDK/log
+settings. Setup helper reads only the existing restricted .env.california key,
+requires its exact 48-hex shape, and exclusively creates new ignored .env.runtime;
+it is not imported by the runtime, changes no grants/password and was not run
+in Task 2. Existing synthetic .env is not this CLI's launcher.
+
+Evidence: absent-module RED, 39 CLI checks GREEN, combined 76 client/CLI checks;
+524 no-env passes/158 actual checks skipped. Locked sync/help/lint/26-file format/
+whitespace pass. Full configured suite 682/682 (15.39s), zero skips. No live
+inference or model-generated SQL yet. Task 2 fulfills
+the already recorded test-step-order/shared-private-key rulings in D-028; there
+is no additional architecture/dependency/scope ruling. Task 3 and sole final
+read-only review remain, so G0.7a is still open and G0 remains 6/12.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

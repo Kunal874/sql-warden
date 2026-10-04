@@ -6,8 +6,10 @@ versioned BIRD Mini-Dev evaluations and tests of database isolation and SQL cont
 
 ## Current status
 
-The foundation passes 158 tests: 91 unit/setup/data checks and 67 real PostgreSQL
-integration checks. The local database is PostgreSQL 16.15 on 127.0.0.1:55432.
+The foundation and local CLI pass 682 configured tests, including 158
+real PostgreSQL checks (2026-10-04) and 39 deterministic CLI flow checks;
+live acceptance is pending. The local database
+is PostgreSQL 16.15 on 127.0.0.1:55432.
 There are no text-to-SQL accuracy results or
 published security measurements yet. The first milestone is one real database
 and local model answering a question through a tested guard and bounded executor.
@@ -28,6 +30,38 @@ records the exact artifact, memory and limitations. No model-generated SQL has r
 The intended stack is Python 3.12, FastAPI, PostgreSQL 16, sqlglot and the official
 OpenAI Python SDK against native Ollama. React 18, TypeScript and Vite follow after
 the CLI and evaluation pipeline work.
+
+## Safe local CLI (narrow demonstration)
+
+The CLI accepts only a normal-language question for `california_schools`. It
+uses the pinned local Qwen alias with a four-column schools capsule, not the
+full 89-column schema or retrieval. One optional empty preload, one generation,
+then the existing SQL guard and fixed restricted executor; no raw-SQL flag,
+repair/retry, voting, online reference answer, accuracy or confidence score.
+
+```powershell
+# Setup-only, once; no environment file is used to launch this copy helper.
+uv run python -m scripts.prepare_cli_runtime
+# Runtime: never substitute .env.setup, .env.california or synthetic .env.
+uv run --env-file .env.runtime sqlwarden ask --db california_schools 'How many rows are in the schools table?'
+```
+
+The helper exclusively creates ignored `.env.runtime` by copying only the
+existing restricted password; it refuses an existing file and changes no grants
+or password. Never display/commit this file. Runtime rejects setup/admin/test
+keys and OPENAI_LOG/CUSTOM_HEADERS/ADMIN_KEY/WEBHOOK_SECRET settings. The old
+synthetic `.env` serves earlier development fixtures, not this CLI.
+
+Output is escaped JSON: answered, blocked or failed. Only a complete successful
+result gets SQL/rows; display shows at most 20 rows with a labelled preview.
+Missing usage stays null. Budgets: 90s readiness, 60s generation, 180s enclosing
+flow, separate 5s HTTP close, and existing database limits (1,000 rows, 2MiB,
+5s statement/15s total). Cooperative deadlines/chunk checks are not hard process
+or heap isolation. HTTP close does not prove server cancellation or GPU unload.
+Interactive use retains Ollama's finite keep-alive; unload only this alias when
+finished and check `ollama ps`. No other model/apps/global settings are changed.
+Task 3 will run actual controls before the one approved live question; these
+commands have not run as live acceptance yet.
 
 ## Development
 
