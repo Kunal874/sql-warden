@@ -80,4 +80,21 @@ alternate launcher or server/model-wide stop was attempted. Read-only /api/ps
 showed only the project alias with finite expiry 2026-10-04T22:34:55.5704569+05:30.
 At 2026-10-04T22:35:16.9458759+05:30, /api/ps returned models=[]: automatic
 unload is confirmed. No explicit stop timing is claimed, and the longer
-keep-alive period is not hidden. G0.7a remains open until final review passes.
+keep-alive period is not hidden.
+
+## Final review / corrected checkpoint
+
+The single fresh read-only review of d991bfc..3e1f72e independently passed
+76 deterministic client/CLI checks, without another live/actual database run.
+Two Important parsing findings were reproduced and fixed in one TDD pass:
+independent enforcement of known token overflow despite an unavailable other
+counter, and explicit assistant-role/tool/refusal-envelope checks. Thirty new
+mocked controls include executor-never-open assertions; final client/CLI 106/106,
+full 719/719 zero skips (165 actual PG checks), lint/format/whitespace pass.
+No Critical or deferred Minor finding; all ten review exclusions/costs in D-031.
+
+This live record remains at the original f8b8150 runtime above; it was not
+silently repeated after the parsing fix. Corrected llm.py SHA-256:
+622349fd7603f010ff85e00a0a9bef337bc3912e1693de254cbc6bc77655e6b4.
+cli.py/lock/prompt/model configuration remain unchanged. G0.7a is complete
+after review/fix verification; G0 itself and accuracy/evaluation remain open.

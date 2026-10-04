@@ -1,16 +1,17 @@
 # SQLWarden
 
-SQLWarden is a read-only text-to-SQL agent with schema retrieval, bounded repair,
+SQLWarden is being built as a read-only text-to-SQL agent with schema retrieval, bounded repair,
 result voting, clarification and abstention. Its portfolio evidence will include
 versioned BIRD Mini-Dev evaluations and tests of database isolation and SQL controls.
 
 ## Current status
 
-The foundation and local CLI pass 689 configured tests, including 165
+The foundation and local CLI pass 719 configured tests, including 165
 real PostgreSQL checks (2026-10-04) and 39 deterministic CLI flow checks.
 One bounded local AI/database question returned the expected count of 17,686;
 [compact evidence](docs/CLI_SMOKE.md) records the exact scope and limits.
-Automatic model unload is confirmed; final review is pending. The local database
+Automatic model unload and final review/fix verification are complete. This
+finishes the first thin slice (G0.7a), not the full agent. The local database
 is PostgreSQL 16.15 on 127.0.0.1:55432.
 There are no text-to-SQL accuracy results or
 published security measurements yet. The first milestone is one real database

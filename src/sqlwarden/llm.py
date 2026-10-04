@@ -150,16 +150,28 @@ class LocalQwen:
             usage = response.usage
             prompt = getattr(usage, "prompt_tokens", None)
             output = getattr(usage, "completion_tokens", None)
-            if type(prompt) is not int or prompt < 0 or type(output) is not int or output < 0:
-                prompt = output = None
+            if type(prompt) is not int or prompt < 0:
+                prompt = None
+            if type(output) is not int or output < 0:
+                output = None
             if response.model != ALIAS or len(response.choices) != 1:
                 return Generation(None, "model_output_invalid", prompt, output, calls, warmups)
             choice = response.choices[0]
             if choice.finish_reason != "stop":
                 return Generation(None, "model_output_incomplete", prompt, output, calls, warmups)
-            if choice.message.tool_calls or choice.message.function_call or choice.message.refusal:
+            message = choice.message
+            if (
+                getattr(message, "role", None) != "assistant"
+                or message.tool_calls is not None
+                and (type(message.tool_calls) is not list or message.tool_calls)
+                or message.function_call is not None
+                or message.refusal is not None
+                and (type(message.refusal) is not str or message.refusal)
+            ):
                 return Generation(None, "model_output_invalid", prompt, output, calls, warmups)
-            if prompt is not None and (prompt + 128 > 2048 or output > 128):
+            if (prompt is not None and prompt + 128 > 2048) or (
+                output is not None and output > 128
+            ):
                 return Generation(None, "model_output_invalid", prompt, output, calls, warmups)
             try:
                 data = json.loads(choice.message.content, object_pairs_hook=_unique_object)

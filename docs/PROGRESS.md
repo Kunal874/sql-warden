@@ -4,18 +4,18 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Kunal approved the dated safe-local-CLI plan, openai/httpx,
-exclusive runtime-only restricted credential copy and one bounded live test.
-Task 1 provider is committed at 227f869; Task 2 CLI at f8b8150. Task 3 actual
-CLI controls pass 7/7; full suite 689 passed/zero skips including 165 actual
-PostgreSQL checks. The sole approved live question answered the expected count
-17686 in 11.387s, one preload/one generation, 89/18 reported tokens. See CLI_SMOKE.
-Runtime-only copy is private/ignored. Explicit unload helper was tool-blocked;
-automatic unload confirmed at 22:35:16.9458759+05:30; sole final review is pending. G0.7a remains
-open, native sequential execution selected, no benchmark score exists.
-Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
-interview drill; guard, runner and comparator are complete inside the next item.
-This is checklist coverage, not half the project's effort. G1–G5/G7 remain unfinished.
+Current group: G0. G0.7a's first thin slice is complete: guard, bounded executor,
+pinned comparator and safe local single-candidate CLI. Tasks saved at 227f869,
+f8b8150 and 3e1f72e; sole final read-only review found two Important parsing gaps,
+both fixed in one TDD pass. Latest full suite 719/719, zero skips, including 165
+actual PostgreSQL checks; provider 67/CLI 39 checks. No Critical/deferred Minor.
+The sole approved live question matched 17686 in 11.387s, one preload/generation,
+89/18 reported tokens. Runtime-only copy is private/ignored; automatic model
+unload observed after tool-blocked explicit stop. CLI_SMOKE preserves exact
+pre-fix live checkpoint, D-031 all 18 rulings/costs. No inference repeated.
+Progress snapshot: 7 of 12 numbered top-level G0 items complete, excluding the
+interview drill. This is checklist coverage, not overall project effort.
+G0 data/validity/models/evaluation and G1–G5/G7 remain unfinished. No benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -42,7 +42,7 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [x] G0.4: isolated Docker PostgreSQL 16, restricted dataset/app logins; direct denial tests.
 - [x] G0.5a (early): inspect/fetch one small pinned dataset; provenance, safe import and data checks.
 - [x] G0.6a (early): Qwen endpoint smoke; availability, digest/template/capabilities and measured memory.
-- [ ] G0.7a (early): tested minimum guard, bounded executor, EX comparator and one-database CLI smoke.
+- [x] G0.7a (early): tested minimum guard, bounded executor, EX comparator and one-database CLI smoke.
   - [x] Inspect/pin official EX source and prepare the first SQL-guard plan.
   - [x] Review/approve the written guard plan and direct SQLGlot addition.
   - [x] Implement/verify the pure scope-aware guard (193 unit checks after review fixes).
@@ -60,9 +60,10 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Implement/verify the pinned EX comparator.
   - [x] Prepare/self-review the separate safe local model/CLI plan.
   - [x] Review/approve that new artifact, openai/httpx additions and bounded acceptance operations.
-  - [x] Build/test the pinned bounded local provider (37 deterministic checks).
-  - [x] Build/test the safe one-database model/CLI flow (39 flow checks; no live SQL yet).
-  - [ ] Actual CLI controls, exclusive runtime copy, one bounded live question and final review.
+  - [x] Build/test the pinned bounded local provider (67 deterministic checks after final fixes).
+  - [x] Build/test the safe one-database model/CLI flow (39 deterministic flow checks).
+  - [x] Actual CLI controls, exclusive runtime copy, one bounded live question and confirmed unload.
+  - [x] Sole final CLI review and one test-first parsing correction pass; 719 full checks pass.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -147,6 +148,36 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — safe local CLI final review / one TDD correction pass and handoff
+
+All three tasks completed, Task 3 saved at 3e1f72e with Kunal identities/body and
+7 actual controls repeated (2.93s). Sole fresh read-only review d991bfc..3e1f72e
+used template/spec/approved plan/all five focus checks/ledger. Independently
+76 client/CLI passes (2.59s), clean Git/whitespace/identities/source-lock hashes;
+no repeated actual database/live test. Critical none, Important two, Minor none.
+
+Both Important accepted: valid overflowing usage could be discarded because
+the other counter was missing/malformed; permissive SDK accepted missing/wrong
+assistant role and malformed falsy optional tool/refusal fields. Both could
+reach the executor in mocked controls, not a demonstrated permission bypass.
+One correction pass: 30 new mocked cases, 27 RED/3 existing controls GREEN
+(2.01s); independent counter validation/caps plus explicit envelope gate made
+106 client/CLI checks pass (3.12s), including 67 provider checks. Unknown remains
+null independently; legitimate empty optional fields/partial usage still work.
+No direct addition, framework/private SDK switch, second reviewer or live repeat.
+
+Final locked sync, no-env 554 passed/165 skipped (7.28s), setup-only 597/122 skipped
+(10.27s), both private test environments 719/719 zero skips (29.95s), lint/27-file
+format/whitespace pass. Original three inputs/existing boundaries unchanged,
+healthy loopback PG/named volume preserved, runtime ignored/untracked, /api/ps empty,
+no remote. CLI_SMOKE records original f8b8150 live hashes plus corrected client
+hash; no stronger live/accuracy claim. D-031/notebook persist all 18 rulings/costs
+and all 10 review exclusions. Finishing keeps feat/foundation/current checkout and
+own ignored scratch under existing no-release/no-destructive-work instructions.
+
+G0.7a complete; numbered G0 now 7/12, not project effort percentage. Resume original
+remaining G0 data/validity/model/split/E0/C1-C2 order; full agent, UI/release later.
 
 ### 2026-10-04 — safe local CLI Task 3 / actual controls and sole live question
 
@@ -961,26 +992,26 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Active approved work: all three safe-local-CLI tasks' code/actual controls and
-the sole live question and automatic unload are verified; Task 3 commit and the
-sole final review are next. NEVER repeat the live question automatically.
+Safe-local-CLI plan is complete: tasks 227f869/f8b8150/3e1f72e and sole review's
+verified parsing fixes/evidence. G0.7a complete, latest 719 configured passes
+(165 actual PostgreSQL); no-env 554/165 skipped, setup 597/122 skipped. No Critical/
+deferred Minor, all 18 rulings in D-031. Do not repeat component reviews, import,
+credential setup/rotation or the sole live question automatically.
+Next: remaining original G0.5/G0.5b(C1) data/validity work, then G0.6 second
+model and G0.7/G0.8(C2) split/E0/model choices. Prepare any new multi-step plan
+for artifact approval and obtain its relevant owner decisions; this approval
+does not authorize downloads/benchmarks/new dependencies/publication/extra AI probes.
+Native sequential execution remains selected. Reuse this client/CLI in G1.
 Runtime launcher is `uv run --env-file .env.runtime sqlwarden ask --db california_schools <question>`;
 never use setup/test envs. Resume this plan's
 ledger at .superpowers/sdd/2026-10-04-safe-local-cli/progress.md, reconcile Git.
 Do not repeat earlier reviews/import/rotation. Model remains unloaded; current
 test commands and explicit uv path below remain valid. SDK inherited private
-keys in D-028 must be rejected by the CLI before any I/O. The previous comparator
-handoff below is historical, superseded by this approved work.
+keys in D-028 must be rejected by the CLI before any I/O. The previous preparation/
+component handoffs below are historical, superseded by this completed CLI work.
 
-Next: obtain Kunal's review of the prepared/self-reviewed
-[safe local CLI plan](superpowers/plans/2026-10-04-safe-local-cli.md), proposed
-openai>=2,<3/httpx>=0.28,<1 direct additions, exclusive runtime-only credential
-copy and one bounded self-authored live question. Implementation is pending:
-do not install/import new packages, create .env.runtime, load the model or run
-generated SQL before that approval. After approval, execute the three tasks
-sequentially here, tests first; inspect the resolved SDK contract before using it.
-Keep the already selected native method; do not reopen method or completed-plan
-dependency decisions. D-027 contains the preparation choices and residual limits.
+Historical component checkpoints (not the current next actions):
+
 The
 [comparator plan](superpowers/plans/2026-10-04-ex-comparator.md) is complete:
 Task 1 at a7be998, Task 2 at 7d26e77, both task-done gates and the sole final

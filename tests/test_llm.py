@@ -5,7 +5,7 @@ import json
 import httpx
 import pytest
 
-from sqlwarden import llm
+from sqlwarden import cli, llm
 from sqlwarden.llm import ALIAS, DIGEST, Generation, LocalQwen, _LocalTransport
 
 
@@ -363,3 +363,88 @@ async def test_inherited_sdk_private_settings_refuse_before_network(key, value, 
     result = await provider.generate("One.")
     assert result == Generation(None, "model_configuration")
     assert provider.cleanup_confirmed is None
+
+
+@pytest.mark.parametrize(
+    "usage,prompt,output",
+    [
+        ({"prompt_tokens": 1921}, 1921, None),
+        ({"completion_tokens": 129}, None, 129),
+        ({"prompt_tokens": 1921, "completion_tokens": -1}, 1921, None),
+        ({"prompt_tokens": 1921, "completion_tokens": False}, 1921, None),
+        ({"prompt_tokens": 1921, "completion_tokens": "bad"}, 1921, None),
+        ({"prompt_tokens": -1, "completion_tokens": 129}, None, 129),
+        ({"prompt_tokens": True, "completion_tokens": 129}, None, 129),
+        ({"prompt_tokens": "bad", "completion_tokens": 129}, None, 129),
+    ],
+)
+async def test_reported_overflow_with_unavailable_counter_never_opens_executor(
+    usage, prompt, output, monkeypatch
+):
+    seen = []
+    provider = LocalQwen(httpx.MockTransport(fake_handler(payload(usage=usage), seen)))
+    monkeypatch.setattr(cli, "open_california_executor", lambda *a: pytest.fail("DB touched"))
+    answer = await cli.ask_once("One.", "a" * 48, provider)
+    assert answer["status"] == "failed" and answer["reason"] == "model_output_invalid"
+    assert answer["usage"] == {"prompt_tokens": prompt, "completion_tokens": output}
+    assert "sql" not in answer and "rows" not in answer
+    assert len([r for r in seen if r.url.path == "/v1/chat/completions"]) == 1
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("role", "user"),
+        ("role", "system"),
+        ("role", "tool"),
+        ("role", None),
+        ("role", "MISSING"),
+        ("tool_calls", {}),
+        ("tool_calls", ""),
+        ("tool_calls", False),
+        ("tool_calls", 0),
+        ("function_call", {}),
+        ("function_call", ""),
+        ("function_call", False),
+        ("refusal", 0),
+        ("refusal", False),
+        ("refusal", {}),
+        ("refusal", []),
+    ],
+)
+async def test_malformed_message_envelope_never_opens_executor(field, value, monkeypatch):
+    reply, seen = payload(), []
+    message = reply["choices"][0]["message"]
+    if value == "MISSING":
+        message.pop(field)
+    else:
+        message[field] = value
+    provider = LocalQwen(httpx.MockTransport(fake_handler(reply, seen)))
+    monkeypatch.setattr(cli, "open_california_executor", lambda *a: pytest.fail("DB touched"))
+    answer = await cli.ask_once("One.", "a" * 48, provider)
+    assert answer["status"] == "failed" and answer["reason"] == "model_output_invalid"
+    assert "sql" not in answer and "rows" not in answer and answer["model_calls"] == 1
+
+
+@pytest.mark.parametrize(
+    "usage,prompt,output",
+    [
+        ({"prompt_tokens": 80}, 80, None),
+        ({"completion_tokens": 10}, None, 10),
+        ({"prompt_tokens": "bad", "completion_tokens": 10}, None, 10),
+        ({"prompt_tokens": 80, "completion_tokens": -1}, 80, None),
+    ],
+)
+async def test_partial_usage_keeps_valid_counter_without_inventing_missing_one(
+    usage, prompt, output
+):
+    provider = LocalQwen(httpx.MockTransport(fake_handler(payload(usage=usage), [])))
+    assert await provider.generate("One.") == Generation("SELECT 1", "ok", prompt, output, 1, 0)
+
+
+@pytest.mark.parametrize("field,value", [("tool_calls", []), ("refusal", "")])
+async def test_empty_valid_optional_message_fields_still_allow_sql(field, value):
+    reply = payload()
+    reply["choices"][0]["message"][field] = value
+    provider = LocalQwen(httpx.MockTransport(fake_handler(reply, [])))
+    assert (await provider.generate("One.")).sql == "SELECT 1"

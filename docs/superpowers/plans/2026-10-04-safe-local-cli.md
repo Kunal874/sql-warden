@@ -17,6 +17,16 @@ direct additions, restricted-only runtime copy and one bounded guarded local
 AI/database test. Execute sequentially here and update the learning notebook
 after each completed task. The preparation status above is historical.
 
+**Execution result (2026-10-04):** All three sequential tasks and sole final
+read-only review/correction pass complete. Final suite 719/719, 165 actual PG
+checks, successful sole local question, observed automatic unload. The explicit
+unload helper was tool-blocked before execution; no alternate launcher was used.
+D-031 records all 18 rulings/costs and the two Important parsing fixes to the
+proposed source below. Current llm.py, not the historical proposed fences, owns
+independent known-counter enforcement and assistant/optional-message validation.
+Live evidence stays at f8b8150, no repeat after fixes. G0.7a complete, G0 7/12;
+no benchmark/full-agent/release claim. Remaining preparation text is historical.
+
 ## Global Constraints
 
 - Workspace: `D:/PROJECTS/SQLWARDEN`. Use the current workspace; do not create a nested `sqlwarden` directory.

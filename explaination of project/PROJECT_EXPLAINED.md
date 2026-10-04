@@ -43,19 +43,19 @@ It is not a finished public service yet.
 - The answer checker compares two complete database answers using the saved
   rule. Failed or oversized answers cannot be marked correct. Its final review
   is complete; it reused existing Python tools without adding a package.
-- The local AI connection code now passes 37 checks using fake replies. It
+- The local AI connection code now passes 67 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
-- The latest verified code checkpoint has 689 passing tests, including 165
+- The latest verified code checkpoint has 719 passing tests, including 165
   tests that connect to the real local PostgreSQL database.
 
 The first narrow AI question-to-database flow works for one checked question.
 The full agent, evaluation scores, website and public release are not finished.
-G0, the foundation group, is still in progress. Model unload is confirmed;
-the final review is still needed for this demo's completion.
+G0, the foundation group, is still in progress. Model unload, final review and
+its two test-first corrections are complete. The first small demo is finished.
 
-Where we are: 6 of the 12 numbered foundation tasks are complete. Inside the
-next task, the query guard, limited runner and answer checker are checked and
-reviewed. This does not mean half the project is done: the agent,
+Where we are: 7 of the 12 numbered foundation tasks are complete. The query
+guard, limited runner, answer checker and first AI command are checked and
+reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. We are building the first
 small working demonstration before expanding.
 
@@ -64,7 +64,7 @@ You approved the answer-checker plan. Its small comparison function passes
 actionable issues and repeated all 60 unit checks successfully.
 You approved the three-part AI command-line plan and its two software additions.
 All three parts' code and database checks pass, and the single real question
-worked. Model unload is confirmed; the final independent review is next.
+worked. Model unload, independent review and verified corrections are complete.
 
 ## 3. Completed work, one step at a time
 
@@ -696,6 +696,60 @@ passed. A **benchmark** tests a frozen collection fairly and reports measured
 results; we have not done that yet. **Keep-alive** means Ollama temporarily
 keeps the model ready; it has a finite expiry rather than staying loaded forever.
 
+### G0.7a, AI demo final review — Close two unusual reply gaps
+
+What changed: a separate read-only reviewer checked this three-part change once
+and repeated 76 small tests. It found two real problems in how unusual replies
+were accepted. We checked the findings, wrote tests that failed first, fixed
+them, and then watched the full suite pass all 719 tests. There were no critical
+findings or small issues left for later, and no second AI question was asked.
+
+First problem: if one token count was missing or wrong, the program forgot the
+other count too. A known oversized count could then slip past its check. Each
+count is now checked separately; we keep valid numbers and mark missing ones
+unavailable. Second problem: a reply could have the wrong sender label or badly
+shaped tool/refusal fields. Now it must be an assistant reply with permitted
+fields before its SQL can reach the database runner. The SQL guard stayed active
+even before these fixes; the findings were not a proven permission bypass.
+
+New words: a **message role** says who a message is from, such as user or
+assistant. A **message envelope** is the wrapper around its text, including that
+role and any tool/refusal fields. A **refusal** says the model did not provide an
+answer. A **malformed field** has the wrong shape, such as a number where a list
+is required. Checking the wrapper matters as well as checking the SQL inside.
+
+The new tests use fake replies only: 30 additional cases, with 27 failing before
+the fixes and all 30 passing afterward. Client/command checks now total 106;
+165 of the 719 full checks connect to real PostgreSQL. The earlier live demo
+record is preserved exactly, including its original code checkpoint. We did not
+quietly repeat it on the corrected code and call that a new measured result.
+
+Decisions and limits kept, in the order made (full technical record: D-031):
+
+1. Used your existing project folder. Cost: no extra isolation from other local edits.
+2. Wrote all AI-connection tests before its code. Cost: only the plan's test order changed.
+3. Wrote all command tests before its code. Cost: again only the test order changed.
+4. Refused inherited private SDK settings. Cost: this command cannot run with those settings present.
+5. After the tool blocked the unload command, observed automatic expiry instead. Cost: graphics memory stayed occupied longer; no explicit stop time was measured.
+6. Reviewed all three new task commits, not older completed components. Cost: an old defect could escape this particular review.
+7. Kept your local branch without merging/uploading. Cost: integration and publication wait for later approval.
+8. Kept this plan's ignored temporary notes. Cost: a small amount of extra local disk space.
+9. Accepted earlier completed component reviews, checking their connection points here. Cost: no new full inspection of their internals.
+10. Used the recorded real-database/live evidence, labelled separately from the reviewer's tests. Cost: the reviewer did not independently repeat those real runs.
+11. Left the earlier timing failure honestly unexplained. Cost: that intermittent test timeout might return; no limit was relaxed.
+12. Kept the small text-byte rule, not an exact tokenizer. Cost: it cannot promise every prompt avoids model truncation.
+13. Kept cooperative time/size limits, not hard process or memory isolation. Cost: work or allocations may outlive those logical limits.
+14. Trusted local Ollama without locking out other programs. Cost: privileged concurrent changes can undermine a checked model configuration.
+15. Assumed a trusted local folder for the password copy. Cost: a hostile local administrator could interfere with private files.
+16. Supported a fresh one-question command, not shared concurrent library use. Cost: shared use could mix cleanup information or change other SDK logging.
+17. Checked reply fields that affect execution, not unused IDs/timestamps/indexes. Cost: malformed unused metadata can pass.
+18. Kept the demo narrow. Cost: full schema, accuracy, retrieval, repairs, voting, website and hosting are still future work.
+
+G0.7a, the first safe end-to-end slice, is now complete. G0 itself is not:
+remaining datasets/validity, the second model and fair measured evaluation still
+come next. This is 7/12 foundation checklist items, not 58% of the whole project.
+Everything stays local, with passwords outside Git and no active model loaded.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -975,8 +1029,10 @@ The answer checker and its independent final review are also complete. It passes
 60 pure and 17 real database checks. The separate plan for a small command-line
 question-to-database demonstration is approved. Its local AI connection is now
 checked, and the safe command passes its flow and real database tests. Its sole
-live question returned the expected answer and model unload is confirmed. Final
-review is next; afterward we resume the remaining foundation/data/model work.
+live question returned the expected answer; model unload, final review and its
+verified parsing fixes are complete. Next we resume the remaining foundation:
+datasets and validity decisions, the second model, then split/evaluation/model
+choices. Each new multi-step plan and relevant new permission still needs review.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date

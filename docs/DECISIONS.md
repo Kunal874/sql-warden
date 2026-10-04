@@ -784,6 +784,68 @@ Post-live full configured suite 689/689 (27.37s); no-env 524/165 skipped, setup-
 567/122 skipped. Lint/27-file format/whitespace pass. Historical inputs/existing
 boundaries unchanged, no remote/push. G0.7a still open pending remaining gates.
 
+## D-031 — sole final CLI review and one test-first correction pass (2026-10-04)
+
+Whole approved increment d991bfc..3e1f72e received one fresh read-only review
+using the code-reviewer template, active spec/plan, all five focus conditions
+and every ledger ruling. Reviewer independently repeated 76 client/CLI checks
+(2.59s) and verified clean Git/whitespace/source-lock hashes/commit identities;
+actual database/live evidence was implementer's, explicitly not repeated.
+
+Critical none, Important two, Minor none. Both Important grades retained by
+effect: a known overflowing token count could be erased when the other was
+unavailable, and the permissive SDK could accept non-assistant or malformed
+falsy tool/refusal fields. Neither demonstrated a database-permission bypass;
+the existing guard still applied. Both defects also appeared in the planned
+example, so correct its behavior rather than claim it was a reliable contract.
+
+ONE TDD fix pass: 30 mocked response/flow cases written first, 27 RED/3 existing
+controls GREEN (2.01s). Overflow 8, malformed-envelope 15, partial-usage 4 failed;
+empty valid fields 2 and already-rejected empty function object 1 passed. Then
+normalize/check each usage counter independently, require assistant role, allow
+only absent/empty well-shaped tool/refusal fields and no function call. Valid
+partial measurements are retained, unknowns remain null. Affected client/CLI
+106/106 (3.12s), including 67 provider checks, then full 719/719 (29.95s), zero skips.
+No dependency/private SDK toggle/framework, re-review or second live call.
+
+Final locked sync; no-env 554/165 skipped (7.28s), setup-only 597/122 skipped
+(10.27s), lint/27-file format/whitespace pass. Original planning inputs, existing
+boundaries and frozen model/config unchanged. Runtime credential remains private/
+ignored, PG healthy at 127.0.0.1:55432/named volume retained, /api/ps empty, no remote.
+The sole live record remains explicitly at f8b8150, before this stricter parsing
+fix; happy-path/actual controls remain green, inference was not repeated.
+
+All G0.7a gates now pass: guard, executor, comparator, narrow CLI, actual PG
+controls, successful one-question acceptance, observed automatic unload, final
+review and verified fixes. Mark G0.7a complete, G0 numbered checklist 7/12, not
+an overall effort percentage. Remaining data/validity/model/split/E0/C1-C2 work
+and G1-G5/G7 remain unfinished. Keep feat/foundation locally, no release action.
+
+### Exhaustive execution/review rulings (decision order)
+
+- Setup: Ruling: stay in the existing feat/foundation checkout — AGENTS/D-003 and the approved plan require D:/PROJECTS/SQLWARDEN, with no nested worktree or release action — cost if wrong: there is no extra checkout isolation from concurrent local edits, so inspect Git before each task/commit.
+- Task 1: Ruling: write Step 4's budget/readiness tests with Step 2 before Step 3 source — full planned source already implements those behaviors; tests-first requires their RED gate before implementation — cost if wrong: only test-step order differs, with the same behavior and acceptance contract.
+- Task 2: Ruling: likewise write Step 3's terminal/privacy tests with Step 1 before adding CLI/setup source — preserve tests-first for the complete planned behavior — cost if wrong: only test-step order differs, not scope or security.
+- Task 1: Ruling: refuse OPENAI_CUSTOM_HEADERS, OPENAI_ADMIN_KEY and OPENAI_WEBHOOK_SECRET before any client/network construction, and share these forbidden keys with Task 2 — the inspected SDK 2.54.0 auto-reads them even with a fixed dummy key/base URL; tests reproduce premature transport entry in all three cases — cost if wrong: this local-only demo rejects a child process that inherits those hosted SDK settings; never edit global environment to make it pass.
+- Task 3: Ruling: bounded Start-Process stop helper was rejected by tool policy before execution; do not retry via an alternate launcher, observe finite keep-alive automatic unloading through read-only /api/ps instead — preserve tool controls and actual cleanup evidence, continuing independent checks while waiting — cost if wrong: GPU memory stays occupied longer and acceptance remains incomplete if unload is not confirmed; explicit stop timing is unavailable, not claimed.
+- Final: Ruling: review d991bfc..Task 3 HEAD as the whole approved increment — no integration base branch exists and prior component reviews are complete; this includes all three tasks, not HEAD~1 — cost if wrong: unchanged earlier component defects may escape this fresh review; existing full regression evidence remains separately labelled.
+- Final: Ruling: retain feat/foundation in the required current checkout without merge/remote/push/publication — AGENTS/D-003 already select it, there is no integration base branch, G7 approval is absent — cost if wrong: integration remains postponed until an explicit owner decision; finishing skill's release options are not authorized here.
+- Final: Ruling: retain only this plan's ignored scratch instead of deleting it, and persist all rulings/minors in committed decisions/notebook — AGENTS requires destructive-work approval, none was granted — cost if wrong: small redundant local artifacts remain on disk, never in Git; sibling plan scratch is untouched.
+- Final: Ruling: unchanged importer/guard/executor/comparator internals remain under their completed reviews; this review checks integration interfaces only — approved scope excludes repeated component review — cost if wrong: a pre-existing component defect can remain undiscovered by this increment review.
+- Final: Ruling: live inference and actual database acceptance are implementer evidence, not independent reviewer repetitions — reviewer safely repeated only76 pre-fix units, approval allowed exactly one live question — cost if wrong: environment drift/intermittence may escape independent verification; actual165 integration checks still ran separately.
+- Final: Ruling: earlier executor cancellation-observation timeout remains unproved/unfixed — unchanged component with isolated/group/full green repeats does not establish cause or fix — cost if wrong: the intermittent timing failure may return; no bound was weakened.
+- Final: Ruling: byte policy is conservative, not exact tokenization/universal truncation protection — approved tiny capsule and measured89 tokens support only narrow smoke; independent known-counter overflow is now enforced — cost if wrong: provider truncation can remain undetected when usage is unavailable or prompts differ.
+- Final: Ruling: cooperative deadlines/HTTP close are not hard process/heap isolation or guaranteed server/GPU cancellation — approved scope explicitly states these limits; actual automatic unload is separately observed — cost if wrong: allocation/work can exceed logical limits or outlive client cancellation.
+- Final: Ruling: concurrent alias/model/global-setting changes are not exclusively controlled — pins trust native local Ollama; never change global settings/stop another model — cost if wrong: a privileged race can invalidate the checked artifact/configuration.
+- Final: Ruling: hostile local filesystem/ACL manipulation during credential copy is outside trusted-workspace setup — exclusive target creation and exact restricted source remain, no broader permission-manager added — cost if wrong: a hostile local user/admin can interfere with/access private settings.
+- Final: Ruling: concurrent/embedded LocalQwen/ask_once reuse and process-wide SDK logger changes remain unsupported — approved runtime is a fresh single-provider CLI invocation, not a multi-request host — cost if wrong: embedded/concurrent use could mix cleanup state or suppress unrelated SDK logging.
+- Final: Ruling: incidental SDK completion id/timestamp/choice-index strict validation is not required here — fields are unused, execution-relevant assistant/optional-message shape is now checked — cost if wrong: malformed unused metadata can pass without affecting this execution decision.
+- Final: Ruling: full-schema/semantic accuracy/retrieval/cache/repair/voting/benchmark/UI/hosting/release remain deferred milestones — approved single-candidate thin slice intentionally has none — cost if wrong: this demo cannot meet broader agent or production expectations; do not claim it can.
+
+Deferred minors: none reported. Every declined-to-judge behavior has a ruling
+above; no silent exclusion or repeated component review. All records retained
+in this plan's ignored scratch because destructive cleanup was not approved.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
