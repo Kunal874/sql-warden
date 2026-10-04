@@ -4,11 +4,12 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed subtask: G0.7a bounded-executor preparation,
-not implementation. Last completed commit before this update: 7fa0a2d.
+Current group: G0. Last completed subtask: bounded executor Task 1,
+complete-result and plan budgets. Last completed commit before this update: df07434.
 The minimum SQL guard and its real acceptance/final fixes are complete.
-The new executor plan is prepared and self-reviewed; next is Kunal's review,
-then native implementation with no new dependency. G0.7a is not complete.
+Kunal's "continue with progress" approves the presented runner plan.
+Next: native Task 2, internally guarded restricted-pool workflow, then real
+Task 3 and one final review. No database executor exists yet. G0.7a is not complete.
 Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
 interview drill; the guard is finished inside the next item. This is checklist
 coverage, not half the project's effort. G1–G5/G7 remain unfinished.
@@ -45,7 +46,7 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Verify guard acceptance on real restricted PostgreSQL (56 real checks).
   - [x] Complete final read-only guard-plan review and resolve its findings.
   - [x] Prepare/self-review the bounded executor implementation plan.
-  - [ ] Review/approve that new executor plan; preserve native execution.
+  - [x] Review/approve that new executor plan; preserve native execution.
   - [ ] Implement/verify the bounded executor against real PostgreSQL.
   - [ ] Implement/verify the pinned EX comparator.
   - [ ] Build the safe one-database model/CLI flow; no generated SQL yet.
@@ -133,6 +134,31 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — bounded executor Task 1 / complete-result budgets
+
+Resumed clean feat/foundation at df07434; Kunal continued after the written plan
+review request, approving native execution of its three tasks. Baseline full
+suite 407 passed (16.88s). Read the Task 1 brief; ignored plan-specific ledger
+records matching producer/consumer interfaces with no conflicts.
+
+Tests first: executor import observed missing-module RED; a separate limits
+run had 10 new missing-field failures and 40 passing existing controls. Added
+only the two approved estimate bounds to existing validated QueryLimits and the
+pure QueryResult/_ResultBuffer/_check_plan implementation. Initial scoped 71
+passed; all remaining plan controls then passed as characterizations.
+
+Final scoped 88 passed (38 result/plan, 50 config). Full suite after mechanical
+formatting: 455 passed, zero skips, including 123 real PostgreSQL checks (13.12s).
+Lint, 17-file format and whitespace checks pass. No runner connection/cursor,
+generated SQL, model, comparator or CLI exists in this increment. Budget bytes
+include compact UTF-8 column/row JSON framing, not wire/heap memory or EX
+canonicalization. Overflow clears every accumulated row; original cell types
+and duplicates/order are retained. Estimate defaults are uncalibrated.
+
+Updated the simple-English notebook after this subtask. No dependency, grants,
+imported data, credentials, source planning inputs or benchmark changed.
+Task 2 follows directly under the existing approval, without another check-in.
 
 ### 2026-10-04 — G0.7a bounded-executor preparation
 
@@ -579,13 +605,13 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: Kunal reviews/confirms the newly prepared
-[bounded executor plan](superpowers/plans/2026-10-04-bounded-sql-executor.md).
-Then use executing-plans natively in this checkout for its three tasks. Do not
-implement it before that review, ask again about the execution method, add a
-dependency, redo completed guard/import work, or load a model for executor work.
-The plan consumes the existing guard and QueryLimits; no runtime executor exists
-yet. D-018 records the pending proposal and limits, not an implementation approval.
+Next: approved bounded-executor Task 2, then Task 3 and one final whole-branch
+review. Use its plan-specific ignored ledger and task-start/task-done scripts;
+read each brief before work. Task 1's pure result/plan contracts are complete.
+The [bounded executor plan](superpowers/plans/2026-10-04-bounded-sql-executor.md)
+is approved by Kunal's continue response to its handoff. Keep native execution
+here; do not ask again about method/dependencies, redo guard/import work, or
+load a model. D-018 approval update and D-019 hold the current contracts.
 The [minimum SQL-guard plan](superpowers/plans/2026-10-03-minimum-sql-guard.md)
 and its final review are complete: 193 guard checks, 56 real acceptance checks,
 407 full-suite passes (123 actual PostgreSQL), both Important findings fixed
@@ -671,6 +697,6 @@ The native extraction and one-time import have also completed; do not rerun them
 
 `uv run ruff format --check .`
 
-Open decision: review of the new bounded-executor plan; no new dependency requested.
+Open decisions: none for the approved bounded-executor plan; no new dependency needed.
 None for the completed guard plan or approved SQLGlot addition.
 None at C0. Later C1–C9 remain unanswered and apply at their milestones.

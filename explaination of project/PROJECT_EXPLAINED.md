@@ -36,7 +36,9 @@ It is not a finished public service yet.
   to a database or loading an AI model.
 - Small handwritten allowed queries have passed that guard and run with the
   restricted database login and short time limits. No AI output was run.
-- The latest completed code checkpoint has 407 passing tests, including 123
+- Answer-size checks now handle row, byte and cell limits without returning
+  a partial answer as a complete answer. The runner itself is still next.
+- The latest completed code checkpoint has 455 passing tests, including 123
   tests that connect to the real local PostgreSQL database.
 
 The AI question-answering flow, limited query runner, evaluation
@@ -44,8 +46,8 @@ scores, website and public release are not built yet. G0, the foundation group,
 is still in progress. No AI-generated SQL has been executed.
 
 Where we are: 6 of the 12 numbered foundation tasks are complete. Inside the
-next task, the query guard is finished and the limited runner's plan is ready
-for your review. This does not mean half the entire project is done: the agent,
+next task, the query guard is finished and the runner's first budget component
+is built and tested. This does not mean half the entire project is done: the agent,
 experiments, website and release still come later. We are building the first
 small working demonstration before expanding.
 
@@ -351,6 +353,25 @@ Read the technical [runner plan](../docs/superpowers/plans/2026-10-04-bounded-sq
 The planning skill requires your review of this new plan before coding begins;
 the previously selected single-worker approach stays the same.
 
+### G0.7a, executor Task 1 — Build the answer-size rules
+
+What was done: added the first part of the runner. It counts rows, text bytes
+and individual cell size. If the answer is too large, it throws away the
+unfinished answer and returns a short reason. It also checks the database's
+rough work estimate against the approved starting limits.
+
+Why: two answers can have the same first rows but different rows later.
+We must not call them equal just because their first page matches. Missing
+values and an empty answer can also be correct, so those are not automatic errors.
+
+Checked: tests first showed the missing module and new settings. After building
+this part, all 88 answer/plan/config checks passed. The full project now has
+455 passing tests, including 123 checks with the real database. The code-style
+checks pass. These are still pure budget rules, not a running AI-to-database flow.
+
+No new package or model was installed or loaded. Your data and passwords were
+not changed. Next is wiring these rules to one restricted database connection.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -596,8 +617,9 @@ feature has already been implemented.
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
-final review fixes, are complete. Next, review the new limited-runner plan,
-then build and test it. After that come the answer checker and a small command-line
+final review fixes, are complete. You approved the runner plan, and its answer-size
+rules are built. Next is the restricted query workflow and real recovery tests.
+After that come the answer checker and a small command-line
 question-to-database demonstration. The rest
 of the data, agent loop, website, broader attack suite and release come later.
 

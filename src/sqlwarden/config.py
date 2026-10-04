@@ -14,6 +14,8 @@ class QueryLimits:
     lock_timeout_ms: int = 500
     pool_timeout_ms: int = 5000
     total_timeout_ms: int = 15000
+    max_estimated_cost: int = 100000
+    max_estimated_rows: int = 100000
 
     def __post_init__(self) -> None:
         for field in fields(self):

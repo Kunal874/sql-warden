@@ -15,6 +15,8 @@ from sqlwarden.config import QueryLimits
         "lock_timeout_ms",
         "pool_timeout_ms",
         "total_timeout_ms",
+        "max_estimated_cost",
+        "max_estimated_rows",
     ],
 )
 @pytest.mark.parametrize("value", [0, -1, True, 1.5, "1000"])

@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 4–6 and 11; [AGENTS](../../../AGENTS.md); [DECISIONS](../../DECISIONS.md), D-003/D-015–D-018. The already approved specification supplies the design; this plan does not change the benchmark or authorize a model-connected SQL run.
 
-**Status:** Prepared on 2026-10-04 for Kunal's review, not implementation approval. Preserve the established native execution method. Baseline: clean feat/foundation at 7fa0a2d; 407 tests passed, including 123 real PostgreSQL checks. The guard is complete; executor, comparator and CLI are not.
+**Status:** Kunal's "continue with progress" after the written handoff approves native execution on 2026-10-04. Task 1's pure budgets are complete (88 scoped / 455 full passes); Tasks 2–3 and the final review remain. Implementation baseline: clean feat/foundation at df07434, 407 passes including 123 actual PostgreSQL checks. Comparator and CLI remain separate.
 
 ## Global Constraints
 
@@ -132,7 +132,7 @@ update progress/decisions/notebook.
 **Interfaces:** Consume QueryLimits. Produce `QueryResult`, private `_ResultBuffer`
 and `_check_plan`; Task 2 consumes their exact names/return categories below.
 
-- [ ] **Step 1: Write pure boundary tests first.** Replace only the existing
+- [x] **Step 1: Write pure boundary tests first.** Replace only the existing
 invalid-value test's parameterization/function in test_limits.py with this
 extended control; retain its other tests and imports:
 
@@ -235,7 +235,7 @@ def test_malformed_plans_fail_without_echoing_their_contents(plan):
     assert _check_plan(plan, QueryLimits()) == "plan_error"
 ```
 
-- [ ] **Step 2: Observe RED.**
+- [x] **Step 2: Observe RED.**
 
 ```powershell
 uv run pytest tests/test_executor.py tests/test_limits.py -q
@@ -245,7 +245,7 @@ Expected: missing sqlwarden.executor first; after its interface exists, assertio
 identify absent estimate fields/budget behavior. Do not run the proposed code blocks
 before these tests. No database is needed by this task's new checks.
 
-- [ ] **Step 3: Add the two config fields and pure implementation.** Add only
+- [x] **Step 3: Add the two config fields and pure implementation.** Add only
 these two field declarations inside the existing QueryLimits dataclass in
 config.py, indented with its other fields; do not replace the class:
 
@@ -370,7 +370,7 @@ def _check_plan(text: str, limits: QueryLimits) -> str | None:
     return None
 ```
 
-- [ ] **Step 4: Pin remaining budget edges before claiming GREEN.** Add these
+- [x] **Step 4: Pin remaining budget edges before claiming GREEN.** Add these
 literal controls; do not derive expected sizes through production helpers:
 
 ```python
@@ -455,7 +455,7 @@ git diff --check
 Expected: all scoped/full tests pass; real baseline checks run rather than skip;
 lint/format/whitespace pass. Format only the changed Python files if needed.
 
-- [ ] **Step 5: Document and commit this independent deliverable.** Record actual
+- [x] **Step 5: Document and commit this independent deliverable.** Record actual
 counts and byte semantics; say no executor/AI SQL has run. Update the notebook with
 complete result, overflow, cap-plus-one, UTF-8 and cost-estimate words. Inspect all
 staged changes and the exact Conventional message; verify Kunal author/committer/body.

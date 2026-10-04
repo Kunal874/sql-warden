@@ -368,6 +368,27 @@ effort-weighted overall percentage claimed. The notebook records preparation.
 Await Kunal's review of docs/superpowers/plans/2026-10-04-bounded-sql-executor.md,
 preserving native execution. No inference, data change or publication authorized.
 
+Approval update (2026-10-04): Kunal's "continue with progress" follows the
+presented written-plan handoff and approves its implementation. Execute its
+three tasks natively in the current checkout. The pending proposal above is
+the historical preparation record; no new dependency is requested.
+
+## D-019 — executor complete-result and estimate contracts (2026-10-04)
+
+Context: the approved executor plan Task 1 requires pure output/cost boundaries
+before a connection workflow. Decision: add only the two validated positive-int
+estimate fields, immutable QueryResult and private result/plan checks; retain all
+other QueryLimits defaults. Only complete ok output may later score or vote.
+Rationale: explicit prefix-free overflow and compact UTF-8 {columns, rows} sizing
+preserve SQL semantics, original typed cells, duplicate names/rows and order.
+An empty/NULL answer is not an error. Unsupported values/plan JSON fail safely.
+The byte envelope is not a wire/heap cap or EX/voting canonicalization; estimates
+are starting limits, not calibrated benchmark choices.
+Verification: missing-module RED plus 10 new config-field failures, then initial
+71 scoped passes and final 88 result/config passes. Full suite 455 passed, zero
+skips, with 123 actual PostgreSQL checks after formatting; lint/format/diff pass.
+This task does not yet produce a runner, database execution or model SQL.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
