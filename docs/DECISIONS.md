@@ -591,6 +591,49 @@ next, not a finished G0.7a or AI agent. No Critical/Important/Minor review resul
 is claimed before it runs. Preserve named data volume, private env files and the
 PostgreSQL 17 service; generated SQL, publication and destructive work remain out.
 
+## D-026 — comparator final review and local-only handoff (2026-10-04)
+
+Context: both approved comparator tasks committed at a7be998/7d26e77 and their
+task-done gates passed (60 units / 17 actual controls). One fresh read-only
+reviewer examined the complete increment 1ffb81d..7d26e77 and all five Review
+Focus conditions. No Critical, Important or Minor findings; no fix pass or second
+review. Deferred minors: none. The six declined-to-judge items are resolved below
+by reasonable caller effects, not assumed to be findings or independently proven.
+
+Evidence: reviewer independently passed 60 units (0.20s), whitespace and both
+commit identity/body checks; HEAD/status unchanged. Implementer final full suite
+passed 606 tests, zero skips (17.51s), including 158 actual PostgreSQL checks.
+Locked sync, lint/21-file format and whitespace pass. Database healthy on the
+fixed loopback port with named volume preserved; no loaded model or remote.
+Database/full-suite/source-fingerprint/environment checks are implementer
+evidence, not independently repeated by the reviewer.
+
+Decision: retain the implementation as approved, mark only the comparator child
+complete, update the learning notebook and keep feat/foundation locally. G0.7a
+still needs the separately planned model/CLI slice; G0 remains 6/12 numbered
+top-level tasks complete. No generated SQL, benchmark score, dependency, data,
+grant, credential, remote/push/publication, history edit or deletion.
+
+Final rulings, in decision order, continue the setup ruling already recorded in
+D-024. The first six resolve the reviewer's six declined-to-judge items; the
+remaining four make verification, review range and local handoff limits explicit.
+
+- Final: Ruling: retain the trusted executor-result boundary for forged ok statuses, inconsistent row widths and unsupported hashable/custom cells — this offline function consumes bounded complete typed internal results, not requests or unvalidated caches; future loaders must validate that contract — cost if wrong: forged or incorrectly decoded results can receive a bogus score or execute custom hashing behavior.
+- Final: Ruling: keep set allocation and synchronous comparison without a hard process-memory/CPU sandbox — current executor results are bounded and the plan explicitly documents transient/additional memory; no hard deadline is claimed — cost if wrong: large trusted limits or costly internal values can consume excess memory/time before rejection.
+- Final: Ruling: leave gold exclusions, aggregate denominators and interrupted-job accounting to the frozen validity manifest/evaluation runner — gold_invalid=None is only a marker and this function cannot drop items or score pending jobs — cost if wrong: future orchestration could omit hard questions or turn pending work into failed scores, inflating or distorting metrics.
+- Final: Ruling: keep duplicate-preserving voting and online generation/repair leakage checks separate — this increment has no inference consumer, performs no I/O and returns no reference rows; EX is not a voting function — cost if wrong: future wiring may misuse set equality for voting or expose reference information to the model.
+- Final: Ruling: defer cross-dialect label validity and official-score equivalence — native typed controls reproduce the comparison rule but do not validate converted labels or a frozen benchmark — cost if wrong: source/native value differences can yield misleading adapted or leaderboard claims.
+- Final: Ruling: do not renew an exhaustive guard/executor/database-security or server-log audit — unchanged foundations retain their completed reviews and limits; this review covers only the comparator handoff — cost if wrong: an unrelated existing security or logging issue can escape this incremental review.
+- Final: Ruling: treat PostgreSQL/full-suite/source-fingerprint/environment checks as implementer evidence, not reviewer repetitions — reviewer ran only isolated units/whitespace/identity; implementer final 606-pass run and saved source hashes provide separately labelled evidence — cost if wrong: environmental or intermittent failures may escape that specific independent review.
+- Final: Ruling: use 1ffb81d..7d26e77 as the whole approved comparator review range — no integration base branch exists and earlier foundation reviews are complete; the package includes both planned commits rather than only HEAD~1 — cost if wrong: a defect outside this unchanged incremental scope could escape review.
+- Final: Ruling: keep feat/foundation in the required current checkout without merge/remote/push/publication — D-003/AGENTS.md already choose this workspace and G7 forbids release actions; no valid integration target exists — cost if wrong: integration remains postponed until a later explicit owner decision.
+- Final: Ruling: retain only this plan's ignored scratch rather than delete it — AGENTS.md requires destructive-work approval and none was granted; persist all rulings in committed DECISIONS — cost if wrong: small redundant local artifacts remain on disk, not in Git.
+
+Next: prepare and self-review the safe one-database model/CLI plan, then obtain
+review of that new artifact before implementation. Do not repeat the completed
+comparator, guard, executor or import tasks/reviews. Broader validity, voting,
+evaluation, tenant isolation, agent, UI and release remain their own milestones.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

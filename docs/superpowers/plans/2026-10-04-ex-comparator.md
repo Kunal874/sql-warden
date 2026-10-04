@@ -10,7 +10,7 @@
 
 **Spec:** [BUILD_SPEC](../../BUILD_SPEC.md), sections 2, 4, 6–8 and 11; [AGENTS](../../../AGENTS.md); [EX source record](../../EX_COMPARATOR.md); [DECISIONS](../../DECISIONS.md), D-003/D-022/D-023. Reuse the approved architectural design; this plan is only its comparator subsystem, not a new benchmark definition.
 
-**Status:** Approved by Kunal's "yes do it" on 2026-10-04. Task 1 committed at a7be998 with a passing task-done gate; all 17 Task 2 real controls pass. Whole suite 606 passed, zero skips, including 158 actual PostgreSQL checks (15.36s). Task 2 commit/completion and the single final review remain. Native execution stays selected; no generated SQL or benchmark score.
+**Status:** Complete under Kunal's "yes do it" approval on 2026-10-04. Task 1 at a7be998 and Task 2 at 7d26e77 have passing task-done gates (60 units / 17 actual checks). The sole final read-only review found no actionable findings. Latest implementer full suite: 606 passed, zero skips, including 158 actual PostgreSQL checks (17.51s). Reviewer independently passed 60 units (0.20s). D-024/D-026 record every ruling and cost. Native execution stays selected; no generated SQL or benchmark score. G0.7a still needs the separately planned model/CLI flow.
 
 ## Global Constraints
 
@@ -571,7 +571,7 @@ loaded model. Record actual counts/timings, not the expectation as a result.
 These tests do not establish a hard Python memory/time cap, exhaustive SQL safety,
 benchmark validity, inference leakage prevention or end-to-end question answering.
 
-- [ ] **Step 4: Save real evidence and commit Task 2.**
+- [x] **Step 4: Save real evidence and commit Task 2.**
 
 Update EX_COMPARATOR with actual unit/native/full results, exact source revision,
 unchanged equality rule, invalid-gold manifest boundary and residual limits.
@@ -617,6 +617,15 @@ complete. G0.7a still needs the separately planned safe one-database model/CLI f
 C1, frozen benchmark runs, broader agent/voting/UI/release remain unfinished.
 Do not execute model-generated SQL during this plan or report a benchmark score.
 
+Completion record (2026-10-04): both planned tasks and task-done gates complete;
+sole fresh read-only review covered 1ffb81d..7d26e77. No Critical/Important/Minor
+findings or deferred minors; no correction pass or second reviewer. Final checks
+and independently repeated versus implementer evidence are recorded above and
+in PROGRESS/EX_COMPARATOR. All six declined-to-judge boundaries and the ordered
+final rulings/costs are persisted in D-026, continuing D-024's setup ruling.
+Notebook updated. Current local branch and ignored scratch retained without
+merge/remote/push/publication/deletion under owner rules; no CLI implementation.
+
 ## Preparation self-review record
 
 This is the pre-approval preparation snapshot; current execution status is above.
@@ -629,4 +638,5 @@ This is the pre-approval preparation snapshot; current execution status is above
 
 **Review approval:** Kunal's "yes do it" approves this artifact. Preserve native
 sequential execution; do not ask again about the execution method or previously
-approved dependencies. The single final review remains after Task 2's completion gate.
+approved dependencies. Both tasks, completion gates and the sole final review
+are now complete; do not repeat them or dispatch another comparator reviewer.

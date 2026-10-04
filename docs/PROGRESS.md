@@ -4,15 +4,16 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. Last completed subtask: comparator Task 1 at a7be998.
-Task 2's 17 actual native controls and full 606-test suite pass; commit/completion
-gate and the single final read-only review are next. Kunal's "yes do it" approves
-this plan; native execution/dependencies stay selected. Guard/runner are complete.
+Current group: G0. Last completed implementation commit: comparator Task 2 at
+7d26e77; both tasks and their task-done gates are complete. The single final
+read-only review found no actionable findings. Latest full suite: 606 passed,
+zero skips, including 158 actual PostgreSQL checks. Kunal's "yes do it" approved
+this plan; native execution/dependencies stay selected. Guard/runner/checker are complete.
 The safe CLI follows separately; no AI-generated SQL or benchmark score exists.
 G0.7a is not complete.
 Progress snapshot: 6 of 12 numbered top-level G0 items complete, excluding the
-interview drill; guard, runner and comparator checks are verified inside the next item. This is checklist
-coverage, not half the project's effort. G1–G5/G7 remain unfinished.
+interview drill; guard, runner and comparator are complete inside the next item.
+This is checklist coverage, not half the project's effort. G1–G5/G7 remain unfinished.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 ## Preflight evidence (2026-10-03)
@@ -53,8 +54,8 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
   - [x] Review/approve that new comparator plan; preserve native execution.
   - [x] Implement/verify the pure complete-result comparator (60 unit checks).
   - [x] Verify comparator acceptance with actual restricted PostgreSQL (17 checks).
-  - [ ] Complete the single final comparator review.
-  - [ ] Implement/verify the pinned EX comparator.
+  - [x] Complete the single final comparator review; no actionable findings.
+  - [x] Implement/verify the pinned EX comparator.
   - [ ] Build the safe one-database model/CLI flow; no generated SQL yet.
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
@@ -140,6 +141,34 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-04 — comparator final review and local-only handoff
+
+Task 2 committed at 7d26e77 with verified Kunal author/committer/body; task-done
+reran all 17 actual checks successfully (1.91s). One fresh read-only reviewer
+examined both approved commits, 1ffb81d..7d26e77, the active spec, complete plan,
+all five Review Focus conditions and recorded execution ruling. No Critical,
+Important or Minor findings. No correction pass or second review. Deferred minors: none.
+
+The reviewer independently passed 60 pure checks (0.20s), whitespace and both
+commit identity/body checks, leaving HEAD and checkout unchanged. PostgreSQL,
+full-suite, source fingerprints and environment checks were not independently
+repeated in that review. Implementer final full suite: 606 passed, zero skips
+(17.51s), including 158 actual PostgreSQL tests. Locked sync, lint/21-file format
+and whitespace pass. The earlier no-env/setup-only evidence remains below.
+
+D-026 resolves all six declined-to-judge boundaries and records all final rulings
+and concrete costs in order, continuing D-024's setup ruling. Trusted internal
+results, extra set memory, future validity/denominators/voting/leakage and
+cross-dialect limitations remain explicit; this is not an exhaustive security
+audit, official benchmark score or completed model/CLI flow.
+
+Notebook updated after final review. Retain local feat/foundation and only this
+plan's ignored scratch without merge, remote, push, publication or deletion.
+No model load, generated SQL, dependency, data, grant or credential changes.
+G0 remains six of twelve top-level items complete; G0.7a still needs the safe
+one-database model/CLI flow under a separately reviewed plan. Do not redo these
+completed tasks or dispatch another comparator reviewer.
 
 ### 2026-10-04 — comparator Task 2 / actual native handoff
 
@@ -805,15 +834,19 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Next: commit comparator Task 2, run its task-done gate, then perform the single
-fresh read-only review of both approved tasks against 1ffb81d. The pure Task 1 is
-complete at a7be998; all 17 actual Task 2 controls and the full 606-test suite pass.
-Use .superpowers/sdd/2026-10-04-ex-comparator ledger/briefs; do not redo the tasks
-or dispatch a per-task/second reviewer. The [comparator plan](superpowers/plans/2026-10-04-ex-comparator.md)
-is approved by "yes do it"; no method/dependency question remains. D-023–D-025
-hold scope, evidence and every ruling/cost. Then plan the safe model/CLI slice
-separately. No generated SQL or benchmark score; voting/reference validity remain
-separate. No inference input gets reference data from this offline function.
+Next: prepare/self-review a separate safe one-database model/CLI plan against
+BUILD_SPEC, then request Kunal's review of that new artifact before coding. The
+[comparator plan](superpowers/plans/2026-10-04-ex-comparator.md) is complete:
+Task 1 at a7be998, Task 2 at 7d26e77, both task-done gates and the sole final
+read-only review of 1ffb81d..7d26e77 pass. No actionable findings or deferred minors.
+60 pure checks and 17 actual comparator controls; latest full configured suite
+606 passed, zero skips (17.51s), including 158 actual PostgreSQL checks.
+Do not redo the tasks or dispatch another comparator reviewer. Preserve ignored
+.superpowers/sdd/2026-10-04-ex-comparator without deletion. D-023–D-026 hold scope,
+evidence and every ruling/cost; no method/dependency question remains for this
+completed plan. No generated SQL or benchmark score; voting/reference validity
+remain separate. This offline function returns no reference data; future online
+wiring still needs its own leakage and budget checks.
 
 The bounded-executor Tasks 1–3 and their single final review are complete:
 94 executor units, 50 limits controls, 18 actual executor checks; 529 full-suite
@@ -830,8 +863,8 @@ and its final review are complete: 193 guard checks, 56 real acceptance checks,
 test-first in one pass; no Critical or Minor findings. Do not redo its tasks or
 dispatch a second review. D-015/D-017 hold all rulings and their costs. Ignored
 .superpowers/sdd/2026-10-03-minimum-sql-guard is retained without deletion approval.
-G0.7a still requires the pinned EX comparator and safe CLI after the completed
-guard/runner. EX_COMPARATOR.md includes pure and native evidence; final review remains.
+G0.7a still requires the safe CLI after the completed guard/runner/comparator.
+EX_COMPARATOR.md includes pure, native and final-review evidence.
 The previous native-import plan is complete; do not
 re-execute its tasks. The ignored review scratch was retained because host policy
 blocked cleanup; its ten rulings are preserved in DECISIONS.
@@ -921,7 +954,8 @@ The native extraction and one-time import have also completed; do not rerun them
 `uv run ruff format --check .`
 
 Open decisions: none for the approved comparator plan; native execution remains
-selected and no new dependency is needed. The single final review remains.
+selected and no new dependency is needed. Both tasks and the single final review
+are complete. A new model/CLI implementation plan needs its own artifact review.
 None for the approved bounded-executor plan.
 None for the completed guard plan or approved SQLGlot addition.
 None at C0. Later C1–C9 remain unanswered and apply at their milestones.

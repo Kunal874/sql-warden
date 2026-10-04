@@ -1,7 +1,8 @@
 # BIRD EX source reference
 
 Source checked on 2026-10-03 for G0.7a preparation and rechecked on 2026-10-04.
-The comparator is implemented and passes actual native checks; final review is next.
+The comparator is implemented, passes actual native checks and has completed its
+single final read-only review with no actionable findings.
 No gold execution, benchmark freeze or aggregate accuracy score exists yet.
 The selected data remains the 500-item Mini-Dev track in [DATA](DATA.md).
 
@@ -123,3 +124,30 @@ This proves the bounded native handoff for these controls, not official dataset
 scores, conversion validity, a frozen exclusion manifest or inference isolation.
 The trusted-result/offline/set-allocation limitations remain; no aggregate metric,
 voting comparator, cache loader or model/CLI path has been implemented here.
+
+## Final review and verified handoff (2026-10-04)
+
+The Task 1/Task 2 entries above record their earlier checkpoints. Both tasks now
+have verified commits (a7be998/7d26e77) and passing task-done gates. One fresh
+read-only review covered 1ffb81d..7d26e77 against the full approved plan and all
+five Review Focus conditions. No Critical, Important or Minor findings, no fix
+pass, no second review. Deferred minors: none.
+
+The reviewer independently passed 60 units (0.20s), whitespace and commit identity
+checks. Implementer final full configured suite passed 606 tests, zero skips
+(17.51s), including 158 actual PostgreSQL checks; locked sync/lint/21-file format
+and whitespace pass. The reviewer did not rerun PostgreSQL, the full suite or
+source fingerprints. Those are separately labelled implementer evidence.
+
+All six declined-to-judge boundaries and final handoff rulings/costs are recorded
+in D-026. The trusted complete internal-result contract is not an unforgeable
+completion token or custom-object sandbox. Set construction consumes extra
+memory without a hard process deadline. Future loaders, frozen validity/exclusion
+accounting, pending jobs, duplicate-preserving voting and online model consumers
+still need their own checks. Native tests do not prove cross-dialect label validity,
+official score equivalence or an exhaustive database/logging security audit.
+
+Only the comparator prerequisite is complete. The safe one-database model/CLI
+flow needs a separate reviewed plan; no generated SQL, aggregate benchmark score,
+model load, new package or publication occurred in this increment. Keep the
+local branch and ignored plan scratch without deletion or release actions.

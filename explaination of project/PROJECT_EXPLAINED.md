@@ -39,6 +39,9 @@ It is not a finished public service yet.
 - Answer-size checks now handle row, byte and cell limits without returning
   a partial answer as a complete answer. The guarded runner now also passes
   real database tests for timeouts, cancellation and recovery.
+- The answer checker compares two complete database answers using the saved
+  rule. Failed or oversized answers cannot be marked correct. Its final review
+  is complete; it reused existing Python tools without adding a package.
 - The latest verified code checkpoint has 606 passing tests, including 158
   tests that connect to the real local PostgreSQL database.
 
@@ -47,13 +50,14 @@ scores, website and public release are not finished yet. G0, the foundation grou
 is still in progress. No AI-generated SQL has been executed.
 
 Where we are: 6 of the 12 numbered foundation tasks are complete. Inside the
-next task, the query guard and limited runner now pass their real database checks.
-The runner's final review is complete. This does not mean half the project is done: the agent,
+next task, the query guard, limited runner and answer checker are checked and
+reviewed. This does not mean half the project is done: the agent,
 experiments, website and release still come later. We are building the first
 small working demonstration before expanding.
 
 You approved the answer-checker plan. Its small comparison function passes
-60 unit checks and 17 real database checks. One final independent review is next.
+60 unit checks and 17 real database checks. Its independent review found no
+actionable issues and repeated all 60 unit checks successfully.
 The AI command-line demo is not built yet.
 
 ## 3. Completed work, one step at a time
@@ -544,6 +548,32 @@ These are checks of code behavior, not an AI accuracy score. One final independe
 read-only review of both checker tasks comes next. The AI command-line demo,
 later benchmark rules, voting, website and release are still unfinished.
 
+### G0.7a, answer-checker final review — Finish and record the checks
+
+What was done: an independent, read-only code review checked both completed
+checker tasks against the approved plan. It found no actionable issues and ran
+all 60 unit checks successfully. No code correction or second review was needed.
+The full project tests were also run again: 606 passed, including 158 real
+database checks, with no skips. The reviewer repeated the small unit checks,
+not the real database tests; these are two different kinds of evidence.
+
+Why: building something and checking it against its rules are different jobs.
+The review also records what we have not proved. The checker expects complete
+answers from our trusted runner; it cannot make a broken reference answer valid
+or decide which benchmark questions to remove. It is not the future voting rule.
+Later AI wiring must keep reference answers away from the model and keep its
+own time and memory limits. Passing tests is not an AI accuracy score.
+
+Saved: both checker tasks are committed under your Git identity. The learning
+notes, exact checks and review limits are recorded. Everything stays in the local
+project; nothing was uploaded to GitHub or deleted. The guard, runner and checker
+are now complete, but the command-line AI demonstration is still not built.
+The next step is to prepare its separate plan for your review.
+
+New term: **read-only code review** means checking the code and evidence without
+changing project files, passwords or data. It gives another check, not a promise
+that every possible problem has been found.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -805,9 +835,9 @@ feature has already been implemented.
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
 final review fixes, are complete. You approved the runner plan, and its answer-size
 rules, guarded workflow, real recovery tests and final review are complete.
-You approved the checker plan; it passes 60 pure and 17 real database checks.
-The single final review is next. A small command-line
-question-to-database demonstration follows.
+The answer checker and its independent final review are also complete. It passes
+60 pure and 17 real database checks. Next is a separate reviewed plan for a small
+command-line question-to-database demonstration, followed by its implementation.
 The rest
 of the data, agent loop, website, broader attack suite and release come later.
 
