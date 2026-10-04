@@ -1,8 +1,10 @@
 # SQLWarden data provenance
 
-Checked on 2026-10-03. G0.5a is complete for California Schools: selective native
+California import checked on 2026-10-03; correction-source inspection added
+2026-10-05. G0.5a is complete for California Schools: selective native
 import, content/types/keys, descriptions and direct privileges are verified.
-No model-driven SQL has been executed. This is not an evaluation
+One guarded local model-driven question ran on 2026-10-04, documented separately
+in [CLI_SMOKE.md](CLI_SMOKE.md). This is not an evaluation
 result or a completed conversion-validity manifest.
 
 ## Sources and selected release
@@ -161,6 +163,76 @@ in that subset. Its sorted IDs are:
 | thrombosis_prediction | 50 |
 | toxicology | 40 |
 
-Corrected Arcwise labels, schema corrections, gold execution/conversion validity,
+Persisted corrected Arcwise intake, schema corrections, gold execution/conversion validity,
 split freezing and C1 decisions remain pending. No benchmark score, PostgreSQL
 gold-validity rate, ambiguity label or native/SQLite equivalence is claimed.
+
+## Remaining G0.5 — read-only correction intake preparation (2026-10-05)
+
+The existing 799,944,582-byte archive was freshly SHA-256 verified against its
+pin above. Its central-directory inventory still has 246 entries, expanded
+3,539,193,972 bytes, including all 11 original SQLite files (1,493,287,936 bytes
+total). No further database was extracted or loaded. D: reported 46,331,715,584
+free bytes at inspection; this is not a PostgreSQL import-size estimate.
+
+Read the corrected source over HTTPS into memory only; no new correction corpus
+was saved locally. Pin the inspected revision
+fe766045c55b6875a43b30e9ac7683df5582f8cf (upstream commit dated 2026-08-27).
+The [revision README](https://github.com/uiuc-kang-lab/text_to_sql_benchmarks/blob/fe766045c55b6875a43b30e9ac7683df5582f8cf/README.md)
+names Arcwise-Plat-SQL and Arcwise-Plat. The full filename below is an upstream
+filename, not permission to rename or revise the historical planning inputs.
+The [revision license](https://github.com/uiuc-kang-lab/text_to_sql_benchmarks/blob/fe766045c55b6875a43b30e9ac7683df5582f8cf/LICENSE)
+declares CC BY-SA 4.0.
+
+| Resource at that revision | Observed bytes | SHA-256 |
+| --- | ---: | --- |
+| data/arcwise_plat_sql_only_with_diff.json | 287718 | e7bf76408f99266506ea558d84982c69422e5db3dfecab5f08a3a8d3900e8395 |
+| data/arcwise_plat_full_with_diff.json | 332246 | baefe2ca4fbab86c000df72aad9eaa563f7d422e425af2cbff071f656ea4eea8 |
+| README.md | 5038 | 7aefaba8da2792a8edde1cb534dde1f89c3228e87ac5b923838ba68bb56cf0f5 |
+| LICENSE | 20138 | 28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5 |
+
+Source files: [SQL-only](https://github.com/uiuc-kang-lab/text_to_sql_benchmarks/blob/fe766045c55b6875a43b30e9ac7683df5582f8cf/data/arcwise_plat_sql_only_with_diff.json),
+[question/evidence corrections](https://github.com/uiuc-kang-lab/text_to_sql_benchmarks/blob/fe766045c55b6875a43b30e9ac7683df5582f8cf/data/arcwise_plat_full_with_diff.json).
+Exact ID-keyed in-memory inspection against the pinned canonical SQLite labels:
+
+| Observation | SQL-only | Full |
+| --- | ---: | ---: |
+| Items / unique numeric IDs | 498 / 498 | 498 / 498 |
+| Missing original IDs | 119, 120 | 119, 120 |
+| Unexpected IDs / database mismatches | 0 / 0 | 0 / 0 |
+| Question text differences | 81 | 147 |
+| Evidence text differences | 86 | 152 |
+| Either question or evidence differs | 141 | 229 |
+| SQL text differences (not result comparisons) | 180 | 215 |
+| original_SQL metadata fields | 83 | 134 |
+| original_question metadata fields | 0 | 88 |
+| original_evidence metadata fields | 0 | 98 |
+
+IDs in the correction JSON are decimal strings; canonical IDs are integers.
+Correction order starts with thrombosis_prediction; matching lists by position
+would be wrong. All 11 database identities are represented. Only financial has
+a count change: 30 corrected items versus 32 original. SQL-only has one optional
+difficulty field, ID405 moderate, matching canonical. Other difficulty values
+must come from the verified original ID mapping, not list order.
+
+Between the two corrected sets, 88 question fields and 98 evidence fields differ,
+148 IDs in their union. These are literal text differences; no trimming,
+case-folding, fuzzy matching, semantic classification or ambiguity-label inference
+was made. In particular, SQL-only is not text-identical to our pinned canonical
+BIRD release. Its upstream preservation statement is not evidence that those
+141 original-to-SQL-only text differences are zero. C1 must review baseline drift
+and anchors before selecting question/ambiguity policies.
+
+The [corrected schemas directory](https://github.com/uiuc-kang-lab/text_to_sql_benchmarks/tree/fe766045c55b6875a43b30e9ac7683df5582f8cf/data/schemas)
+has Git tree 9cf49139c686a1156491f1859c0a75c91e257897: 75 CSV description files,
+76,445 bytes by recursive Git tree metadata. Contents were not parsed/applied;
+this inventory does not establish physical-table changes or correct column
+mapping. Schema-description inspection remains required separately.
+
+The [two-task intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md)
+is prepared for artifact review, not yet approved or implemented. It proposes
+saving only the four pinned resources (645,140 content bytes), strict offline
+ID/text-difference reporting and fake-network tests. No source SQL, SQLite gold,
+PostgreSQL gold or model request ran during this inspection. Conversion survival,
+validity/exclusion policy, primary labels, ambiguity labels, family splits and C1
+remain undecided. No benchmark denominator or score has been changed.

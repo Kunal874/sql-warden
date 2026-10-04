@@ -1,6 +1,6 @@
 # SQLWarden explained in simple English
 
-Last updated: 2026-10-04.
+Last updated: 2026-10-05.
 
 This is your learning notebook for the project. It will be updated after every
 completed subtask and group. It explains what was built, why it matters, how it
@@ -56,8 +56,8 @@ its two test-first corrections are complete. The first small demo is finished.
 Where we are: 7 of the 12 numbered foundation tasks are complete. The query
 guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
-experiments, website and release still come later. We are building the first
-small working demonstration before expanding.
+experiments, website and release still come later. The first small working
+demonstration is complete; data checks come next before expanding the agent.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -65,6 +65,9 @@ actionable issues and repeated all 60 unit checks successfully.
 You approved the three-part AI command-line plan and its two software additions.
 All three parts' code and database checks pass, and the single real question
 worked. Model unload, independent review and verified corrections are complete.
+The next data-work preparation is complete. Its new implementation plan needs
+the required review before building the offline correction checker. No extra
+model test or database import was run in this preparation.
 
 ## 3. Completed work, one step at a time
 
@@ -750,6 +753,50 @@ remaining datasets/validity, the second model and fair measured evaluation still
 come next. This is 7/12 foundation checklist items, not 58% of the whole project.
 Everything stays local, with passwords outside Git and no active model loaded.
 
+### G0.5, preparation — Check which corrected answers belong together
+
+What was done: checked the existing download and looked at the correction
+source without changing the database. Wrote the next small implementation
+plan. This finishes preparation only; the new checker is not built yet.
+
+Why: a benchmark is like an exam for the AI. Before marking its answers, we
+need to know that the exam questions and the answer key refer to the same
+items. If the answer key itself changed, that must be visible.
+
+What we found:
+
+- The original download already contains all 11 database files. We do not
+  need to download that big archive again.
+- Each corrected answer set has 498 items. The original has 500. Items 119
+  and 120 are absent from both corrected sets.
+- Item numbers are stored as text in the corrections and as numbers in the
+  original. The items are also in a different order. Match their item number,
+  not their place in the list.
+- The set called SQL-only still has question or hint text different from
+  our original copy on 141 items. The other set differs on 229 items.
+- A wording change does not automatically mean the old question was unclear.
+  Some differences may come from which earlier copy was corrected. We have
+  not decided which answers or ambiguity labels to use.
+- The source also lists 75 corrected column-description files. We counted
+  the files, but have not applied their descriptions or changed any tables.
+
+Checked: the existing archive and original answer files still match their
+saved fingerprints. The unchanged project passed 719 tests again, including
+165 checks using the real PostgreSQL database, with no skipped tests. No AI
+model request or gold-answer query ran in this preparation.
+
+Next plan: build an offline checker, then save only four small pinned
+correction and license files, about 645 KB in total. The checker will list
+missing items and changed text. It will not run their SQL or tell the AI the
+answer key. It will not silently pick a new exam or change its score.
+
+Your approval of the earlier AI command-line plan has already been used.
+The Handoff requires you to review this new data-work plan before its code
+or saved correction files are created. This is a required review checkpoint,
+not a request to repeat completed work. We remain at 7 of 12 foundation tasks;
+the full foundation group is not finished.
+
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -894,6 +941,24 @@ feature has already been implemented.
 - **Budget / limit:** a maximum amount of time, output or attempts allowed.
   Limits stop the system from continuing without a clear stopping point.
 
+### Words from the corrected-answer preparation
+
+- **Stable ID:** an item's saved number. It stays useful even when a list is
+  rearranged. Matching the first item to another first item is not reliable.
+- **Pinned release:** a specific saved version, checked by its fingerprint.
+  We do not silently switch to a newer file if its contents change.
+- **Alignment:** checking that records refer to the same item and database.
+  Matching numbers alone does not prove the question or answer is correct.
+- **Baseline drift:** the older copy used as a starting point differs from
+  our copy. A correction can contain changes inherited from that older copy.
+- **Conversion validity:** checking that an answer query has the same meaning
+  and result after moving it to another database system. We have not checked
+  this yet for the corrected answers.
+- **Ambiguity label:** a mark saying a question has more than one reasonable
+  meaning. Different wording alone is not enough evidence for that mark.
+- **Offline checker:** a separate program used to inspect the exam's answer
+  key. It does not send the key to the AI that is taking the exam.
+
 ## 5. Database and coding words used so far
 
 - **Database:** an organized store of information that can be queried.
@@ -1032,7 +1097,9 @@ checked, and the safe command passes its flow and real database tests. Its sole
 live question returned the expected answer; model unload, final review and its
 verified parsing fixes are complete. Next we resume the remaining foundation:
 datasets and validity decisions, the second model, then split/evaluation/model
-choices. Each new multi-step plan and relevant new permission still needs review.
+choices. The next two-task correction-intake plan is now written and needs your
+required artifact review. It uses the existing software and does not change
+the database or run the model. Each relevant new permission still needs review.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date

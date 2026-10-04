@@ -18,6 +18,12 @@ interview drill. This is checklist coverage, not overall project effort.
 G0 data/validity/models/evaluation and G1–G5/G7 remain unfinished. No benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
+2026-10-05 continuation: completed remaining-G0.5 read-only preparation and
+prepared the two-task corrected-label intake plan for required artifact review.
+Fresh unchanged suite: 719 passes, zero skips (165 actual PostgreSQL, 19.64s).
+No new runtime/data-import/model step executed; G0 remains 7/12. D-032/DATA hold
+new source pins and baseline text drift; intake implementation awaits approval.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -148,6 +154,47 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-05 — remaining G0.5 read-only preparation / new artifact checkpoint
+
+Resumed clean feat/foundation at e46c4ba; reconciled AGENTS, active spec,
+PROGRESS/DECISIONS and completed CLI commits. No new approved implementation plan
+exists after the completed safe-CLI increment. Continued its actual Handoff:
+prepare next data-work artifact, retaining native sequential execution, not a
+second CLI/model/import/credential pass.
+
+Checked the existing archive hash and all 11 SQLite members by ZIP inventory;
+canonical JSON pins/counts confirmed. D: free 46,331,715,584 bytes at inspection.
+Read official corrected release into memory only, revision
+fe766045c55b6875a43b30e9ac7683df5582f8cf. Both sets 498 unique IDs, missing 119/120,
+no unexpected IDs/db mismatches, variable original_* fields and string IDs.
+SQL-only has 81/86 changed question/evidence fields against our canonical SQLite
+copy, full 147/152; either 141/229. Corrected pair differs on 148 IDs (88 questions,
+98 evidence). No semantic/ambiguity/result-validity inference. Upstream schema
+tree has 75 description CSVs/76,445 bytes by metadata, not parsed/applied.
+
+Prepared and self-reviewed
+[corrected-label intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md):
+two test-first tasks, fixed four-file 645,140-byte acquisition, hash/size/exclusive
+publish boundary, offline ID/text report; no dependencies or runtime/DB/model work.
+Artifact review remains required before implementation or persisting the corpus.
+This preparation is finished; G0.5/G0.5b are not. DATA/D-032/notebook distinguish
+observed text drift from proven ambiguity and identity from conversion validity.
+
+Fresh uv sync --locked: 27 packages checked. Full configured
+uv run --env-file .env.setup --env-file .env.california pytest --tb=line:
+719 passed, zero skips, 19.64s, including 165 actual PostgreSQL checks. No inference.
+A scratch aggregate-printer attempt failed on tuple JSON keys; minimal reproduction
+and output-shape-only correction succeeded. Repository source/tests untouched.
+Final checks: all five embedded Python plan blocks parse; this is syntax only,
+not execution of the proposed scripts/tests. Ruff check passed; all 27 existing
+Python files already formatted; git diff --check passed. Placeholder scan found
+none. Self-review moved the local-pin test into the initial RED gate and made
+malformed optional difficulty fail closed in the planned example. No new
+implementation tests were run or represented as finished code. Local checkpoint
+message: docs(plan): prepare pinned correction intake checkpoint; exact staged
+diff and author/committer/body inspected around the commit.
+
 
 ### 2026-10-04 — safe local CLI final review / one TDD correction pass and handoff
 
@@ -992,6 +1039,25 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+Current next action: Kunal's artifact review of the new
+[corrected-label intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md),
+prepared 2026-10-05 at the preceding CLI checkpoint e46c4ba. D-032 records the
+required approval boundary. No approved implementation task is left in the old
+CLI plan; do not replay it. Native sequential execution remains selected.
+After this exact artifact is approved, implement its two tasks test-first:
+strict offline report, then only the four pinned correction/license resources
+(645,140 content bytes) and actual offline acceptance. No new dependencies,
+database import/permissions/secret changes, model/SQL runs, benchmark selection,
+split freezing or publication. Raw sources stay ignored. Source pins, missing
+IDs 119/120, baseline text drift and 75 upstream description-file inventory are
+in DATA; inspect descriptions and remaining import/conversion work in a later
+reviewed increment. G0.5/G0.5b remain incomplete, overall G0 checklist 7/12.
+Use uv run python -m scripts.fetch_labels / scripts.inspect_labels only after
+those scripts exist and approval; no env files needed. Do not repin changing
+bytes or overwrite existing artifacts automatically. Current fresh regression
+evidence is 719/719 with both setup/test envs, 165 actual PG, zero skips, 19.64s.
+Private tests always --tb=line, never --showlocals; no extra live inference.
+
 Safe-local-CLI plan is complete: tasks 227f869/f8b8150/3e1f72e and sole review's
 verified parsing fixes/evidence. G0.7a complete, latest 719 configured passes
 (165 actual PostgreSQL); no-env 554/165 skipped, setup 597/122 skipped. No Critical/
@@ -1005,7 +1071,8 @@ Native sequential execution remains selected. Reuse this client/CLI in G1.
 Runtime launcher is `uv run --env-file .env.runtime sqlwarden ask --db california_schools <question>`;
 never use setup/test envs. Resume this plan's
 ledger at .superpowers/sdd/2026-10-04-safe-local-cli/progress.md, reconcile Git.
-Do not repeat earlier reviews/import/rotation. Model remains unloaded; current
+Do not repeat earlier reviews/import/rotation. Model was last observed unloaded;
+no model was loaded by the 2026-10-05 preparation. Current
 test commands and explicit uv path below remain valid. SDK inherited private
 keys in D-028 must be rejected by the CLI before any I/O. The previous preparation/
 component handoffs below are historical, superseded by this completed CLI work.

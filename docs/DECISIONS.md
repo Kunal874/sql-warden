@@ -846,6 +846,67 @@ Deferred minors: none reported. Every declined-to-judge behavior has a ruling
 above; no silent exclusion or repeated component review. All records retained
 in this plan's ignored scratch because destructive cleanup was not approved.
 
+## D-032 — remaining G0.5 intake preparation and artifact-review checkpoint (2026-10-05)
+
+Context: resumed clean feat/foundation at e46c4ba. The approved three-task safe-CLI
+increment and sole review are complete. Its Handoff explicitly requires a new
+multi-step plan's artifact approval; earlier approval does not authorize more
+corpus acquisition, benchmark choices, dependencies or model runs. Kunal asks
+to proceed through routine approved work and pause only at required checkpoints.
+
+Decision: complete the authorized read-only preparation now, retain native
+sequential execution and propose a narrow two-task offline correction-intake
+plan. Do not infer approval of that newly written artifact from approval of
+the completed CLI plan or the overall product spec. No runtime implementation,
+database mutation, new correction files or model inference in this preparation.
+No execution-method question is reopened.
+
+Inspected the already downloaded package and canonical label hashes plus the
+official correction release in memory. Revision
+fe766045c55b6875a43b30e9ac7683df5582f8cf, source/license URLs, observed sizes/hashes
+and exact-ID drift counts are in DATA. Both correction sets have 498 unique IDs,
+missing financial IDs 119/120; no unexpected IDs or db mismatches. Corrected IDs
+are strings, canonical IDs integers; list order differs. SQL-only questions/
+evidence differ from our canonical release at 81/86 IDs (141 either); full at
+147/152 (229 either). Corrected-pair union is 148, not an automatic ambiguity label.
+Variable original_* metadata is observational, not a trusted override.
+
+Options: extend all database imports first, or establish this small pinned
+label identity/drift report before expanded data/conversion work. Recommend the
+latter: original/corrected sources must be distinguishable before C1 and split
+freezing. No primary label set, benchmark denominator/exclusion, text normalization
+or ambiguity rule has been selected. A stable ID/db match alone is not verified
+question alignment or SQLite/PostgreSQL result equivalence.
+
+Proposed approval scope: two tasks in
+docs/superpowers/plans/2026-10-05-corrected-label-intake.md; existing httpx/stdlib
+only, four fixed resources totalling 645,140 bytes, new ignored release directory,
+bounded no-proxy/no-redirect/hash-checked acquisition, tests-first offline report
+and relevant checks/documentation/local commits. Review required before coding/
+persisting that corpus. No new dependency, account, money, database import/reset,
+secret copy/rotation, model weights/probe, SQL execution or publication included.
+The upstream schemas inventory is 75 description CSVs/76,445 bytes by Git metadata,
+not a performed schema correction. Inspect contents/mapping in a later plan.
+
+Rationale/cost: this small boundary exposes baseline drift rather than treating
+all rewrites as ambiguity fixes. It leaves the ten remaining database imports
+and full G0.5 acceptance unfinished; raw report validity is not a benchmark score.
+The required artifact gate means implementation pauses until Kunal reviews this
+specific scope, not because software prerequisites failed.
+
+Verification: full unchanged suite 719 passed in 19.64s, zero skips, including 165
+actual PostgreSQL checks; locked sync checked 27 packages. Preparation's first
+aggregate printer failed because JSON dictionary keys were tuples; isolated
+reproduction confirmed that cause, changing only the diagnostic output shape
+made its repeated read-only inspection pass. No project source/test change or
+database/credential action was used to resolve that scratch diagnostic failure.
+Final lint/27-file format/whitespace checks pass; all five embedded Python plan
+blocks parse, without executing proposed code/tests. Placeholder scan found
+none. Self-review moved local-pin tests to the initial RED gate and rejected
+malformed optional difficulty in the planned example. No fresh reviewer
+dispatched for plan preparation; no new implementation test claims.
+
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
