@@ -450,6 +450,18 @@ float4, ISO date and UTC timestamp mapping is not full gold/SQLite equivalence.
 no-env700passed165skipped(8.15s), Ruff/41-file format/locked27 pass.
 Existing cancellation timing failures are documented in D-043, not hidden.
 
+## Toxicology actual import accepted (2026-10-05)
+
+Four tables/36922rows/four enforced PKs, all pinned native typed rows plus twelve
+representative SQLite rows match before commit. Source FKs retained unenforced,
+their original zero-violation audit is not a full constraints/answer-validity
+claim. 22 real restricted-role/rollback/content/count/type/key/default/grant
+controls passed(1.29s), with21 absent-login RED checks observed before import.
+docs/toxicology-import-manifest.json is reviewed metadata only with source
+fingerprints/date/code state/import result; ignored evidence matches its fields.
+Full SQLite equivalence/gold conversion/primary descriptions remain unchecked.
+Existing California/source files/runtime untouched; no inference/gold SQL.
+
 ## Remaining import readiness — read-only preparation (2026-10-05)
 
 Dedicated PostgreSQL 16 still contains only the California dataset and its login;

@@ -1,0 +1,274 @@
+{
+  "format_version": 1,
+  "track": "native PostgreSQL import preparation",
+  "gold_conversion_validity": "not checked",
+  "sqlite_full_content_equivalence": "not established",
+  "primary_descriptions": "not selected",
+  "datasets": {
+    "toxicology": {
+      "tables": {
+        "atom": {
+          "rows": 9111,
+          "null_counts": [
+            0,
+            0,
+            0
+          ],
+          "columns": [
+            {
+              "name": "atom_id",
+              "source_name": "atom_id",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": true,
+              "primary_key_position": 1
+            },
+            {
+              "name": "molecule_id",
+              "source_name": "molecule_id",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": false,
+              "primary_key_position": 0
+            },
+            {
+              "name": "element",
+              "source_name": "element",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": false,
+              "primary_key_position": 0
+            }
+          ],
+          "primary_key": [
+            "atom_id"
+          ],
+          "source_foreign_keys": [
+            {
+              "id": 0,
+              "sequence": 0,
+              "parent_table": "molecule",
+              "column": "molecule_id",
+              "parent_column": "molecule_id",
+              "on_update": "NO ACTION",
+              "on_delete": "NO ACTION",
+              "match": "NONE"
+            }
+          ],
+          "foreign_key_enforcement": "metadata only; not installed",
+          "native_source": {
+            "rows": 9111,
+            "bytes": 152286,
+            "sha256": "5bbb192f3308f9ba6af234ec1738bbc58b793fed64d9d38b011f74170e708527"
+          }
+        },
+        "bond": {
+          "rows": 9156,
+          "null_counts": [
+            0,
+            0,
+            0
+          ],
+          "columns": [
+            {
+              "name": "bond_id",
+              "source_name": "bond_id",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": true,
+              "primary_key_position": 1
+            },
+            {
+              "name": "molecule_id",
+              "source_name": "molecule_id",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": false,
+              "primary_key_position": 0
+            },
+            {
+              "name": "bond_type",
+              "source_name": "bond_type",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": false,
+              "primary_key_position": 0
+            }
+          ],
+          "primary_key": [
+            "bond_id"
+          ],
+          "source_foreign_keys": [
+            {
+              "id": 0,
+              "sequence": 0,
+              "parent_table": "molecule",
+              "column": "molecule_id",
+              "parent_column": "molecule_id",
+              "on_update": "NO ACTION",
+              "on_delete": "NO ACTION",
+              "match": "NONE"
+            }
+          ],
+          "foreign_key_enforcement": "metadata only; not installed",
+          "native_source": {
+            "rows": 9156,
+            "bytes": 174764,
+            "sha256": "e440f7d507f31f9b5d56c0ddc2a18f6e5c0c77eb9648ed371bdc0b592bc5a378"
+          }
+        },
+        "connected": {
+          "rows": 18312,
+          "null_counts": [
+            0,
+            0,
+            0
+          ],
+          "columns": [
+            {
+              "name": "atom_id",
+              "source_name": "atom_id",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": true,
+              "primary_key_position": 1
+            },
+            {
+              "name": "atom_id2",
+              "source_name": "atom_id2",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": true,
+              "primary_key_position": 2
+            },
+            {
+              "name": "bond_id",
+              "source_name": "bond_id",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": false,
+              "primary_key_position": 0
+            }
+          ],
+          "primary_key": [
+            "atom_id",
+            "atom_id2"
+          ],
+          "source_foreign_keys": [
+            {
+              "id": 0,
+              "sequence": 0,
+              "parent_table": "bond",
+              "column": "bond_id",
+              "parent_column": "bond_id",
+              "on_update": "CASCADE",
+              "on_delete": "CASCADE",
+              "match": "NONE"
+            },
+            {
+              "id": 1,
+              "sequence": 0,
+              "parent_table": "atom",
+              "column": "atom_id2",
+              "parent_column": "atom_id",
+              "on_update": "CASCADE",
+              "on_delete": "CASCADE",
+              "match": "NONE"
+            },
+            {
+              "id": 2,
+              "sequence": 0,
+              "parent_table": "atom",
+              "column": "atom_id",
+              "parent_column": "atom_id",
+              "on_update": "CASCADE",
+              "on_delete": "CASCADE",
+              "match": "NONE"
+            }
+          ],
+          "foreign_key_enforcement": "metadata only; not installed",
+          "native_source": {
+            "rows": 18312,
+            "bytes": 515936,
+            "sha256": "3efd8737faaff67020dabdaf45483ee9ebefe1d7242a66d9b386b22db32ba718"
+          }
+        },
+        "molecule": {
+          "rows": 343,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": [
+            {
+              "name": "molecule_id",
+              "source_name": "molecule_id",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": true,
+              "primary_key_position": 1
+            },
+            {
+              "name": "label",
+              "source_name": "label",
+              "source_type": "TEXT",
+              "native_type": "TEXT",
+              "declared_not_null": false,
+              "primary_key_position": 0
+            }
+          ],
+          "primary_key": [
+            "molecule_id"
+          ],
+          "source_foreign_keys": [],
+          "foreign_key_enforcement": "metadata only; not installed",
+          "native_source": {
+            "rows": 343,
+            "bytes": 2744,
+            "sha256": "b60acbbb0078fe3e4ef43cd8189d12493804d506251e55366d72f6efede0b859"
+          }
+        }
+      },
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    }
+  },
+  "execution": {
+    "date": "2026-10-05",
+    "code_commit": "0a29ad888e9420a97b7bd00b2a9fba97886fd709",
+    "dirty_at_import": true,
+    "dirty_files": [
+      "tests/test_release_postgres.py"
+    ],
+    "source_pins": "docs/source-release-pins.json",
+    "source_pins_sha256": "f8c61dbc426deab580174c965fbd1883192e98ec30253e8d2b6aa85eb7114f7c",
+    "source_audit": "docs/source-audit-manifest.json",
+    "source_audit_sha256": "f52ecfd71c53fb470bb85e899e4b97178df304e0b30f66cba32518fa7f286c31",
+    "procedure": "Fixed setup-only import with typed native EXCEPT ALL and bounded SQLite first/middle/last samples before per-dataset transaction commit; no source SQL/gold execution.",
+    "import_result": {
+      "db_id": "toxicology",
+      "rows": {
+        "atom": 9111,
+        "bond": 9156,
+        "connected": 18312,
+        "molecule": 343
+      },
+      "typed_native_content_verified": true,
+      "sqlite_full_content_equivalence": "not established",
+      "gold_conversion_validity": "not checked",
+      "primary_descriptions": "not selected",
+      "sqlite_representative_samples": {
+        "atom": 3,
+        "bond": 3,
+        "connected": 3,
+        "molecule": 3
+      },
+      "sqlite_sample_policy": "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change",
+      "primary_key_tables": 4,
+      "foreign_key_enforcement": "metadata only; not installed",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0,
+      "elapsed_seconds": 2.845
+    }
+  }
+}

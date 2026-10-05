@@ -1365,6 +1365,30 @@ cause not established, do not call it fixed — cost if wrong: timing flakiness
 may recur and needs evidence, not silent timeout relaxation. No runtime change.
 UTC alias/import sorting/string wrapping are mechanical draft normalization.
 
+## D-044 — toxicology real import and boundary acceptance (2026-10-05)
+
+Context: importer committed 0a29ad8; Task 3 actual tests written before import.
+Expected 21 configured missing-login failures observed, no credential details.
+Real first-COPY/second-COPY-interruption probe passed (0.40s), schema/login absent
+after rollback. Target identity/California counts/source pins/container health
+checked before actual import; Docker remains768MiB/1CPU with existing volume.
+Toxicology committed once: atom9111/bond9156/connected18312/molecule343,
+four tables/36922rows/four PKs. Complete typed native EXCEPT ALL and twelve
+first/middle/last SQLite samples match BEFORE commit. FKs metadata-only.
+22 actual acceptance checks passed(1.29s): counts/types/order/PK/NOTNULL, own reads,
+role defaults/memberships/function ACLs, writes/temp/app/California/role/unused
+cluster/old-reader denials, future scoped grants, existing-target refusal,
+same-count changed-value detection/restored content and partial-COPY rollback.
+No claimed blanket function/catalog security, SQLite full equivalence or gold
+validity. Metadata-only evidence saved ignored then reviewed into
+toxicology-import-manifest.json with actual returned result/provenance/pins.
+Old configured full suite866passed/291skipped(21.65s): old165 PG plus synthetic
+probe run; other291 require .env.datasets and are deliberately not enabled until
+the remaining targets exist. Not a full new-release zero-skip claim.
+No Task 3 scope deviation; row preservation/source/timeouts/credentials unchanged.
+Final task repeat22passed(1.77s); no-env700passed457skipped(10.18s),
+Ruff/42-file format/whitespace pass. No new-release checks silently counted green.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

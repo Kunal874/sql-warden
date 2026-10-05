@@ -78,6 +78,14 @@ and 18-control executor repeat passed. Deadlines unchanged; safe phase label
 added, root cause not established (D-043). No claimed runtime fix. Locked27/
 Ruff/41-file format/whitespace pass. Task 3 toxicology actual thin slice is next.
 
+Remaining imports Task 3: toxicology imported once, four tables/36922rows/four
+PKs, all typed native rows and12SQLite samples match before commit. 22 actual
+acceptance checks pass(1.29s); named partial-COPY probe leaves no schema/login,
+same-count mutation detected and rolled back. Metadata/provenance in
+toxicology-import-manifest.json; sources and existing California untouched.
+Old configured suite866passed/291skipped(21.65s), old165PG+rollback probe actual.
+Remaining nine imports and all-new cross-reader matrix pending; G0 still7/12.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -1263,8 +1271,9 @@ Pre-flight contract reconciliation:
 Current action: approved four-task remaining-native-imports batch, executing
 sequentially in the existing checkout. Task 1 COPY preparation is checked; do
 not rerun its completed destination. Task 2 fixed importer/private .env.datasets
-also complete; do not regenerate its existing credential file. Resume Task 3
-real toxicology checks/import using this plan's ignored
+also complete; do not regenerate its existing credential file. Task 3 toxicology
+import/22 actual checks complete; do not reimport it. Resume Task 4 nine further
+sequential imports and full actual matrix using this plan's ignored
 ledger/task brief. Kunal approved the presented ten restricted logins/imports
 and row-preserving metadata-only FKs by “move forward”; no routine review or
 continuation questions. Ask a question only for important new authority/decisions

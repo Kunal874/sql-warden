@@ -1413,6 +1413,25 @@ run passed. I did not increase its limit or claim the timing problem was fixed.
 Next: import the small toxicology dataset and test its real read permissions,
 blocked writes, cancelled imports and changed-value detection.
 
+### Remaining import batch — Task 3 complete (2026-10-05)
+
+The first new dataset, toxicology, now has four real database tables and 36,922
+rows. Every native row matches, and 12 chosen SQLite rows also match. Its own
+login can read it but cannot write, read other protected tables or take another
+role. These are real database checks, not just pretend connections.
+
+22 checks passed. I deliberately interrupted a two-table test import after its
+first table; neither its schema nor its login remained. Another test changed a
+value without changing the number of rows. The content checker noticed it, and
+the test rolled the change back. None of those test changes remain saved.
+
+**Isolation** means one dataset login cannot use another dataset's permissions.
+**Default grant** means permissions automatically applied to future tables.
+**Atomic import** means one dataset is saved completely or not saved at all.
+The batch is not all-or-nothing: completed datasets stay if a later one fails.
+The next nine imports will run one at a time. Query-answer conversion and model
+evaluation are still later work; these import checks are not an accuracy score.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
