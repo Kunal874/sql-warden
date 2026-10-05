@@ -462,6 +462,34 @@ fingerprints/date/code state/import result; ignored evidence matches its fields.
 Full SQLite equivalence/gold conversion/primary descriptions remain unchecked.
 Existing California/source files/runtime untouched; no inference/gold SQL.
 
+## Eight new imports verified; two pending (2026-10-05)
+
+Installed toxicology/thrombosis_prediction/superhero/student_club/
+debit_card_specializing/formula_1/financial/card_games:57tables/439columns/
+2904731rows/54PKs. All native typed multisets and171SQLite samples checked before
+commit. Actual1083passes/74pending-target deselections,383PG checks(39.20s).
+With unchanged California,9of11 release databases loaded. No source repair/FK
+enforcement/runtime/model/gold action; metadata-only FK policy maintained.
+Codebase failed ValueError, rolled back (schema/login absent), European not
+attempted. Pinned read-only diagnosis: all882084non-null source timestamps
+across11columns have identical wall-clock text; native explicitUTC+08 maps to
+eight hours earlier than SQLite interpretedUTC. All226789null cells agree.
+Changing Codebase's sample mapping requires the important owner choice; no retry
+or semantic relaxation yet. Full SQLite/query/gold equivalence stays unproved.
+partial-import-manifest.json stores compact reviewed actual metadata/provenance,
+source/audit fingerprints, success results and the full timestamp aggregate.
+Exact complete layouts/source keys referenced from unchanged pinned audit.
+
+## Approved Codebase timestamp sample adaptation (2026-10-05)
+
+After the full timestamp observation above, Kunal explicitly approved Codebase
+naive DATETIME interpretation asUTC+08 for import samples only and one retry.
+Five regression controls first failed then passed; aware timestamps and all
+other datasetUTC defaults preserved. Returned policy marker namesUTC+08→UTC.
+No source/native value/label/gold/comparator/runtime change. Partial manifest is
+a historical pre-retry snapshot, not the current approval status. Retry and
+remaining European import still pending; no new content acceptance claimed yet.
+
 ## Remaining import readiness — read-only preparation (2026-10-05)
 
 Dedicated PostgreSQL 16 still contains only the California dataset and its login;

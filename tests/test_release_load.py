@@ -283,3 +283,73 @@ async def test_sqlite_representative_first_middle_last_nulls_and_mismatch(
 async def test_unapproved_dataset_rejected_before_connection(tmp_path, db_id):
     with pytest.raises(ValueError):
         await loader.load_dataset(object(), tmp_path, db_id, "a" * 48)
+
+
+@pytest.mark.parametrize(
+    "db_id,value,hour",
+    [
+        ("codebase_community", "2020-01-01 08:00:00", 0),
+        ("codebase_community", "2020-01-01T08:00:00+08:00", 0),
+        ("codebase_community", "2020-01-01T08:00:00+00:00", 8),
+        ("toxicology", "2020-01-01 08:00:00", 8),
+    ],
+)
+def test_approved_codebase_naive_zone_only_aware_offsets_preserved(db_id, value, hour):
+    from datetime import datetime
+
+    assert loader.native_sample_value(value, "DATETIME", db_id=db_id) == datetime(
+        2020, 1, 1, hour, tzinfo=UTC
+    )
+
+
+async def test_codebase_sample_consumer_uses_approved_zone(tmp_path, monkeypatch):
+    import hashlib
+    import sqlite3
+    from datetime import datetime
+
+    path = tmp_path / "source.sqlite"
+    with sqlite3.connect(path) as sqlite:
+        sqlite.executescript(
+            "CREATE TABLE Thing (id INTEGER PRIMARY KEY, happened DATETIME); "
+            "INSERT INTO Thing VALUES (1,'2020-01-01 08:00:00');"
+        )
+    pins = {
+        "sqlite_sources": [
+            {
+                "db_id": "codebase_community",
+                "output": "source.sqlite",
+                "bytes": path.stat().st_size,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
+        ],
+        "tables": {"thing": {"copy": {"rows": 1}}},
+    }
+    tables = {
+        "thing": {
+            "source_name": "Thing",
+            "columns": [
+                {
+                    "name": "id",
+                    "source_name": "id",
+                    "source_type": "INTEGER",
+                    "primary_key_position": 1,
+                },
+                {
+                    "name": "happened",
+                    "source_name": "happened",
+                    "source_type": "DATETIME",
+                    "primary_key_position": 0,
+                },
+            ],
+        }
+    }
+    monkeypatch.setattr(loader, "SOURCE_DIR", tmp_path)
+
+    class Probe:
+        async def fetchval(self, sql, *values):
+            assert '"codebase_community"."thing"' in sql
+            return values == (1, datetime(2020, 1, 1, 0, tzinfo=UTC))
+
+    assert await loader.verify_sqlite_samples(Probe(), "codebase_community", tables, pins) == {
+        "thing": 1
+    }

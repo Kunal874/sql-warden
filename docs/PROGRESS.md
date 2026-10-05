@@ -86,6 +86,22 @@ toxicology-import-manifest.json; sources and existing California untouched.
 Old configured suite866passed/291skipped(21.65s), old165PG+rollback probe actual.
 Remaining nine imports and all-new cross-reader matrix pending; G0 still7/12.
 
+Remaining imports Task 4 partial: eight new datasets installed and checked,
+57tables/439columns/2904731rows/54PKs, all native values/171SQLite samples match.
+With California,9of11 release datasets are loaded. 1083tests passed/74deselected
+(39.20s),383actualPG. Codebase failed and rolled back: no schema/login remains.
+European not attempted. Full read-only timestamp audit finds882084 non-null
+cells in11 columns have identical wall clocks but native UTC+08 versus SQLite
+unspecified timezone;226789 nulls agree. Important mapping/retry question sent.
+No relaxation/retry/data edits yet. Task4/final review/G0.5/C1 remain incomplete;
+G0 stays7/12. D-045/partial-import-manifest.json preserve exact evidence.
+
+Timestamp checkpoint update: Kunal approved Codebase-only UTC+08 sample mapping
+and one retry. Five regression tests RED→GREEN; other datasets/aware offsets
+unchanged. No source/native/gold/runtime/benchmark edit. Task4 retry and European
+remain pending; use original attempt clock and same900s/120s caps. D-046 records
+the explicit answer; earlier paused/partial evidence is historical.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -1272,12 +1288,35 @@ Current action: approved four-task remaining-native-imports batch, executing
 sequentially in the existing checkout. Task 1 COPY preparation is checked; do
 not rerun its completed destination. Task 2 fixed importer/private .env.datasets
 also complete; do not regenerate its existing credential file. Task 3 toxicology
-import/22 actual checks complete; do not reimport it. Resume Task 4 nine further
-sequential imports and full actual matrix using this plan's ignored
+import/22 actual checks complete; do not reimport it. Task4 installed seven
+further datasets, then Codebase's first attempt failed and rolled back; European
+was not attempted. Kunal now explicitly approved Codebase-only UTC+08 sample
+mapping and ONE retry; test-first mapping is implemented. Resume that bounded
+retry, then European, then full matrix. Completed IDs: toxicology,
+thrombosis_prediction, superhero, student_club,
+debit_card_specializing, formula_1, financial, card_games. Do not reimport any.
+Codebase schema/login and European schema are absent. Eight passwords for saved
+logins remain as-is; do not regenerate/rotate .env.datasets. User question asks
+Codebase-only UTC+08 sample mapping with test-first change/one bounded retry and
+then European, leaving sources/native/gold/benchmark rules unchanged. Answer is
+approved (D-046); do not ask again. UTC remains default for other datasets,
+explicit aware timestamps retain their offsets. Refer to this plan's ignored
 ledger/task brief. Kunal approved the presented ten restricted logins/imports
 and row-preserving metadata-only FKs by “move forward”; no routine review or
 continuation questions. Ask a question only for important new authority/decisions
 or genuine blockers. Do not infer benchmark/model/publication approval.
+
+Task4 partial acceptance:1083passed/74deselected,383actualPG; all installed eight
+counts/types/keys/privileges/defaults/cross-reader and old boundaries pass.
+Full ten-target matrix and zero-skip full suite require both remaining imports.
+Read-only diagnostic commands:
+uv run python -c "import runpy; runpy.run_path('.superpowers/sdd/2026-10-05-remaining-native-imports/sample_diagnostic.py')"
+uv run python -c "import runpy; runpy.run_path('.superpowers/sdd/2026-10-05-remaining-native-imports/timestamp_full_audit.py')"
+Both already completed; no reason to rerun unless a targeted question requires it.
+Full diagnostic checks every source timestamp by indexed immutable SQLite key,
+8MiB cache/120s cooperative budget; result11columns/882084non-null native+08,
+zero wall-clock difference/226789 matching nulls. Source fingerprints unchanged.
+Full acceptance pending; no final reviewer yet. Keep this plan's scratch local.
 
 Historical preparation checkpoint: Kunal reviewed the new
 [remaining native imports plan](superpowers/plans/2026-10-05-remaining-native-imports.md)

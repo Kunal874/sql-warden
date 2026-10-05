@@ -1,0 +1,1811 @@
+{
+  "format_version": 1,
+  "status": "partial; Codebase timestamp-policy approval pending",
+  "track": "native PostgreSQL import preparation; not gold validity",
+  "gold_conversion_validity": "not checked",
+  "sqlite_full_content_equivalence": "not established",
+  "primary_descriptions": "not selected",
+  "totals": {
+    "new_datasets": 8,
+    "tables": 57,
+    "columns": 439,
+    "rows": 2904731,
+    "primary_key_tables": 54,
+    "sqlite_representative_samples": 171
+  },
+  "source_metadata": {
+    "pins_path": "docs/source-release-pins.json",
+    "pins_sha256": "f8c61dbc426deab580174c965fbd1883192e98ec30253e8d2b6aa85eb7114f7c",
+    "audit_path": "docs/source-audit-manifest.json",
+    "audit_sha256": "f52ecfd71c53fb470bb85e899e4b97178df304e0b30f66cba32518fa7f286c31",
+    "column_layout_and_key_details": "See the unchanged hash-pinned audit above. Actual full column/type/PK/NOT NULL/owner tests passed for all installed datasets."
+  },
+  "datasets": {
+    "toxicology": {
+      "tables": {
+        "atom": {
+          "rows": 9111,
+          "null_counts": [
+            0,
+            0,
+            0
+          ],
+          "columns": 3,
+          "primary_key": [
+            "atom_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 9111,
+            "bytes": 152286,
+            "sha256": "5bbb192f3308f9ba6af234ec1738bbc58b793fed64d9d38b011f74170e708527"
+          }
+        },
+        "bond": {
+          "rows": 9156,
+          "null_counts": [
+            0,
+            0,
+            0
+          ],
+          "columns": 3,
+          "primary_key": [
+            "bond_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 9156,
+            "bytes": 174764,
+            "sha256": "e440f7d507f31f9b5d56c0ddc2a18f6e5c0c77eb9648ed371bdc0b592bc5a378"
+          }
+        },
+        "connected": {
+          "rows": 18312,
+          "null_counts": [
+            0,
+            0,
+            0
+          ],
+          "columns": 3,
+          "primary_key": [
+            "atom_id",
+            "atom_id2"
+          ],
+          "foreign_key_components": 3,
+          "native_source": {
+            "rows": 18312,
+            "bytes": 515936,
+            "sha256": "3efd8737faaff67020dabdaf45483ee9ebefe1d7242a66d9b386b22db32ba718"
+          }
+        },
+        "molecule": {
+          "rows": 343,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "molecule_id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 343,
+            "bytes": 2744,
+            "sha256": "b60acbbb0078fe3e4ef43cd8189d12493804d506251e55366d72f6efede0b859"
+          }
+        }
+      },
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "thrombosis_prediction": {
+      "tables": {
+        "examination": {
+          "rows": 106,
+          "null_counts": [
+            36,
+            4,
+            0,
+            0,
+            19,
+            41,
+            0,
+            24,
+            85,
+            85,
+            81,
+            94,
+            0
+          ],
+          "columns": 13,
+          "primary_key": [],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 106,
+            "bytes": 5488,
+            "sha256": "0b2eab1e13385475bb9c95a802920e7feae061e958fbedd60b92df014f0087c9"
+          }
+        },
+        "laboratory": {
+          "rows": 13908,
+          "null_counts": [
+            0,
+            0,
+            2630,
+            2634,
+            2603,
+            2757,
+            2790,
+            2840,
+            2805,
+            2670,
+            2655,
+            4287,
+            3244,
+            7471,
+            8892,
+            12203,
+            1827,
+            1827,
+            1827,
+            1827,
+            2621,
+            13287,
+            13857,
+            13453,
+            13832,
+            13766,
+            13789,
+            4241,
+            11228,
+            11228,
+            11230,
+            2453,
+            11053,
+            10571,
+            8447,
+            8447,
+            13765,
+            13780,
+            13880,
+            13809,
+            13815,
+            13893,
+            13839,
+            13908
+          ],
+          "columns": 44,
+          "primary_key": [
+            "id",
+            "date"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 13908,
+            "bytes": 2182738,
+            "sha256": "5da3b5d9339bfa478a133ea47670d45e7cf3f60bc1f76e315d33d5af4ca78b85"
+          }
+        },
+        "patient": {
+          "rows": 1238,
+          "null_counts": [
+            0,
+            0,
+            1,
+            216,
+            251,
+            0,
+            0
+          ],
+          "columns": 7,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 1238,
+            "bytes": 60383,
+            "sha256": "05a631253eb02b5c69918d950554ebd429c9ed3f89232c033542fb6aea3b71c4"
+          }
+        }
+      },
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "superhero": {
+      "tables": {
+        "alignment": {
+          "rows": 4,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 4,
+            "bytes": 29,
+            "sha256": "557770e9de9ff1b7e1807a7e2abc2086585b253f61cfc54d107745e72b7beef5"
+          }
+        },
+        "attribute": {
+          "rows": 6,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 6,
+            "bytes": 64,
+            "sha256": "e4d9773d2fd13869275f5dd9f1672eb28541d3351e1977b129655538d281bc8f"
+          }
+        },
+        "colour": {
+          "rows": 35,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 35,
+            "bytes": 389,
+            "sha256": "5f345d4c877f372c0f050af58194d3a84b7beb9197a171d7fecd6723a84c878e"
+          }
+        },
+        "gender": {
+          "rows": 3,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 3,
+            "bytes": 22,
+            "sha256": "441ff178668748bb02811da0bbf8671504c49c1ff6152211dc55c134b6070ba7"
+          }
+        },
+        "hero_attribute": {
+          "rows": 3738,
+          "null_counts": [
+            0,
+            0,
+            0
+          ],
+          "columns": 3,
+          "primary_key": [],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 3738,
+            "bytes": 33359,
+            "sha256": "3d47135121eefc80b4d82d299b3c72a3612358f2f46e65abd313c2469695b627"
+          }
+        },
+        "hero_power": {
+          "rows": 5825,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 5825,
+            "bytes": 39703,
+            "sha256": "bb28648be148a57b3d5260b0dac2de15f7cf33e553a5dcedd42fdc161fdaf951"
+          }
+        },
+        "publisher": {
+          "rows": 25,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 25,
+            "bytes": 368,
+            "sha256": "949a1c7d0b0b97ca0439f957feee37f1df45e624befbdf2aa9da28fa457d8d79"
+          }
+        },
+        "race": {
+          "rows": 61,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 61,
+            "bytes": 791,
+            "sha256": "2d8b0a882cda0b1231922ecd625666eeca21d65b75d272b6bc99860268592d0a"
+          }
+        },
+        "superhero": {
+          "rows": 750,
+          "null_counts": [
+            0,
+            0,
+            122,
+            0,
+            0,
+            0,
+            0,
+            4,
+            3,
+            6,
+            58,
+            64
+          ],
+          "columns": 12,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 7,
+          "native_source": {
+            "rows": 750,
+            "bytes": 35900,
+            "sha256": "efd556658edc2fa9e59d95af04832c4fc753df3469380f21882223c771054496"
+          }
+        },
+        "superpower": {
+          "rows": 167,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 167,
+            "bytes": 3006,
+            "sha256": "859d51503cee98556c09dc3e8442249515d9ea8d848bc6055563dedb26567ee1"
+          }
+        }
+      },
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "student_club": {
+      "tables": {
+        "attendance": {
+          "rows": 326,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "link_to_event",
+            "link_to_member"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 326,
+            "bytes": 11736,
+            "sha256": "a9b3c14fe9526d05773be75c897f618fdbc04963fec3c22e0134e79b4a1c5ca9"
+          }
+        },
+        "budget": {
+          "rows": 52,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 7,
+          "primary_key": [
+            "budget_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 52,
+            "bytes": 3273,
+            "sha256": "61c4c4cfe5b41c4e039f948b76ac88bcfa662af420125781dac85e016bc4fd02"
+          }
+        },
+        "event": {
+          "rows": 42,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            22,
+            6,
+            0
+          ],
+          "columns": 7,
+          "primary_key": [
+            "event_id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 42,
+            "bytes": 4688,
+            "sha256": "dbb447933c8690538ffeecd66faf16cf9fa0651339b9dff9645bf17d18fdd944"
+          }
+        },
+        "expense": {
+          "rows": 32,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "columns": 7,
+          "primary_key": [
+            "expense_id"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 32,
+            "bytes": 2831,
+            "sha256": "b46a17e4289c1e605dc7b95e7c25150ee906b71dadc514aaef33f2901183266a"
+          }
+        },
+        "income": {
+          "rows": 36,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            33,
+            3
+          ],
+          "columns": 6,
+          "primary_key": [
+            "income_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 36,
+            "bytes": 2221,
+            "sha256": "6f24393a7bbbbf40032e53d7bc4b5b5f55db500594964de3d5d8173ac77b0860"
+          }
+        },
+        "major": {
+          "rows": 113,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 4,
+          "primary_key": [
+            "major_id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 113,
+            "bytes": 12924,
+            "sha256": "f1e30fd5aa85bcbe44f7803dd3824949842f0a764515f55c74f0daf18e9e86f2"
+          }
+        },
+        "member": {
+          "rows": 33,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "columns": 9,
+          "primary_key": [
+            "member_id"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 33,
+            "bytes": 3460,
+            "sha256": "a5475adffabf6a88834e5aabb25003e4bbe38c97dbf1e8a5d157c9ffbb827483"
+          }
+        },
+        "zip_code": {
+          "rows": 41877,
+          "null_counts": [
+            0,
+            0,
+            0,
+            88,
+            0,
+            0
+          ],
+          "columns": 6,
+          "primary_key": [
+            "zip_code"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 41877,
+            "bytes": 2166669,
+            "sha256": "ce10eb471783816b6bee89418369b0a9193a70ec07f8aab729c94f36e177735a"
+          }
+        }
+      },
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "debit_card_specializing": {
+      "tables": {
+        "customers": {
+          "rows": 32461,
+          "null_counts": [
+            0,
+            0,
+            0
+          ],
+          "columns": 3,
+          "primary_key": [
+            "customerid"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 32461,
+            "bytes": 448360,
+            "sha256": "08006a9526618d9320a5a8eb3e9324c14cc632c2b4c09e9ab3ecadbf4db510c0"
+          }
+        },
+        "gasstations": {
+          "rows": 5716,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 4,
+          "primary_key": [
+            "gasstationid"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 5716,
+            "bytes": 109667,
+            "sha256": "1597b1d6d3bc770bddee805f36d65525994d17bc83f36241afc4d724d1116ed8"
+          }
+        },
+        "products": {
+          "rows": 591,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "productid"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 591,
+            "bytes": 13344,
+            "sha256": "e14bd48d327217d7bbbb90c65a82d00da841a6b786f3856e1209cdc413fd40d5"
+          }
+        },
+        "transactions_1k": {
+          "rows": 1000,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 9,
+          "primary_key": [
+            "transactionid"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 1000,
+            "bytes": 52791,
+            "sha256": "aef82934f9975c64c192dca04ffbc77652a32e7cc16a96809d99f4d1b6f35d92"
+          }
+        },
+        "yearmonth": {
+          "rows": 383282,
+          "null_counts": [
+            0,
+            0,
+            0
+          ],
+          "columns": 3,
+          "primary_key": [
+            "date",
+            "customerid"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 383282,
+            "bytes": 7819248,
+            "sha256": "93a1ea5f8aa26d96da225648253af39ed2187cff08fc7930dbd1e38faaa2d0f7"
+          }
+        }
+      },
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "formula_1": {
+      "tables": {
+        "circuits": {
+          "rows": 72,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            72,
+            0
+          ],
+          "columns": 9,
+          "primary_key": [
+            "circuitid"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 72,
+            "bytes": 8533,
+            "sha256": "4f7199506866eb53e038fa960de8394a9fe33e500e49172c91606f76d0bf2c57"
+          }
+        },
+        "constructorresults": {
+          "rows": 11082,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            11065
+          ],
+          "columns": 5,
+          "primary_key": [
+            "constructorresultsid"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 11082,
+            "bytes": 189613,
+            "sha256": "463fdcff1724c4e173ab3803f5cf555fc9b8869e543049db7b13f11f28323937"
+          }
+        },
+        "constructors": {
+          "rows": 208,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 5,
+          "primary_key": [
+            "constructorid"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 208,
+            "bytes": 15357,
+            "sha256": "8325d3854b72c65f1d2c9237430334fce297f02ddb72e031b0ed0754b141001f"
+          }
+        },
+        "constructorstandings": {
+          "rows": 11836,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 7,
+          "primary_key": [
+            "constructorstandingsid"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 11836,
+            "bytes": 253949,
+            "sha256": "353cd258f4d97b3f0254461912fcdb88bfb4150e962faa91a3c098525fb4dd8f"
+          }
+        },
+        "drivers": {
+          "rows": 840,
+          "null_counts": [
+            0,
+            0,
+            804,
+            757,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "columns": 9,
+          "primary_key": [
+            "driverid"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 840,
+            "bytes": 81541,
+            "sha256": "bfb8fdf975b9896206f638954d4282e12d143957ee3164caa4ae551250e29064"
+          }
+        },
+        "driverstandings": {
+          "rows": 31578,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 7,
+          "primary_key": [
+            "driverstandingsid"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 31578,
+            "bytes": 732819,
+            "sha256": "078f77fcddbd391214d7f883512a40829223bfd030d3b5b8cce0362356803358"
+          }
+        },
+        "laptimes": {
+          "rows": 400524,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 6,
+          "primary_key": [
+            "raceid",
+            "driverid",
+            "lap"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 400524,
+            "bytes": 10978136,
+            "sha256": "ea0030958effb84208d81e10a2ef6ce92647141d710238d5dcc84a82c4e2d65b"
+          }
+        },
+        "pitstops": {
+          "rows": 5815,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 7,
+          "primary_key": [
+            "raceid",
+            "driverid",
+            "stop"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 5815,
+            "bytes": 199575,
+            "sha256": "d4418dee6a33f79f15bab7de2e6fe4730f8992070ebc747e09eea00072412f1b"
+          }
+        },
+        "qualifying": {
+          "rows": 6967,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            109,
+            3577,
+            4935
+          ],
+          "columns": 9,
+          "primary_key": [
+            "qualifyid"
+          ],
+          "foreign_key_components": 3,
+          "native_source": {
+            "rows": 6967,
+            "bytes": 271664,
+            "sha256": "3dfdde7f6280a02e95b22bac85ba820483f43e71ce32e40a9843ffc636393c67"
+          }
+        },
+        "races": {
+          "rows": 954,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            722,
+            0
+          ],
+          "columns": 8,
+          "primary_key": [
+            "raceid"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 954,
+            "bytes": 98397,
+            "sha256": "4e7aa86dbb4700a9b70e0fe00cf69e1cfc6657155a21cd2c7b8a81e422f52a2e"
+          }
+        },
+        "results": {
+          "rows": 23179,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            6,
+            0,
+            10326,
+            0,
+            0,
+            0,
+            0,
+            17390,
+            17391,
+            18185,
+            18057,
+            18185,
+            18185,
+            0
+          ],
+          "columns": 18,
+          "primary_key": [
+            "resultid"
+          ],
+          "foreign_key_components": 4,
+          "native_source": {
+            "rows": 23179,
+            "bytes": 1366968,
+            "sha256": "e1ce31b0be394c05a9dd87ea9e2d9279657d4cac5cc72f83e3fdf83486e10ef2"
+          }
+        },
+        "seasons": {
+          "rows": 68,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "year"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 68,
+            "bytes": 3946,
+            "sha256": "82d5800518443c189bdd067de62666a09458dd95e0cf2e47e4fb859b07cdde10"
+          }
+        },
+        "status": {
+          "rows": 134,
+          "null_counts": [
+            0,
+            0
+          ],
+          "columns": 2,
+          "primary_key": [
+            "statusid"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 134,
+            "bytes": 1775,
+            "sha256": "3c0a4c909766b86436603419b1efd7406fd2642439b99f15770351a21bcde9a7"
+          }
+        }
+      },
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 779
+    },
+    "financial": {
+      "tables": {
+        "account": {
+          "rows": 4500,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 4,
+          "primary_key": [
+            "account_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 4500,
+            "bytes": 159809,
+            "sha256": "71045b469378f6a3b8aa0d7722bb3601082fc9f1637665d99593d55b74873547"
+          }
+        },
+        "card": {
+          "rows": 892,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 4,
+          "primary_key": [
+            "card_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 892,
+            "bytes": 24415,
+            "sha256": "9cb8341da7bef2078f381c7ee9a9b75d39618c7d8e9fb02290de9aa918b36147"
+          }
+        },
+        "client": {
+          "rows": 5369,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 4,
+          "primary_key": [
+            "client_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 5369,
+            "bytes": 110885,
+            "sha256": "8da9e7d37fd54df1c21067960dea3300221c772fd8870de702d3e91b8652badf"
+          }
+        },
+        "disp": {
+          "rows": 5369,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 4,
+          "primary_key": [
+            "disp_id"
+          ],
+          "foreign_key_components": 2,
+          "native_source": {
+            "rows": 5369,
+            "bytes": 113566,
+            "sha256": "269b857293d1493efa18f6c47a79f80c8ab7347dfaa3d7ae69dc6993aadae87c"
+          }
+        },
+        "district": {
+          "rows": 77,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "columns": 16,
+          "primary_key": [
+            "district_id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 77,
+            "bytes": 6019,
+            "sha256": "e41855ac38141f8af09f0e83a4c9806711d221fea3037b3c393668f473b460f5"
+          }
+        },
+        "loan": {
+          "rows": 682,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 7,
+          "primary_key": [
+            "loan_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 682,
+            "bytes": 25602,
+            "sha256": "764029a77318dcb96898b1b1e063b42e95823c7dc689dab51a6c4e8cbeb3916e"
+          }
+        },
+        "order": {
+          "rows": 6471,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 6,
+          "primary_key": [
+            "order_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 6471,
+            "bytes": 208641,
+            "sha256": "5d0d2975d9875385c841ec8bea9154db221f8005880a6625bfdb9a5f0cc7d1d3"
+          }
+        },
+        "trans": {
+          "rows": 1056320,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0,
+            183114,
+            0,
+            0,
+            481881,
+            782812,
+            760931
+          ],
+          "columns": 10,
+          "primary_key": [
+            "trans_id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 1056320,
+            "bytes": 63136175,
+            "sha256": "898b8ea422da447605638451b9acf9d10b50f3fa35cea20ccfab3b55690208c3"
+          }
+        }
+      },
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "card_games": {
+      "tables": {
+        "cards": {
+          "rows": 56822,
+          "null_counts": [
+            0,
+            3,
+            56755,
+            1,
+            0,
+            27910,
+            13622,
+            6224,
+            56655,
+            12540,
+            0,
+            55228,
+            4761,
+            55867,
+            55455,
+            56801,
+            26020,
+            53864,
+            0,
+            56704,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            36183,
+            0,
+            53072,
+            56704,
+            55992,
+            7323,
+            8024,
+            17906,
+            50975,
+            0,
+            32462,
+            24684,
+            14753,
+            0,
+            0,
+            54757,
+            15616,
+            14766,
+            55455,
+            30624,
+            0,
+            50685,
+            6371,
+            0,
+            0,
+            2,
+            0,
+            0,
+            55455,
+            22228,
+            48982,
+            6600,
+            955,
+            30624,
+            0,
+            0,
+            0,
+            48186,
+            52373
+          ],
+          "columns": 74,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 56822,
+            "bytes": 55040902,
+            "sha256": "65df595c0657a13df6b2864e96ad795b59c8c0963033c25ad0de8a2ffa47a16e"
+          }
+        },
+        "foreign_data": {
+          "rows": 229186,
+          "null_counts": [
+            0,
+            0,
+            0,
+            38418,
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 8,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 229186,
+            "bytes": 72749505,
+            "sha256": "7b0a13bdb3333341c23da77b1a354bc22e7f89bfdd7cd8a482269d6286440850"
+          }
+        },
+        "legalities": {
+          "rows": 427907,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 4,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 427907,
+            "bytes": 24547054,
+            "sha256": "8fb5a2807f10b4927670a650aa659743698eb28253484d60a6ad9e29c8b69c9d"
+          }
+        },
+        "rulings": {
+          "rows": 87769,
+          "null_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "columns": 4,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 87769,
+            "bytes": 20339794,
+            "sha256": "a8a65dc03fc513abcc265693816b93a0116636d1a4525d87fced1dfdab0c84ea"
+          }
+        },
+        "set_translations": {
+          "rows": 1210,
+          "null_counts": [
+            0,
+            0,
+            0,
+            231
+          ],
+          "columns": 4,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 1,
+          "native_source": {
+            "rows": 1210,
+            "bytes": 43066,
+            "sha256": "05cb93ff7721b7538f8d485c554a1ed1c45b110c942a1ddbe01fa254297fe3fc"
+          }
+        },
+        "sets": {
+          "rows": 551,
+          "null_counts": [
+            0,
+            0,
+            279,
+            413,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            350,
+            541,
+            350,
+            391,
+            0,
+            397,
+            0,
+            291,
+            0,
+            0
+          ],
+          "columns": 21,
+          "primary_key": [
+            "id"
+          ],
+          "foreign_key_components": 0,
+          "native_source": {
+            "rows": 551,
+            "bytes": 91757,
+            "sha256": "dbc4cb96602dcde1efb57dcae5c6686fb644e8005c0e9e9d951d1a8a4eb46660"
+          }
+        }
+      },
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 88
+    }
+  },
+  "import_results": [
+    {
+      "db_id": "toxicology",
+      "rows": {
+        "atom": 9111,
+        "bond": 9156,
+        "connected": 18312,
+        "molecule": 343
+      },
+      "typed_native_content_verified": true,
+      "sqlite_full_content_equivalence": "not established",
+      "gold_conversion_validity": "not checked",
+      "primary_descriptions": "not selected",
+      "sqlite_representative_samples": {
+        "atom": 3,
+        "bond": 3,
+        "connected": 3,
+        "molecule": 3
+      },
+      "sqlite_sample_policy": "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change",
+      "primary_key_tables": 4,
+      "foreign_key_enforcement": "metadata only; not installed",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0,
+      "elapsed_seconds": 2.845
+    },
+    {
+      "db_id": "thrombosis_prediction",
+      "rows": {
+        "examination": 106,
+        "laboratory": 13908,
+        "patient": 1238
+      },
+      "typed_native_content_verified": true,
+      "sqlite_full_content_equivalence": "not established",
+      "gold_conversion_validity": "not checked",
+      "primary_descriptions": "not selected",
+      "sqlite_representative_samples": {
+        "examination": 3,
+        "laboratory": 3,
+        "patient": 3
+      },
+      "sqlite_sample_policy": "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change",
+      "primary_key_tables": 2,
+      "foreign_key_enforcement": "metadata only; not installed",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0,
+      "elapsed_seconds": 3.794
+    },
+    {
+      "db_id": "superhero",
+      "rows": {
+        "alignment": 4,
+        "attribute": 6,
+        "colour": 35,
+        "gender": 3,
+        "hero_attribute": 3738,
+        "hero_power": 5825,
+        "publisher": 25,
+        "race": 61,
+        "superhero": 750,
+        "superpower": 167
+      },
+      "typed_native_content_verified": true,
+      "sqlite_full_content_equivalence": "not established",
+      "gold_conversion_validity": "not checked",
+      "primary_descriptions": "not selected",
+      "sqlite_representative_samples": {
+        "alignment": 3,
+        "attribute": 3,
+        "colour": 3,
+        "gender": 3,
+        "hero_attribute": 3,
+        "hero_power": 3,
+        "publisher": 3,
+        "race": 3,
+        "superhero": 3,
+        "superpower": 3
+      },
+      "sqlite_sample_policy": "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change",
+      "primary_key_tables": 8,
+      "foreign_key_enforcement": "metadata only; not installed",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0,
+      "elapsed_seconds": 3.876
+    },
+    {
+      "db_id": "student_club",
+      "rows": {
+        "attendance": 326,
+        "budget": 52,
+        "event": 42,
+        "expense": 32,
+        "income": 36,
+        "major": 113,
+        "member": 33,
+        "zip_code": 41877
+      },
+      "typed_native_content_verified": true,
+      "sqlite_full_content_equivalence": "not established",
+      "gold_conversion_validity": "not checked",
+      "primary_descriptions": "not selected",
+      "sqlite_representative_samples": {
+        "attendance": 3,
+        "budget": 3,
+        "event": 3,
+        "expense": 3,
+        "income": 3,
+        "major": 3,
+        "member": 3,
+        "zip_code": 3
+      },
+      "sqlite_sample_policy": "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change",
+      "primary_key_tables": 8,
+      "foreign_key_enforcement": "metadata only; not installed",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0,
+      "elapsed_seconds": 4.451
+    },
+    {
+      "db_id": "debit_card_specializing",
+      "rows": {
+        "customers": 32461,
+        "gasstations": 5716,
+        "products": 591,
+        "transactions_1k": 1000,
+        "yearmonth": 383282
+      },
+      "typed_native_content_verified": true,
+      "sqlite_full_content_equivalence": "not established",
+      "gold_conversion_validity": "not checked",
+      "primary_descriptions": "not selected",
+      "sqlite_representative_samples": {
+        "customers": 3,
+        "gasstations": 3,
+        "products": 3,
+        "transactions_1k": 3,
+        "yearmonth": 3
+      },
+      "sqlite_sample_policy": "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change",
+      "primary_key_tables": 5,
+      "foreign_key_enforcement": "metadata only; not installed",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0,
+      "elapsed_seconds": 5.89
+    },
+    {
+      "db_id": "formula_1",
+      "rows": {
+        "circuits": 72,
+        "constructorresults": 11082,
+        "constructors": 208,
+        "constructorstandings": 11836,
+        "drivers": 840,
+        "driverstandings": 31578,
+        "laptimes": 400524,
+        "pitstops": 5815,
+        "qualifying": 6967,
+        "races": 954,
+        "results": 23179,
+        "seasons": 68,
+        "status": 134
+      },
+      "typed_native_content_verified": true,
+      "sqlite_full_content_equivalence": "not established",
+      "gold_conversion_validity": "not checked",
+      "primary_descriptions": "not selected",
+      "sqlite_representative_samples": {
+        "circuits": 3,
+        "constructorresults": 3,
+        "constructors": 3,
+        "constructorstandings": 3,
+        "drivers": 3,
+        "driverstandings": 3,
+        "laptimes": 3,
+        "pitstops": 3,
+        "qualifying": 3,
+        "races": 3,
+        "results": 3,
+        "seasons": 3,
+        "status": 3
+      },
+      "sqlite_sample_policy": "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change",
+      "primary_key_tables": 13,
+      "foreign_key_enforcement": "metadata only; not installed",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 779,
+      "elapsed_seconds": 5.926
+    },
+    {
+      "db_id": "financial",
+      "rows": {
+        "account": 4500,
+        "card": 892,
+        "client": 5369,
+        "disp": 5369,
+        "district": 77,
+        "loan": 682,
+        "order": 6471,
+        "trans": 1056320
+      },
+      "typed_native_content_verified": true,
+      "sqlite_full_content_equivalence": "not established",
+      "gold_conversion_validity": "not checked",
+      "primary_descriptions": "not selected",
+      "sqlite_representative_samples": {
+        "account": 3,
+        "card": 3,
+        "client": 3,
+        "disp": 3,
+        "district": 3,
+        "loan": 3,
+        "order": 3,
+        "trans": 3
+      },
+      "sqlite_sample_policy": "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change",
+      "primary_key_tables": 8,
+      "foreign_key_enforcement": "metadata only; not installed",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0,
+      "elapsed_seconds": 11.124
+    },
+    {
+      "db_id": "card_games",
+      "rows": {
+        "cards": 56822,
+        "foreign_data": 229186,
+        "legalities": 427907,
+        "rulings": 87769,
+        "set_translations": 1210,
+        "sets": 551
+      },
+      "typed_native_content_verified": true,
+      "sqlite_full_content_equivalence": "not established",
+      "gold_conversion_validity": "not checked",
+      "primary_descriptions": "not selected",
+      "sqlite_representative_samples": {
+        "cards": 3,
+        "foreign_data": 3,
+        "legalities": 3,
+        "rulings": 3,
+        "set_translations": 3,
+        "sets": 3
+      },
+      "sqlite_sample_policy": "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change",
+      "primary_key_tables": 6,
+      "foreign_key_enforcement": "metadata only; not installed",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 88,
+      "elapsed_seconds": 13.828
+    }
+  ],
+  "execution": {
+    "date": "2026-10-05",
+    "code_commit": "ff0d809c8166f48b780305d5e630a1c25c621c9c",
+    "dirty_for_nine_import_attempts": false,
+    "procedure": "One transaction per dataset; complete native typed multiset and immutable SQLite first/middle/last sample checks precede commit.",
+    "elapsed_seconds_note": "Import result elapsed_seconds includes command/tool dispatch and polling, not an inference or benchmark latency metric.",
+    "test_command": "uv run --env-file .env.setup --env-file .env.california --env-file .env.datasets pytest -k 'not codebase_community and not european_football_2' -q --tb=line",
+    "tests": {
+      "passed": 1083,
+      "deselected": 74,
+      "actual_postgresql": 383,
+      "elapsed_seconds": 39.2
+    }
+  },
+  "pending": {
+    "codebase_community": "First attempt failed ValueError; schema/login absent after rollback; no retry. Timestamp sample mapping decision pending.",
+    "european_football_2": "Not attempted after Codebase failure; schema absent. Original source FK count remains unavailable/schema_mismatch, not zero."
+  },
+  "timestamp_diagnostic": {
+    "dataset": "codebase_community",
+    "status": "full pinned timestamp-column merge audit",
+    "comparison_policy": "naive SQLite timestamp treated as UTC, native offset honored; not an approved gold conversion policy",
+    "columns": {
+      "badges/date": {
+        "rows_checked": 79851,
+        "both_null": 0,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 79851
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 79851
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 79851
+        },
+        "sqlite_timezone_unspecified_count": 79851
+      },
+      "comments/creationdate": {
+        "rows_checked": 174285,
+        "both_null": 0,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 174285
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 174285
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 174285
+        },
+        "sqlite_timezone_unspecified_count": 174285
+      },
+      "posthistory/creationdate": {
+        "rows_checked": 303155,
+        "both_null": 0,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 303155
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 303155
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 303155
+        },
+        "sqlite_timezone_unspecified_count": 303155
+      },
+      "postlinks/creationdate": {
+        "rows_checked": 11102,
+        "both_null": 0,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 11102
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 11102
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 11102
+        },
+        "sqlite_timezone_unspecified_count": 11102
+      },
+      "posts/creaiondate": {
+        "rows_checked": 91966,
+        "both_null": 0,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 91966
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 91966
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 91966
+        },
+        "sqlite_timezone_unspecified_count": 91966
+      },
+      "posts/lasactivitydate": {
+        "rows_checked": 91966,
+        "both_null": 0,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 91966
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 91966
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 91966
+        },
+        "sqlite_timezone_unspecified_count": 91966
+      },
+      "posts/lasteditdate": {
+        "rows_checked": 91966,
+        "both_null": 46934,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 45032
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 45032
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 45032
+        },
+        "sqlite_timezone_unspecified_count": 45032
+      },
+      "posts/communityowneddate": {
+        "rows_checked": 91966,
+        "both_null": 89499,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 2467
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 2467
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 2467
+        },
+        "sqlite_timezone_unspecified_count": 2467
+      },
+      "posts/closeddate": {
+        "rows_checked": 91966,
+        "both_null": 90356,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 1610
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 1610
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 1610
+        },
+        "sqlite_timezone_unspecified_count": 1610
+      },
+      "users/creationdate": {
+        "rows_checked": 40325,
+        "both_null": 0,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 40325
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 40325
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 40325
+        },
+        "sqlite_timezone_unspecified_count": 40325
+      },
+      "users/lastaccessdate": {
+        "rows_checked": 40325,
+        "both_null": 0,
+        "null_mismatch": 0,
+        "native_minus_naive_sqlite_seconds_counts": {
+          "-28800.0": 40325
+        },
+        "native_timezone_offset_seconds_counts": {
+          "28800.0": 40325
+        },
+        "wall_clock_difference_seconds_counts": {
+          "0.0": 40325
+        },
+        "sqlite_timezone_unspecified_count": 40325
+      }
+    }
+  }
+}

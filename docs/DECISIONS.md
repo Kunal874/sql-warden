@@ -1389,6 +1389,63 @@ No Task 3 scope deviation; row preservation/source/timeouts/credentials unchange
 Final task repeat22passed(1.77s); no-env700passed457skipped(10.18s),
 Ruff/42-file format/whitespace pass. No new-release checks silently counted green.
 
+## D-045 — eight imports verified; timestamp interpretation blocks Task 4 (2026-10-05)
+
+Context: Task 3 committed ff0d809; eight new datasets now installed: toxicology,
+thrombosis_prediction, superhero, student_club, debit_card_specializing, formula_1,
+financial and card_games. Ten distinct setup-only passwords remain private.
+Eight imports: 57tables/439columns/2904731rows/54PKs, complete native typed
+multisets and171SQLite samples verified before per-dataset commit. California
+untouched; no inference, source repair, gold SQL, runtime wiring or publication.
+Source FK issues preserved; no new FK constraints. Restricted actual checks:
+1083passed/74deselected(39.20s), including383actualPG, all installed eight plus
+original boundaries. Pending-target cases explicitly excluded, not passed.
+
+Codebase's first actual attempt returned ValueError; sequence stopped as planned,
+no retry/cap increase and European not attempted. Read-only target check proves
+Codebase schema/login absent, European schema absent. Eight earlier datasets
+remain saved. Native/SQLite sample coercions all succeed;24 selected DATETIME
+cells differ by exactly-28800s under the approved naive-UTC comparison.
+Full pinned read-only indexed-source-key timestamp audit: all11DATETIME columns,
+882084non-null cells have native explicit+28800s offset and zero wall-clock
+differences; all SQLite counterparts timezone-unspecified. 226789 null cells
+agree, no null mismatch. These are data-preparation observations, not gold or
+query equivalence. A sorted-merge diagnostic refused unordered COPY keys;
+indexed PK lookups with8MiB SQLite cache/120s cooperative limit succeeded.
+No raw cells/keys/passwords emitted or recorded. Ignored diagnostic artifacts
+retained; metadata only in partial-import-manifest.json, full ignored evidence.
+
+Decision: Task4 remains incomplete, sole final whole-batch review not dispatched.
+Ask the important policy question: approve Codebase-only UTC+08 sample mapping,
+test-first fix and one bounded retry, then European; or preserve UTC and leave
+Codebase unimported. No owner answer yet; do not infer timestamp/gold policy.
+Ruling: commit compact checked partial evidence while Task4 stays incomplete —
+preserve57table counts/nulls/pins/key summaries and reference unchanged audit for
+exact columns/keys rather than duplicate it — cost if wrong: inspecting complete
+layout details requires the linked pinned audit. No success claimed for74 cases.
+
+## D-046 — approved Codebase-only timestamp mapping and one retry (2026-10-05)
+
+Kunal explicitly approved UTC+08:00 mapping and one retry in answer to the
+important timestamp question. This updates Task4's setup sample interpretation
+only, not source/native values, gold SQL, benchmark rules or runtime behavior.
+Decision: native_sample_value receives fixed db_id; naive Codebase DATETIME
+usesUTC+08 then convertsUTC; every other dataset remainsUTC. Explicit aware
+offsets are honored, never double shifted. verify_sqlite_samples passes fixed
+db_id and importer reports the dataset-specific policy. Five new tests first
+failed (four missing db_id interface, one real fixture consumer mismatch), then
+63loader/bundle/California checks passed/22unconfigured skips(0.70s). Thirty-seven
+total importer checks now exist. No new dependency or inference path.
+Task4 remains incomplete until the single approved retry and European import,
+all-new actual matrix and fresh full suite pass. Preserve earlier eight; use
+remaining original3600s attempt envelope, per-dataset900s/120s bounds unchanged.
+Partial evidence is historical pre-retry snapshot; pending-policy text predates
+this owner answer. Complete final manifest will supersede its status.
+Regression: installed-target full1085passed/77deselected(36.25s); three new
+pure cases also match the pending-ID filter and were verified separately in
+the63-control run above. No-env705passed/457skipped(7.91s),
+format42/lint/whitespace pass.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

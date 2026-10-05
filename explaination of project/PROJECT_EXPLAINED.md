@@ -1432,6 +1432,38 @@ The batch is not all-or-nothing: completed datasets stay if a later one fails.
 The next nine imports will run one at a time. Query-answer conversion and model
 evaluation are still later work; these import checks are not an accuracy score.
 
+### Remaining import batch — seven more imported; Task 4 paused (2026-10-05)
+
+Eight new datasets are saved, with 57 tables and 2,904,731 rows. Together with the
+earlier California dataset, 9 of 11 datasets are loaded. Every saved native row
+matched, and 171 selected SQLite rows matched. The completed datasets and old
+boundaries passed 1,083 tests. 74 checks for the missing datasets are not counted
+as successes. This is progress on data loading, not completion of all G0.
+
+Codebase Community hit a real timestamp difference. Its import was cancelled
+and left no tables or login. European Football was not attempted after that.
+I checked all 11 timestamp columns without changing anything. 882,084 non-empty
+cells have the same clock time, but the native file says UTC+08 and SQLite does
+not say which timezone it means. 226,789 empty cells match.
+
+**Timezone** tells us which place's clock a time belongs to. 8 AM at UTC+08 is
+midnight at UTC. Equal clock numbers do not always mean the same instant.
+**Wall clock** is the displayed time before interpreting its timezone.
+I asked one important question: may this dataset's import sample check use
+UTC+08, with new tests and one retry? This would preserve all source/native
+values and would not change gold SQL or benchmark rules. Until you answer,
+the strict existing comparison stays. Tasks 1–3 are finished; Task 4 and its
+final independent review are not. G0 still needs conversion and model work.
+
+### Important timestamp choice — approved and tested (2026-10-05)
+
+You approved UTC+08 for Codebase's sample comparison and one import retry.
+I added five checks before changing code. They first failed, then passed.
+Only Codebase's timezone-unspecified times use this rule; already specified
+timezones keep their meaning, and all other datasets keep their existing rule.
+No source rows or stored native values are rewritten. The accuracy benchmark
+and gold SQL are unchanged. Next comes the one approved retry and last import.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
@@ -1450,10 +1482,13 @@ remaining descriptions/layout/import and answer-validity work. The three-task
 offline source-preparation batch has now unpacked the fixed sources, saved the
 small descriptions and audited real layouts; its sole final review is complete.
 Source key problems are recorded, not repaired. The next four-task native import
-plan is now written and awaits your review of its database/password/key operations.
+plan is approved. Its COPY preparation, importer and first real import are
+finished; eight new datasets are saved. You approved the important Codebase
+timezone decision; its one retry and last import are next. Routine artifact
+reviews are not needed.
 Gold conversion and C1, then second-model/split/E0/C2 work follow their checkpoints.
-This preparation uses existing software and does not change the database
-or run the model. Each relevant new permission outside that scope needs review.
+The approved imports use existing software and do not run the AI model.
+Important new permissions outside this scope will be asked as questions.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 
 ## 7. How this notebook will be kept up to date

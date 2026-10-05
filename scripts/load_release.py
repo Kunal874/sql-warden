@@ -8,7 +8,7 @@ import os
 import sqlite3
 import struct
 from contextlib import closing
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta, timezone
 from pathlib import Path
 from secrets import token_hex
 from time import monotonic
@@ -56,7 +56,7 @@ def table_definition(table):
     return ", ".join(columns)
 
 
-def native_sample_value(value, source_type):
+def native_sample_value(value, source_type, *, db_id=None):
     if value is None:
         return None
     if source_type == "TEXT" and isinstance(value, str):
@@ -69,7 +69,10 @@ def native_sample_value(value, source_type):
         return date.fromisoformat(value)
     if source_type == "DATETIME" and isinstance(value, str):
         parsed = datetime.fromisoformat(value)
-        return parsed.replace(tzinfo=UTC) if parsed.tzinfo is None else parsed.astimezone(UTC)
+        if parsed.tzinfo is None:
+            source_zone = timezone(timedelta(hours=8)) if db_id == "codebase_community" else UTC
+            parsed = parsed.replace(tzinfo=source_zone)
+        return parsed.astimezone(UTC)
     raise ValueError("Unsupported SQLite representative value")
 
 
@@ -110,7 +113,7 @@ async def verify_sqlite_samples(conn, db_id, tables, pins):
                 ):
                     raise ValueError("SQLite representative row missing or over budget")
                 values = [
-                    native_sample_value(v, c["source_type"])
+                    native_sample_value(v, c["source_type"], db_id=db_id)
                     for v, c in zip(raw, columns, strict=True)
                 ]
                 predicate = " AND ".join(
@@ -214,7 +217,13 @@ async def load_dataset(conn, source, db_id, password):
         "primary_descriptions": "not selected",
         "sqlite_representative_samples": samples,
         "sqlite_sample_policy": (
-            "native REAL=float4; DATE=ISO; DATETIME=UTC; no gold comparator change"
+            "native REAL=float4; DATE=ISO; DATETIME="
+            + (
+                "UTC+08:00 source -> UTC (Codebase only)"
+                if db_id == "codebase_community"
+                else "UTC"
+            )
+            + "; no gold comparator change"
         ),
         "primary_key_tables": sum(bool(t["primary_key"]) for t in tables.values()),
         "foreign_key_enforcement": "metadata only; not installed",
