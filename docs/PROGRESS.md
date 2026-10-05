@@ -90,7 +90,7 @@ No new raw files persisted or import/model/credential actions in preparation.
   - [x] Prepare/self-review the sequential three-task full-source batch.
   - [x] Review/approve that new full-source preparation artifact.
   - [x] Extract 87 fixed full-source members into a separate ignored directory.
-  - [ ] Acquire the 75 pinned corrected description files.
+  - [x] Acquire the 75 pinned corrected description files.
   - [ ] Verify actual SQLite layouts/counts/keys and offline description coverage.
   - [ ] Remaining description/import/conversion work and validity manifest.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
@@ -1153,7 +1153,7 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: implement Tasks 2/3 of the approved
+Current next action: implement Task 3 of the approved
 [full-source preparation plan](superpowers/plans/2026-10-05-full-source-preparation.md).
 Kunal reviewed/approved all three on 2026-10-05. Native sequential execution:
 tests-first exact extraction (87 files/~1.5 GB), fixed corrected CSV acquisition
@@ -1166,6 +1166,11 @@ Task 1 implemented and actual extraction complete: 87 files, 1493523124 bytes,
 all saved pins rechecked; focused 16 passed, no-env 619 passed/165 skipped (5.90s).
 Do not repeat prepare_sources against its existing destination. Preparation saved
 at 6be261c; ledger task-done will record Task 1's checked commit.
+Task 1 saved at 8a37707, task-done 16 passes (0.19s). Task 2 actual acquisition
+complete: 75 files/76445 bytes, all saved pins rechecked; combined 29 passes
+(0.21s), no-env full 632 passed/165 skipped (5.56s). Do not rerun either acquisition.
+Deadline fixture mutation genuinely failed at logical 1000s, restored code stops
+at 181s; fake response streams corrected without changing production controls.
 After this batch and its sole fresh final review, separately prepare controlled
 COPY/import/content/conversion work; C1, second model and split/E0/C2 still later.
 

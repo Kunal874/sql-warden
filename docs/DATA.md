@@ -345,3 +345,21 @@ Expected missing-module RED, then 16 GREEN; no-env full suite 619 passed/165
 skipped (5.90s), ruff/format checks pass. One unused fixture import removed and
 planned mechanical formatting applied; no pin/control changes. The extractor
 refuses this existing destination and must not be rerun automatically.
+
+## Full-source batch Task 2 — actual corrected descriptions (2026-10-05)
+
+Ran uv run python -m scripts.fetch_descriptions once without private env settings
+after 29 combined extraction/network controls passed. New destination was absent
+and ignored. Saved the 75 fixed-revision sources into
+data/description-corrections/arcwise-fe766045; total 76445 bytes. Every saved size/
+SHA-256 was checked again offline. No redirects, retries, proxy/auth inheritance,
+repinning, overwrites or extra files; previous label/license sources unchanged.
+
+Initial five fake-stream failures were fixture defects: HTTPX content= responses
+were already consumed, unlike stream=ByteStream responses. Isolated flags and
+installed source established the cause; changed fixtures only. Strengthened late-
+body fixture to prove a third late chunk is never consumed: removing the body
+deadline check failed at logical 1000s (0.15s), restoration passed at 181s. Bounds
+remain cooperative/180s aggregate, 20s max per HTTP I/O, 32768-byte per-source cap.
+Combined 29 GREEN (0.21s), no-env full 632 passed/165 skipped (5.56s), lint/35-file
+format pass. Actual persisted description mapping/layout acceptance remains Task 3.

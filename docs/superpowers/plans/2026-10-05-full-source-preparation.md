@@ -53,7 +53,7 @@
 - Produces `extract_sources(archive_path: Path, destination: Path, *, pins: dict | None = None) -> None` and new ignored `data/source-release/minidev-0703/`.
 - Shared `load_pins() -> dict`, `relative_path(value: str) -> Path`, `checked_file(path: Path, pin: dict) -> None`, `new_destination(destination: Path) -> None`, `unique_outputs(entries: list[dict]) -> None`, `selected_member(archive: ZipFile, pin: dict) -> ZipInfo` are consumed by Tasks 2/3.
 
-- [ ] **Step 1: Add the failing tests to tests/test_source_prepare.py.**
+- [x] **Step 1: Add the failing tests to tests/test_source_prepare.py.**
 
 ```python
 import hashlib
@@ -159,12 +159,12 @@ def test_refuses_existing_file_and_malformed_pin(tmp_path):
         prep.checked_file(archive_path, pins["archive"])
 ```
 
-- [ ] **Step 2: Run the RED gate.**
+- [x] **Step 2: Run the RED gate.**
 
 Run `uv run pytest tests/test_source_prepare.py -q --tb=line`.
 Expected: collection error because scripts.prepare_sources does not exist. Establish that cause; do not weaken a test or run acquisition before GREEN.
 
-- [ ] **Step 3: Add this implementation to scripts/prepare_sources.py.**
+- [x] **Step 3: Add this implementation to scripts/prepare_sources.py.**
 
 ```python
 """Fixed, offline source extraction; no source SQL execution."""
@@ -299,18 +299,18 @@ if __name__ == "__main__":
     raise SystemExit(main())
 ```
 
-- [ ] **Step 4: Verify GREEN and formatting.**
+- [x] **Step 4: Verify GREEN and formatting.**
 
 Run `uv run pytest tests/test_source_prepare.py -q --tb=line`, `uv run ruff check scripts/prepare_sources.py tests/test_source_prepare.py`, and `uv run ruff format --check scripts/prepare_sources.py tests/test_source_prepare.py`.
 If formatting is required, run ruff format on just these files and repeat the checks. Fix actual failures test-first; do not alter size/hash/atomicity controls.
 
-- [ ] **Step 5: Perform the approved one-time actual extraction.**
+- [x] **Step 5: Perform the approved one-time actual extraction.**
 
 Without an env file, check `Test-Path data/source-release/minidev-0703` is False, `git check-ignore data/source-release/minidev-0703/sqlite/financial.sqlite` succeeds, and `Get-PSDrive D` has the required free space. Then run `uv run python -m scripts.prepare_sources` once.
 Expected status extracted, 87 files: 11 SQLite files, 75 original CSVs, one metadata JSON. All exact byte/hash pins verified before rename. This copies the California source into the complete offline collection; it does not repeat its completed extraction/import or change the existing California destination.
 On failure do not retry an existing destination, repin sources or delete prior artifacts automatically.
 
-- [ ] **Step 6: Record and commit this checked logical task.**
+- [x] **Step 6: Record and commit this checked logical task.**
 
 Use DATA/PROGRESS to record exact observed file/byte counts, checks and limitations. Add a D-037 entry for approval and actual Task 1 results, with options/rationale/cost. Add a simple notebook entry explaining extraction and temporary staging. Inspect `git diff`, stage only the new module/test and four records, inspect the full staged diff and exact message `feat(data): extract pinned full source release`, then commit.
 Check `git log -1 --format=fuller` and `git log -1 --format=%B`; both identities must be Kunal <kunalchandrakar2005@gmail.com>, no trailers/signatures. No source files from data/ are staged.

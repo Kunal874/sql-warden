@@ -1141,6 +1141,33 @@ publication. No-env project suite 619 passed/165 skipped (5.90s); lint/format pa
 No new PostgreSQL import, secret/model/SQL/policy action. Next Tasks 2/3 proceed
 under the same approval, no continuation question. G0 still 7/12.
 
+## D-038 — full-source batch Task 2 / pinned descriptions (2026-10-05)
+
+Context: approved batch, Task 1 saved 8a37707. Wrote network tests first; expected
+missing-module RED (0.28s). Initial implemented run 5 failures/24 passes: content=
+fake HTTPX responses preconsumed their bodies. Isolated/library comparison proved
+stream=ByteStream is the correct fixture; production stream rules unchanged.
+
+Options: use changing upstream files or the inspected fixed revision. Decision:
+only 75 fixed-revision URLs/size/SHA-256 pins, no auth/proxy/redirect/retry; 180s
+cooperative command envelope/20s max I/O and 32768-byte per-file bound. Refuse
+existing destination and publish only the complete checked staged release.
+Cost if wrong: real network/DNS/TLS/blocked I/O can outlast cooperative targets;
+fixed metadata is trusted internal input, not a user-configurable source format.
+
+Rulings in order:
+1. Strengthen deadline fixture with no-third-chunk timing assertion — final-only
+   timeout could satisfy planned exception-only test — cost if wrong: simulated
+   timing does not establish a real network hard deadline.
+2. Use ByteStream fixtures, matching working label tests and installed HTTPX —
+   represent actual raw body state — cost if wrong: mocks are not live-network proof.
+
+Mutation RED: removing per-chunk check yielded logical 1000s versus expected 181s
+(0.15s), restored GREEN 29 combined (0.21s). No-env whole project 632 passed/
+165 skipped (5.56s), lint/format pass. Actual fetch once: 75 files/76445 bytes,
+each saved pin rechecked. No correction-label refetch, import, credentials, model,
+benchmark policy or publication. Task 3 next under existing approval; G0 7/12.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

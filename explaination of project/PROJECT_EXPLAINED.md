@@ -959,6 +959,27 @@ A symbolic link points to another location instead of containing the expected
 file, so we reject it here. These checks are for our fixed local sources; they
 do not claim protection against someone with administrator access changing files.
 
+### G0.5, source batch Task 2 — Save the checked column descriptions
+
+Finished: saved all 75 corrected description files from the reviewed version.
+Together they use only about 76 KB. Every file's saved bytes match its recorded
+fingerprint. The existing answer files and license notes stayed unchanged.
+
+The program refuses unexpected addresses, redirects, changed files and slow
+bodies. It checks the whole batch before exposing the final folder. All 29
+combined unpack/download checks pass. We deliberately removed a time check for
+one fake test: it waited until 1000 simulated seconds. Restoring the check stopped
+it at the first late chunk, 181 seconds. No real slow download was needed.
+
+An early failure was in our fake network responses, not the downloaded sources:
+the fake had already consumed its own bytes. We corrected it to act like a real
+stream. The whole project passed 632 tests without private database settings;
+165 database checks were skipped. Task 3 will now inspect actual source layouts.
+
+New words: a redirect tells a program to use a different address. We refuse it
+for these fixed sources. A mock is a small fake used in a test, such as a fake
+download; it must behave like the real boundary or it can hide mistakes.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
