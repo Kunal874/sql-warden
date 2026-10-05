@@ -422,3 +422,26 @@ Fresh finishing verification: configured 822 passed/zero skips (14.20s), includi
 165 actual local PostgreSQL tests for existing boundaries; no-env 657 passed/
 165 skipped (5.08s). Locked 27 packages, Ruff/37-file format/whitespace pass.
 No new corpus content/answer or dataset-isolation claim follows from these tests.
+
+## Remaining import readiness — read-only preparation (2026-10-05)
+
+Dedicated PostgreSQL 16 still contains only the California dataset and its login;
+ten remaining target schemas/logins absent. Immutable, hash-checked SQLite source
+PK aggregates find all 72 declared keys free of null rows/duplicate groups. Three
+tables have no declared PK: thrombosis_prediction/examination and superhero/
+hero_attribute, hero_power. This is not new PostgreSQL constraint acceptance.
+All 11 codebase DATETIME columns store text/null only; no timezone/format/answer
+meaning established. Existing source FK issues remain unchanged.
+
+Remaining native footprint: 72 tables/709 columns/3868173 rows, 991363484 COPY
+payload bytes. COPY bundle and .env.datasets not yet created. The proposed
+[four-task plan](superpowers/plans/2026-10-05-remaining-native-imports.md) uses
+native types/69 checked PKs, preserves all rows and retains new-dataset FKs as
+unenforced metadata, with actual typed-native/representative/source/permission
+checks. This foreign-key policy is a recommendation awaiting explicit review,
+not an adopted import/validity policy. California's enforced FKs stay unchanged.
+
+No new source acquisition, SQL/gold execution, database/role change, password
+creation, model or benchmark action. Eight proposed blocks syntax-valid only.
+Fresh unchanged suite822passes/zero skips(16.27s),165actualPG; no-env657/165skips
+(5.77s); locked27/Ruff/37-file format/whitespace pass. G0.5/C1 still unfinished.

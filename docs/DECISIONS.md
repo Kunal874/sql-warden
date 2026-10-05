@@ -1273,6 +1273,54 @@ continuation or redundant review. G0 remains 7/12; three nested preparation task
 are finished, remaining imports/content/conversion/C1 are not. Source FK/timezone
 issues and unselected runtime descriptions/labels must enter the next reviewed plan.
 
+## D-041 — next G0 batch preparation and exact import-policy review (2026-10-05)
+
+Context: clean 3f4b61f; source preparation and its one review fully complete.
+Kunal asks to try finishing G0 in one run. BUILD_SPEC/Handoff require the next
+import artifact/operations review and later C1/C2 decisions; this request does
+not supply a new foreign-key, credential, label or benchmark policy decision.
+
+Read-only evidence: dedicated PostgreSQL 16 identity/ownership markers pass;
+only California schema/login exist, database 20585495 bytes. All 72 immutable
+source PKs have zero null-key rows/duplicate groups; three tables lack a PK.
+All 11 codebase DATETIME columns use text/null storage, not verified time meaning.
+Remaining ten datasets: 72 tables/709 columns/3868173 rows/991363484 COPY bytes.
+Largest COPY 280029547 bytes. D:44817014784/C:661347966976 free, Docker virtual
+filesystem1008069328896 available, RAM1511016KiB free, GPU7956MiB free/0used.
+New COPY/.env.datasets absent and ignored. No source/data/credential changes.
+
+Options: (1) row-preserving native imports, enforce checked PKs and retain FKs as
+unenforced metadata; (2) enforce every source FK, failing known violations/schema
+mismatch; (3) repair/drop rows/keys, changing corpus. Recommendation only: option1
+for the ten new datasets, preserve California's existing enforced keys. It needs
+Kunal's explicit approval of the new written artifact and operation scope.
+Source-audit schema_mismatch/null approval is not approval to waive/import keys.
+
+Decision now: finish read-only preparation and
+[four-task plan](superpowers/plans/2026-10-05-remaining-native-imports.md), not
+execute pending writes. Reuse the approved architecture/importer/auditor/helpers
+and existing dependencies; no parallel implementation. Plan batches controlled
+COPY, setup-only importer/ten new restricted credentials, toxicology thin slice
+with actual rollback/security/content checks, then remaining nine and full matrix.
+Proposed UTC/float4 representative mappings, 69 PKs, named rolled-back probes,
+2GB setup spill/900s transaction/3600s attempt envelope are explicit for review.
+Runtime caps/settings/credentials and benchmark comparator stay unchanged.
+
+Self-review: eight proposed Python blocks AST-valid, never executed. Interfaces,
+all five Review Focus cases, exact refusal/transaction/data markers and spec
+coverage checked. Clarified plan-only command_timeout=120 and 900s transaction
+scope excluding prevalidation hashing; cooperative, not OS-hard time guarantee.
+No placeholder plan steps, product files, new schema/login/password/gold/model run,
+new dependency, overwrite/rotation/remote/push/publication or policy adoption.
+
+Fresh unchanged project verification: locked27; no-env657passed/165skipped(5.77s);
+configured822passed/zero skips(16.27s), including165actualPG; Ruff/37-file format/
+whitespace pass. These existing tests do not establish pending import isolation.
+Notebook explains source keys, sample versus full comparison and required gates.
+G0 remains7/12. Full conversion/description/gold validity and measured C1, second
+model artifact/smoke, frozen family-consistent splits/E0 and measured C2 are still
+separate required outcomes, not silently accepted by a broad completion request.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -1043,6 +1043,45 @@ Foundation progress stays 7 of 12 top-level tasks; the later agent, experiments,
 website and release are still ahead. Everything stays local, with no new import,
 password change, benchmark score or publication in this batch.
 
+### G0.5, next import preparation — Get ready to load the other ten databases
+
+Finished now: checked the next import targets without changing the database.
+Only California is loaded. The other ten datasets contain 72 tables and about
+3.87 million rows. Their copied row files will need about 991 MB of extra space.
+There is enough checked disk space for this bounded plan.
+
+Checked the source primary keys: none of the 72 declared keys had missing or
+repeated key values. Three tables have no declared primary key, so we must not
+invent one. The date-and-time columns use text or empty values, but we have not
+proved what time zone they mean. The earlier broken relationships remain visible.
+
+I prepared one four-part plan: unpack only the remaining row files; build a
+small setup importer and separate reader passwords; check toxicology first;
+then load and check the other nine in order. It reuses our existing code and
+packages. No database or password was changed during this preparation.
+
+One important choice needs your review: keep every source row and record foreign
+keys without enforcing them on the ten new imports. Enforcing all the broken
+links would fail; deleting rows to make them pass would change the dataset.
+California's existing key rules will stay unchanged. This is a proposal, not a
+choice already made for you.
+
+Checked: the current project passed 822 tests, including 165 real PostgreSQL
+checks, with no skips. Without private settings, 657 passed and 165 were skipped.
+The eight pieces of proposed Python code pass grammar checks only; they have
+not been implemented or run. Code-style and saved-package checks passed.
+
+New words: a representative sample is a few rows checked in detail; it cannot
+prove every row is identical. UTC is a common reference time zone. Float4 is a
+database number type that stores fewer digits, so values may be rounded. A
+conversion check must notice such differences rather than hide them for a score.
+
+Where we are: foundation progress is still 7 of 12 top-level tasks. This next
+plan is ready for review, not executed. Finishing G0 also needs answer-conversion
+checks, your label-policy decision, the second-model check, a frozen question
+split, real smoke scores and your final model/speed choice. I will batch routine
+work but cannot replace those required decisions with guesses.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -1348,8 +1387,10 @@ and the four-file intake and their final review are complete. Next comes the
 remaining descriptions/layout/import and answer-validity work. The three-task
 offline source-preparation batch has now unpacked the fixed sources, saved the
 small descriptions and audited real layouts; its sole final review is complete.
-Source key problems are recorded, not repaired. Next is a separate reviewed
-import/content/conversion plan. This intake uses existing software and does not change the database
+Source key problems are recorded, not repaired. The next four-task native import
+plan is now written and awaits your review of its database/password/key operations.
+Gold conversion and C1, then second-model/split/E0/C2 work follow their checkpoints.
+This preparation uses existing software and does not change the database
 or run the model. Each relevant new permission outside that scope needs review.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 

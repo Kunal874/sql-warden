@@ -49,6 +49,17 @@ no-env 657 passed/165 skipped (5.08s). Locked 27/lint/37-file format/whitespace 
 No new import, model/gold SQL, credential or benchmark-policy action. G0 remains
 7/12; three nested preparation tasks finished, not G0.5/C1 or all data validity.
 
+2026-10-05 next continuation: Kunal requests attempting the rest of G0 in one run.
+Completed the next read-only import preparation and written four-task artifact,
+not its implementation. Only California is present in PostgreSQL; ten targets
+and .env.datasets/COPY bundle are absent. All 72 source PKs have no nulls or
+duplicate groups; three no-PK tables and 11 text/null DATETIME columns recorded.
+Prepared remaining-native-imports plan for exact new-login/import/key-policy
+review. Eight proposed Python blocks syntax-valid, not executed. Fresh existing
+suite 822 passed/zero skips (16.27s), 165 actual PG; no-env 657/165 skips (5.77s),
+locked 27/Ruff/37-file format/whitespace pass. No new code/import/secret/model/gold
+or benchmark action. G0 stays 7/12; C1 and C2 cannot be guessed or marked complete.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -106,6 +117,8 @@ No new import, model/gold SQL, credential or benchmark-policy action. G0 remains
   - [x] Acquire the 75 pinned corrected description files.
   - [x] Verify actual SQLite layouts/counts/keys and offline description coverage.
   - [x] Complete the sole full-source batch final read-only review.
+  - [x] Read-only remaining-import key/resource preflight and four-task plan.
+  - [ ] Review/approve new import artifact, ten restricted credentials and FK policy.
   - [ ] Remaining description/import/conversion work and validity manifest.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -190,6 +203,42 @@ No new import, model/gold SQL, credential or benchmark-policy action. G0 remains
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-05 — remaining native imports preparation / required operation review
+
+Resumed clean 3f4b61f on feat/foundation; prior three-task source batch/final
+review already complete. Reconciled active spec/Handoff, existing importer/auditor,
+tests, pinned metadata and original G0 dependencies. No reimplementation/review
+dispatch. Existing approved architecture reused; native sequential execution stays.
+
+Read-only local PostgreSQL 16 identity/ownership preflight passes: only California
+dataset schema/login exist; database 20585495 bytes. Immutable source pin checks
+and generated metadata-only PK aggregates: 72 declared PKs, zero null-key tables/
+duplicate groups; examination/hero_attribute/hero_power have no declared PK.
+All 11 codebase DATETIME columns hold text/null only, not verified date meanings.
+Remaining 72 tables/709 columns/3868173 rows, 991363484 COPY bytes. Largest block
+280029547 bytes. D: 44817014784/C: 661347966976 free; Docker filesystem reports
+1008069328896 available virtual bytes. RAM 1511016 KiB free; sampled GPU 7956 MiB
+free/0 MiB used. Destination and .env.datasets absent/ignored. No model loaded.
+
+Prepared/self-reviewed
+[four-task import plan](superpowers/plans/2026-10-05-remaining-native-imports.md):
+controlled remaining COPY bundle; fixed-target importer/private credential tool;
+actual toxicology thin slice/rollback/isolation; nine more sequential imports and
+full direct cross-reader checks. Proposed row-preserving FK metadata-only policy
+needs explicit approval, not inferred from source-audit amendment. Enforce 69
+remaining checked PKs/native types/NOT NULL; preserve California's enforced FKs.
+Setup-only UTC/float4 sample adaptations do not change EX; full SQLite/gold
+validity stays unknown. Named rollback-only probes, 2GB setup spill cap and
+bounded transaction/aggregate envelopes are explicitly included for review.
+
+Eight Python blocks AST-parse, not run; interface/focus/spec/placeholder self-review
+complete. Corrected plan-only setup command timeout to 120s and clarified 900s
+transaction versus pre-hash/hard-deadline limits. No product module/test created,
+credential generated, source SQL/gold/model call, database write or policy adopted.
+Fresh existing locked 27; no-env 657 passes/165 skips (5.77s), configured 822
+passes/zero skips (16.27s), including 165 actual PG; Ruff/37-file format/whitespace
+pass. Notebook updated. D-041 records proposal/status/gates. G0 still 7/12.
 
 ### 2026-10-05 — full-source batch final review and local handoff
 
@@ -1193,12 +1242,32 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: read-only preparation of a separate controlled COPY/remaining
-import/content/conversion plan from the actual audit, then Kunal's artifact and
-operation review before implementation/admin writes, passwords or gold queries.
+Current next action: Kunal reviews the new
+[remaining native imports plan](superpowers/plans/2026-10-05-remaining-native-imports.md)
+and exact operations: ten restricted credentials/logins, 72 tables, enforced PKs,
+unenforced FK metadata and named rollback-only tests. The artifact is prepared,
+NOT yet approved/implemented. Earlier source-audit approval does not authorize
+this key/import policy. After approval execute all four sequential tasks without
+routine continuation questions; do not ask again about identity/method/dependencies.
 No additional implementation is approved by the completed source-preparation batch.
 Carry forward the unresolved source FKs, 11 DATETIME->TIMESTAMPTZ columns,
 description/encoding observations, content fingerprints and C1 policy gates.
+
+Preparation at 3f4b61f: only California exists; ten targets absent. Source PK
+aggregate preflight passed (72 declared, none null/duplicate); three no-PK tables.
+Remaining payload 991363484 bytes/3868173 rows. New COPY destination/.env.datasets
+absent/ignored; never execute proposed operations until artifact/operation approval.
+Plan Python syntax-only check: eight blocks, no execution. Existing regression
+822/zero skips (16.27s), 165 actual PG; no-env657/165skips (5.77s), lint/format/lock.
+D-041/notebook explain why imports alone do not complete G0; conversion/C1,
+second model, frozen IDs/E0 and measured C2 remain required review stages.
+
+Preparation-only probes used uv run python -c to read fixed metadata/immutable
+SQLite PK aggregates without envs, and uv run --env-file .env.setup python -c
+for read-only dedicated-target identity/schema/role/size metadata. No raw rows,
+passwords, model or source/gold SQL. The Docker read-only disk check was
+docker exec sqlwarden-postgres-1 df -B1 /var/lib/postgresql/data. Use documented
+explicit tool paths below. The new plan contains exact future commands/tests.
 
 The [full-source preparation plan](superpowers/plans/2026-10-05-full-source-preparation.md)
 is DONE: preparation 6be261c, Task 1 8a37707, Task 2 e4433ab, Task 3 04817bf;
