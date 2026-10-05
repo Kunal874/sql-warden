@@ -1341,6 +1341,30 @@ Locked27/no-env668passed165skipped(6.29s); configured833passed/zero skips(23.90s
 No execution-plan conflict or policy deviation in Task 1. Ruff formatting/import
 sorting normalizes the draft without behavioral changes.
 
+## D-043 — fixed remaining importer and private credentials (2026-10-05)
+
+Context: Task 1 committed 25b7697; approved new IDs/logins and metadata-only FKs.
+Decision: setup-only fixed PostgreSQL16 identity/marker checks; refuse existing
+targets and invalid IDs/passwords before writes. One atomic transaction/dataset,
+native types/PK/NOT NULL, own-schema SELECT/default grants and restricted role
+settings. 900s transaction/120s command and COPY/2GB setup spill remain explicit;
+runtime stays unchanged. Existing native content helper's defaults are preserved.
+Full native EXCEPT ALL and first/middle/last immutable SQLite representative
+checks precede commit; float4/ISO DATE/UTC DATETIME mappings are sample-only,
+not full SQLite/gold comparator acceptance. Unknown validity markers retained.
+Task 2 expected missing-module RED then 58passed/22 unconfigured skips(0.73s)
+for loader/bundle/California controls; 32 new importer checks. Private ignored
+.env.datasets created once: ten distinct valid restricted-only passwords; no
+bootstrap key, values never printed, not wired into runtime, no new login yet.
+Locked27/no-env700passed165skipped(8.15s); fresh configured865passed/zero skips
+(17.71s), 165 real PG. Ruff/41-file format/whitespace pass.
+Ruling: preserve the existing cancellation test's exact deadlines and add only
+a sanitized phase label — two full runs timed out, isolated test (0.44s) and
+all18 executor controls(2.11s), then full865 passed without deadline changes;
+cause not established, do not call it fixed — cost if wrong: timing flakiness
+may recur and needs evidence, not silent timeout relaxation. No runtime change.
+UTC alias/import sorting/string wrapping are mechanical draft normalization.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

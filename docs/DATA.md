@@ -437,6 +437,19 @@ Staging publishes only after complete dump/archive/block and saved-file checks.
 61 controlled extraction/audit/native checks pass; new 11 checks first RED
 because the module did not exist. No database/credential/model/gold change yet.
 
+## Fixed remaining importer completed (2026-10-05)
+
+Task 2 creates only approved fixed target IDs and refuses existing objects.
+New .env.datasets is ignored/setup-test-only, ten distinct restricted-only
+secrets verified without printing; bootstrap/runtime/California files untouched.
+No new login/schema/import yet. Full typed native comparison and bounded
+SQLite first/middle/last samples run before transaction commit. Explicit REAL
+float4, ISO date and UTC timestamp mapping is not full gold/SQLite equivalence.
+69 remaining PKs will be enforced, new FKs metadata-only as approved.
+32 new deterministic controls; full865passed/zero skips(17.71s),165realPG;
+no-env700passed165skipped(8.15s), Ruff/41-file format/locked27 pass.
+Existing cancellation timing failures are documented in D-043, not hidden.
+
 ## Remaining import readiness — read-only preparation (2026-10-05)
 
 Dedicated PostgreSQL 16 still contains only the California dataset and its login;

@@ -82,10 +82,18 @@ async def verify_local_database(conn: asyncpg.Connection) -> None:
         raise ValueError("Dedicated local database ownership markers differ")
 
 
-async def verify_native_content(conn: asyncpg.Connection, source: Path, tables: dict) -> None:
+async def verify_native_content(
+    conn: asyncpg.Connection,
+    source: Path,
+    tables: dict,
+    *,
+    schema: str = SCHEMA,
+    names: tuple[str, ...] = TABLE_NAMES,
+    copy_timeout: float = 60,
+) -> None:
     """Setup-only complete typed multiset comparison; caller owns the transaction."""
-    for name in TABLE_NAMES:
-        target = SCHEMA + "." + quote_ident(name)
+    for name in names:
+        target = quote_ident(schema) + "." + quote_ident(name)
         temporary = quote_ident("import_check_" + name)
         await conn.execute(f"CREATE TEMP TABLE {temporary} (LIKE {target}) ON COMMIT DROP")
         columns = [column["name"] for column in tables[name]["columns"]]
@@ -96,7 +104,7 @@ async def verify_native_content(conn: asyncpg.Connection, source: Path, tables: 
             columns=columns,
             format="text",
             encoding="UTF8",
-            timeout=60,
+            timeout=copy_timeout,
         )
         projection = ", ".join(quote_ident(column) for column in columns)
         scratch = "pg_temp." + temporary

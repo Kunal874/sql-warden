@@ -1392,6 +1392,27 @@ the rows and record those defects instead of quietly deleting or repairing data.
 This does not prove every query will give the same answer as SQLite.
 Next: test and build the fixed importer, then create its private login file.
 
+### Remaining import batch — Task 2 complete (2026-10-05)
+
+The importer is built and checked. It accepts only the ten approved datasets
+and the dedicated local database. It will refuse to overwrite a dataset that
+already exists. Each dataset has its own private password, saved outside Git.
+None has been added to the database yet, and the AI cannot use setup passwords.
+
+Before saving an import, the tool checks every native row and compares a few
+real SQLite rows. A mismatch must cancel the import. This is stronger than just
+counting rows, but it is not yet proof that every SQLite query keeps its answer.
+32 new checks pass. The full private-settings run passed 865 tests. Two earlier
+runs hit an existing cancellation timeout; isolated checks and the fresh full
+run passed. I did not increase its limit or claim the timing problem was fixed.
+
+**Transaction** means a group of changes that is saved together or cancelled.
+**Primary key** is the column or columns that uniquely identify a row.
+**Multiset comparison** checks values and how many times each row appears.
+**Representative sample** checks a few chosen rows, not every source value.
+Next: import the small toxicology dataset and test its real read permissions,
+blocked writes, cancelled imports and changed-value detection.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and

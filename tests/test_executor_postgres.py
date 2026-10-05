@@ -129,6 +129,7 @@ async def test_real_external_cancellation_releases_resources_and_pool_recovers()
         open_california_executor(password(), limits) as executor,
     ):
         task = asyncio.create_task(executor.execute(sql))
+        phase = "observe active execution"
         try:
             pid = None
             async with asyncio.timeout(2):
@@ -147,8 +148,10 @@ async def test_real_external_cancellation_releases_resources_and_pool_recovers()
                         )
                     await asyncio.sleep(0.01)
             task.cancel()
+            phase = "await caller cancellation"
             with pytest.raises(asyncio.CancelledError):
                 await asyncio.wait_for(task, 1)
+            phase = "observe server connection removal"
             async with asyncio.timeout(1):
                 while await observer.fetchval(
                     "SELECT EXISTS(SELECT 1 FROM pg_catalog.pg_stat_activity WHERE pid=$1)",
@@ -156,7 +159,10 @@ async def test_real_external_cancellation_releases_resources_and_pool_recovers()
                     timeout=1,
                 ):
                     await asyncio.sleep(0.01)
+            phase = "replacement connection"
             assert (await executor.execute("SELECT 1 AS n")).status == "ok"
+        except TimeoutError:
+            pytest.fail("Cancellation control timed out during " + phase, pytrace=False)
         finally:
             if not task.done():
                 task.cancel()
