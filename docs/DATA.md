@@ -329,3 +329,19 @@ preparation D: free 46325698560 bytes, RAM free 1167319040 bytes. Native dump is
 not copied into another 1 GB tree. Physical layout/count equality, content/type
 conversion equivalence, remaining PostgreSQL imports, gold validity, primary labels/
 descriptions, ambiguity/splits and C1 remain unperformed. No benchmark score.
+
+## Full-source batch Task 1 — actual extraction (2026-10-05)
+
+After the approved tests-first extraction controls passed (16 tests), ran
+uv run python -m scripts.prepare_sources once without private env settings.
+Destination was absent/ignored; D: free 46325235712 bytes. Extracted exactly 87
+fixed members into data/source-release/minidev-0703: 11 SQLite files, 75 original
+description CSVs, dev_tables.json; total 1493523124 bytes. Rechecked every saved
+size/SHA-256 and exact file count. No source SQL executed, no database import,
+no existing California/raw/correction artifact changed. Only newly owned staging
+was cleaned normally. Physical SQLite/layout/count checks remain Task 3.
+
+Expected missing-module RED, then 16 GREEN; no-env full suite 619 passed/165
+skipped (5.90s), ruff/format checks pass. One unused fixture import removed and
+planned mechanical formatting applied; no pin/control changes. The extractor
+refuses this existing destination and must not be rerun automatically.

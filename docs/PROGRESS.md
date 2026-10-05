@@ -89,7 +89,7 @@ No new raw files persisted or import/model/credential actions in preparation.
   - [x] Record source fingerprints, name/encoding anomalies and bounded disk plan.
   - [x] Prepare/self-review the sequential three-task full-source batch.
   - [x] Review/approve that new full-source preparation artifact.
-  - [ ] Extract 87 fixed full-source members into a separate ignored directory.
+  - [x] Extract 87 fixed full-source members into a separate ignored directory.
   - [ ] Acquire the 75 pinned corrected description files.
   - [ ] Verify actual SQLite layouts/counts/keys and offline description coverage.
   - [ ] Remaining description/import/conversion work and validity manifest.
@@ -1153,7 +1153,7 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: implement Task 1, then Tasks 2/3 of the newly approved
+Current next action: implement Tasks 2/3 of the approved
 [full-source preparation plan](superpowers/plans/2026-10-05-full-source-preparation.md).
 Kunal reviewed/approved all three on 2026-10-05. Native sequential execution:
 tests-first exact extraction (87 files/~1.5 GB), fixed corrected CSV acquisition
@@ -1162,6 +1162,10 @@ No import, credential change, model/gold run, label/benchmark policy or publicat
 Resume .superpowers/sdd/2026-10-05-full-source-preparation/progress.md; reconcile
 task completion lines and Git before acting. Source metadata is in source-release-pins.json.
 Fresh baseline 768 configured tests/zero skips (20.75s), 165 actual PG.
+Task 1 implemented and actual extraction complete: 87 files, 1493523124 bytes,
+all saved pins rechecked; focused 16 passed, no-env 619 passed/165 skipped (5.90s).
+Do not repeat prepare_sources against its existing destination. Preparation saved
+at 6be261c; ledger task-done will record Task 1's checked commit.
 After this batch and its sole fresh final review, separately prepare controlled
 COPY/import/content/conversion work; C1, second model and split/E0/C2 still later.
 

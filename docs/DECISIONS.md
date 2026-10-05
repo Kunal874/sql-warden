@@ -1120,6 +1120,27 @@ during preparation. No implementation reviewer yet. G0 still 7/12, G0.5/C1 unfin
 Next execute all three approved tasks, then one final review. No repeated intake,
 California import, credential rotation or live question.
 
+## D-037 — full-source batch Task 1 / actual checked extraction (2026-10-05)
+
+Context: Kunal approved all three tasks; preparation 6be261c. Task 1 test file
+first observed expected missing-module RED (0.30s), then 16 passing extraction
+controls (0.26s). Boundary covers exact selection, forks, symlink/duplicate/
+missing members, paths/case collisions, pins, disk reserve, deadline and refusal.
+
+Options: archive-wide extraction or fixed members into a separate collection.
+Decision: only fixed members, 1 MiB streaming chunks, per-file bounds/pins,
+900s cooperative extraction deadline, 1 GiB reserve and staging rename/refusal.
+Reuse existing file_sha256; no dependency, runtime or California loader change.
+Cost if wrong: hostile filesystem/concurrent source tampering or hard interruption
+is outside this local immutable-source guarantee; no crash-durability claim.
+
+Ruling: remove unused Path fixture import and apply planned ruff formatting —
+dead import/line layout only — cost if wrong: later fixtures must reimport Path.
+Actual extraction once without env: 87 files/1493523124 bytes; all rehashed after
+publication. No-env project suite 619 passed/165 skipped (5.90s); lint/format pass.
+No new PostgreSQL import, secret/model/SQL/policy action. Next Tasks 2/3 proceed
+under the same approval, no continuation question. G0 still 7/12.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

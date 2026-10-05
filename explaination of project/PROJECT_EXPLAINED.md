@@ -940,6 +940,25 @@ New words:
 - **Timestamp with time zone:** a date and time that also needs a clear time-zone
   interpretation. We must check conversions before claiming equal answers.
 
+### G0.5, source batch Task 1 — Unpack only the files we need
+
+Finished: unpacked all 11 SQLite databases, 75 original description files and
+one table-list file into a separate private folder. That is 87 files, about
+1.5 GB. The old California import and original download stayed unchanged.
+Every saved file matched its recorded size and fingerprint after extraction.
+
+We wrote the failure tests first. They check missing or repeated files, unsafe
+paths, symbolic links, changed bytes, lack of disk space and time limits. All
+16 checks pass. The whole project without private database settings passed
+619 tests; 165 database checks were skipped in that run, not counted as passes.
+The actual SQLite layouts and row counts still belong to Task 3.
+
+New words: extraction means unpacking a compressed file. Staging is a temporary
+work area: the final folder appears only after all selected files are checked.
+A symbolic link points to another location instead of containing the expected
+file, so we reject it here. These checks are for our fixed local sources; they
+do not claim protection against someone with administrator access changing files.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
