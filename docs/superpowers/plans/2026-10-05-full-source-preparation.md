@@ -12,6 +12,13 @@
 
 **Status:** Prepared 2026-10-05 from clean fc71084. Kunal approved this exact three-task batch on 2026-10-05 after artifact review. The preparation commit contains planning and metadata only; implement all three tasks sequentially without another routine continuation question. Stop on a genuine pin/layout mismatch; do not repin, overwrite or import to get past it.
 
+Execution complete 2026-10-05: Task 1 8a37707, Task 2 e4433ab, Task 3 04817bf,
+including the explicitly approved observational FK amendment below. Sole independent
+final review found no Critical/Important/Minor issues; 54 batch controls repeated
+successfully (0.94s). No correction pass or second review. D-036–D-040 record all
+rulings/costs. The separate import/content/conversion plan remains the next checkpoint,
+not an uncompleted task in this approved three-task implementation batch.
+
 ## Global Constraints
 
 - Kunal is the sole author and committer of new project commits. Never add Codex, OpenAI, Claude, another assistant or a bot as an author, committer, co-author or project contributor. No `Co-Authored-By` trailers, generated-by signatures, assistant credits, contributor entries or assistant package-author metadata.
@@ -560,7 +567,7 @@ Record actual request/file/byte totals and limits in DATA/PROGRESS; add D-038 wi
 - Output is a new ignored audit directory containing manifest.json. Its metadata may be copied to docs only after inspection; no raw values, description prose, SQL, credentials or foreign-key row IDs.
 - Ordered identifiers, declared source/native types, row counts, primary/foreign-key metadata and violation counts are observations. None establishes representative value equivalence, conversion survival, PostgreSQL isolation for new datasets or primary-description selection.
 
-- [ ] **Step 1: Add the failing tests to tests/test_source_audit.py.**
+- [x] **Step 1: Add the failing tests to tests/test_source_audit.py.**
 
 ```python
 import csv
@@ -765,12 +772,12 @@ def test_atomic_end_to_end_source_audit_has_no_gold_validity_claim(tmp_path):
     assert not (tmp_path / "bad-audit").exists()
 ```
 
-- [ ] **Step 2: Run the RED gate.**
+- [x] **Step 2: Run the RED gate.**
 
 Run `uv run pytest tests/test_source_audit.py -q --tb=line`.
 Expected: collection error because scripts.audit_sources does not exist. Real SQLite test fixtures must run once implemented; native source SQL is never executed.
 
-- [ ] **Step 3: Add this implementation to scripts/audit_sources.py.**
+- [x] **Step 3: Add this implementation to scripts/audit_sources.py.**
 
 ```python
 """Read-only source/layout audit; not a PostgreSQL import or gold-validity check."""
@@ -1046,18 +1053,18 @@ if __name__ == "__main__":
     raise SystemExit(main())
 ```
 
-- [ ] **Step 4: Verify GREEN and the complete deterministic batch.**
+- [x] **Step 4: Verify GREEN and the complete deterministic batch.**
 
 Run `uv run pytest tests/test_source_prepare.py tests/test_description_fetch.py tests/test_source_audit.py -q --tb=line`; run ruff check/format checks and fix actual issues test-first. Add focused reproductions before changing behavior if real source bytes expose an unanticipated condition; keep pins and the benchmark definition unchanged.
 
-- [ ] **Step 5: Perform the approved actual offline audit.**
+- [x] **Step 5: Perform the approved actual offline audit.**
 
 Without an env file, check `Test-Path data/source-audit/minidev-0703-fe766045` is False and `git check-ignore data/source-audit/minidev-0703-fe766045/manifest.json` succeeds. Run `uv run python -m scripts.audit_sources` once.
 Expected: audited, 11 databases, 75 tables. Rechecked metadata/native definitions and all ordered columns must cover 798 columns; COPY data-line total 3,898,114 must equal actual SQLite table-count total before a successful report. Full native dump and each COPY block must match pins.
 Original descriptions contain 799 records: preserve/report formula_1 constructors' unknown wins record. Corrected descriptions cover 798 columns with no missing/extra/duplicate matches. Preserve/report 89 original padding aliases and the populated unnamed financial/account field at one-based data row 3 in both sources. Four original/three corrected encoding exceptions are explicit pins, not automatic fallback.
 Inspect actual FK counts/layout and all declared types before proposing import mappings; do not silently waive a mismatch or treat a count match as content validity. The 11 native TIMESTAMPTZ columns require later timezone/conversion policy.
 
-- [ ] **Step 6: Save reviewed metadata, fresh regressions, records and commit.**
+- [x] **Step 6: Save reviewed metadata, fresh regressions, records and commit.**
 
 Read the ignored report, verify that it contains metadata only, and use apply_patch to add its actual content to docs/source-audit-manifest.json. Add execution date/Git state and clearly retain conversion/content validity not checked and primary descriptions not selected. Do not fabricate expected results on failure.
 Run `uv sync --locked`, `uv run pytest -q --tb=line`, `uv run --env-file .env.setup --env-file .env.california pytest -q --tb=line`, `uv run ruff check .`, `uv run ruff format --check .`, and `git diff --check`. Private envs are used for tests only; the existing 165 PostgreSQL checks must actually run.
@@ -1065,9 +1072,9 @@ Update DATA/PROGRESS, D-039 and notebook with actual checks and source findings.
 
 ## Batch completion and next checkpoint
 
-- [ ] Complete one fresh final read-only review of the whole approved batch after all three tasks, using requesting-code-review/executing-plans; no parallel implementation or repeated per-component review.
-- [ ] Resolve Important/Critical findings in one test-first pass under the same scope, record every ruling/cost and actual regressions. No automatic second review. If scope must change, pause.
-- [ ] Keep the checked branch local, update Handoff/notebook, report actual commits, tests and three completed nested checklist items.
+- [x] Complete one fresh final read-only review of the whole approved batch after all three tasks, using requesting-code-review/executing-plans; no parallel implementation or repeated per-component review.
+- [x] Resolve Important/Critical findings in one test-first pass under the same scope, record every ruling/cost and actual regressions. None reported: no fix pass needed. No automatic second review. If scope must change, pause.
+- [x] Keep the checked branch local, update Handoff/notebook, report actual commits, tests and three completed nested checklist items.
 - [ ] Prepare the next separate controlled COPY/import/content/conversion plan from the actual audit; obtain its artifact/operation review before administrative writes, passwords or gold queries. C1 still needs labels/layout/conversion/ambiguity decisions before any benchmark freeze.
 
 ## Self-review (preparation, not execution)

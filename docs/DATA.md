@@ -400,3 +400,25 @@ observations, not adopted runtime prose. Four/three encoding exceptions explicit
 37-file format pass. No new PostgreSQL import, model/gold query or secret action.
 Typed content/result equivalence, validity/exclusions, primary descriptions/labels,
 ambiguity/splits and C1 remain unfinished. G0.5 remains incomplete; no benchmark score.
+
+## Full-source batch final review (2026-10-05)
+
+All three tasks committed at 8a37707/e4433ab/04817bf. Sole independent read-only
+review of 6be261c..04817bf found no Critical, Important or Minor issues and repeated
+54 batch controls (0.94s). It compared the saved documentation manifest with the
+actual ignored report: identical audit fields, only four execution/provenance
+additions. Source-pins fingerprint, all 75 native block pins and recorded totals
+match. Parent independently confirmed those metadata relationships. No fresh
+acquisition/extraction/audit, SQL, PostgreSQL import, credentials or inference.
+
+This accepts the approved preparation scope only. The 955 source FK violation
+records and European uncheckable FK count remain source issues, not waived or
+repaired constraints. Matching layout/counts is not typed-content, timezone or
+query-answer equivalence. Description meanings/primary selection, remaining
+imports and new restricted-role security checks require the next reviewed scope.
+D-040 records all retained review limits and costs; no deferred minors.
+
+Fresh finishing verification: configured 822 passed/zero skips (14.20s), including
+165 actual local PostgreSQL tests for existing boundaries; no-env 657 passed/
+165 skipped (5.08s). Locked 27 packages, Ruff/37-file format/whitespace pass.
+No new corpus content/answer or dataset-isolation claim follows from these tests.

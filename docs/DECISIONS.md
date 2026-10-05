@@ -1204,6 +1204,75 @@ Fresh locked sync 27 packages; no-env 657 passed/165 skipped (5.81s), configured
 review or admin import/model/gold action. Handoff afterward prepares separate
 controlled COPY/import/content/conversion scope and its required artifact review.
 
+## D-040 — full-source final review and local-only handoff (2026-10-05)
+
+Context: preparation 6be261c; all three tasks saved at 8a37707/e4433ab/04817bf.
+Task-done gates passed 16/29/54 checks. Sole fresh read-only reviewer inspected
+6be261c..04817bf, the amended plan/spec and ledger. It repeated 54 checks (0.94s),
+verified all audit fields against the ignored report (four provenance additions
+only), source-pins hash, all 75 native block pins/totals, whitespace and owner
+identities. Parent separately confirmed those relationships and no tracked raw
+data/envs or remote. No acquisition/audit/PG/model/SQL operations repeated in review.
+
+Findings: no Critical, Important or Minor issues. No fix pass or second review;
+deferred minors: none. Regraded the thirteen declined scope judgments by actual
+user effect: all are retained explicit limits, not defects in the approved fixed
+offline preparation workflow. Do not infer future imports or stronger guarantees.
+
+Options: expand this batch into new imports/security/content/benchmark claims,
+or close its checked observational scope and carry limitations into the next
+reviewed artifact. Decision: close this scope, keep the current local branch
+and scratch, update notebook/Handoff, prepare the next scope read-only later.
+No destructive cleanup, remote, push, publication or credential operation.
+
+Fresh finishing verification: locked sync checked 27 packages; no-env 657 passed/
+165 skipped (5.08s), configured 822 passed/zero skips (14.20s), including 165
+actual PostgreSQL checks. Lint/37-file format/whitespace pass. .git equals common
+Git directory; feat/foundation retained, no remote or tracked raw/envs. Private
+setup/California settings used for tests only, never acquisition/audit/runtime.
+
+### Exhaustive final rulings (decision order)
+
+Seven earlier execution rulings are in D-036–D-039. These fifteen complete the
+22-ruling record; every declined-to-judge line receives an explicit ruling/cost:
+
+1. Ruling: Retain the trusted immutable local-filesystem boundary — hostile ancestor links, source replacement and destination races are not this tool's promise — cost if wrong: local tampering can invalidate pre-use checks/publication.
+
+2. Ruling: Retain normal-operation staging, not crash durability — no fsync/power-loss/forced-termination recovery is implemented — cost if wrong: interruptions can leave staging and require manual inspection/recovery.
+
+3. Ruling: Keep cooperative deadlines and HTTP I/O timeouts — hashing, ZIP, SQLite, filesystem and blocked network work cannot all be forcibly interrupted here — cost if wrong: some operations can exceed the elapsed target.
+
+4. Ruling: Keep pin/configuration inputs fixed and internal — arbitrary external manifests, URLs and destinations are outside approved production usage — cost if wrong: future configurability needs validation and uniform errors.
+
+5. Ruling: Check only the selected archive members — unrelated members are neither extracted nor executed — cost if wrong: unselected contents remain unreviewed.
+
+6. Ruling: Keep the parser scoped to the pinned native dump layout/COPY data — full fingerprints and selected definitions are checked, not every ignored SQL statement — cost if wrong: a new dump needs parser review; no blanket SQL compatibility/approval.
+
+7. Ruling: Audit only pinned immutable SQLite files — arbitrary SQLite features and mutable WAL-backed sources need a different workflow — cost if wrong: future mutable inputs need snapshot/WAL-aware handling.
+
+8. Ruling: Do not repair or approve source FKs for import — source violation records and the unavailable count are retained exactly — cost if wrong: data/key problems and import-constraint policy remain unresolved.
+
+9. Ruling: Defer typed values, timezones, cross-engine content and gold validity — layout/count preparation does not establish answer equivalence — cost if wrong: equal row counts can conceal differing values or timezone results.
+
+10. Ruling: Defer description semantics, primary selection and encoding-policy redesign — strict reviewed decoding and anomaly observations are not runtime adoption — cost if wrong: prose/charset interpretation still needs human/C1 review.
+
+11. Ruling: Make no new-dataset PostgreSQL security claim — no new imports, privileges or isolation changes; configured tests exercise existing boundaries — cost if wrong: future imports need actual restricted-role security checks.
+
+12. Ruling: Do not treat fake transport coverage as a new live-network assessment — successful pinned acquisition and mocks do not exhaust DNS/TLS/proxy/server failures — cost if wrong: real failures can behave differently or outlast cooperative targets.
+
+13. Ruling: Close stale Task 3/final-review bookkeeping now — the commits, task-done gates and completed review prove completion, not a code defect — cost if wrong: an inaccurate handoff could cause repeated work.
+
+14. Ruling: Keep feat/foundation local as-is — Kunal's explicit local-only request and AGENTS/D-003 select retention, not merge/publication — cost if wrong: integration remains postponed.
+
+15. Ruling: Retain this plan's ignored scratch — AGENTS requires approval for destructive work; no such cleanup approval — cost if wrong: retained scratch uses disk.
+
+The executing-plans skill supplied test-first task gates and one independent
+whole-batch review; finishing-a-development-branch keeps the verified branch
+as-is under the already explicit owner choice. No new menu/approval for routine
+continuation or redundant review. G0 remains 7/12; three nested preparation tasks
+are finished, remaining imports/content/conversion/C1 are not. Source FK/timezone
+issues and unselected runtime descriptions/labels must enter the next reviewed plan.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

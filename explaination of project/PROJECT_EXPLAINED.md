@@ -45,11 +45,15 @@ It is not a finished public service yet.
   is complete; it reused existing Python tools without adding a package.
 - The local AI connection code now passes 67 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
-- The latest verified code checkpoint has 768 passing tests, including 165
+- The latest verified code checkpoint has 822 passing tests, including 165
   tests that connect to the real local PostgreSQL database.
 - The offline answer-file checker and small download tool pass 49 checks.
   The four approved files match their saved fingerprints. Their summary lists
   missing items and changed wording; it does not contain the answer text.
+- All 11 source databases and both sets of 75 column-description files are now
+  available locally. A read-only check covered 75 tables, 798 columns and
+  3,898,114 rows; table sizes match the fixed native source. This is preparation,
+  not ten new PostgreSQL imports or proof that every answer is correct.
 
 The first narrow AI question-to-database flow works for one checked question.
 The full agent, evaluation scores, website and public release are not finished.
@@ -72,6 +76,8 @@ You approved the next two-part data-work plan. Its offline checker is built
 and checked, and the four approved small source files have been saved and checked.
 The independent final review is complete. It found one time-limit gap, now fixed
 and checked. No extra model test or database import ran.
+The three-part source-preparation batch and its independent review are also
+complete. Source key problems are visible in the report, not silently repaired.
 
 ## 3. Completed work, one step at a time
 
@@ -1010,6 +1016,33 @@ Progress: three source-preparation subtasks finished in this batch. The top-leve
 foundation checklist remains 7 of 12, because remaining imports and answer-
 conversion checks are not finished. This is not an overall-project percentage.
 
+### G0.5, source batch final review — Finish the preparation and save the next step
+
+Finished: an independent reviewer checked all three tasks and the saved report.
+It found no issues needing correction and repeated all 54 batch tests successfully.
+The report matches the actual audit; only the date and file-history details were
+added to the copy in our documentation. No source file was downloaded or audited
+again, and no model was run. The three tasks are saved under your Git identity.
+
+This review does not mean every source is healthy. The broken key definition and
+955 violation records are still visible. We have not loaded ten more databases,
+proved matching values/answers, or selected which descriptions the AI will use.
+The next step is to prepare a separate import and conversion plan for review.
+
+Final checks: the whole project passed 822 tests, with no skips, including 165
+real local PostgreSQL checks. Without private database settings, 657 passed and
+165 were skipped. The code-style and saved-package checks also passed.
+
+New words: an independent review is a second set of eyes checking the finished
+work. A limitation states what a check cannot prove. A handoff is a saved note
+showing what finished and where to resume, so completed work is not repeated.
+A local commit saves history on your laptop; it does not upload the project.
+
+Progress: three preparation subtasks plus their final review are complete.
+Foundation progress stays 7 of 12 top-level tasks; the later agent, experiments,
+website and release are still ahead. Everything stays local, with no new import,
+password change, benchmark score or publication in this batch.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -1314,7 +1347,7 @@ choices. You approved the two-task correction-intake plan; its first checker
 and the four-file intake and their final review are complete. Next comes the
 remaining descriptions/layout/import and answer-validity work. The three-task
 offline source-preparation batch has now unpacked the fixed sources, saved the
-small descriptions and audited real layouts; its sole final review is next.
+small descriptions and audited real layouts; its sole final review is complete.
 Source key problems are recorded, not repaired. Next is a separate reviewed
 import/content/conversion plan. This intake uses existing software and does not change the database
 or run the model. Each relevant new permission outside that scope needs review.

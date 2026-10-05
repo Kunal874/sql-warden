@@ -36,6 +36,19 @@ Kunal approved the new three-task batch after artifact review; execute sequentia
 Fresh configured regression: 768 passed, zero skips (20.75s), including 165 actual PG.
 No new raw files persisted or import/model/credential actions in preparation.
 
+2026-10-05 completed batch: all three approved full-source tasks and the sole
+independent final review are complete. Commits 8a37707/e4433ab/04817bf produced
+87 extracted files (1493523124 bytes), 75 corrected descriptions (76445 bytes),
+and checked metadata for 11 databases/75 tables/798 columns/3898114 rows.
+All per-table SQLite/native counts match. Source FK issues remain explicit:
+955 violation records plus European Football's schema_mismatch/null count.
+Review reported no Critical, Important or Minor findings; 54 checks repeated
+independently (0.94s). D-036–D-040 record every ruling and retained limitation.
+Fresh finishing suite: 822 passed, zero skips (14.20s), including 165 actual PG;
+no-env 657 passed/165 skipped (5.08s). Locked 27/lint/37-file format/whitespace pass.
+No new import, model/gold SQL, credential or benchmark-policy action. G0 remains
+7/12; three nested preparation tasks finished, not G0.5/C1 or all data validity.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -92,7 +105,7 @@ No new raw files persisted or import/model/credential actions in preparation.
   - [x] Extract 87 fixed full-source members into a separate ignored directory.
   - [x] Acquire the 75 pinned corrected description files.
   - [x] Verify actual SQLite layouts/counts/keys and offline description coverage.
-  - [ ] Complete the sole full-source batch final read-only review.
+  - [x] Complete the sole full-source batch final read-only review.
   - [ ] Remaining description/import/conversion work and validity manifest.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -177,6 +190,32 @@ No new raw files persisted or import/model/credential actions in preparation.
 - [ ] G6 interview drill.
 
 ## Session log
+
+### 2026-10-05 — full-source batch final review and local handoff
+
+All three tasks saved at 8a37707/e4433ab/04817bf; task-done gates pass
+16/29/54 checks. Sole fresh read-only review covered 6be261c..04817bf and the
+approved amendment. No Critical, Important or Minor findings; no fix pass or
+second review needed. Reviewer repeated 54 deterministic checks (0.94s), checked
+metadata/report equality (only four provenance additions), source-pins hash,
+75 native block pins, totals, whitespace and confirmed sole owner identities.
+No acquisition, actual audit, PostgreSQL, SQL or inference was repeated by review.
+
+Parent also verified exact metadata equality, totals/explicit undecided markers,
+clean checked implementation commits and no tracked raw data/envs or remote.
+D-040 decides all thirteen declined scope judgments and local branch/scratch
+retention, with costs; D-036–D-039 retain seven execution rulings. Deferred minors:
+none. Notebook/current Handoff updated; completed branch kept local under Kunal's
+explicit instructions. Ignored plan scratch retained, not destructively removed.
+No source repair/import/credential/model/gold/policy/publication action authorized
+by this completion. Next is separately reviewed controlled COPY/import/content/
+conversion work, carrying source-key and timezone issues into its design.
+
+Fresh finishing checks on the closed batch: uv sync --locked checked 27 packages;
+no-env suite 657 passed/165 skipped (5.08s), both private test envs 822 passed/
+zero skips (14.20s), including all 165 actual PostgreSQL checks. Ruff and
+37-file format/whitespace pass. Private settings used only for tests. Normal
+.git checkout confirmed, feat/foundation retained, no remote or tracked raw/envs.
 
 ### 2026-10-05 — sole correction-intake review / tested deadline fix and handoff
 
@@ -1154,38 +1193,37 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: commit checked Task 3 and perform the sole whole-batch review of the approved
-[full-source preparation plan](superpowers/plans/2026-10-05-full-source-preparation.md).
-Kunal reviewed/approved all three on 2026-10-05. Native sequential execution:
-tests-first exact extraction (87 files/~1.5 GB), fixed corrected CSV acquisition
-(75 files/76445 bytes), actual read-only SQLite/native/layout/key/description audit.
-No import, credential change, model/gold run, label/benchmark policy or publication.
-Resume .superpowers/sdd/2026-10-05-full-source-preparation/progress.md; reconcile
-task completion lines and Git before acting. Source metadata is in source-release-pins.json.
-Fresh baseline 768 configured tests/zero skips (20.75s), 165 actual PG.
-Task 1 implemented and actual extraction complete: 87 files, 1493523124 bytes,
-all saved pins rechecked; focused 16 passed, no-env 619 passed/165 skipped (5.90s).
-Do not repeat prepare_sources against its existing destination. Preparation saved
-at 6be261c; ledger task-done will record Task 1's checked commit.
-Task 1 saved at 8a37707, task-done 16 passes (0.19s). Task 2 actual acquisition
-complete: 75 files/76445 bytes, all saved pins rechecked; combined 29 passes
-(0.21s), no-env full 632 passed/165 skipped (5.56s). Do not rerun either acquisition.
-Deadline fixture mutation genuinely failed at logical 1000s, restored code stops
-at 181s; fake response streams corrected without changing production controls.
-Task 2 saved at e4433ab, task-done 29 passes (0.26s). Task 3 implemented/actual
-acceptance passed after owner-approved explicit FK schema-mismatch amendment.
+Current next action: read-only preparation of a separate controlled COPY/remaining
+import/content/conversion plan from the actual audit, then Kunal's artifact and
+operation review before implementation/admin writes, passwords or gold queries.
+No additional implementation is approved by the completed source-preparation batch.
+Carry forward the unresolved source FKs, 11 DATETIME->TIMESTAMPTZ columns,
+description/encoding observations, content fingerprints and C1 policy gates.
+
+The [full-source preparation plan](superpowers/plans/2026-10-05-full-source-preparation.md)
+is DONE: preparation 6be261c, Task 1 8a37707, Task 2 e4433ab, Task 3 04817bf;
+task-done 16/29/54 passes. Sole final review complete, no findings/fix pass/re-review.
+Reconcile Git and .superpowers/sdd/2026-10-05-full-source-preparation/progress.md,
+but do not redo these tasks or dispatch another source-batch reviewer. D-036–D-040
+hold all rulings; source-release-pins.json and source-audit-manifest.json hold
+checked metadata. Own ignored scratch retained without destructive approval.
+
+Actual extraction: 87 files/1493523124 bytes. Actual corrected descriptions:
+75 files/76445 bytes. All persisted pins rechecked. Actual audit acceptance passed
+after the owner-approved explicit FK schema-mismatch amendment; sources unchanged.
 11 databases/75 tables/798 columns/3898114 rows, all table counts equal COPY;
 all native definitions/blocks/metadata and saved source pins checked. Source key
 issues preserved: 779 formula_1, 88 card_games, 88 codebase_community violation
 records; European FK count unavailable/null, schema_mismatch (not zero/valid).
 72 tables declare primary keys, 105 FK component metadata records. No source
 repair or import policy decided. docs/source-audit-manifest.json is metadata only.
-Fresh 54 batch tests; no-env 657 passed/165 skipped (5.81s), configured 822 passed/
-zero skips (16.75s), including 165 actual PG. Ruff/37-file format/locked sync pass.
+Task 3's 54 batch checks and independent 54-check repeat pass. Latest finishing
+no-env 657 passed/165 skipped (5.08s), configured 822 passed/zero skips (14.20s),
+including 165 actual PG. Ruff/37-file format/locked sync/whitespace pass.
 Actual audit first failed without publishing; approved amendment test-first and
 one successful acceptance afterward. Do not rerun any completed script destination.
-After this batch and its sole fresh final review, separately prepare controlled
-COPY/import/content/conversion work; C1, second model and split/E0/C2 still later.
+C1, second model and split/E0/C2 still later. Runtime descriptions/labels are not
+selected; typed content/result equivalence and new dataset security are unproved.
 
 Kunal's
 [corrected-label intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md),
