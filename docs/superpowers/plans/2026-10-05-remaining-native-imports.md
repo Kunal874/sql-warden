@@ -12,6 +12,13 @@
 
 **Status:** Prepared 2026-10-05 from clean 3f4b61f. NOT approved or implemented. Kunal requests trying to finish G0 in one run; this does not approve a new artifact, ten new credentials, source-key policy or benchmark choices. After artifact/operation approval execute all four tasks without routine continuation questions; pause only for genuine failures or new required decisions.
 
+Execution update 2026-10-05: Kunal answered “move forward” to the explicit
+operation/policy question. This four-task batch is approved; routine artifact
+review questions waived by the owner. Execute sequentially; substantive new
+security/scope/dependency/benchmark/publication decisions still require questions.
+Task completion and deviations live in this plan's ignored ledger and the
+committed PROGRESS/DECISIONS/notebook, not the historical preparation status above.
+
 ## Understanding and alternatives
 
 Finish foundation work efficiently, preserve the first working local demo, and record evidence Kunal can explain. Do not repeat completed setup/intake/California/source-preparation tasks or their reviews.

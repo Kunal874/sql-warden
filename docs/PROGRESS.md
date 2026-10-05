@@ -60,6 +60,16 @@ suite 822 passed/zero skips (16.27s), 165 actual PG; no-env 657/165 skips (5.77s
 locked 27/Ruff/37-file format/whitespace pass. No new code/import/secret/model/gold
 or benchmark action. G0 stays 7/12; C1 and C2 cannot be guessed or marked complete.
 
+2026-10-05 remaining imports: Kunal's “move forward” approved the presented
+four-task batch and asks questions only for important new decisions, not routine
+artifact reviews. Native sequential execution continues from 09dedd2. Task 1
+prepared ten datasets/72 pinned COPY files, 991363484 bytes/3868173 rows; California
+excluded. First missing-module RED observed; 61 extraction/audit/native checks
+pass. Full no-env 668 passed/165 skipped (6.29s), configured 833 passed/zero skips
+(23.90s), 165 actual PG; locked27/Ruff/39-file format/whitespace pass.
+No PostgreSQL writes/credentials
+or model/gold work yet. Task 2 importer/credentials is next; G0 remains 7/12.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -1242,7 +1252,15 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: Kunal reviews the new
+Current action: approved four-task remaining-native-imports batch, executing
+sequentially in the existing checkout. Task 1 COPY preparation is checked; do
+not rerun its completed destination. Resume Task 2 using this plan's ignored
+ledger/task brief. Kunal approved the presented ten restricted logins/imports
+and row-preserving metadata-only FKs by “move forward”; no routine review or
+continuation questions. Ask a question only for important new authority/decisions
+or genuine blockers. Do not infer benchmark/model/publication approval.
+
+Historical preparation checkpoint: Kunal reviewed the new
 [remaining native imports plan](superpowers/plans/2026-10-05-remaining-native-imports.md)
 and exact operations: ten restricted credentials/logins, 72 tables, enforced PKs,
 unenforced FK metadata and named rollback-only tests. The artifact is prepared,

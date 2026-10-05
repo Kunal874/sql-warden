@@ -1321,6 +1321,26 @@ G0 remains7/12. Full conversion/description/gold validity and measured C1, secon
 model artifact/smoke, frozen family-consistent splits/E0 and measured C2 are still
 separate required outcomes, not silently accepted by a broad completion request.
 
+## D-042 — approved remaining COPY preparation (2026-10-05)
+
+Context: next four-task artifact committed at 09dedd2; Kunal answered “move
+forward” to the explicit ten restricted-login/import and metadata-only-FK
+question, and requests questions only for important new decisions. Reuse this
+approval; routine artifact review questions waived, substantive spec gates stay.
+Decision: execute native/sequentially in the required current checkout; fixed
+IDs/pins, existing auditor with optional unpublished COPY sinks, stdlib staging.
+No dependencies/parallel implementation/runtime redesign or remote operations.
+Task 1 RED: new test collection identifies absent module, as brief expected.
+GREEN: 61 extraction/audit/native tests (0.87s), 11 new controls. Actual bundle
+published once: 72 COPY files/991363484 bytes/3868173 rows for ten datasets;
+all persisted pins/layouts rechecked, California excluded. Source files unchanged.
+Existing destination/corruption/deadline/disk/metadata/unsupported-ID refusal
+covered. No SQL execution/new database role/password/model/gold work in this task.
+Locked27/no-env668passed165skipped(6.29s); configured833passed/zero skips(23.90s),
+165 actual PostgreSQL tests. Ruff/39-file format/whitespace pass.
+No execution-plan conflict or policy deviation in Task 1. Ruff formatting/import
+sorting normalizes the draft without behavioral changes.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

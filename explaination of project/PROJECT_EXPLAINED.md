@@ -1370,6 +1370,28 @@ feature has already been implemented.
 - **Git repository / commit:** a repository stores project files and their
   history. A commit is a saved change in that history, not an automatic upload.
 
+### Remaining import batch — Task 1 complete (2026-10-05)
+
+You said “move forward”, so the four-part import batch is approved. I will not
+ask for routine reviews. Important new decisions will still be questions.
+I saved the data for 72 tables from the ten remaining datasets, almost 1 GB.
+Every saved file matches its recorded fingerprint. The first California dataset
+was not copied again, and the database has not changed yet.
+
+The tool reads only COPY data, not the commands around it. It first saves into
+a temporary folder; the completed folder appears only after every check passes.
+It refuses changed files, insufficient space and an existing completed folder.
+61 extraction/source checks passed; the full no-secret test run passed 668
+tests and skipped 165 checks that need private database settings.
+
+**COPY payload** means table rows in a format PostgreSQL can read quickly.
+**Staging** means preparing privately before declaring the result ready.
+**Unenforced foreign key** means a recorded relationship between two tables is
+not made a database rule. Some source relationships are defective. We preserve
+the rows and record those defects instead of quietly deleting or repairing data.
+This does not prove every query will give the same answer as SQLite.
+Next: test and build the fixed importer, then create its private login file.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and

@@ -423,6 +423,20 @@ Fresh finishing verification: configured 822 passed/zero skips (14.20s), includi
 165 skipped (5.08s). Locked 27 packages, Ruff/37-file format/whitespace pass.
 No new corpus content/answer or dataset-isolation claim follows from these tests.
 
+## Remaining COPY preparation completed (2026-10-05)
+
+Kunal approved the presented four-task batch by “move forward”. The proposed
+metadata-only FK policy is now accepted for these ten new native imports;
+California's enforced FKs stay unchanged. This is not source referential or gold
+validity acceptance. No rows/keys/source bytes are repaired or dropped.
+Task 1 extracted only checked COPY data into ignored
+data/import-release/minidev-0703/native: ten datasets, 72 files, 991363484 bytes,
+3868173 rows. All saved pins/table layouts rechecked; California excluded.
+Staging publishes only after complete dump/archive/block and saved-file checks.
+1200s cooperative budget/1MiB lines/1GiB reserve retained; no source SQL executed.
+61 controlled extraction/audit/native checks pass; new 11 checks first RED
+because the module did not exist. No database/credential/model/gold change yet.
+
 ## Remaining import readiness — read-only preparation (2026-10-05)
 
 Dedicated PostgreSQL 16 still contains only the California dataset and its login;

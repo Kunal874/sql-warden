@@ -30,7 +30,14 @@ from sqlwarden.data import COPY_HEADER, MAX_LINE_BYTES, pg_name, quote_ident
 AUDIT_DIR = Path("data/source-audit/minidev-0703-fe766045")
 
 
-def inspect_native(stream: BinaryIO, tables: dict, dump_pin: dict, *, deadline: float) -> dict:
+def inspect_native(
+    stream: BinaryIO,
+    tables: dict,
+    dump_pin: dict,
+    *,
+    deadline: float,
+    copy_outputs: dict[str, BinaryIO] | None = None,
+) -> dict:
     definitions = {}
     blocks = {}
     ddl = []
@@ -62,6 +69,8 @@ def inspect_native(stream: BinaryIO, tables: dict, dump_pin: dict, *, deadline: 
                 ):
                     raise ValueError("native row shape or block budget exceeded")
                 checksum.update(line)
+                if copy_outputs is not None and active in copy_outputs:
+                    copy_outputs[active].write(line)
             continue
         if ddl:
             ddl.append(line)
