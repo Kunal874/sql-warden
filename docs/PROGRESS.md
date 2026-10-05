@@ -28,6 +28,14 @@ zero skips (18.42s), including 165 actual PostgreSQL checks; no-env 603 passed/
 evidence, nullable-hint correction and all 20 rulings/costs. No runtime/import/model/gold SQL
 step executed; G0 remains 7/12; labels/ambiguity/splits/validity still undecided.
 
+2026-10-05 full-source preparation: completed read-only archive/native/description
+inspection and fixed metadata pins. 11 SQLite sources hashed, 75 native tables/
+798 columns and COPY blocks inspected; corrected descriptions cover all columns.
+Physical SQLite layouts/counts and typed content remain unchecked in this preparation.
+Kunal approved the new three-task batch after artifact review; execute sequentially.
+Fresh configured regression: 768 passed, zero skips (20.75s), including 165 actual PG.
+No new raw files persisted or import/model/credential actions in preparation.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -77,6 +85,13 @@ step executed; G0 remains 7/12; labels/ambiguity/splits/validity still undecided
 - [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
   - [x] Approved four-file correction intake and offline ID/text-difference manifest.
   - [x] Sole correction-intake review and tested streaming-deadline fix.
+  - [x] Inspect/pin full source archive/native layouts and 75 original/corrected descriptions.
+  - [x] Record source fingerprints, name/encoding anomalies and bounded disk plan.
+  - [x] Prepare/self-review the sequential three-task full-source batch.
+  - [x] Review/approve that new full-source preparation artifact.
+  - [ ] Extract 87 fixed full-source members into a separate ignored directory.
+  - [ ] Acquire the 75 pinned corrected description files.
+  - [ ] Verify actual SQLite layouts/counts/keys and offline description coverage.
   - [ ] Remaining description/import/conversion work and validity manifest.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -1138,13 +1153,17 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: read-only preparation of the next narrow remaining-G0.5
-description/layout/import increment, then new artifact review before its code
-or acquisition/import actions. Inspect all original SQLite/native-dump table
-layouts and the 75 corrected description-file contents/mapping within a newly
-reviewed scope; plan safe remaining extraction/import/content/type/key checks.
-Then conversion/result validity and C1, second model, split/E0/C2. Do not infer
-approval of those operations from this completed four-resource intake.
+Current next action: implement Task 1, then Tasks 2/3 of the newly approved
+[full-source preparation plan](superpowers/plans/2026-10-05-full-source-preparation.md).
+Kunal reviewed/approved all three on 2026-10-05. Native sequential execution:
+tests-first exact extraction (87 files/~1.5 GB), fixed corrected CSV acquisition
+(75 files/76445 bytes), actual read-only SQLite/native/layout/key/description audit.
+No import, credential change, model/gold run, label/benchmark policy or publication.
+Resume .superpowers/sdd/2026-10-05-full-source-preparation/progress.md; reconcile
+task completion lines and Git before acting. Source metadata is in source-release-pins.json.
+Fresh baseline 768 configured tests/zero skips (20.75s), 165 actual PG.
+After this batch and its sole fresh final review, separately prepare controlled
+COPY/import/content/conversion work; C1, second model and split/E0/C2 still later.
 
 Kunal's
 [corrected-label intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md),

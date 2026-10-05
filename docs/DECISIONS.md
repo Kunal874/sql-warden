@@ -1066,6 +1066,60 @@ import/benchmark action. Next: separate reviewed description/layout/import plan,
 then conversion/result validity and C1, second model and split/E0/C2. G0 still
 7/12; G0.5/G0.5b remain incomplete, no benchmark score or changed denominator.
 
+## D-036 — full-source inspection, batched plan and artifact approval (2026-10-05)
+
+Context: resumed clean fc71084; corrected-label intake/final review fully done.
+Kunal requests several checklist items in one run. Handoff required read-only
+description/layout preparation and review of a new artifact before implementation.
+Completed that preparation; Kunal explicitly approved the three-task
+2026-10-05-full-source-preparation.md artifact during this session.
+
+Options: proceed directly into all ten remaining administrative imports, or batch
+fixed source extraction/acquisition and an offline source audit first. Decision:
+the latter, three sequential tasks without intermediate continuation questions;
+existing stdlib/httpx/SQLGlot only, no parallel implementation. PostgreSQL writes,
+credentials, inference, gold SQL, benchmark policy and publication remain outside
+this approval. Native execution and one fresh final read-only review retained.
+
+Evidence: source-release-pins.json records all 11 SQLite source hashes, exact
+original/corrected paths and 75 native table/COPY definitions/pins. Streamed native
+dump has 798 columns/3898114 data lines; corrected descriptions cover all native
+names. Four original/three corrected files need explicit local cp1252 decoding.
+Original constructors has extra wins description; both financial/account files
+have a populated unnamed field at data row 3. No original/corrected source bytes
+rewritten; names/padding observations do not choose runtime descriptions.
+
+Rulings in order:
+1. Keep the mandated normal feat/foundation checkout — verified not main/master,
+   user/AGENTS require this directory — cost if wrong: no separate checkout isolation.
+2. Stream the native dump without another COPY tree — save about 1 GB during
+   preparation; controlled COPY/admin import is later — cost if wrong: later
+   preparation remains required before import.
+3. Pin exact CSV paths and explicit per-file cp1252 interpretation; record padded/
+   unmatched names and populated unnamed metadata — preserve bytes, no silent loss
+   or primary-description adoption — cost if wrong: interpretation/mapping still
+   needs human review and does not prove semantic correctness.
+
+First original-CSV probe failed strict UTF-8 at 0x96. Isolated all 75 encodings:
+four exceptions, strict cp1252 successful. The corrected-file diagnostic then
+twice failed its path-depth assertion; changed investigation to numbered code/
+Git tree path shapes, finding three relative path segments, not two. Corrected
+only diagnostic shape and all 75 in-memory size/blob/hash/CSV checks passed.
+No project test/security boundary, corpus byte, pin or benchmark was altered.
+
+New raw footprint: 1493523124 bytes extraction plus 76445 CSV bytes, 1 GiB reserve.
+D: free 46325698560 bytes and RAM free 1167319040 at preflight; sequential streaming,
+one read-only SQLite at a time, not large in-memory deserialization. No system/model
+resource request or user memory closure required.
+
+Preparation verification: locked sync 27 packages; fresh unchanged configured
+suite 768 passed/zero skips (20.75s), including 165 actual PostgreSQL checks.
+Six embedded Python blocks syntax-parse; counts, hash shapes, unique output paths,
+798 columns and declared-type totals checked. Proposed code/tests were not executed
+during preparation. No implementation reviewer yet. G0 still 7/12, G0.5/C1 unfinished.
+Next execute all three approved tasks, then one final review. No repeated intake,
+California import, credential rotation or live question.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

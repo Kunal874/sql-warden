@@ -902,6 +902,44 @@ under your Git identity. Progress remains 7 of 12 foundation tasks. Next comes
 the separate description/layout/import plan and later answer-validity decisions.
 No upload, model test, credential change or new database import happened here.
 
+### G0.5, full-source preparation — Check the files before loading more databases
+
+Finished three preparation checks together: counted and fingerprinted the complete
+source files, inspected the native database table descriptions, and checked all
+75 corrected description files in memory. We found 75 tables with 798 columns.
+The corrected description names cover those columns. This does not prove the
+written descriptions or answers are correct.
+
+We found details that could otherwise cause mistakes. Some old files use a
+different text encoding. Many old column-description names have spaces around
+them. One old description names a column that is not in the native table.
+One file has extra text under an empty heading. We recorded these facts instead
+of silently throwing them away or pretending they are verified corrections.
+
+You reviewed and approved one batch containing three implementation tasks:
+safely unpack the source databases, save the small fixed-version description
+files, then inspect the real SQLite layouts, row counts and keys. I will do those
+in order without asking to continue after each one. This preparation did not load
+another database, change a password or run the AI.
+
+Checked now: the existing full project passed 768 tests, zero skips, including
+165 real PostgreSQL checks. The proposed code in the plan passes syntax checks
+only; it is not yet implemented or tested. Foundation progress remains 7 of 12
+top-level tasks, with the new preparation/review steps checked inside G0.5.
+
+New words:
+
+- **Layout:** the list of tables and columns in a database.
+- **Encoding:** the rule a file uses to turn bytes into readable letters.
+  Using the wrong rule can make accented characters unreadable.
+- **CSV:** a simple table saved as text, usually with commas separating fields.
+- **SQLite:** a database stored in one file. Reading that file is not the same
+  as importing its contents into our PostgreSQL server.
+- **COPY block:** a section of the PostgreSQL source containing table rows.
+  We counted and fingerprinted it; we did not run its surrounding SQL.
+- **Timestamp with time zone:** a date and time that also needs a clear time-zone
+  interpretation. We must check conversions before claiming equal answers.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -1204,8 +1242,10 @@ verified parsing fixes are complete. Next we resume the remaining foundation:
 datasets and validity decisions, the second model, then split/evaluation/model
 choices. You approved the two-task correction-intake plan; its first checker
 and the four-file intake and their final review are complete. Next comes the
-remaining descriptions/layout/import plan and answer-validity work. This intake uses existing
-software and does not change the database
+remaining descriptions/layout/import and answer-validity work. The three-task
+offline source-preparation batch is now reviewed and approved. It will unpack
+the fixed sources, save the small descriptions and audit layouts before any new
+import plan. This intake uses existing software and does not change the database
 or run the model. Each relevant new permission outside that scope needs review.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 

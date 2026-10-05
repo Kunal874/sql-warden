@@ -225,9 +225,9 @@ and anchors before selecting question/ambiguity policies.
 
 The [corrected schemas directory](https://github.com/uiuc-kang-lab/text_to_sql_benchmarks/tree/fe766045c55b6875a43b30e9ac7683df5582f8cf/data/schemas)
 has Git tree 9cf49139c686a1156491f1859c0a75c91e257897: 75 CSV description files,
-76,445 bytes by recursive Git tree metadata. Contents were not parsed/applied;
-this inventory does not establish physical-table changes or correct column
-mapping. Schema-description inspection remains required separately.
+76,445 bytes by recursive Git tree metadata. At this earlier intake checkpoint,
+contents were not parsed/applied; the dated preparation below now records content
+inspection. Neither inspection establishes physical-table changes or value correctness.
 
 The [two-task intake plan](superpowers/plans/2026-10-05-corrected-label-intake.md)
 was approved by Kunal on 2026-10-05. Both tasks' code/actual acceptance are checked;
@@ -284,3 +284,48 @@ valid. Final combined tests 49 passed, configured full suite 768/zero skips,
 including 165 actual PostgreSQL checks; no gold SQL or new corpus validity claim.
 Cooperative bounds do not promise hard interruption inside DNS/TLS/header/file
 operations or crash durability; Windows/trusted-local-filesystem workflow only.
+
+## Full-source read-only preparation (2026-10-05)
+
+[Source-release pins](source-release-pins.json) record actual streamed fingerprints
+from clean fc71084: archive 799944582 bytes, native dump 1001882533 bytes, metadata
+158301 bytes; 11 SQLite files (1493287936 bytes), 75 original description CSVs
+(76887 bytes), and 75 corrected CSVs (76445 bytes). All SQLite archive members were
+hashed without extracting/deserializing them. Exact member/output paths exclude
+__MACOSX forks and preserve filename case differences such as original Budget.csv
+versus corrected budget.csv. No raw prose, data cells or SQL is in this metadata.
+
+Read-only native CREATE/COPY inspection found 75 unique tables, 798 ordered columns,
+3898114 COPY data lines and 1001771589 COPY data bytes; all header/definition columns
+match. Types: BIGINT 366, TEXT 329, REAL 73, DATE 19, TIMESTAMPTZ 11. The latter occur
+in codebase_community and require later conversion/timezone decisions. These are
+native dump observations, not verified physical SQLite or imported PostgreSQL rows.
+
+Fetched all 75 fixed-revision corrected CSVs into memory only; checked Git blob
+SHA-1/size and computed SHA-256, then strictly parsed headers/column names. After
+existing pg_name mapping and description-only padding removal, corrected rows
+cover all 798 native columns with no missing/extra/duplicate identities. This is
+name coverage, not semantic correctness or a chosen runtime description policy.
+Original CSVs contain 799 records: constructors in formula_1 has an extra padded
+wins description absent from the native table; retain/report it rather than attach
+it to another column. 89 original padded-name records were observed, including
+that unmatched record. Both financial/account files have a sixth unnamed header
+field with nonempty text at one-based data row 3; record it, preserve raw files,
+and do not silently erase it or present it as a verified named-column description.
+
+Strict UTF-8 failed for four original files: formula_1/qualifying.csv,
+european_football_2/Team_Attributes.csv, european_football_2/Player_Attributes.csv,
+and student_club/Budget.csv. Three corrected files retain the encoding issue
+(the two European files and student_club/budget.csv); corrected qualifying is UTF-8.
+Strict cp1252 parses these bytes and is a pinned local interpretation, not an
+upstream charset declaration or an automatic fallback. Other originals/corrections
+are UTF-8-sig. Source bytes/pins remain unchanged.
+
+Kunal reviewed and approved the [three-task source preparation plan](superpowers/plans/2026-10-05-full-source-preparation.md).
+It will extract 87 fixed members into a new ignored release, acquire 75 corrected
+CSV files once and audit actual SQLite layouts/counts/keys/descriptions offline.
+Expanded footprint 1493523124 + 76445 bytes, plus 1 GiB extraction reserve; fresh
+preparation D: free 46325698560 bytes, RAM free 1167319040 bytes. Native dump is streamed,
+not copied into another 1 GB tree. Physical layout/count equality, content/type
+conversion equivalence, remaining PostgreSQL imports, gold validity, primary labels/
+descriptions, ambiguity/splits and C1 remain unperformed. No benchmark score.
