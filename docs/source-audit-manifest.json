@@ -1,0 +1,1709 @@
+{
+  "format_version": 1,
+  "status": "source layout audit only",
+  "conversion_validity": "not checked",
+  "typed_content_equivalence": "not checked",
+  "primary_descriptions": "not selected",
+  "constraint_validity": "not established; source issues recorded",
+  "databases": {
+    "debit_card_specializing": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 0,
+      "tables": {
+        "customers": {
+          "source_name": "customers",
+          "rows": 32461,
+          "primary_key": ["customerid"],
+          "columns": [
+            {"name":"customerid","source_name":"CustomerID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"segment","source_name":"Segment","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"currency","source_name":"Currency","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "gasstations": {
+          "source_name": "gasstations",
+          "rows": 5716,
+          "primary_key": ["gasstationid"],
+          "columns": [
+            {"name":"gasstationid","source_name":"GasStationID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"chainid","source_name":"ChainID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"country","source_name":"Country","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"segment","source_name":"Segment","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "products": {
+          "source_name": "products",
+          "rows": 591,
+          "primary_key": ["productid"],
+          "columns": [
+            {"name":"productid","source_name":"ProductID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"description","source_name":"Description","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "transactions_1k": {
+          "source_name": "transactions_1k",
+          "rows": 1000,
+          "primary_key": ["transactionid"],
+          "columns": [
+            {"name":"transactionid","source_name":"TransactionID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"date","source_name":"Date","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"time","source_name":"Time","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"customerid","source_name":"CustomerID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"cardid","source_name":"CardID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gasstationid","source_name":"GasStationID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"productid","source_name":"ProductID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"amount","source_name":"Amount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"price","source_name":"Price","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "yearmonth": {
+          "source_name": "yearmonth",
+          "rows": 383282,
+          "primary_key": ["date","customerid"],
+          "columns": [
+            {"name":"customerid","source_name":"CustomerID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":2},
+            {"name":"date","source_name":"Date","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":1},
+            {"name":"consumption","source_name":"Consumption","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"customers","column":"CustomerID","parent_column":null,"on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"customers","column":"CustomerID","parent_column":null,"on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        }
+      }
+    },
+    "financial": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 0,
+      "tables": {
+        "account": {
+          "source_name": "account",
+          "rows": 4500,
+          "primary_key": ["account_id"],
+          "columns": [
+            {"name":"account_id","source_name":"account_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"district_id","source_name":"district_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"frequency","source_name":"frequency","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"date","source_name":"date","source_type":"DATE","native_type":"DATE","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"district","column":"district_id","parent_column":"district_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "card": {
+          "source_name": "card",
+          "rows": 892,
+          "primary_key": ["card_id"],
+          "columns": [
+            {"name":"card_id","source_name":"card_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"disp_id","source_name":"disp_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"type","source_name":"type","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"issued","source_name":"issued","source_type":"DATE","native_type":"DATE","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"disp","column":"disp_id","parent_column":"disp_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "client": {
+          "source_name": "client",
+          "rows": 5369,
+          "primary_key": ["client_id"],
+          "columns": [
+            {"name":"client_id","source_name":"client_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"gender","source_name":"gender","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"birth_date","source_name":"birth_date","source_type":"DATE","native_type":"DATE","declared_not_null":true,"primary_key_position":0},
+            {"name":"district_id","source_name":"district_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"district","column":"district_id","parent_column":"district_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "disp": {
+          "source_name": "disp",
+          "rows": 5369,
+          "primary_key": ["disp_id"],
+          "columns": [
+            {"name":"disp_id","source_name":"disp_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"client_id","source_name":"client_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"account_id","source_name":"account_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"type","source_name":"type","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"client","column":"client_id","parent_column":"client_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"account","column":"account_id","parent_column":"account_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "district": {
+          "source_name": "district",
+          "rows": 77,
+          "primary_key": ["district_id"],
+          "columns": [
+            {"name":"district_id","source_name":"district_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"a2","source_name":"A2","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a3","source_name":"A3","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a4","source_name":"A4","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a5","source_name":"A5","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a6","source_name":"A6","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a7","source_name":"A7","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a8","source_name":"A8","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a9","source_name":"A9","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a10","source_name":"A10","source_type":"REAL","native_type":"REAL","declared_not_null":true,"primary_key_position":0},
+            {"name":"a11","source_name":"A11","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a12","source_name":"A12","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"a13","source_name":"A13","source_type":"REAL","native_type":"REAL","declared_not_null":true,"primary_key_position":0},
+            {"name":"a14","source_name":"A14","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"a15","source_name":"A15","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"a16","source_name":"A16","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "loan": {
+          "source_name": "loan",
+          "rows": 682,
+          "primary_key": ["loan_id"],
+          "columns": [
+            {"name":"loan_id","source_name":"loan_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"account_id","source_name":"account_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"date","source_name":"date","source_type":"DATE","native_type":"DATE","declared_not_null":true,"primary_key_position":0},
+            {"name":"amount","source_name":"amount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"duration","source_name":"duration","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"payments","source_name":"payments","source_type":"REAL","native_type":"REAL","declared_not_null":true,"primary_key_position":0},
+            {"name":"status","source_name":"status","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"account","column":"account_id","parent_column":"account_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "order": {
+          "source_name": "order",
+          "rows": 6471,
+          "primary_key": ["order_id"],
+          "columns": [
+            {"name":"order_id","source_name":"order_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"account_id","source_name":"account_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"bank_to","source_name":"bank_to","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"account_to","source_name":"account_to","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"amount","source_name":"amount","source_type":"REAL","native_type":"REAL","declared_not_null":true,"primary_key_position":0},
+            {"name":"k_symbol","source_name":"k_symbol","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"account","column":"account_id","parent_column":"account_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "trans": {
+          "source_name": "trans",
+          "rows": 1056320,
+          "primary_key": ["trans_id"],
+          "columns": [
+            {"name":"trans_id","source_name":"trans_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"account_id","source_name":"account_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"date","source_name":"date","source_type":"DATE","native_type":"DATE","declared_not_null":true,"primary_key_position":0},
+            {"name":"type","source_name":"type","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"operation","source_name":"operation","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"amount","source_name":"amount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"balance","source_name":"balance","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"k_symbol","source_name":"k_symbol","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"bank","source_name":"bank","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"account","source_name":"account","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"account","column":"account_id","parent_column":"account_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        }
+      }
+    },
+    "formula_1": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 779,
+      "tables": {
+        "circuits": {
+          "source_name": "circuits",
+          "rows": 72,
+          "primary_key": ["circuitid"],
+          "columns": [
+            {"name":"circuitid","source_name":"circuitId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"circuitref","source_name":"circuitRef","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"name","source_name":"name","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"location","source_name":"location","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"country","source_name":"country","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"lat","source_name":"lat","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"lng","source_name":"lng","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"alt","source_name":"alt","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"url","source_name":"url","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "constructorresults": {
+          "source_name": "constructorResults",
+          "rows": 11082,
+          "primary_key": ["constructorresultsid"],
+          "columns": [
+            {"name":"constructorresultsid","source_name":"constructorResultsId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"raceid","source_name":"raceId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"constructorid","source_name":"constructorId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"points","source_name":"points","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"status","source_name":"status","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"constructors","column":"constructorId","parent_column":"constructorId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"races","column":"raceId","parent_column":"raceId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "constructors": {
+          "source_name": "constructors",
+          "rows": 208,
+          "primary_key": ["constructorid"],
+          "columns": [
+            {"name":"constructorid","source_name":"constructorId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"constructorref","source_name":"constructorRef","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"name","source_name":"name","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"nationality","source_name":"nationality","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"url","source_name":"url","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "constructorstandings": {
+          "source_name": "constructorStandings",
+          "rows": 11836,
+          "primary_key": ["constructorstandingsid"],
+          "columns": [
+            {"name":"constructorstandingsid","source_name":"constructorStandingsId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"raceid","source_name":"raceId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"constructorid","source_name":"constructorId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"points","source_name":"points","source_type":"REAL","native_type":"REAL","declared_not_null":true,"primary_key_position":0},
+            {"name":"position","source_name":"position","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"positiontext","source_name":"positionText","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"wins","source_name":"wins","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"constructors","column":"constructorId","parent_column":"constructorId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"races","column":"raceId","parent_column":"raceId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "drivers": {
+          "source_name": "drivers",
+          "rows": 840,
+          "primary_key": ["driverid"],
+          "columns": [
+            {"name":"driverid","source_name":"driverId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"driverref","source_name":"driverRef","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"number","source_name":"number","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"code","source_name":"code","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"forename","source_name":"forename","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"surname","source_name":"surname","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"dob","source_name":"dob","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"nationality","source_name":"nationality","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"url","source_name":"url","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "driverstandings": {
+          "source_name": "driverStandings",
+          "rows": 31578,
+          "primary_key": ["driverstandingsid"],
+          "columns": [
+            {"name":"driverstandingsid","source_name":"driverStandingsId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"raceid","source_name":"raceId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"driverid","source_name":"driverId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"points","source_name":"points","source_type":"REAL","native_type":"REAL","declared_not_null":true,"primary_key_position":0},
+            {"name":"position","source_name":"position","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"positiontext","source_name":"positionText","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"wins","source_name":"wins","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"drivers","column":"driverId","parent_column":"driverId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"races","column":"raceId","parent_column":"raceId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "laptimes": {
+          "source_name": "lapTimes",
+          "rows": 400524,
+          "primary_key": ["raceid","driverid","lap"],
+          "columns": [
+            {"name":"raceid","source_name":"raceId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"driverid","source_name":"driverId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":2},
+            {"name":"lap","source_name":"lap","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":3},
+            {"name":"position","source_name":"position","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"time","source_name":"time","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"milliseconds","source_name":"milliseconds","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"drivers","column":"driverId","parent_column":"driverId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"races","column":"raceId","parent_column":"raceId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "pitstops": {
+          "source_name": "pitStops",
+          "rows": 5815,
+          "primary_key": ["raceid","driverid","stop"],
+          "columns": [
+            {"name":"raceid","source_name":"raceId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"driverid","source_name":"driverId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":2},
+            {"name":"stop","source_name":"stop","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":3},
+            {"name":"lap","source_name":"lap","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"time","source_name":"time","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"duration","source_name":"duration","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"milliseconds","source_name":"milliseconds","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"drivers","column":"driverId","parent_column":"driverId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"races","column":"raceId","parent_column":"raceId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "qualifying": {
+          "source_name": "qualifying",
+          "rows": 6967,
+          "primary_key": ["qualifyid"],
+          "columns": [
+            {"name":"qualifyid","source_name":"qualifyId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"raceid","source_name":"raceId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"driverid","source_name":"driverId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"constructorid","source_name":"constructorId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"number","source_name":"number","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"position","source_name":"position","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"q1","source_name":"q1","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"q2","source_name":"q2","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"q3","source_name":"q3","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"constructors","column":"constructorId","parent_column":"constructorId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"drivers","column":"driverId","parent_column":"driverId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":2,"sequence":0,"parent_table":"races","column":"raceId","parent_column":"raceId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "races": {
+          "source_name": "races",
+          "rows": 954,
+          "primary_key": ["raceid"],
+          "columns": [
+            {"name":"raceid","source_name":"raceId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"year","source_name":"year","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"round","source_name":"round","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"circuitid","source_name":"circuitId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"name","source_name":"name","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"date","source_name":"date","source_type":"DATE","native_type":"DATE","declared_not_null":true,"primary_key_position":0},
+            {"name":"time","source_name":"time","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"url","source_name":"url","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"circuits","column":"circuitId","parent_column":"circuitId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"seasons","column":"year","parent_column":"year","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "results": {
+          "source_name": "results",
+          "rows": 23179,
+          "primary_key": ["resultid"],
+          "columns": [
+            {"name":"resultid","source_name":"resultId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"raceid","source_name":"raceId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"driverid","source_name":"driverId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"constructorid","source_name":"constructorId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"number","source_name":"number","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"grid","source_name":"grid","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"position","source_name":"position","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"positiontext","source_name":"positionText","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"positionorder","source_name":"positionOrder","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"points","source_name":"points","source_type":"REAL","native_type":"REAL","declared_not_null":true,"primary_key_position":0},
+            {"name":"laps","source_name":"laps","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"time","source_name":"time","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"milliseconds","source_name":"milliseconds","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"fastestlap","source_name":"fastestLap","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"rank","source_name":"rank","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"fastestlaptime","source_name":"fastestLapTime","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"fastestlapspeed","source_name":"fastestLapSpeed","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"statusid","source_name":"statusId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"status","column":"statusId","parent_column":"statusId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"constructors","column":"constructorId","parent_column":"constructorId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":2,"sequence":0,"parent_table":"drivers","column":"driverId","parent_column":"driverId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":3,"sequence":0,"parent_table":"races","column":"raceId","parent_column":"raceId","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "seasons": {
+          "source_name": "seasons",
+          "rows": 68,
+          "primary_key": ["year"],
+          "columns": [
+            {"name":"year","source_name":"year","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"url","source_name":"url","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "status": {
+          "source_name": "status",
+          "rows": 134,
+          "primary_key": ["statusid"],
+          "columns": [
+            {"name":"statusid","source_name":"statusId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"status","source_name":"status","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        }
+      }
+    },
+    "california_schools": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 0,
+      "tables": {
+        "frpm": {
+          "source_name": "frpm",
+          "rows": 9986,
+          "primary_key": ["cdscode"],
+          "columns": [
+            {"name":"cdscode","source_name":"CDSCode","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":1},
+            {"name":"Academic Year","source_name":"Academic Year","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"County Code","source_name":"County Code","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"District Code","source_name":"District Code","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"School Code","source_name":"School Code","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"County Name","source_name":"County Name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"District Name","source_name":"District Name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"School Name","source_name":"School Name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"District Type","source_name":"District Type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"School Type","source_name":"School Type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"Educational Option Type","source_name":"Educational Option Type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"NSLP Provision Status","source_name":"NSLP Provision Status","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"Charter School (Y/N)","source_name":"Charter School (Y/N)","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"Charter School Number","source_name":"Charter School Number","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"Charter Funding Type","source_name":"Charter Funding Type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"irc","source_name":"IRC","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"Low Grade","source_name":"Low Grade","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"High Grade","source_name":"High Grade","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"Enrollment (K-12)","source_name":"Enrollment (K-12)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"Free Meal Count (K-12)","source_name":"Free Meal Count (K-12)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"Percent (%) Eligible Free (K-12)","source_name":"Percent (%) Eligible Free (K-12)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"FRPM Count (K-12)","source_name":"FRPM Count (K-12)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"Percent (%) Eligible FRPM (K-12)","source_name":"Percent (%) Eligible FRPM (K-12)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"Enrollment (Ages 5-17)","source_name":"Enrollment (Ages 5-17)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"Free Meal Count (Ages 5-17)","source_name":"Free Meal Count (Ages 5-17)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"Percent (%) Eligible Free (Ages 5-17)","source_name":"Percent (%) Eligible Free (Ages 5-17)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"FRPM Count (Ages 5-17)","source_name":"FRPM Count (Ages 5-17)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"Percent (%) Eligible FRPM (Ages 5-17)","source_name":"Percent (%) Eligible FRPM (Ages 5-17)","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"2013-14 CALPADS Fall 1 Certification Status","source_name":"2013-14 CALPADS Fall 1 Certification Status","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"schools","column":"CDSCode","parent_column":"CDSCode","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "satscores": {
+          "source_name": "satscores",
+          "rows": 2269,
+          "primary_key": ["cds"],
+          "columns": [
+            {"name":"cds","source_name":"cds","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":1},
+            {"name":"rtype","source_name":"rtype","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"sname","source_name":"sname","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"dname","source_name":"dname","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"cname","source_name":"cname","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"enroll12","source_name":"enroll12","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"numtsttakr","source_name":"NumTstTakr","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"avgscrread","source_name":"AvgScrRead","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"avgscrmath","source_name":"AvgScrMath","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"avgscrwrite","source_name":"AvgScrWrite","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"numge1500","source_name":"NumGE1500","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"schools","column":"cds","parent_column":"CDSCode","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "schools": {
+          "source_name": "schools",
+          "rows": 17686,
+          "primary_key": ["cdscode"],
+          "columns": [
+            {"name":"cdscode","source_name":"CDSCode","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":1},
+            {"name":"ncesdist","source_name":"NCESDist","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"ncesschool","source_name":"NCESSchool","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"statustype","source_name":"StatusType","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"county","source_name":"County","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"district","source_name":"District","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"school","source_name":"School","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"street","source_name":"Street","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"streetabr","source_name":"StreetAbr","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"city","source_name":"City","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"zip","source_name":"Zip","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"state","source_name":"State","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mailstreet","source_name":"MailStreet","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mailstrabr","source_name":"MailStrAbr","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mailcity","source_name":"MailCity","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mailzip","source_name":"MailZip","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mailstate","source_name":"MailState","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"phone","source_name":"Phone","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"ext","source_name":"Ext","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"website","source_name":"Website","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"opendate","source_name":"OpenDate","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"closeddate","source_name":"ClosedDate","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"charter","source_name":"Charter","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"charternum","source_name":"CharterNum","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"fundingtype","source_name":"FundingType","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"doc","source_name":"DOC","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"doctype","source_name":"DOCType","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"soc","source_name":"SOC","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"soctype","source_name":"SOCType","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"edopscode","source_name":"EdOpsCode","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"edopsname","source_name":"EdOpsName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"eilcode","source_name":"EILCode","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"eilname","source_name":"EILName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gsoffered","source_name":"GSoffered","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gsserved","source_name":"GSserved","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"virtual","source_name":"Virtual","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"magnet","source_name":"Magnet","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"latitude","source_name":"Latitude","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"longitude","source_name":"Longitude","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"admfname1","source_name":"AdmFName1","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"admlname1","source_name":"AdmLName1","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"admemail1","source_name":"AdmEmail1","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"admfname2","source_name":"AdmFName2","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"admlname2","source_name":"AdmLName2","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"admemail2","source_name":"AdmEmail2","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"admfname3","source_name":"AdmFName3","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"admlname3","source_name":"AdmLName3","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"admemail3","source_name":"AdmEmail3","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"lastupdate","source_name":"LastUpdate","source_type":"DATE","native_type":"DATE","declared_not_null":true,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        }
+      }
+    },
+    "card_games": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 88,
+      "tables": {
+        "cards": {
+          "source_name": "cards",
+          "rows": 56822,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"artist","source_name":"artist","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"asciiname","source_name":"asciiName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"availability","source_name":"availability","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"bordercolor","source_name":"borderColor","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"cardkingdomfoilid","source_name":"cardKingdomFoilId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"cardkingdomid","source_name":"cardKingdomId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"coloridentity","source_name":"colorIdentity","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"colorindicator","source_name":"colorIndicator","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"colors","source_name":"colors","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"convertedmanacost","source_name":"convertedManaCost","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"dueldeck","source_name":"duelDeck","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"edhrecrank","source_name":"edhrecRank","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"faceconvertedmanacost","source_name":"faceConvertedManaCost","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"facename","source_name":"faceName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"flavorname","source_name":"flavorName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"flavortext","source_name":"flavorText","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"frameeffects","source_name":"frameEffects","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"frameversion","source_name":"frameVersion","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"hand","source_name":"hand","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"hasalternativedecklimit","source_name":"hasAlternativeDeckLimit","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"hascontentwarning","source_name":"hasContentWarning","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"hasfoil","source_name":"hasFoil","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"hasnonfoil","source_name":"hasNonFoil","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isalternative","source_name":"isAlternative","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isfullart","source_name":"isFullArt","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isonlineonly","source_name":"isOnlineOnly","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isoversized","source_name":"isOversized","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"ispromo","source_name":"isPromo","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isreprint","source_name":"isReprint","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isreserved","source_name":"isReserved","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isstarter","source_name":"isStarter","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isstoryspotlight","source_name":"isStorySpotlight","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"istextless","source_name":"isTextless","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"istimeshifted","source_name":"isTimeshifted","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"keywords","source_name":"keywords","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"layout","source_name":"layout","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"leadershipskills","source_name":"leadershipSkills","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"life","source_name":"life","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"loyalty","source_name":"loyalty","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"manacost","source_name":"manaCost","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mcmid","source_name":"mcmId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mcmmetaid","source_name":"mcmMetaId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mtgarenaid","source_name":"mtgArenaId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mtgjsonv4id","source_name":"mtgjsonV4Id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mtgofoilid","source_name":"mtgoFoilId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mtgoid","source_name":"mtgoId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"multiverseid","source_name":"multiverseId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"name","source_name":"name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"number","source_name":"number","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"originalreleasedate","source_name":"originalReleaseDate","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"originaltext","source_name":"originalText","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"originaltype","source_name":"originalType","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"otherfaceids","source_name":"otherFaceIds","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"power","source_name":"power","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"printings","source_name":"printings","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"promotypes","source_name":"promoTypes","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"purchaseurls","source_name":"purchaseUrls","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"rarity","source_name":"rarity","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"scryfallid","source_name":"scryfallId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"scryfallillustrationid","source_name":"scryfallIllustrationId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"scryfalloracleid","source_name":"scryfallOracleId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"setcode","source_name":"setCode","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"side","source_name":"side","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"subtypes","source_name":"subtypes","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"supertypes","source_name":"supertypes","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"tcgplayerproductid","source_name":"tcgplayerProductId","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"text","source_name":"text","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"toughness","source_name":"toughness","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"type","source_name":"type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"types","source_name":"types","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"uuid","source_name":"uuid","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"variations","source_name":"variations","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"watermark","source_name":"watermark","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "foreign_data": {
+          "source_name": "foreign_data",
+          "rows": 229186,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"flavortext","source_name":"flavorText","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"language","source_name":"language","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"multiverseid","source_name":"multiverseid","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"name","source_name":"name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"text","source_name":"text","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"type","source_name":"type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"uuid","source_name":"uuid","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"cards","column":"uuid","parent_column":"uuid","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "legalities": {
+          "source_name": "legalities",
+          "rows": 427907,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"format","source_name":"format","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"status","source_name":"status","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"uuid","source_name":"uuid","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"cards","column":"uuid","parent_column":"uuid","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "rulings": {
+          "source_name": "rulings",
+          "rows": 87769,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"date","source_name":"date","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"text","source_name":"text","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"uuid","source_name":"uuid","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"cards","column":"uuid","parent_column":"uuid","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "set_translations": {
+          "source_name": "set_translations",
+          "rows": 1210,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"language","source_name":"language","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"setcode","source_name":"setCode","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"translation","source_name":"translation","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"sets","column":"setCode","parent_column":"code","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "sets": {
+          "source_name": "sets",
+          "rows": 551,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"basesetsize","source_name":"baseSetSize","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"block","source_name":"block","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"booster","source_name":"booster","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"code","source_name":"code","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isfoilonly","source_name":"isFoilOnly","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isforeignonly","source_name":"isForeignOnly","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isnonfoilonly","source_name":"isNonFoilOnly","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"isonlineonly","source_name":"isOnlineOnly","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"ispartialpreview","source_name":"isPartialPreview","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":0},
+            {"name":"keyrunecode","source_name":"keyruneCode","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mcmid","source_name":"mcmId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mcmidextras","source_name":"mcmIdExtras","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mcmname","source_name":"mcmName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"mtgocode","source_name":"mtgoCode","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"name","source_name":"name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"parentcode","source_name":"parentCode","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"releasedate","source_name":"releaseDate","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"tcgplayergroupid","source_name":"tcgplayerGroupId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"totalsetsize","source_name":"totalSetSize","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"type","source_name":"type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        }
+      }
+    },
+    "european_football_2": {
+      "foreign_key_check_status": "schema_mismatch",
+      "foreign_key_violation_count": null,
+      "tables": {
+        "country": {
+          "source_name": "Country",
+          "rows": 11,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"name","source_name":"name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "league": {
+          "source_name": "League",
+          "rows": 11,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"country_id","source_name":"country_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"name","source_name":"name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"country","column":"country_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "match": {
+          "source_name": "Match",
+          "rows": 25979,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"country_id","source_name":"country_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"league_id","source_name":"league_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"season","source_name":"season","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"stage","source_name":"stage","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"date","source_name":"date","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"match_api_id","source_name":"match_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_team_api_id","source_name":"home_team_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_team_api_id","source_name":"away_team_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_team_goal","source_name":"home_team_goal","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_team_goal","source_name":"away_team_goal","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x1","source_name":"home_player_X1","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x2","source_name":"home_player_X2","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x3","source_name":"home_player_X3","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x4","source_name":"home_player_X4","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x5","source_name":"home_player_X5","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x6","source_name":"home_player_X6","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x7","source_name":"home_player_X7","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x8","source_name":"home_player_X8","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x9","source_name":"home_player_X9","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x10","source_name":"home_player_X10","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_x11","source_name":"home_player_X11","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x1","source_name":"away_player_X1","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x2","source_name":"away_player_X2","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x3","source_name":"away_player_X3","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x4","source_name":"away_player_X4","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x5","source_name":"away_player_X5","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x6","source_name":"away_player_X6","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x7","source_name":"away_player_X7","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x8","source_name":"away_player_X8","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x9","source_name":"away_player_X9","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x10","source_name":"away_player_X10","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_x11","source_name":"away_player_X11","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y1","source_name":"home_player_Y1","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y2","source_name":"home_player_Y2","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y3","source_name":"home_player_Y3","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y4","source_name":"home_player_Y4","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y5","source_name":"home_player_Y5","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y6","source_name":"home_player_Y6","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y7","source_name":"home_player_Y7","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y8","source_name":"home_player_Y8","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y9","source_name":"home_player_Y9","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y10","source_name":"home_player_Y10","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_y11","source_name":"home_player_Y11","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y1","source_name":"away_player_Y1","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y2","source_name":"away_player_Y2","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y3","source_name":"away_player_Y3","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y4","source_name":"away_player_Y4","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y5","source_name":"away_player_Y5","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y6","source_name":"away_player_Y6","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y7","source_name":"away_player_Y7","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y8","source_name":"away_player_Y8","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y9","source_name":"away_player_Y9","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y10","source_name":"away_player_Y10","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_y11","source_name":"away_player_Y11","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_1","source_name":"home_player_1","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_2","source_name":"home_player_2","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_3","source_name":"home_player_3","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_4","source_name":"home_player_4","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_5","source_name":"home_player_5","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_6","source_name":"home_player_6","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_7","source_name":"home_player_7","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_8","source_name":"home_player_8","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_9","source_name":"home_player_9","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_10","source_name":"home_player_10","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"home_player_11","source_name":"home_player_11","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_1","source_name":"away_player_1","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_2","source_name":"away_player_2","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_3","source_name":"away_player_3","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_4","source_name":"away_player_4","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_5","source_name":"away_player_5","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_6","source_name":"away_player_6","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_7","source_name":"away_player_7","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_8","source_name":"away_player_8","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_9","source_name":"away_player_9","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_10","source_name":"away_player_10","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"away_player_11","source_name":"away_player_11","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"goal","source_name":"goal","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"shoton","source_name":"shoton","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"shotoff","source_name":"shotoff","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"foulcommit","source_name":"foulcommit","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"card","source_name":"card","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"cross","source_name":"cross","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"corner","source_name":"corner","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"possession","source_name":"possession","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"b365h","source_name":"B365H","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"b365d","source_name":"B365D","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"b365a","source_name":"B365A","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"bwh","source_name":"BWH","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"bwd","source_name":"BWD","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"bwa","source_name":"BWA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"iwh","source_name":"IWH","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"iwd","source_name":"IWD","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"iwa","source_name":"IWA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"lbh","source_name":"LBH","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"lbd","source_name":"LBD","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"lba","source_name":"LBA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"psh","source_name":"PSH","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"psd","source_name":"PSD","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"psa","source_name":"PSA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"whh","source_name":"WHH","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"whd","source_name":"WHD","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"wha","source_name":"WHA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"sjh","source_name":"SJH","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"sjd","source_name":"SJD","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"sja","source_name":"SJA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"vch","source_name":"VCH","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"vcd","source_name":"VCD","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"vca","source_name":"VCA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"gbh","source_name":"GBH","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"gbd","source_name":"GBD","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"gba","source_name":"GBA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"bsh","source_name":"BSH","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"bsd","source_name":"BSD","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"bsa","source_name":"BSA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"Player","column":"away_player_11","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"Player","column":"away_player_10","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":2,"sequence":0,"parent_table":"Player","column":"away_player_9","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":3,"sequence":0,"parent_table":"Player","column":"away_player_8","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":4,"sequence":0,"parent_table":"Player","column":"away_player_7","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":5,"sequence":0,"parent_table":"Player","column":"away_player_6","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":6,"sequence":0,"parent_table":"Player","column":"away_player_5","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":7,"sequence":0,"parent_table":"Player","column":"away_player_4","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":8,"sequence":0,"parent_table":"Player","column":"away_player_3","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":9,"sequence":0,"parent_table":"Player","column":"away_player_2","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":10,"sequence":0,"parent_table":"Player","column":"away_player_1","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":11,"sequence":0,"parent_table":"Player","column":"home_player_11","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":12,"sequence":0,"parent_table":"Player","column":"home_player_10","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":13,"sequence":0,"parent_table":"Player","column":"home_player_9","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":14,"sequence":0,"parent_table":"Player","column":"home_player_8","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":15,"sequence":0,"parent_table":"Player","column":"home_player_7","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":16,"sequence":0,"parent_table":"Player","column":"home_player_6","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":17,"sequence":0,"parent_table":"Player","column":"home_player_5","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":18,"sequence":0,"parent_table":"Player","column":"home_player_4","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":19,"sequence":0,"parent_table":"Player","column":"home_player_3","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":20,"sequence":0,"parent_table":"Player","column":"home_player_2","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":21,"sequence":0,"parent_table":"Player","column":"home_player_1","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":22,"sequence":0,"parent_table":"Team","column":"away_team_api_id","parent_column":"team_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":23,"sequence":0,"parent_table":"Team","column":"home_team_api_id","parent_column":"team_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":24,"sequence":0,"parent_table":"League","column":"league_id","parent_column":null,"on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":25,"sequence":0,"parent_table":"Country","column":"country_id","parent_column":null,"on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "player": {
+          "source_name": "Player",
+          "rows": 11060,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"player_api_id","source_name":"player_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"player_name","source_name":"player_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"player_fifa_api_id","source_name":"player_fifa_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"birthday","source_name":"birthday","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"height","source_name":"height","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"weight","source_name":"weight","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "player_attributes": {
+          "source_name": "Player_Attributes",
+          "rows": 183978,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"player_fifa_api_id","source_name":"player_fifa_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"player_api_id","source_name":"player_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"date","source_name":"date","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"overall_rating","source_name":"overall_rating","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"potential","source_name":"potential","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"preferred_foot","source_name":"preferred_foot","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"attacking_work_rate","source_name":"attacking_work_rate","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"defensive_work_rate","source_name":"defensive_work_rate","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"crossing","source_name":"crossing","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"finishing","source_name":"finishing","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"heading_accuracy","source_name":"heading_accuracy","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"short_passing","source_name":"short_passing","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"volleys","source_name":"volleys","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"dribbling","source_name":"dribbling","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"curve","source_name":"curve","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"free_kick_accuracy","source_name":"free_kick_accuracy","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"long_passing","source_name":"long_passing","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"ball_control","source_name":"ball_control","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"acceleration","source_name":"acceleration","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"sprint_speed","source_name":"sprint_speed","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"agility","source_name":"agility","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"reactions","source_name":"reactions","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"balance","source_name":"balance","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"shot_power","source_name":"shot_power","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"jumping","source_name":"jumping","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"stamina","source_name":"stamina","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"strength","source_name":"strength","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"long_shots","source_name":"long_shots","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"aggression","source_name":"aggression","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"interceptions","source_name":"interceptions","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"positioning","source_name":"positioning","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"vision","source_name":"vision","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"penalties","source_name":"penalties","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"marking","source_name":"marking","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"standing_tackle","source_name":"standing_tackle","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"sliding_tackle","source_name":"sliding_tackle","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gk_diving","source_name":"gk_diving","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gk_handling","source_name":"gk_handling","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gk_kicking","source_name":"gk_kicking","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gk_positioning","source_name":"gk_positioning","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gk_reflexes","source_name":"gk_reflexes","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"Player","column":"player_api_id","parent_column":"player_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"Player","column":"player_fifa_api_id","parent_column":"player_fifa_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "team": {
+          "source_name": "Team",
+          "rows": 299,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"team_api_id","source_name":"team_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"team_fifa_api_id","source_name":"team_fifa_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"team_long_name","source_name":"team_long_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"team_short_name","source_name":"team_short_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "team_attributes": {
+          "source_name": "Team_Attributes",
+          "rows": 1458,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"team_fifa_api_id","source_name":"team_fifa_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"team_api_id","source_name":"team_api_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"date","source_name":"date","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"buildupplayspeed","source_name":"buildUpPlaySpeed","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"buildupplayspeedclass","source_name":"buildUpPlaySpeedClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"buildupplaydribbling","source_name":"buildUpPlayDribbling","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"buildupplaydribblingclass","source_name":"buildUpPlayDribblingClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"buildupplaypassing","source_name":"buildUpPlayPassing","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"buildupplaypassingclass","source_name":"buildUpPlayPassingClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"buildupplaypositioningclass","source_name":"buildUpPlayPositioningClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"chancecreationpassing","source_name":"chanceCreationPassing","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"chancecreationpassingclass","source_name":"chanceCreationPassingClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"chancecreationcrossing","source_name":"chanceCreationCrossing","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"chancecreationcrossingclass","source_name":"chanceCreationCrossingClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"chancecreationshooting","source_name":"chanceCreationShooting","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"chancecreationshootingclass","source_name":"chanceCreationShootingClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"chancecreationpositioningclass","source_name":"chanceCreationPositioningClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"defencepressure","source_name":"defencePressure","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"defencepressureclass","source_name":"defencePressureClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"defenceaggression","source_name":"defenceAggression","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"defenceaggressionclass","source_name":"defenceAggressionClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"defenceteamwidth","source_name":"defenceTeamWidth","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"defenceteamwidthclass","source_name":"defenceTeamWidthClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"defencedefenderlineclass","source_name":"defenceDefenderLineClass","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"Team","column":"team_api_id","parent_column":"team_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"Team","column":"team_fifa_api_id","parent_column":"team_fifa_api_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        }
+      }
+    },
+    "thrombosis_prediction": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 0,
+      "tables": {
+        "examination": {
+          "source_name": "Examination",
+          "rows": 106,
+          "primary_key": [],
+          "columns": [
+            {"name":"id","source_name":"ID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"Examination Date","source_name":"Examination Date","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"aCL IgG","source_name":"aCL IgG","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"aCL IgM","source_name":"aCL IgM","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"ana","source_name":"ANA","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"ANA Pattern","source_name":"ANA Pattern","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"aCL IgA","source_name":"aCL IgA","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"diagnosis","source_name":"Diagnosis","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"kct","source_name":"KCT","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"rvvt","source_name":"RVVT","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"lac","source_name":"LAC","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"symptoms","source_name":"Symptoms","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"thrombosis","source_name":"Thrombosis","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"Patient","column":"ID","parent_column":"ID","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "laboratory": {
+          "source_name": "Laboratory",
+          "rows": 13908,
+          "primary_key": ["id","date"],
+          "columns": [
+            {"name":"id","source_name":"ID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"date","source_name":"Date","source_type":"DATE","native_type":"DATE","declared_not_null":true,"primary_key_position":2},
+            {"name":"got","source_name":"GOT","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gpt","source_name":"GPT","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"ldh","source_name":"LDH","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"alp","source_name":"ALP","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"tp","source_name":"TP","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"alb","source_name":"ALB","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"ua","source_name":"UA","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"un","source_name":"UN","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"cre","source_name":"CRE","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"T-BIL","source_name":"T-BIL","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"T-CHO","source_name":"T-CHO","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"tg","source_name":"TG","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"cpk","source_name":"CPK","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"glu","source_name":"GLU","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"wbc","source_name":"WBC","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"rbc","source_name":"RBC","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"hgb","source_name":"HGB","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"hct","source_name":"HCT","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"plt","source_name":"PLT","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"pt","source_name":"PT","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"aptt","source_name":"APTT","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"fg","source_name":"FG","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"pic","source_name":"PIC","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"tat","source_name":"TAT","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"tat2","source_name":"TAT2","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"U-PRO","source_name":"U-PRO","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"igg","source_name":"IGG","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"iga","source_name":"IGA","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"igm","source_name":"IGM","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"crp","source_name":"CRP","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"ra","source_name":"RA","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"rf","source_name":"RF","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"c3","source_name":"C3","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"c4","source_name":"C4","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"rnp","source_name":"RNP","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"sm","source_name":"SM","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"sc170","source_name":"SC170","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"ssa","source_name":"SSA","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"ssb","source_name":"SSB","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"centromea","source_name":"CENTROMEA","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"dna","source_name":"DNA","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"DNA-II","source_name":"DNA-II","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"Patient","column":"ID","parent_column":"ID","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "patient": {
+          "source_name": "Patient",
+          "rows": 1238,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"ID","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"sex","source_name":"SEX","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"birthday","source_name":"Birthday","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"description","source_name":"Description","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"First Date","source_name":"First Date","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"admission","source_name":"Admission","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"diagnosis","source_name":"Diagnosis","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        }
+      }
+    },
+    "toxicology": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 0,
+      "tables": {
+        "atom": {
+          "source_name": "atom",
+          "rows": 9111,
+          "primary_key": ["atom_id"],
+          "columns": [
+            {"name":"atom_id","source_name":"atom_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":1},
+            {"name":"molecule_id","source_name":"molecule_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"element","source_name":"element","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"molecule","column":"molecule_id","parent_column":"molecule_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "bond": {
+          "source_name": "bond",
+          "rows": 9156,
+          "primary_key": ["bond_id"],
+          "columns": [
+            {"name":"bond_id","source_name":"bond_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":1},
+            {"name":"molecule_id","source_name":"molecule_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"bond_type","source_name":"bond_type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"molecule","column":"molecule_id","parent_column":"molecule_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "connected": {
+          "source_name": "connected",
+          "rows": 18312,
+          "primary_key": ["atom_id","atom_id2"],
+          "columns": [
+            {"name":"atom_id","source_name":"atom_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":1},
+            {"name":"atom_id2","source_name":"atom_id2","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":2},
+            {"name":"bond_id","source_name":"bond_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"bond","column":"bond_id","parent_column":"bond_id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"},{"id":1,"sequence":0,"parent_table":"atom","column":"atom_id2","parent_column":"atom_id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"},{"id":2,"sequence":0,"parent_table":"atom","column":"atom_id","parent_column":"atom_id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "molecule": {
+          "source_name": "molecule",
+          "rows": 343,
+          "primary_key": ["molecule_id"],
+          "columns": [
+            {"name":"molecule_id","source_name":"molecule_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":true,"primary_key_position":1},
+            {"name":"label","source_name":"label","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        }
+      }
+    },
+    "student_club": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 0,
+      "tables": {
+        "attendance": {
+          "source_name": "attendance",
+          "rows": 326,
+          "primary_key": ["link_to_event","link_to_member"],
+          "columns": [
+            {"name":"link_to_event","source_name":"link_to_event","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":1},
+            {"name":"link_to_member","source_name":"link_to_member","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":2}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"member","column":"link_to_member","parent_column":"member_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"event","column":"link_to_event","parent_column":"event_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "budget": {
+          "source_name": "budget",
+          "rows": 52,
+          "primary_key": ["budget_id"],
+          "columns": [
+            {"name":"budget_id","source_name":"budget_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":1},
+            {"name":"category","source_name":"category","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"spent","source_name":"spent","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"remaining","source_name":"remaining","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"amount","source_name":"amount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"event_status","source_name":"event_status","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"link_to_event","source_name":"link_to_event","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"event","column":"link_to_event","parent_column":"event_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "event": {
+          "source_name": "event",
+          "rows": 42,
+          "primary_key": ["event_id"],
+          "columns": [
+            {"name":"event_id","source_name":"event_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":1},
+            {"name":"event_name","source_name":"event_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"event_date","source_name":"event_date","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"type","source_name":"type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"notes","source_name":"notes","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"location","source_name":"location","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"status","source_name":"status","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "expense": {
+          "source_name": "expense",
+          "rows": 32,
+          "primary_key": ["expense_id"],
+          "columns": [
+            {"name":"expense_id","source_name":"expense_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":1},
+            {"name":"expense_description","source_name":"expense_description","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"expense_date","source_name":"expense_date","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"cost","source_name":"cost","source_type":"REAL","native_type":"REAL","declared_not_null":false,"primary_key_position":0},
+            {"name":"approved","source_name":"approved","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"link_to_member","source_name":"link_to_member","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"link_to_budget","source_name":"link_to_budget","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"member","column":"link_to_member","parent_column":"member_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"budget","column":"link_to_budget","parent_column":"budget_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "income": {
+          "source_name": "income",
+          "rows": 36,
+          "primary_key": ["income_id"],
+          "columns": [
+            {"name":"income_id","source_name":"income_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":1},
+            {"name":"date_received","source_name":"date_received","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"amount","source_name":"amount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"source","source_name":"source","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"notes","source_name":"notes","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"link_to_member","source_name":"link_to_member","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"member","column":"link_to_member","parent_column":"member_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "major": {
+          "source_name": "major",
+          "rows": 113,
+          "primary_key": ["major_id"],
+          "columns": [
+            {"name":"major_id","source_name":"major_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":1},
+            {"name":"major_name","source_name":"major_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"department","source_name":"department","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"college","source_name":"college","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "member": {
+          "source_name": "member",
+          "rows": 33,
+          "primary_key": ["member_id"],
+          "columns": [
+            {"name":"member_id","source_name":"member_id","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":1},
+            {"name":"first_name","source_name":"first_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"last_name","source_name":"last_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"email","source_name":"email","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"position","source_name":"position","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"t_shirt_size","source_name":"t_shirt_size","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"phone","source_name":"phone","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"zip","source_name":"zip","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"link_to_major","source_name":"link_to_major","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"zip_code","column":"zip","parent_column":"zip_code","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"major","column":"link_to_major","parent_column":"major_id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "zip_code": {
+          "source_name": "zip_code",
+          "rows": 41877,
+          "primary_key": ["zip_code"],
+          "columns": [
+            {"name":"zip_code","source_name":"zip_code","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":1},
+            {"name":"type","source_name":"type","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"city","source_name":"city","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"county","source_name":"county","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"state","source_name":"state","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"short_state","source_name":"short_state","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        }
+      }
+    },
+    "superhero": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 0,
+      "tables": {
+        "alignment": {
+          "source_name": "alignment",
+          "rows": 4,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"alignment","source_name":"alignment","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "attribute": {
+          "source_name": "attribute",
+          "rows": 6,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"attribute_name","source_name":"attribute_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "colour": {
+          "source_name": "colour",
+          "rows": 35,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"colour","source_name":"colour","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "gender": {
+          "source_name": "gender",
+          "rows": 3,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"gender","source_name":"gender","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "hero_attribute": {
+          "source_name": "hero_attribute",
+          "rows": 3738,
+          "primary_key": [],
+          "columns": [
+            {"name":"hero_id","source_name":"hero_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"attribute_id","source_name":"attribute_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"attribute_value","source_name":"attribute_value","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"superhero","column":"hero_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"attribute","column":"attribute_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "hero_power": {
+          "source_name": "hero_power",
+          "rows": 5825,
+          "primary_key": [],
+          "columns": [
+            {"name":"hero_id","source_name":"hero_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"power_id","source_name":"power_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"superpower","column":"power_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"superhero","column":"hero_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "publisher": {
+          "source_name": "publisher",
+          "rows": 25,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"publisher_name","source_name":"publisher_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "race": {
+          "source_name": "race",
+          "rows": 61,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"race","source_name":"race","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "superhero": {
+          "source_name": "superhero",
+          "rows": 750,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"superhero_name","source_name":"superhero_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"full_name","source_name":"full_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"gender_id","source_name":"gender_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"eye_colour_id","source_name":"eye_colour_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"hair_colour_id","source_name":"hair_colour_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"skin_colour_id","source_name":"skin_colour_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"race_id","source_name":"race_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"publisher_id","source_name":"publisher_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"alignment_id","source_name":"alignment_id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"height_cm","source_name":"height_cm","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"weight_kg","source_name":"weight_kg","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"colour","column":"skin_colour_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":1,"sequence":0,"parent_table":"race","column":"race_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":2,"sequence":0,"parent_table":"publisher","column":"publisher_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":3,"sequence":0,"parent_table":"colour","column":"hair_colour_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":4,"sequence":0,"parent_table":"gender","column":"gender_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":5,"sequence":0,"parent_table":"colour","column":"eye_colour_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"},{"id":6,"sequence":0,"parent_table":"alignment","column":"alignment_id","parent_column":"id","on_update":"NO ACTION","on_delete":"NO ACTION","match":"NONE"}]
+        },
+        "superpower": {
+          "source_name": "superpower",
+          "rows": 167,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"power_name","source_name":"power_name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        }
+      }
+    },
+    "codebase_community": {
+      "foreign_key_check_status": "completed",
+      "foreign_key_violation_count": 88,
+      "tables": {
+        "badges": {
+          "source_name": "badges",
+          "rows": 79851,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"Id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"userid","source_name":"UserId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"name","source_name":"Name","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"date","source_name":"Date","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"users","column":"UserId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "comments": {
+          "source_name": "comments",
+          "rows": 174285,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"Id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"postid","source_name":"PostId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"score","source_name":"Score","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"text","source_name":"Text","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"creationdate","source_name":"CreationDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"userid","source_name":"UserId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"userdisplayname","source_name":"UserDisplayName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"users","column":"UserId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"},{"id":1,"sequence":0,"parent_table":"posts","column":"PostId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "posthistory": {
+          "source_name": "postHistory",
+          "rows": 303155,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"Id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"posthistorytypeid","source_name":"PostHistoryTypeId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"postid","source_name":"PostId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"revisionguid","source_name":"RevisionGUID","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"creationdate","source_name":"CreationDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"userid","source_name":"UserId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"text","source_name":"Text","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"comment","source_name":"Comment","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"userdisplayname","source_name":"UserDisplayName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"users","column":"UserId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"},{"id":1,"sequence":0,"parent_table":"posts","column":"PostId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "postlinks": {
+          "source_name": "postLinks",
+          "rows": 11102,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"Id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"creationdate","source_name":"CreationDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"postid","source_name":"PostId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"relatedpostid","source_name":"RelatedPostId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"linktypeid","source_name":"LinkTypeId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"posts","column":"RelatedPostId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"},{"id":1,"sequence":0,"parent_table":"posts","column":"PostId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "posts": {
+          "source_name": "posts",
+          "rows": 91966,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"Id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"posttypeid","source_name":"PostTypeId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"acceptedanswerid","source_name":"AcceptedAnswerId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"creaiondate","source_name":"CreaionDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"score","source_name":"Score","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"viewcount","source_name":"ViewCount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"body","source_name":"Body","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"owneruserid","source_name":"OwnerUserId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"lasactivitydate","source_name":"LasActivityDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"title","source_name":"Title","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"tags","source_name":"Tags","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"answercount","source_name":"AnswerCount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"commentcount","source_name":"CommentCount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"favoritecount","source_name":"FavoriteCount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"lasteditoruserid","source_name":"LastEditorUserId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"lasteditdate","source_name":"LastEditDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"communityowneddate","source_name":"CommunityOwnedDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"parentid","source_name":"ParentId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"closeddate","source_name":"ClosedDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"ownerdisplayname","source_name":"OwnerDisplayName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"lasteditordisplayname","source_name":"LastEditorDisplayName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"posts","column":"ParentId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"},{"id":1,"sequence":0,"parent_table":"users","column":"OwnerUserId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"},{"id":2,"sequence":0,"parent_table":"users","column":"LastEditorUserId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "tags": {
+          "source_name": "tags",
+          "rows": 1032,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"Id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"tagname","source_name":"TagName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"count","source_name":"Count","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"excerptpostid","source_name":"ExcerptPostId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"wikipostid","source_name":"WikiPostId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"posts","column":"ExcerptPostId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        },
+        "users": {
+          "source_name": "users",
+          "rows": 40325,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"Id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"reputation","source_name":"Reputation","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"creationdate","source_name":"CreationDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"displayname","source_name":"DisplayName","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"lastaccessdate","source_name":"LastAccessDate","source_type":"DATETIME","native_type":"TIMESTAMPTZ","declared_not_null":false,"primary_key_position":0},
+            {"name":"websiteurl","source_name":"WebsiteUrl","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"location","source_name":"Location","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"aboutme","source_name":"AboutMe","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0},
+            {"name":"views","source_name":"Views","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"upvotes","source_name":"UpVotes","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"downvotes","source_name":"DownVotes","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"accountid","source_name":"AccountId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"age","source_name":"Age","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"profileimageurl","source_name":"ProfileImageUrl","source_type":"TEXT","native_type":"TEXT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": []
+        },
+        "votes": {
+          "source_name": "votes",
+          "rows": 38930,
+          "primary_key": ["id"],
+          "columns": [
+            {"name":"id","source_name":"Id","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":true,"primary_key_position":1},
+            {"name":"postid","source_name":"PostId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"votetypeid","source_name":"VoteTypeId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"creationdate","source_name":"CreationDate","source_type":"DATE","native_type":"DATE","declared_not_null":false,"primary_key_position":0},
+            {"name":"userid","source_name":"UserId","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0},
+            {"name":"bountyamount","source_name":"BountyAmount","source_type":"INTEGER","native_type":"BIGINT","declared_not_null":false,"primary_key_position":0}
+          ],
+          "foreign_keys": [{"id":0,"sequence":0,"parent_table":"users","column":"UserId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"},{"id":1,"sequence":0,"parent_table":"posts","column":"PostId","parent_column":"Id","on_update":"CASCADE","on_delete":"CASCADE","match":"NONE"}]
+        }
+      }
+    }
+  },
+  "descriptions": {
+    "original/debit_card_specializing/customers": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/debit_card_specializing/gasstations": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/debit_card_specializing/products": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/debit_card_specializing/transactions_1k": {"rows":9,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/debit_card_specializing/yearmonth": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/financial/account": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[3]},
+    "original/financial/card": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/financial/client": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/financial/disp": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/financial/district": {"rows":16,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/financial/loan": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/financial/order": {"rows":6,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/financial/trans": {"rows":10,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/formula_1/circuits": {"rows":9,"missing":[],"extra":[],"padding_aliases":[{"source_name":"name ","mapped_name":"name"},{"source_name":"location  ","mapped_name":"location"},{"source_name":"country ","mapped_name":"country"},{"source_name":"lat ","mapped_name":"lat"},{"source_name":"lng ","mapped_name":"lng"},{"source_name":"alt ","mapped_name":"alt"},{"source_name":"url ","mapped_name":"url"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/constructors": {"rows":6,"missing":[],"extra":["wins"],"padding_aliases":[{"source_name":"constructorId ","mapped_name":"constructorid"},{"source_name":"constructorRef ","mapped_name":"constructorref"},{"source_name":"name ","mapped_name":"name"},{"source_name":"nationality ","mapped_name":"nationality"},{"source_name":"url ","mapped_name":"url"},{"source_name":"wins ","mapped_name":"wins"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/drivers": {"rows":9,"missing":[],"extra":[],"padding_aliases":[{"source_name":"driverId ","mapped_name":"driverid"},{"source_name":"driverRef ","mapped_name":"driverref"},{"source_name":"number ","mapped_name":"number"},{"source_name":"code ","mapped_name":"code"},{"source_name":"forename ","mapped_name":"forename"},{"source_name":"surname ","mapped_name":"surname"},{"source_name":"dob ","mapped_name":"dob"},{"source_name":"nationality ","mapped_name":"nationality"},{"source_name":"url ","mapped_name":"url"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/seasons": {"rows":2,"missing":[],"extra":[],"padding_aliases":[{"source_name":"year ","mapped_name":"year"},{"source_name":"url ","mapped_name":"url"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/races": {"rows":8,"missing":[],"extra":[],"padding_aliases":[{"source_name":"raceId ","mapped_name":"raceid"},{"source_name":"year ","mapped_name":"year"},{"source_name":"round ","mapped_name":"round"},{"source_name":"circuitId ","mapped_name":"circuitid"},{"source_name":"name ","mapped_name":"name"},{"source_name":"date ","mapped_name":"date"},{"source_name":"time ","mapped_name":"time"},{"source_name":"url ","mapped_name":"url"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/constructorresults": {"rows":5,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/formula_1/constructorstandings": {"rows":7,"missing":[],"extra":[],"padding_aliases":[{"source_name":"constructorStandingsId ","mapped_name":"constructorstandingsid"},{"source_name":"raceId ","mapped_name":"raceid"},{"source_name":"constructorId ","mapped_name":"constructorid"},{"source_name":"position ","mapped_name":"position"},{"source_name":"positionText ","mapped_name":"positiontext"},{"source_name":"wins ","mapped_name":"wins"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/driverstandings": {"rows":7,"missing":[],"extra":[],"padding_aliases":[{"source_name":"driverStandingsId ","mapped_name":"driverstandingsid"},{"source_name":"raceId ","mapped_name":"raceid"},{"source_name":"driverId ","mapped_name":"driverid"},{"source_name":"points ","mapped_name":"points"},{"source_name":"position ","mapped_name":"position"},{"source_name":"positionText ","mapped_name":"positiontext"},{"source_name":"wins ","mapped_name":"wins"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/laptimes": {"rows":6,"missing":[],"extra":[],"padding_aliases":[{"source_name":"raceId ","mapped_name":"raceid"},{"source_name":"driverId ","mapped_name":"driverid"},{"source_name":"lap ","mapped_name":"lap"},{"source_name":"position ","mapped_name":"position"},{"source_name":"time ","mapped_name":"time"},{"source_name":"milliseconds ","mapped_name":"milliseconds"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/pitstops": {"rows":7,"missing":[],"extra":[],"padding_aliases":[{"source_name":"raceId ","mapped_name":"raceid"},{"source_name":"driverId ","mapped_name":"driverid"},{"source_name":"stop ","mapped_name":"stop"},{"source_name":"lap ","mapped_name":"lap"},{"source_name":"time ","mapped_name":"time"},{"source_name":"duration ","mapped_name":"duration"},{"source_name":"milliseconds ","mapped_name":"milliseconds"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/qualifying": {"rows":9,"missing":[],"extra":[],"padding_aliases":[{"source_name":"qualifyId ","mapped_name":"qualifyid"},{"source_name":"raceId ","mapped_name":"raceid"},{"source_name":"driverId ","mapped_name":"driverid"},{"source_name":"constructorId ","mapped_name":"constructorid"},{"source_name":"number ","mapped_name":"number"},{"source_name":"position ","mapped_name":"position"},{"source_name":"q1 ","mapped_name":"q1"},{"source_name":"q2 ","mapped_name":"q2"},{"source_name":"q3 ","mapped_name":"q3"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/status": {"rows":2,"missing":[],"extra":[],"padding_aliases":[{"source_name":"statusId ","mapped_name":"statusid"},{"source_name":"status ","mapped_name":"status"}],"unnamed_nonempty_rows":[]},
+    "original/formula_1/results": {"rows":18,"missing":[],"extra":[],"padding_aliases":[{"source_name":"driverId ","mapped_name":"driverid"},{"source_name":"constructorId ","mapped_name":"constructorid"},{"source_name":"number ","mapped_name":"number"},{"source_name":"grid ","mapped_name":"grid"},{"source_name":"position ","mapped_name":"position"},{"source_name":"positionText ","mapped_name":"positiontext"},{"source_name":"positionOrder ","mapped_name":"positionorder"},{"source_name":"points ","mapped_name":"points"},{"source_name":"laps ","mapped_name":"laps"},{"source_name":"time  ","mapped_name":"time"},{"source_name":"milliseconds ","mapped_name":"milliseconds"},{"source_name":"fastestLap ","mapped_name":"fastestlap"},{"source_name":"rank ","mapped_name":"rank"},{"source_name":"fastestLapTime ","mapped_name":"fastestlaptime"},{"source_name":"fastestLapSpeed ","mapped_name":"fastestlapspeed"},{"source_name":"statusId ","mapped_name":"statusid"}],"unnamed_nonempty_rows":[]},
+    "original/california_schools/frpm": {"rows":29,"missing":[],"extra":[],"padding_aliases":[{"source_name":"School Code ","mapped_name":"School Code"},{"source_name":"District Name ","mapped_name":"District Name"},{"source_name":"School Type ","mapped_name":"School Type"},{"source_name":" Percent (%) Eligible Free (Ages 5-17)","mapped_name":"Percent (%) Eligible Free (Ages 5-17)"}],"unnamed_nonempty_rows":[]},
+    "original/california_schools/satscores": {"rows":11,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/california_schools/schools": {"rows":49,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/card_games/cards": {"rows":74,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/card_games/foreign_data": {"rows":8,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/card_games/legalities": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/card_games/sets": {"rows":21,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/card_games/set_translations": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/card_games/rulings": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/european_football_2/player_attributes": {"rows":42,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/european_football_2/player": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/european_football_2/league": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/european_football_2/country": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/european_football_2/team": {"rows":5,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/european_football_2/team_attributes": {"rows":25,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/european_football_2/match": {"rows":115,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/thrombosis_prediction/examination": {"rows":13,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/thrombosis_prediction/patient": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/thrombosis_prediction/laboratory": {"rows":44,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/toxicology/atom": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/toxicology/bond": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/toxicology/connected": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/toxicology/molecule": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/student_club/event": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/student_club/major": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/student_club/zip_code": {"rows":6,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/student_club/attendance": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/student_club/budget": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/student_club/expense": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/student_club/income": {"rows":6,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/student_club/member": {"rows":9,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/alignment": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/attribute": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/colour": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/gender": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/publisher": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/race": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/superhero": {"rows":12,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/hero_attribute": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/superpower": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/superhero/hero_power": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/codebase_community/badges": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/codebase_community/comments": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/codebase_community/posthistory": {"rows":9,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/codebase_community/postlinks": {"rows":5,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/codebase_community/posts": {"rows":21,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/codebase_community/tags": {"rows":5,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/codebase_community/users": {"rows":14,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "original/codebase_community/votes": {"rows":6,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/california_schools/frpm": {"rows":29,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/california_schools/satscores": {"rows":11,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/california_schools/schools": {"rows":49,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/card_games/cards": {"rows":74,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/card_games/foreign_data": {"rows":8,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/card_games/legalities": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/card_games/rulings": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/card_games/set_translations": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/card_games/sets": {"rows":21,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/codebase_community/badges": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/codebase_community/comments": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/codebase_community/posthistory": {"rows":9,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/codebase_community/postlinks": {"rows":5,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/codebase_community/posts": {"rows":21,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/codebase_community/tags": {"rows":5,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/codebase_community/users": {"rows":14,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/codebase_community/votes": {"rows":6,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/debit_card_specializing/customers": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/debit_card_specializing/gasstations": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/debit_card_specializing/products": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/debit_card_specializing/transactions_1k": {"rows":9,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/debit_card_specializing/yearmonth": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/european_football_2/country": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/european_football_2/league": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/european_football_2/match": {"rows":115,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/european_football_2/player": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/european_football_2/player_attributes": {"rows":42,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/european_football_2/team": {"rows":5,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/european_football_2/team_attributes": {"rows":25,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/financial/account": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[3]},
+    "corrected/financial/card": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/financial/client": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/financial/disp": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/financial/district": {"rows":16,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/financial/loan": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/financial/order": {"rows":6,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/financial/trans": {"rows":10,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/circuits": {"rows":9,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/constructorresults": {"rows":5,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/constructorstandings": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/constructors": {"rows":5,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/driverstandings": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/drivers": {"rows":9,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/laptimes": {"rows":6,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/pitstops": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/qualifying": {"rows":9,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/races": {"rows":8,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/results": {"rows":18,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/seasons": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/formula_1/status": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/student_club/attendance": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/student_club/budget": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/student_club/event": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/student_club/expense": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/student_club/income": {"rows":6,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/student_club/major": {"rows":4,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/student_club/member": {"rows":9,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/student_club/zip_code": {"rows":6,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/alignment": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/attribute": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/colour": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/gender": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/hero_attribute": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/hero_power": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/publisher": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/race": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/superhero": {"rows":12,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/superhero/superpower": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/thrombosis_prediction/examination": {"rows":13,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/thrombosis_prediction/laboratory": {"rows":44,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/thrombosis_prediction/patient": {"rows":7,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/toxicology/atom": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/toxicology/bond": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/toxicology/connected": {"rows":3,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]},
+    "corrected/toxicology/molecule": {"rows":2,"missing":[],"extra":[],"padding_aliases":[],"unnamed_nonempty_rows":[]}
+  },
+  "source_archive_sha256": "aeb211c0e39010bbdae3838bb5e8bd27dc446ed77495b1709f85ccc9bf67f2be",
+  "corrected_revision": "fe766045c55b6875a43b30e9ac7683df5582f8cf",
+  "native_blocks": {
+    "account": {"rows":4500,"bytes":159809,"sha256":"71045b469378f6a3b8aa0d7722bb3601082fc9f1637665d99593d55b74873547"},
+    "alignment": {"rows":4,"bytes":29,"sha256":"557770e9de9ff1b7e1807a7e2abc2086585b253f61cfc54d107745e72b7beef5"},
+    "atom": {"rows":9111,"bytes":152286,"sha256":"5bbb192f3308f9ba6af234ec1738bbc58b793fed64d9d38b011f74170e708527"},
+    "attendance": {"rows":326,"bytes":11736,"sha256":"a9b3c14fe9526d05773be75c897f618fdbc04963fec3c22e0134e79b4a1c5ca9"},
+    "attribute": {"rows":6,"bytes":64,"sha256":"e4d9773d2fd13869275f5dd9f1672eb28541d3351e1977b129655538d281bc8f"},
+    "badges": {"rows":79851,"bytes":3549062,"sha256":"773e4eb2b56c29ec090eb668cf64d15136f8259c534f2b25bdfcd180d7525fb3"},
+    "bond": {"rows":9156,"bytes":174764,"sha256":"e440f7d507f31f9b5d56c0ddc2a18f6e5c0c77eb9648ed371bdc0b592bc5a378"},
+    "budget": {"rows":52,"bytes":3273,"sha256":"61c4c4cfe5b41c4e039f948b76ac88bcfa662af420125781dac85e016bc4fd02"},
+    "card": {"rows":892,"bytes":24415,"sha256":"9cb8341da7bef2078f381c7ee9a9b75d39618c7d8e9fb02290de9aa918b36147"},
+    "cards": {"rows":56822,"bytes":55040902,"sha256":"65df595c0657a13df6b2864e96ad795b59c8c0963033c25ad0de8a2ffa47a16e"},
+    "circuits": {"rows":72,"bytes":8533,"sha256":"4f7199506866eb53e038fa960de8394a9fe33e500e49172c91606f76d0bf2c57"},
+    "client": {"rows":5369,"bytes":110885,"sha256":"8da9e7d37fd54df1c21067960dea3300221c772fd8870de702d3e91b8652badf"},
+    "colour": {"rows":35,"bytes":389,"sha256":"5f345d4c877f372c0f050af58194d3a84b7beb9197a171d7fecd6723a84c878e"},
+    "comments": {"rows":174285,"bytes":48265711,"sha256":"4536d6b146c293861c1649e1f626caf24a3718e6d4aab0808cf4b488b6ef7834"},
+    "connected": {"rows":18312,"bytes":515936,"sha256":"3efd8737faaff67020dabdaf45483ee9ebefe1d7242a66d9b386b22db32ba718"},
+    "constructorresults": {"rows":11082,"bytes":189613,"sha256":"463fdcff1724c4e173ab3803f5cf555fc9b8869e543049db7b13f11f28323937"},
+    "constructors": {"rows":208,"bytes":15357,"sha256":"8325d3854b72c65f1d2c9237430334fce297f02ddb72e031b0ed0754b141001f"},
+    "constructorstandings": {"rows":11836,"bytes":253949,"sha256":"353cd258f4d97b3f0254461912fcdb88bfb4150e962faa91a3c098525fb4dd8f"},
+    "country": {"rows":11,"bytes":151,"sha256":"c4e730f1b7ce4cdd43f31b6199030842a32a756e24210039c15de42bd67b9c1a"},
+    "customers": {"rows":32461,"bytes":448360,"sha256":"08006a9526618d9320a5a8eb3e9324c14cc632c2b4c09e9ab3ecadbf4db510c0"},
+    "disp": {"rows":5369,"bytes":113566,"sha256":"269b857293d1493efa18f6c47a79f80c8ab7347dfaa3d7ae69dc6993aadae87c"},
+    "district": {"rows":77,"bytes":6019,"sha256":"e41855ac38141f8af09f0e83a4c9806711d221fea3037b3c393668f473b460f5"},
+    "drivers": {"rows":840,"bytes":81541,"sha256":"bfb8fdf975b9896206f638954d4282e12d143957ee3164caa4ae551250e29064"},
+    "driverstandings": {"rows":31578,"bytes":732819,"sha256":"078f77fcddbd391214d7f883512a40829223bfd030d3b5b8cce0362356803358"},
+    "event": {"rows":42,"bytes":4688,"sha256":"dbb447933c8690538ffeecd66faf16cf9fa0651339b9dff9645bf17d18fdd944"},
+    "examination": {"rows":106,"bytes":5488,"sha256":"0b2eab1e13385475bb9c95a802920e7feae061e958fbedd60b92df014f0087c9"},
+    "expense": {"rows":32,"bytes":2831,"sha256":"b46a17e4289c1e605dc7b95e7c25150ee906b71dadc514aaef33f2901183266a"},
+    "foreign_data": {"rows":229186,"bytes":72749505,"sha256":"7b0a13bdb3333341c23da77b1a354bc22e7f89bfdd7cd8a482269d6286440850"},
+    "frpm": {"rows":9986,"bytes":2481961,"sha256":"504bc2f6a66e9dfff6c9f04bb6078bcab6196c966b8d992575f88d9ad618f316"},
+    "gasstations": {"rows":5716,"bytes":109667,"sha256":"1597b1d6d3bc770bddee805f36d65525994d17bc83f36241afc4d724d1116ed8"},
+    "gender": {"rows":3,"bytes":22,"sha256":"441ff178668748bb02811da0bbf8671504c49c1ff6152211dc55c134b6070ba7"},
+    "hero_attribute": {"rows":3738,"bytes":33359,"sha256":"3d47135121eefc80b4d82d299b3c72a3612358f2f46e65abd313c2469695b627"},
+    "hero_power": {"rows":5825,"bytes":39703,"sha256":"bb28648be148a57b3d5260b0dac2de15f7cf33e553a5dcedd42fdc161fdaf951"},
+    "income": {"rows":36,"bytes":2221,"sha256":"6f24393a7bbbbf40032e53d7bc4b5b5f55db500594964de3d5d8173ac77b0860"},
+    "laboratory": {"rows":13908,"bytes":2182738,"sha256":"5da3b5d9339bfa478a133ea47670d45e7cf3f60bc1f76e315d33d5af4ca78b85"},
+    "laptimes": {"rows":400524,"bytes":10978136,"sha256":"ea0030958effb84208d81e10a2ef6ce92647141d710238d5dcc84a82c4e2d65b"},
+    "league": {"rows":11,"bytes":347,"sha256":"138f517fdffba168ed723518feb7091e2ef47690ba82c1c02b3f23cf559d3ebd"},
+    "legalities": {"rows":427907,"bytes":24547054,"sha256":"8fb5a2807f10b4927670a650aa659743698eb28253484d60a6ad9e29c8b69c9d"},
+    "loan": {"rows":682,"bytes":25602,"sha256":"764029a77318dcb96898b1b1e063b42e95823c7dc689dab51a6c4e8cbeb3916e"},
+    "major": {"rows":113,"bytes":12924,"sha256":"f1e30fd5aa85bcbe44f7803dd3824949842f0a764515f55c74f0daf18e9e86f2"},
+    "match": {"rows":25979,"bytes":280029547,"sha256":"796460e34e7d6c9e5c66e05a71de77fd5e675a8812408be48be047fdc98e0449"},
+    "member": {"rows":33,"bytes":3460,"sha256":"a5475adffabf6a88834e5aabb25003e4bbe38c97dbf1e8a5d157c9ffbb827483"},
+    "molecule": {"rows":343,"bytes":2744,"sha256":"b60acbbb0078fe3e4ef43cd8189d12493804d506251e55366d72f6efede0b859"},
+    "order": {"rows":6471,"bytes":208641,"sha256":"5d0d2975d9875385c841ec8bea9154db221f8005880a6625bfdb9a5f0cc7d1d3"},
+    "patient": {"rows":1238,"bytes":60383,"sha256":"05a631253eb02b5c69918d950554ebd429c9ed3f89232c033542fb6aea3b71c4"},
+    "pitstops": {"rows":5815,"bytes":199575,"sha256":"d4418dee6a33f79f15bab7de2e6fe4730f8992070ebc747e09eea00072412f1b"},
+    "player": {"rows":11060,"bytes":673572,"sha256":"712461c72c9596519063db4b523cd859d734693c4e1517a57ebd94ee2c82d0ad"},
+    "player_attributes": {"rows":183978,"bytes":29625053,"sha256":"e07920561dd662f68c1c2027c5902fe1d0bcef1d610a22aa16f82dcb076d6fe5"},
+    "posthistory": {"rows":303155,"bytes":235128735,"sha256":"2e477dc9f300c2541806c5cc60dc92ba29cb7d355bc47c010d3f8abf78d63c92"},
+    "postlinks": {"rows":11102,"bytes":495749,"sha256":"cd2340f3893c5dfc5b47a51f63e9d556d299e702ef597f48577067200a6f0741"},
+    "posts": {"rows":91966,"bytes":120189801,"sha256":"fcd9ff339170eb5ac3e1764c1bce6059a4ba506dc0c02a72905da3dc81626640"},
+    "products": {"rows":591,"bytes":13344,"sha256":"e14bd48d327217d7bbbb90c65a82d00da841a6b786f3856e1209cdc413fd40d5"},
+    "publisher": {"rows":25,"bytes":368,"sha256":"949a1c7d0b0b97ca0439f957feee37f1df45e624befbdf2aa9da28fa457d8d79"},
+    "qualifying": {"rows":6967,"bytes":271664,"sha256":"3dfdde7f6280a02e95b22bac85ba820483f43e71ce32e40a9843ffc636393c67"},
+    "race": {"rows":61,"bytes":791,"sha256":"2d8b0a882cda0b1231922ecd625666eeca21d65b75d272b6bc99860268592d0a"},
+    "races": {"rows":954,"bytes":98397,"sha256":"4e7aa86dbb4700a9b70e0fe00cf69e1cfc6657155a21cd2c7b8a81e422f52a2e"},
+    "results": {"rows":23179,"bytes":1366968,"sha256":"e1ce31b0be394c05a9dd87ea9e2d9279657d4cac5cc72f83e3fdf83486e10ef2"},
+    "rulings": {"rows":87769,"bytes":20339794,"sha256":"a8a65dc03fc513abcc265693816b93a0116636d1a4525d87fced1dfdab0c84ea"},
+    "satscores": {"rows":2269,"bytes":197389,"sha256":"549f79e4b98bb0660dd9024271e3787ea83cf875fccc8e7a547c38c419a79c0f"},
+    "schools": {"rows":17686,"bytes":7728755,"sha256":"f6f4de19738417ed5bd27d1d2e7935aa3e2b4319a2c366542560514671f38b6a"},
+    "seasons": {"rows":68,"bytes":3946,"sha256":"82d5800518443c189bdd067de62666a09458dd95e0cf2e47e4fb859b07cdde10"},
+    "set_translations": {"rows":1210,"bytes":43066,"sha256":"05cb93ff7721b7538f8d485c554a1ed1c45b110c942a1ddbe01fa254297fe3fc"},
+    "sets": {"rows":551,"bytes":91757,"sha256":"dbc4cb96602dcde1efb57dcae5c6686fb644e8005c0e9e9d951d1a8a4eb46660"},
+    "status": {"rows":134,"bytes":1775,"sha256":"3c0a4c909766b86436603419b1efd7406fd2642439b99f15770351a21bcde9a7"},
+    "superhero": {"rows":750,"bytes":35900,"sha256":"efd556658edc2fa9e59d95af04832c4fc753df3469380f21882223c771054496"},
+    "superpower": {"rows":167,"bytes":3006,"sha256":"859d51503cee98556c09dc3e8442249515d9ea8d848bc6055563dedb26567ee1"},
+    "tags": {"rows":1032,"bytes":30244,"sha256":"f22ac62d2f46860feacdc9f45623e57c2bac37a71862822831d24c0b161e0db0"},
+    "team": {"rows":299,"bytes":9867,"sha256":"06ff4a037d09da6e7181ea731e8d2832b391b88a5ea696ea6341f18f0bee3d8e"},
+    "team_attributes": {"rows":1458,"bytes":216483,"sha256":"34e65294e76aec5417b779e5ce9986fb0531e38571fb681d7736ed187c051d37"},
+    "trans": {"rows":1056320,"bytes":63136175,"sha256":"898b8ea422da447605638451b9acf9d10b50f3fa35cea20ccfab3b55690208c3"},
+    "transactions_1k": {"rows":1000,"bytes":52791,"sha256":"aef82934f9975c64c192dca04ffbc77652a32e7cc16a96809d99f4d1b6f35d92"},
+    "users": {"rows":40325,"bytes":7334296,"sha256":"a446f7bcb8828f7d5e6fe9f0754305534cea43d32dbeccb35c8429bed91313e9"},
+    "votes": {"rows":38930,"bytes":1156221,"sha256":"3b59c8b50d515096c12ce6096c91d50b44dadfdeec36dc25c5f976ec139d467f"},
+    "yearmonth": {"rows":383282,"bytes":7819248,"sha256":"93a1ea5f8aa26d96da225648253af39ed2187cff08fc7930dbd1e38faaa2d0f7"},
+    "zip_code": {"rows":41877,"bytes":2166669,"sha256":"ce10eb471783816b6bee89418369b0a9193a70ec07f8aab729c94f36e177735a"}
+  },
+  "checked_date": "2026-10-05",
+  "checked_git": {"commit":"e4433ab6f7b14c9041359e43085db7509355b3a6","dirty":true,"dirty_scope":"Task 3 code/tests and owner-approved plan amendment, before Task 3 commit"},
+  "source_pins_path": "docs/source-release-pins.json",
+  "source_pins_sha256": "f8c61dbc426deab580174c965fbd1883192e98ec30253e8d2b6aa85eb7114f7c"
+}

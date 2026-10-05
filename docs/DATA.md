@@ -363,3 +363,40 @@ deadline check failed at logical 1000s (0.15s), restoration passed at 181s. Boun
 remain cooperative/180s aggregate, 20s max per HTTP I/O, 32768-byte per-source cap.
 Combined 29 GREEN (0.21s), no-env full 632 passed/165 skipped (5.56s), lint/35-file
 format pass. Actual persisted description mapping/layout acceptance remains Task 3.
+
+## Full-source batch Task 3 — actual layout/count/description audit (2026-10-05)
+
+[Audit metadata](source-audit-manifest.json) records actual acceptance: 11 immutable
+read-only SQLite databases, 75 tables/798 ordered columns, 3898114 SQLite rows;
+all per-table counts equal pinned native COPY counts. Full dump/75 CREATE definitions/
+COPY blocks match pins and metadata; no dump SQL executed. 72 tables declare a
+primary key; 105 foreign-key component records retained. Source type pairs exactly:
+INTEGER->BIGINT 366, TEXT->TEXT 329, REAL->REAL 73, DATE->DATE 19,
+DATETIME->TIMESTAMPTZ 11. These are declarations, not typed value equivalence.
+
+The first actual audit failed without publishing: European Football's
+Team_Attributes references Team.team_fifa_api_id without a required unique key;
+Team's unique index is only on team_api_id. Read-only isolation verified its
+seven table layouts/222796 rows separately. Kunal explicitly approved recording
+only this SQLite schema-mismatch class as status schema_mismatch/count null.
+Actual violation count is unavailable, not zero. Other SQLite errors still fail.
+New real malformed-FK fixture observed RED; approved handling is GREEN, unrelated
+interruption remains fatal. No source constraint/data repair or pin relaxation.
+
+Ten FK checks completed: formula_1 779, card_games 88, codebase_community 88 violation
+records; the other seven completed counts zero. European count uncheckable. These
+955 records are not necessarily 955 distinct rows. Constraint validity is not
+established; later import/key policy must explicitly consider these source issues.
+
+One successful audit acceptance after the approved amendment saved an ignored
+manifest. Reviewed metadata was copied with apply_patch to docs, with date, dirty
+Task 3 Git state and exact source-pins hash. Original descriptions 799 records,
+extra wins only; corrected 798 complete column matches. 89 original padding records
+and populated unnamed financial/account row 3 in both sources preserved as
+observations, not adopted runtime prose. Four/three encoding exceptions explicit.
+
+54 batch controls pass (0.46s); no-env full 657 passed/165 skipped (5.81s), configured
+822 passed/zero skips (16.75s), including 165 actual PG. Locked 27 packages, lint/
+37-file format pass. No new PostgreSQL import, model/gold query or secret action.
+Typed content/result equivalence, validity/exclusions, primary descriptions/labels,
+ambiguity/splits and C1 remain unfinished. G0.5 remains incomplete; no benchmark score.

@@ -91,7 +91,8 @@ No new raw files persisted or import/model/credential actions in preparation.
   - [x] Review/approve that new full-source preparation artifact.
   - [x] Extract 87 fixed full-source members into a separate ignored directory.
   - [x] Acquire the 75 pinned corrected description files.
-  - [ ] Verify actual SQLite layouts/counts/keys and offline description coverage.
+  - [x] Verify actual SQLite layouts/counts/keys and offline description coverage.
+  - [ ] Complete the sole full-source batch final read-only review.
   - [ ] Remaining description/import/conversion work and validity manifest.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -1153,7 +1154,7 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current next action: implement Task 3 of the approved
+Current next action: commit checked Task 3 and perform the sole whole-batch review of the approved
 [full-source preparation plan](superpowers/plans/2026-10-05-full-source-preparation.md).
 Kunal reviewed/approved all three on 2026-10-05. Native sequential execution:
 tests-first exact extraction (87 files/~1.5 GB), fixed corrected CSV acquisition
@@ -1171,6 +1172,18 @@ complete: 75 files/76445 bytes, all saved pins rechecked; combined 29 passes
 (0.21s), no-env full 632 passed/165 skipped (5.56s). Do not rerun either acquisition.
 Deadline fixture mutation genuinely failed at logical 1000s, restored code stops
 at 181s; fake response streams corrected without changing production controls.
+Task 2 saved at e4433ab, task-done 29 passes (0.26s). Task 3 implemented/actual
+acceptance passed after owner-approved explicit FK schema-mismatch amendment.
+11 databases/75 tables/798 columns/3898114 rows, all table counts equal COPY;
+all native definitions/blocks/metadata and saved source pins checked. Source key
+issues preserved: 779 formula_1, 88 card_games, 88 codebase_community violation
+records; European FK count unavailable/null, schema_mismatch (not zero/valid).
+72 tables declare primary keys, 105 FK component metadata records. No source
+repair or import policy decided. docs/source-audit-manifest.json is metadata only.
+Fresh 54 batch tests; no-env 657 passed/165 skipped (5.81s), configured 822 passed/
+zero skips (16.75s), including 165 actual PG. Ruff/37-file format/locked sync pass.
+Actual audit first failed without publishing; approved amendment test-first and
+one successful acceptance afterward. Do not rerun any completed script destination.
 After this batch and its sole fresh final review, separately prepare controlled
 COPY/import/content/conversion work; C1, second model and split/E0/C2 still later.
 

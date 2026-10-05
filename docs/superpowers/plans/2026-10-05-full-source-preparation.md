@@ -28,6 +28,16 @@
 
 ## Review Focus
 
+Execution amendment approved by Kunal on 2026-10-05: the actual European Football
+SQLite source has a foreign-key definition whose parent column lacks the required
+unique key. Record only this specific SQLite schema-mismatch error as
+foreign_key_check_status=schema_mismatch and foreign_key_violation_count=null;
+continue read-only layouts/counts/descriptions. Other OperationalErrors still
+fail. Preserve all sources/pins and report constraint validity not established.
+Add real malformed-FK and unrelated-error regressions before the implementation
+change. This is an explicit exception to stopping on that known source condition,
+not approval to ignore other mismatches, repair sources or import any data.
+
 1. Duplicate/symlink/oversized archive members or path/case collisions: refuse without exposing a partial new release; Task 1 tests every class and preserves existing artifacts.
 2. Redirects, inherited credentials/proxy settings, late raw body chunks or final-source corruption: no unauthorized destination/auth, no deadline bypass or partially published download; Task 2 pins these controls.
 3. Legacy encoding, padded/colliding column names and populated unnamed CSV fields: decode only the pinned encoding, reject collisions, preserve source bytes and record anomalies; Task 3 exercises cp1252, padding, unnamed content and malformed records.
@@ -324,7 +334,7 @@ Check `git log -1 --format=fuller` and `git log -1 --format=%B`; both identities
 - Produces `fetch_descriptions(destination: Path, *, transport: httpx.BaseTransport | None = None, pins: dict | None = None) -> None` and ignored `data/description-corrections/arcwise-fe766045/`.
 - No source selection, retries, redirects, credential inheritance or existing-label-directory mutation.
 
-- [ ] **Step 1: Add the failing tests to tests/test_description_fetch.py.**
+- [x] **Step 1: Add the failing tests to tests/test_description_fetch.py.**
 
 ```python
 import hashlib
@@ -431,12 +441,12 @@ def test_invalid_fixed_source_fails_before_network(tmp_path, field, value):
         fetch.fetch_descriptions(tmp_path / "release", transport=httpx.MockTransport(handler), pins=pins)
 ```
 
-- [ ] **Step 2: Run the RED gate.**
+- [x] **Step 2: Run the RED gate.**
 
 Run `uv run pytest tests/test_description_fetch.py -q --tb=line`.
 Expected: collection error because scripts.fetch_descriptions does not exist.
 
-- [ ] **Step 3: Add this implementation to scripts/fetch_descriptions.py.**
+- [x] **Step 3: Add this implementation to scripts/fetch_descriptions.py.**
 
 ```python
 """Acquire only the 75 reviewed, revision-pinned description CSVs."""
@@ -525,18 +535,18 @@ if __name__ == "__main__":
     raise SystemExit(main())
 ```
 
-- [ ] **Step 4: Verify GREEN and cumulative extraction controls.**
+- [x] **Step 4: Verify GREEN and cumulative extraction controls.**
 
 Run `uv run pytest tests/test_source_prepare.py tests/test_description_fetch.py -q --tb=line`, `uv run ruff check .`, and `uv run ruff format --check .`. Apply ruff formatting only to changed code if needed and repeat.
 The delayed-body fixture must genuinely fail without the per-raw-chunk check; this preserves the previous correction-intake deadline fix rather than reintroducing buffered iteration.
 
-- [ ] **Step 5: Perform the approved one-time acquisition.**
+- [x] **Step 5: Perform the approved one-time acquisition.**
 
 Without an env file, verify `Test-Path data/description-corrections/arcwise-fe766045` is False and `git check-ignore data/description-corrections/arcwise-fe766045/financial/account.csv` succeeds. Run `uv run python -m scripts.fetch_descriptions` once.
 Expected acquired, 75 files, 76,445 aggregate bytes at revision fe766045c55b6875a43b30e9ac7683df5582f8cf; every size and SHA-256 verified. The existing pinned LICENSE/README from correction intake are retained as local license context; this is not release/distribution clearance.
 No additional files, model download or correction-label refetch. A timeout/pin mismatch requires investigation, not relaxed bounds or automatic reattempt.
 
-- [ ] **Step 6: Record and commit this checked logical task.**
+- [x] **Step 6: Record and commit this checked logical task.**
 
 Record actual request/file/byte totals and limits in DATA/PROGRESS; add D-038 with options/decision/rationale/cost; append the notebook explanation of fixed-revision downloads and source fingerprints. Inspect/stage only this module/test and those four records. Review the complete staged diff and exact message `feat(data): acquire pinned schema descriptions`, commit and inspect fuller/body identity as in the explicit Kunal identity contract above. Keep data/ ignored.
 

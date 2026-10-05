@@ -1168,6 +1168,42 @@ Mutation RED: removing per-chunk check yielded logical 1000s versus expected 181
 each saved pin rechecked. No correction-label refetch, import, credentials, model,
 benchmark policy or publication. Task 3 next under existing approval; G0 7/12.
 
+## D-039 — full-source batch Task 3 / explicit source-key issues (2026-10-05)
+
+Context: Task 2 e4433ab; expected missing-auditor RED (0.15s), then 52 batch GREEN.
+Actual audit failed without publishing at European Football's FK definition.
+Read-only isolation found no metadata/layout/count drift: all 75 table counts/
+798 columns align; Team.team_fifa_api_id lacks a required unique constraint.
+Three other sources report 955 FK violation records (779/88/88), not necessarily
+distinct rows. Count equality alone is not source/converted answer validity.
+
+Options at the required mismatch checkpoint: stop all Task 3 acceptance, or
+explicitly record that FK check as uncheckable while finishing the observational
+offline audit. Kunal approved the latter amendment during this session. No schema,
+row, pin, role, source label/description, benchmark policy or import was changed.
+
+Ruling: catch only SQLite's foreign-key schema-mismatch OperationalError; set
+foreign_key_check_status=schema_mismatch and violation count null, never zero;
+other OperationalErrors remain fatal — owner-approved observational report — cost
+if wrong: source key validity remains unavailable and cannot justify enforcing or
+waiving those constraints during a future import without review.
+
+Real malformed-FK fixture RED (0.23s), specific handling GREEN; injected unrelated
+interruption still rejects. 54 combined checks (0.46s). One successful acceptance
+after amendment: 11 databases/75 tables/798 columns/3898114 rows, full native dump/
+definitions/COPY fingerprints and all persisted source pins checked. Actual
+metadata saved in source-audit-manifest.json; checked e4433ab plus dirty Task 3.
+72 PK-declaring tables/105 FK component records. Type declarations DATETIME->
+TIMESTAMPTZ for 11 columns need later timezone/content/result policy. Descriptions
+retain extra original wins, 89 padding records and unnamed financial/account field;
+corrected coverage 798, semantic/primary adoption unchosen. No raw cells/prose/SQL.
+
+Fresh locked sync 27 packages; no-env 657 passed/165 skipped (5.81s), configured
+822 passed/zero skips (16.75s), 165 actual PG, lint/37-file format pass. G0 remains
+7/12. Final whole-batch read-only review remains; no additional implementation
+review or admin import/model/gold action. Handoff afterward prepares separate
+controlled COPY/import/content/conversion scope and its required artifact review.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

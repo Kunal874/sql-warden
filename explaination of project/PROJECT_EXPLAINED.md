@@ -980,6 +980,36 @@ New words: a redirect tells a program to use a different address. We refuse it
 for these fixed sources. A mock is a small fake used in a test, such as a fake
 download; it must behave like the real boundary or it can hide mistakes.
 
+### G0.5, source batch Task 3 — Check the real tables and keep problems visible
+
+Finished: opened all 11 source databases read-only and checked 75 tables and
+798 columns. Their 3,898,114 rows match the row counts in the native source,
+table by table. All source fingerprints still match. The column-description
+checks also passed, while retaining the old extra column description and text
+under the unnamed heading. No source file or PostgreSQL import was changed.
+
+The audit found real source problems. Three databases report 955 foreign-key
+violations altogether. That does not necessarily mean 955 different bad rows.
+European Football has a broken foreign-key definition, so SQLite cannot count
+its violations. You approved recording that count as unavailable, not zero,
+and finishing the other checks. We wrote a failing example first, then added
+this exact handling. Other errors still stop the audit. We did not repair data.
+
+Checked: 54 new batch checks pass. The complete configured project passed
+822 tests, zero skips, including 165 real PostgreSQL checks. Without private
+settings, 657 passed and 165 were skipped. The three implementation tasks are
+checked; the batch's one independent final review comes next.
+
+New words: a primary key identifies a row. A foreign key says a value should
+refer to a row in another table. A unique key says that the referenced value
+cannot be repeated; a foreign-key definition needs an appropriate parent key.
+Null here means the count is unavailable; it is not a count of zero. Matching
+row counts do not prove matching values or correct AI answers.
+
+Progress: three source-preparation subtasks finished in this batch. The top-level
+foundation checklist remains 7 of 12, because remaining imports and answer-
+conversion checks are not finished. This is not an overall-project percentage.
+
 ## 4. AI words in normal language
 
 These explain the project vocabulary. A definition here does not mean the
@@ -1283,9 +1313,10 @@ datasets and validity decisions, the second model, then split/evaluation/model
 choices. You approved the two-task correction-intake plan; its first checker
 and the four-file intake and their final review are complete. Next comes the
 remaining descriptions/layout/import and answer-validity work. The three-task
-offline source-preparation batch is now reviewed and approved. It will unpack
-the fixed sources, save the small descriptions and audit layouts before any new
-import plan. This intake uses existing software and does not change the database
+offline source-preparation batch has now unpacked the fixed sources, saved the
+small descriptions and audited real layouts; its sole final review is next.
+Source key problems are recorded, not repaired. Next is a separate reviewed
+import/content/conversion plan. This intake uses existing software and does not change the database
 or run the model. Each relevant new permission outside that scope needs review.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 
