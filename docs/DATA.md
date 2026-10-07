@@ -490,6 +490,29 @@ No source/native value/label/gold/comparator/runtime change. Partial manifest is
 a historical pre-retry snapshot, not the current approval status. Retry and
 remaining European import still pending; no new content acceptance claimed yet.
 
+## All ten remaining native imports accepted (2026-10-08)
+
+Kunal approved a fresh3600s continuation window after the earlier clock expired
+during the multi-day pause. The one real Codebase retry succeeded under the
+tested dataset-onlyUTC+08 sample interpretation; European Football followed.
+All ten imported datasets total72tables/709columns/3868173rows/69 enforced PK
+tables. Every native typed row participated in the table multiset comparisons,
+and216 immutable SQLite first/middle/last samples matched before dataset commits.
+
+The fixed restricted-role matrix passed292 real PostgreSQL checks with zero
+skips(15.39s), including90 ordered pairs that deny cross-dataset reads and role
+switching. Fresh project verification passed705 offline tests/457 expected skips
+(8.64s) and1162 configured tests/zero skips(29.86s). No new FKs were enforced:
+formula_1/card_games/codebase_community preserve779/88/88 source violation
+records, and European remains schema_mismatch/null rather than zero or valid.
+
+docs/remaining-import-manifest.json records compact totals, policies, fingerprints
+and test evidence. Its ignored full metadata file is SHA-256
+a706c459be829b54b33307f71314d38b8558c7822aa64f4bd6d54b3b5dab9579.
+The earlier partial manifest remains historical evidence of the stopped state.
+Full SQLite query/gold-answer equivalence, primary descriptions, conversion
+survival/exclusions and C1 label/ambiguity choices remain untested and undecided.
+
 ## Remaining import readiness — read-only preparation (2026-10-05)
 
 Dedicated PostgreSQL 16 still contains only the California dataset and its login;

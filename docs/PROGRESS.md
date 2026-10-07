@@ -102,6 +102,19 @@ unchanged. No source/native/gold/runtime/benchmark edit. Task4 retry and Europea
 remain pending; use original attempt clock and same900s/120s caps. D-046 records
 the explicit answer; earlier paused/partial evidence is historical.
 
+2026-10-08 remaining imports Task 4 acceptance: after the multi-day pause Kunal
+approved one new bounded3600s continuation window. Docker/PostgreSQL restarted
+against the preserved named volume. The sole real Codebase retry and then European
+Football succeeded. All ten new datasets now contain72tables/709columns/
+3868173rows/69PK tables; complete typed-native comparisons and216 immutable
+SQLite samples passed before commits. European's FK status remains
+schema_mismatch/null, not zero. Full release PostgreSQL matrix292passed(15.39s);
+fresh no-env705passed/457expected skips(8.64s), configured1162passed/zero skips
+(29.86s), locked27/lint/42-file format/whitespace pass. Compact final metadata is
+in remaining-import-manifest.json; raw evidence remains ignored. G0 remains7/12:
+imports do not establish full SQLite/gold conversion validity, primary descriptions,
+C1 labels, the second model, a frozen split/E0 or C2. Final batch review is next.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -1284,31 +1297,21 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current action: approved four-task remaining-native-imports batch, executing
-sequentially in the existing checkout. Task 1 COPY preparation is checked; do
-not rerun its completed destination. Task 2 fixed importer/private .env.datasets
-also complete; do not regenerate its existing credential file. Task 3 toxicology
-import/22 actual checks complete; do not reimport it. Task4 installed seven
-further datasets, then Codebase's first attempt failed and rolled back; European
-was not attempted. Kunal now explicitly approved Codebase-only UTC+08 sample
-mapping and ONE retry; test-first mapping is implemented. Resume that bounded
-retry, then European, then full matrix. Completed IDs: toxicology,
-thrombosis_prediction, superhero, student_club,
-debit_card_specializing, formula_1, financial, card_games. Do not reimport any.
-Codebase schema/login and European schema are absent. Eight passwords for saved
-logins remain as-is; do not regenerate/rotate .env.datasets. User question asks
-Codebase-only UTC+08 sample mapping with test-first change/one bounded retry and
-then European, leaving sources/native/gold/benchmark rules unchanged. Answer is
-approved (D-046); do not ask again. UTC remains default for other datasets,
-explicit aware timestamps retain their offsets. Refer to this plan's ignored
-ledger/task brief. Kunal approved the presented ten restricted logins/imports
-and row-preserving metadata-only FKs by “move forward”; no routine review or
-continuation questions. Ask a question only for important new authority/decisions
-or genuine blockers. Do not infer benchmark/model/publication approval.
+Current action: approved four-task remaining-native-imports implementation is
+complete through Task 4; one fresh whole-batch read-only review remains before
+the batch commit/handoff is final. Do not rerun COPY preparation, regenerate
+.env.datasets, reimport any target, rotate its ten private credentials or repeat
+the one Codebase retry. PostgreSQL now has California plus all ten new datasets.
+Task4 totals:72tables/709columns/3868173rows/69 enforced PK tables/216 samples;
+292 release PostgreSQL checks, full configured1162/zero skips, no-env705/457 skips.
+docs/remaining-import-manifest.json is compact checked evidence; the ignored
+remaining-evidence.json holds full metadata. The historical partial manifest
+truthfully records the earlier paused state and is superseded for current status.
+Kunal approved the presented restricted logins/imports and row-preserving
+metadata-only FKs; no routine review or continuation questions. Ask only for
+important new choices or genuine blockers. Do not infer gold/model/benchmark,
+dependency, publication, destructive cleanup or remote/push approval.
 
-Task4 partial acceptance:1083passed/74deselected,383actualPG; all installed eight
-counts/types/keys/privileges/defaults/cross-reader and old boundaries pass.
-Full ten-target matrix and zero-skip full suite require both remaining imports.
 Read-only diagnostic commands:
 uv run python -c "import runpy; runpy.run_path('.superpowers/sdd/2026-10-05-remaining-native-imports/sample_diagnostic.py')"
 uv run python -c "import runpy; runpy.run_path('.superpowers/sdd/2026-10-05-remaining-native-imports/timestamp_full_audit.py')"
@@ -1316,7 +1319,7 @@ Both already completed; no reason to rerun unless a targeted question requires i
 Full diagnostic checks every source timestamp by indexed immutable SQLite key,
 8MiB cache/120s cooperative budget; result11columns/882084non-null native+08,
 zero wall-clock difference/226789 matching nulls. Source fingerprints unchanged.
-Full acceptance pending; no final reviewer yet. Keep this plan's scratch local.
+Task4 acceptance is complete; no final reviewer yet. Keep this plan's scratch local.
 
 Historical preparation checkpoint: Kunal reviewed the new
 [remaining native imports plan](superpowers/plans/2026-10-05-remaining-native-imports.md)

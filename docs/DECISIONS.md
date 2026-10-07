@@ -1446,6 +1446,38 @@ pure cases also match the pending-ID filter and were verified separately in
 the63-control run above. No-env705passed/457skipped(7.91s),
 format42/lint/whitespace pass.
 
+## D-047 — remaining native imports accepted (2026-10-08)
+
+The original aggregate clock expired across the 2026-10-05 to 2026-10-08 pause.
+Kunal explicitly approved one new3600s bounded continuation window for only the
+already-approved Codebase retry, European import and verification. Per-dataset
+900s transaction/120s command bounds remained unchanged. Docker Desktop and the
+existing named PostgreSQL volume were restarted; no database reset occurred.
+
+An initial operator command used the display shorthand `codebase`; argparse
+rejected it before connecting. Read-only checks then confirmed the exact fixed
+targets `codebase_community` and `european_football_2` were absent. This local
+argument error was not the one real database retry and made no write. The one
+actual Codebase retry succeeded:8tables/71columns/740646rows/8PKs/24 samples,
+with the approved sample-onlyUTC+08→UTC mapping. European then succeeded:
+7tables/199columns/222796rows/7PKs/21 samples. Its source FK remains explicit
+schema_mismatch with null count; no zero/validity claim or constraint repair.
+
+All ten new datasets total72tables/709columns/3868173rows/69 enforced PK tables.
+Complete typed native multisets and216 representative immutable SQLite samples
+matched before per-dataset commits. No new foreign keys were installed. Actual
+release matrix292passed/zero skips(15.39s), including90 ordered new-reader pairs.
+Fresh no-env705passed/457expected skips(8.64s); configured1162passed/zero skips
+(29.86s); locked27 packages, Ruff lint/42-file format and whitespace pass.
+The complete compact manifest fingerprints the ignored full metadata evidence.
+
+Decision: Task4 implementation is accepted, but G0.5/C1 remain unfinished.
+These checks prove preserved native content, representative adaptations and the
+tested local restricted-role boundaries; they do not prove full SQLite query
+equivalence, gold conversion validity, description/label meaning or benchmark
+accuracy. No inference, source/gold mutation, runtime credential use, dependency,
+remote/push or publication action occurred. One fresh whole-batch review remains.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

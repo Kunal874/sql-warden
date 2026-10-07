@@ -1,6 +1,6 @@
 # SQLWarden explained in simple English
 
-Last updated: 2026-10-05.
+Last updated: 2026-10-08.
 
 This is your learning notebook for the project. It will be updated after every
 completed subtask and group. It explains what was built, why it matters, how it
@@ -28,7 +28,7 @@ It is not a finished public service yet.
 - The Python project installs using its saved dependency versions.
 - A separate PostgreSQL database runs on your laptop.
 - Different datasets have different restricted database logins.
-- One real dataset, California Schools, has been loaded and checked.
+- California Schools plus ten more real datasets have been loaded and checked.
 - The first local Qwen model has answered six small test requests on the GPU.
   Those were simple text/format checks, not database questions.
 - Tests check the imported values, database permissions and setup behavior.
@@ -45,15 +45,15 @@ It is not a finished public service yet.
   is complete; it reused existing Python tools without adding a package.
 - The local AI connection code now passes 67 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
-- The latest verified code checkpoint has 822 passing tests, including 165
-  tests that connect to the real local PostgreSQL database.
+- The latest full configured checkpoint has 1,162 passing tests with no skips.
+  The ten-dataset release matrix alone has 292 real PostgreSQL checks.
 - The offline answer-file checker and small download tool pass 49 checks.
   The four approved files match their saved fingerprints. Their summary lists
   missing items and changed wording; it does not contain the answer text.
-- All 11 source databases and both sets of 75 column-description files are now
-  available locally. A read-only check covered 75 tables, 798 columns and
-  3,898,114 rows; table sizes match the fixed native source. This is preparation,
-  not ten new PostgreSQL imports or proof that every answer is correct.
+- All 11 source databases and both sets of 75 column-description files are local.
+  The ten previously missing datasets are now in PostgreSQL: 72 tables and
+  3,868,173 rows. This proves checked loading, not that every question has the
+  correct answer or that every SQLite query behaves identically.
 
 The first narrow AI question-to-database flow works for one checked question.
 The full agent, evaluation scores, website and public release are not finished.
@@ -76,8 +76,9 @@ You approved the next two-part data-work plan. Its offline checker is built
 and checked, and the four approved small source files have been saved and checked.
 The independent final review is complete. It found one time-limit gap, now fixed
 and checked. No extra model test or database import ran.
-The three-part source-preparation batch and its independent review are also
-complete. Source key problems are visible in the report, not silently repaired.
+The three-part source-preparation batch and its independent review are complete.
+The four-part native-import implementation is complete and awaits its one final
+read-only review. Source key problems are visible, not silently repaired.
 
 ## 3. Completed work, one step at a time
 
@@ -1464,6 +1465,39 @@ timezones keep their meaning, and all other datasets keep their existing rule.
 No source rows or stored native values are rewritten. The accuracy benchmark
 and gold SQL are unchanged. Next comes the one approved retry and last import.
 
+### Remaining import batch — Task 4 complete (2026-10-08)
+
+Codebase Community succeeded on its one real retry. European Football then
+succeeded. The ten new datasets now contain 72 tables and 3,868,173 rows. Every
+native table was compared as a complete bag of typed rows, and 216 selected
+SQLite rows also matched. The database kept 69 checked primary keys.
+
+The real database test matrix passed 292 checks. It includes 90 ordered login
+pairs: each dataset login was tested against every other new dataset and was
+blocked from reading it or taking its role. The complete configured project run
+passed 1,162 tests with no skips. The offline run passed 705 tests and skipped
+457 checks that deliberately need private local database settings.
+
+European Football has a broken relationship definition in its original source.
+We record that as “schema mismatch” with no numeric count. We do not pretend it
+has zero problems. Foreign-key relationships for these ten imports are saved as
+information but are not installed as database rules, so no bad source row was
+silently deleted or repaired.
+
+**Bag / multiset:** all rows are compared including duplicates; order does not
+matter, but the number of repeated rows does.
+**Cross-dataset isolation:** a login for one dataset cannot read or impersonate
+another dataset's login.
+**Schema mismatch:** a source relationship is defined in a way the database
+cannot safely enforce or count. “Unknown” is different from zero.
+**Regression suite:** a large group of old and new tests rerun together to check
+that new work did not break earlier behavior.
+
+The import group is not the whole data milestone. We still need to check which
+official questions and answers survive conversion, choose the main descriptions
+and labels, and make the C1 ambiguity decision. Model comparison and scoring are
+also later work. One fresh read-only review of this four-task batch comes next.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
@@ -1481,11 +1515,9 @@ and the four-file intake and their final review are complete. Next comes the
 remaining descriptions/layout/import and answer-validity work. The three-task
 offline source-preparation batch has now unpacked the fixed sources, saved the
 small descriptions and audited real layouts; its sole final review is complete.
-Source key problems are recorded, not repaired. The next four-task native import
-plan is approved. Its COPY preparation, importer and first real import are
-finished; eight new datasets are saved. You approved the important Codebase
-timezone decision; its one retry and last import are next. Routine artifact
-reviews are not needed.
+Source key problems are recorded, not repaired. The four-task native import plan
+has finished all implementation and acceptance checks. All ten new datasets are
+saved; its one fresh final review is next.
 Gold conversion and C1, then second-model/split/E0/C2 work follow their checkpoints.
 The approved imports use existing software and do not run the AI model.
 Important new permissions outside this scope will be asked as questions.

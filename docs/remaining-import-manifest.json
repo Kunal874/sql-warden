@@ -1,0 +1,137 @@
+{
+  "format_version": 1,
+  "status": "complete native PostgreSQL import acceptance; G0.5 and C1 remain unfinished",
+  "track": "native PostgreSQL import preparation; not gold validity or benchmark scoring",
+  "date": "2026-10-08",
+  "git_state": {
+    "task_base_commit": "ff0d809c8166f48b780305d5e630a1c25c621c9c",
+    "timestamp_fix_and_final_import_commit": "0babcdac0cdb640ccf26fa5f227c05f277f8c482",
+    "tracked_worktree_before_final_imports": "clean"
+  },
+  "totals": {
+    "new_datasets": 10,
+    "tables": 72,
+    "columns": 709,
+    "rows": 3868173,
+    "primary_key_tables": 69,
+    "sqlite_representative_samples": 216
+  },
+  "verification": {
+    "typed_native_content": "complete typed multiset comparison passed for all 72 tables before each dataset commit",
+    "sqlite_representative_samples": "first, middle and last immutable-source rows matched for every table",
+    "sqlite_sample_policy": "native REAL=float4; DATE=ISO; naive DATETIME=UTC except codebase_community, whose audited source is UTC+08:00 and is converted to UTC; no gold comparator change",
+    "sqlite_full_content_equivalence": "not established",
+    "gold_conversion_validity": "not checked",
+    "primary_descriptions": "not selected",
+    "foreign_key_enforcement": "metadata only; no new foreign-key constraints installed and no referential-validity claim",
+    "postgresql_matrix": {
+      "command_scope": "tests/test_release_postgres.py with setup, California and ten dataset environments",
+      "passed": 292,
+      "skipped": 0,
+      "elapsed_seconds": 15.39,
+      "ordered_new_reader_pairs": 90
+    }
+  },
+  "source_metadata": {
+    "pins_path": "docs/source-release-pins.json",
+    "pins_sha256": "f8c61dbc426deab580174c965fbd1883192e98ec30253e8d2b6aa85eb7114f7c",
+    "audit_path": "docs/source-audit-manifest.json",
+    "audit_sha256": "f52ecfd71c53fb470bb85e899e4b97178df304e0b30f66cba32518fa7f286c31",
+    "ignored_full_metadata_path": "data/import-release/minidev-0703/remaining-evidence.json",
+    "ignored_full_metadata_sha256": "a706c459be829b54b33307f71314d38b8558c7822aa64f4bd6d54b3b5dab9579",
+    "column_layout_and_key_details": "See the unchanged hash-pinned audit and ignored full metadata above."
+  },
+  "datasets": {
+    "toxicology": {
+      "tables": 4,
+      "columns": 11,
+      "rows": 36922,
+      "primary_key_tables": 4,
+      "sqlite_representative_samples": 12,
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "thrombosis_prediction": {
+      "tables": 3,
+      "columns": 64,
+      "rows": 15252,
+      "primary_key_tables": 2,
+      "sqlite_representative_samples": 9,
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "superhero": {
+      "tables": 10,
+      "columns": 31,
+      "rows": 10614,
+      "primary_key_tables": 8,
+      "sqlite_representative_samples": 30,
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "student_club": {
+      "tables": 8,
+      "columns": 48,
+      "rows": 42511,
+      "primary_key_tables": 8,
+      "sqlite_representative_samples": 24,
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "debit_card_specializing": {
+      "tables": 5,
+      "columns": 21,
+      "rows": 423050,
+      "primary_key_tables": 5,
+      "sqlite_representative_samples": 15,
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "formula_1": {
+      "tables": 13,
+      "columns": 94,
+      "rows": 493257,
+      "primary_key_tables": 13,
+      "sqlite_representative_samples": 39,
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 779
+    },
+    "financial": {
+      "tables": 8,
+      "columns": 55,
+      "rows": 1079680,
+      "primary_key_tables": 8,
+      "sqlite_representative_samples": 24,
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 0
+    },
+    "card_games": {
+      "tables": 6,
+      "columns": 115,
+      "rows": 803445,
+      "primary_key_tables": 6,
+      "sqlite_representative_samples": 18,
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 88
+    },
+    "codebase_community": {
+      "tables": 8,
+      "columns": 71,
+      "rows": 740646,
+      "primary_key_tables": 8,
+      "sqlite_representative_samples": 24,
+      "sqlite_datetime_source_timezone": "UTC+08:00",
+      "source_foreign_key_check_status": "completed",
+      "source_foreign_key_violation_count": 88
+    },
+    "european_football_2": {
+      "tables": 7,
+      "columns": 199,
+      "rows": 222796,
+      "primary_key_tables": 7,
+      "sqlite_representative_samples": 21,
+      "source_foreign_key_check_status": "schema_mismatch",
+      "source_foreign_key_violation_count": null
+    }
+  }
+}
