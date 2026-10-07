@@ -113,7 +113,8 @@ fresh no-env705passed/457expected skips(8.64s), configured1162passed/zero skips
 (29.86s), locked27/lint/42-file format/whitespace pass. Compact final metadata is
 in remaining-import-manifest.json; raw evidence remains ignored. G0 remains7/12:
 imports do not establish full SQLite/gold conversion validity, primary descriptions,
-C1 labels, the second model, a frozen split/E0 or C2. Final batch review is next.
+C1 labels, the second model, a frozen split/E0 or C2. Final batch review found
+no Critical/Important issues; its one Minor checklist mismatch is corrected.
 
 ## Preflight evidence (2026-10-03)
 
@@ -173,7 +174,7 @@ C1 labels, the second model, a frozen split/E0 or C2. Final batch review is next
   - [x] Verify actual SQLite layouts/counts/keys and offline description coverage.
   - [x] Complete the sole full-source batch final read-only review.
   - [x] Read-only remaining-import key/resource preflight and four-task plan.
-  - [ ] Review/approve new import artifact, ten restricted credentials and FK policy.
+  - [x] Review/approve new import artifact, ten restricted credentials and FK policy.
   - [ ] Remaining description/import/conversion work and validity manifest.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
@@ -1297,10 +1298,10 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-Current action: approved four-task remaining-native-imports implementation is
-complete through Task 4; one fresh whole-batch read-only review remains before
-the batch commit/handoff is final. Do not rerun COPY preparation, regenerate
-.env.datasets, reimport any target, rotate its ten private credentials or repeat
+Current action: approved four-task remaining-native-imports batch and its one
+fresh whole-batch read-only review are complete. Do not rerun its preparation or
+review, regenerate .env.datasets, reimport any target, rotate its ten private
+credentials or repeat
 the one Codebase retry. PostgreSQL now has California plus all ten new datasets.
 Task4 totals:72tables/709columns/3868173rows/69 enforced PK tables/216 samples;
 292 release PostgreSQL checks, full configured1162/zero skips, no-env705/457 skips.
@@ -1319,7 +1320,7 @@ Both already completed; no reason to rerun unless a targeted question requires i
 Full diagnostic checks every source timestamp by indexed immutable SQLite key,
 8MiB cache/120s cooperative budget; result11columns/882084non-null native+08,
 zero wall-clock difference/226789 matching nulls. Source fingerprints unchanged.
-Task4 acceptance is complete; no final reviewer yet. Keep this plan's scratch local.
+Task4 and its final review are complete. Keep this plan's scratch local.
 
 Historical preparation checkpoint: Kunal reviewed the new
 [remaining native imports plan](superpowers/plans/2026-10-05-remaining-native-imports.md)

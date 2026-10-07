@@ -1478,6 +1478,30 @@ equivalence, gold conversion validity, description/label meaning or benchmark
 accuracy. No inference, source/gold mutation, runtime credential use, dependency,
 remote/push or publication action occurred. One fresh whole-batch review remains.
 
+## D-048 — remaining native imports final review (2026-10-08)
+
+One fresh read-only reviewer inspected09dedd2..db784fc without changing HEAD,
+the checkout or database. It independently passed80 real PostgreSQL checks and
+19 pure DDL/value/timestamp checks, recaptured metadata matching all10 datasets/
+72tables, reconciled manifest totals/fingerprints and passed range whitespace.
+It did not repeat the already fresh1162-test full run. No Critical or Important
+finding. One Minor: the already-approved import artifact/credentials/FK-policy
+checklist entry remained unchecked. Correct it in this final handoff; no code or
+behavior change and no automatic second review.
+
+Reviewer set-aside rulings, in order:
+
+- Full SQLite/gold equivalence, gold timestamp meaning and description/label choices: retain the explicit next G0.5/C1 checkpoint — cost if wrong: converted official questions could be scored on an invalid meaning or denominator.
+- Runtime dataset routing, exhaustive function/attack coverage, tenant RLS, model evaluation and publication: keep outside this setup-import batch and at their existing gates — cost if wrong: later runtime or release claims could exceed the tested boundary.
+- Concurrent administrator replacement of pinned inputs: retain the trusted immutable local-source assumption — cost if wrong: privileged local tampering could invalidate checks between fingerprinting and use.
+- OS-hard deadlines and hard RAM guarantees: retain documented cooperative setup limits and unchanged Docker caps — cost if wrong: a blocked system call or driver allocation could outlive the cooperative budget.
+- Crash-durable credential/report recovery and automatic import resumption: retain exclusive fail-stop operation and manual reconciliation — cost if wrong: interruption could require operator inspection instead of automatic safe continuation.
+- Earlier executor cancellation flakiness root cause: retain the unknown-cause record, sanitized phase label and unchanged deadlines — cost if wrong: the timing failure may recur and still require separate diagnosis.
+
+Decision: accept the four-task batch locally and keep feat/foundation without
+merge, remote or push. G0 remains7/12; next is a separately reviewed gold/
+description/conversion/C1 increment, not a repeat import or benchmark score.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

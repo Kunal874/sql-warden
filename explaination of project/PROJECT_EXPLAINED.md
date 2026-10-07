@@ -77,8 +77,8 @@ and checked, and the four approved small source files have been saved and checke
 The independent final review is complete. It found one time-limit gap, now fixed
 and checked. No extra model test or database import ran.
 The three-part source-preparation batch and its independent review are complete.
-The four-part native-import implementation is complete and awaits its one final
-read-only review. Source key problems are visible, not silently repaired.
+The four-part native-import implementation and its one final read-only review
+are complete. Source key problems are visible, not silently repaired.
 
 ## 3. Completed work, one step at a time
 
@@ -1496,7 +1496,20 @@ that new work did not break earlier behavior.
 The import group is not the whole data milestone. We still need to check which
 official questions and answers survive conversion, choose the main descriptions
 and labels, and make the C1 ambiguity decision. Model comparison and scoring are
-also later work. One fresh read-only review of this four-task batch comes next.
+also later work.
+
+### Remaining import batch — final review complete (2026-10-08)
+
+A fresh reviewer checked the whole four-part import change without editing it.
+It reran 80 real database checks and 19 smaller importer/time checks, rebuilt the
+metadata summary and matched every dataset/table and file fingerprint. It found
+no serious or important problem. One small progress checkbox still said the
+already-approved import policy needed approval; that checkbox is now corrected.
+
+**Read-only review:** inspection and tests that do not change project files or
+database data. **Scope:** the exact work a check covers. Passing import tests does
+not automatically prove model accuracy, every possible database attack, or the
+meaning of official answers; those stay at their later checkpoints.
 
 ## 6. What comes next?
 
@@ -1517,7 +1530,7 @@ offline source-preparation batch has now unpacked the fixed sources, saved the
 small descriptions and audited real layouts; its sole final review is complete.
 Source key problems are recorded, not repaired. The four-task native import plan
 has finished all implementation and acceptance checks. All ten new datasets are
-saved; its one fresh final review is next.
+saved, and its one fresh final review is complete.
 Gold conversion and C1, then second-model/split/E0/C2 work follow their checkpoints.
 The approved imports use existing software and do not run the AI model.
 Important new permissions outside this scope will be asked as questions.

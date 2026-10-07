@@ -513,6 +513,15 @@ The earlier partial manifest remains historical evidence of the stopped state.
 Full SQLite query/gold-answer equivalence, primary descriptions, conversion
 survival/exclusions and C1 label/ambiguity choices remain untested and undecided.
 
+## Remaining native imports final review (2026-10-08)
+
+The sole whole-batch read-only review of09dedd2..db784fc found no Critical or
+Important defect. Independent checks passed80 real PostgreSQL controls and19
+pure importer/timestamp controls; a fresh capture matched all10 datasets/
+72tables and manifest totals/fingerprints. One Minor stale checklist box was
+corrected in PROGRESS. No import, source, credential, model or database change
+was made by review, and the already-fresh1162-test full run was not repeated.
+
 ## Remaining import readiness — read-only preparation (2026-10-05)
 
 Dedicated PostgreSQL 16 still contains only the California dataset and its login;
