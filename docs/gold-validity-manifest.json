@@ -1,0 +1,3156 @@
+{
+  "alternate_descriptions": "original",
+  "ambiguity_policy": {
+    "candidate_ids": [
+      11,
+      17,
+      23,
+      25,
+      26,
+      27,
+      28,
+      37,
+      41,
+      46,
+      48,
+      62,
+      77,
+      83,
+      85,
+      87,
+      92,
+      93,
+      94,
+      95,
+      118,
+      128,
+      129,
+      145,
+      159,
+      168,
+      169,
+      189,
+      194,
+      198,
+      200,
+      201,
+      208,
+      215,
+      226,
+      227,
+      228,
+      230,
+      231,
+      236,
+      240,
+      242,
+      244,
+      247,
+      248,
+      249,
+      255,
+      260,
+      263,
+      273,
+      282,
+      340,
+      341,
+      344,
+      347,
+      349,
+      356,
+      366,
+      371,
+      377,
+      397,
+      402,
+      405,
+      408,
+      412,
+      424,
+      465,
+      469,
+      473,
+      474,
+      486,
+      487,
+      529,
+      530,
+      549,
+      557,
+      571,
+      581,
+      584,
+      587,
+      595,
+      634,
+      637,
+      672,
+      685,
+      716,
+      724,
+      726,
+      728,
+      743,
+      747,
+      751,
+      766,
+      772,
+      788,
+      801,
+      846,
+      861,
+      862,
+      865,
+      866,
+      877,
+      894,
+      896,
+      898,
+      902,
+      904,
+      906,
+      928,
+      930,
+      937,
+      940,
+      944,
+      950,
+      959,
+      962,
+      967,
+      971,
+      989,
+      1002,
+      1003,
+      1011,
+      1014,
+      1029,
+      1031,
+      1032,
+      1035,
+      1036,
+      1037,
+      1058,
+      1080,
+      1084,
+      1088,
+      1091,
+      1092,
+      1116,
+      1124,
+      1133,
+      1134,
+      1135,
+      1141,
+      1144,
+      1146,
+      1147,
+      1148,
+      1149,
+      1152,
+      1155,
+      1156,
+      1162,
+      1166,
+      1168,
+      1175,
+      1185,
+      1187,
+      1189,
+      1198,
+      1201,
+      1205,
+      1209,
+      1227,
+      1232,
+      1235,
+      1239,
+      1241,
+      1247,
+      1254,
+      1255,
+      1270,
+      1275,
+      1331,
+      1338,
+      1350,
+      1376,
+      1387,
+      1389,
+      1392,
+      1399,
+      1403,
+      1405,
+      1426,
+      1486,
+      1490,
+      1500,
+      1501,
+      1505,
+      1507,
+      1525,
+      1528
+    ],
+    "negative_control_ids": [
+      24,
+      36,
+      40,
+      45,
+      47,
+      50,
+      79,
+      82,
+      89,
+      98,
+      99,
+      100,
+      112,
+      115,
+      116,
+      117,
+      136,
+      137,
+      138,
+      149,
+      173,
+      195,
+      206,
+      207,
+      212,
+      213,
+      218,
+      220,
+      232,
+      234,
+      243,
+      245,
+      253,
+      268,
+      327,
+      345,
+      346,
+      352,
+      358,
+      368,
+      379,
+      383,
+      391,
+      407,
+      409,
+      414,
+      415,
+      416,
+      422,
+      427,
+      440,
+      459,
+      462,
+      466,
+      468,
+      472,
+      477,
+      479,
+      480,
+      483,
+      484,
+      522,
+      528,
+      531,
+      537,
+      539,
+      544,
+      547,
+      555,
+      567,
+      568,
+      572,
+      573,
+      576,
+      578,
+      586,
+      592,
+      598,
+      629,
+      633,
+      640,
+      665,
+      669,
+      671,
+      678,
+      682,
+      687,
+      694,
+      704,
+      705,
+      707,
+      710,
+      717,
+      719,
+      723,
+      730,
+      732,
+      733,
+      736,
+      737,
+      738,
+      739,
+      740,
+      744,
+      745,
+      753,
+      758,
+      760,
+      761,
+      764,
+      765,
+      769,
+      773,
+      775,
+      779,
+      781,
+      782,
+      785,
+      786,
+      790,
+      792,
+      794,
+      796,
+      797,
+      798,
+      800,
+      806,
+      819,
+      822,
+      824,
+      825,
+      829,
+      847,
+      850,
+      859,
+      869,
+      872,
+      875,
+      879,
+      884,
+      897,
+      901,
+      909,
+      912,
+      915,
+      931,
+      933,
+      945,
+      948,
+      951,
+      960,
+      964,
+      972,
+      977,
+      981,
+      990,
+      1001,
+      1025,
+      1028,
+      1030,
+      1040,
+      1042,
+      1044,
+      1048,
+      1057,
+      1076,
+      1078,
+      1079,
+      1096,
+      1098,
+      1102,
+      1103,
+      1105,
+      1107,
+      1110,
+      1113,
+      1114,
+      1122,
+      1130,
+      1136,
+      1139,
+      1145,
+      1150,
+      1153,
+      1157,
+      1164,
+      1169,
+      1192,
+      1208,
+      1220,
+      1231,
+      1238,
+      1251,
+      1252,
+      1256,
+      1265,
+      1267,
+      1281,
+      1302,
+      1312,
+      1317,
+      1322,
+      1323,
+      1334,
+      1344,
+      1346,
+      1351,
+      1352,
+      1356,
+      1357,
+      1359,
+      1362,
+      1368,
+      1371,
+      1375,
+      1394,
+      1398,
+      1411,
+      1422,
+      1427,
+      1432,
+      1435,
+      1457,
+      1464,
+      1471,
+      1472,
+      1479,
+      1480,
+      1484,
+      1493,
+      1506,
+      1509,
+      1514,
+      1515,
+      1521
+    ],
+    "status": "literal_text_difference_only_not_semantic_review"
+  },
+  "checked_on": "2026-10-08",
+  "decision_source": "Kunal chose the corrected pool on 2026-10-08",
+  "evidence": {
+    "contains": "question IDs, database IDs and bounded outcome classes only",
+    "excludes": [
+      "question text",
+      "SQL",
+      "result cells",
+      "credentials"
+    ],
+    "ignored_path": ".tools/gold-validation/recovery-final.json",
+    "sha256": "280b1dde0a08a9add7a42ebdb017db5dc43469804756615e10ffb1a0772a4780"
+  },
+  "format_version": 1,
+  "label_source_revisions": {
+    "correction": "fe766045c55b6875a43b30e9ac7683df5582f8cf",
+    "original": "f65faf4ae3b638c1fa6df1d3370c8d92c8366301"
+  },
+  "limits": {
+    "cell_bytes": 1048576,
+    "query_seconds": 10,
+    "result_bytes": 16777216,
+    "rows": 100000
+  },
+  "primary_descriptions": "corrected",
+  "primary_labels": "arcwise_full_verified_corrected_pool",
+  "primary_track": "arcwise_full",
+  "splits": "not_frozen",
+  "usable_items": [
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "simple",
+      "question_id": 11
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "simple",
+      "question_id": 17
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 23
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 24
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 25
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 26
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 27
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "challenging",
+      "question_id": 28
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "california_schools",
+      "difficulty": "challenging",
+      "question_id": 36
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 37
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 40
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "simple",
+      "question_id": 41
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 45
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "simple",
+      "question_id": 46
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 47
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 48
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "california_schools",
+      "difficulty": "simple",
+      "question_id": 50
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "challenging",
+      "question_id": 62
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 77
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 79
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "california_schools",
+      "difficulty": "simple",
+      "question_id": 82
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "challenging",
+      "question_id": 83
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "moderate",
+      "question_id": 85
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "california_schools",
+      "difficulty": "challenging",
+      "question_id": 87
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 89
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "simple",
+      "question_id": 92
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 93
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "challenging",
+      "question_id": 94
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 95
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 98
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 99
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 100
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "simple",
+      "question_id": 112
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "challenging",
+      "question_id": 115
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "challenging",
+      "question_id": 116
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 117
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 118
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 128
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 129
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 136
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 137
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 138
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 145
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "challenging",
+      "question_id": 149
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "simple",
+      "question_id": 159
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 168
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "challenging",
+      "question_id": 169
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "financial",
+      "difficulty": "challenging",
+      "question_id": 173
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 189
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "financial",
+      "difficulty": "moderate",
+      "question_id": 194
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "simple",
+      "question_id": 195
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 198
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "simple",
+      "question_id": 200
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 201
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 206
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 207
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 208
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 212
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 213
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 215
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 218
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 220
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 226
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "simple",
+      "question_id": 227
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 228
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 230
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 231
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 232
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 234
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 236
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 240
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 242
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 243
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 244
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 245
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 247
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "simple",
+      "question_id": 248
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 249
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 253
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 255
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 260
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 263
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 268
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 273
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "toxicology",
+      "difficulty": "challenging",
+      "question_id": 282
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "toxicology",
+      "difficulty": "moderate",
+      "question_id": 327
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 340
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 341
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 344
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 345
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 346
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 347
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 349
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 352
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 356
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 358
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 366
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 368
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "challenging",
+      "question_id": 371
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 377
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 379
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 383
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 391
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 397
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 402
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 405
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 407
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 408
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 409
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 412
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 414
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "challenging",
+      "question_id": 415
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "challenging",
+      "question_id": 416
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 422
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 424
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 427
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "simple",
+      "question_id": 440
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 459
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 462
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 465
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 466
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 468
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 469
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 472
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 473
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 474
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "challenging",
+      "question_id": 477
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 479
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 480
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 483
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 484
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 486
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "challenging",
+      "question_id": 487
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 522
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "card_games",
+      "difficulty": "challenging",
+      "question_id": 528
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 529
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "card_games",
+      "difficulty": "moderate",
+      "question_id": 530
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 531
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 537
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 539
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 544
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 547
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 549
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 555
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 557
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 567
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 568
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 571
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 572
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 573
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 576
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 578
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 581
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 584
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "challenging",
+      "question_id": 586
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 587
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 592
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 595
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "challenging",
+      "question_id": 598
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 629
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 633
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "challenging",
+      "question_id": 634
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 637
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 640
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 665
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 669
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 671
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 672
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 678
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 682
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 685
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 687
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 694
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 704
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 705
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 707
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "codebase_community",
+      "difficulty": "simple",
+      "question_id": 710
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "codebase_community",
+      "difficulty": "moderate",
+      "question_id": 716
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 717
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 719
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 723
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 724
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 726
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 728
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 730
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 732
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 733
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 736
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 737
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 738
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 739
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 740
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 743
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 744
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 745
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 747
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 751
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 753
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 758
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 760
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 761
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 764
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 765
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 766
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 769
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 772
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 773
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 775
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 779
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 781
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 782
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 785
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 786
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 788
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 790
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 792
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 794
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 796
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 797
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 798
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 800
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 801
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "simple",
+      "question_id": 806
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 819
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 822
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 824
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "moderate",
+      "question_id": 825
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "superhero",
+      "difficulty": "challenging",
+      "question_id": 829
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 846
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 847
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 850
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 859
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 861
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 862
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 865
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 866
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 869
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 872
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 875
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 877
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 879
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 884
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 894
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "challenging",
+      "question_id": 896
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 897
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 898
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 901
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 902
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 904
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 906
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 909
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 912
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 915
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 928
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 930
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 931
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 933
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 937
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 940
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "challenging",
+      "question_id": 944
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 945
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 948
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 950
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 951
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 959
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 960
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "challenging",
+      "question_id": 962
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 964
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 967
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 971
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 972
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "simple",
+      "question_id": 977
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 981
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 989
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "challenging",
+      "question_id": 990
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "formula_1",
+      "difficulty": "challenging",
+      "question_id": 1001
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 1002
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "moderate",
+      "question_id": 1003
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "challenging",
+      "question_id": 1011
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "formula_1",
+      "difficulty": "challenging",
+      "question_id": 1014
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1025
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1028
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1029
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1030
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1031
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1032
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1035
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1036
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1037
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1040
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1042
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1044
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1048
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1057
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1058
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1076
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1078
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1079
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1080
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1084
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1088
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1091
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1092
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1096
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1098
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1102
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1103
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1105
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1107
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1110
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1113
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1114
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1116
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1122
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1124
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1130
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1133
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1134
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1135
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1136
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "challenging",
+      "question_id": 1139
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1141
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1144
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1145
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1146
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "simple",
+      "question_id": 1147
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "european_football_2",
+      "difficulty": "moderate",
+      "question_id": 1148
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1149
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1150
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1152
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "simple",
+      "question_id": 1153
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "simple",
+      "question_id": 1155
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1156
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "simple",
+      "question_id": 1157
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1162
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1164
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "simple",
+      "question_id": 1166
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1168
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1169
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1175
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1185
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1187
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1189
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1192
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "simple",
+      "question_id": 1198
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1201
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1205
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1208
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1209
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "simple",
+      "question_id": 1220
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1227
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1231
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1232
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1235
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1238
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1239
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1241
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1247
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "simple",
+      "question_id": 1251
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1252
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1254
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1255
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1256
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1265
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1267
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1270
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1275
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "moderate",
+      "question_id": 1281
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "thrombosis_prediction",
+      "difficulty": "challenging",
+      "question_id": 1302
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1312
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1317
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1322
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1323
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1331
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1334
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1338
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1344
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1346
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1350
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1351
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1352
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1356
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1357
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "challenging",
+      "question_id": 1359
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1362
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1368
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1371
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1375
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1376
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1387
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1389
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1392
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1394
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1398
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1399
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1403
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1405
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1411
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "simple",
+      "question_id": 1422
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1426
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1427
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1432
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "moderate",
+      "question_id": 1435
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "challenging",
+      "question_id": 1457
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "student_club",
+      "difficulty": "challenging",
+      "question_id": 1464
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1471
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "moderate",
+      "question_id": 1472
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "moderate",
+      "question_id": 1479
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "moderate",
+      "question_id": 1480
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1484
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1486
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "debit_card_specializing",
+      "difficulty": "moderate",
+      "question_id": 1490
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1493
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1500
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "debit_card_specializing",
+      "difficulty": "moderate",
+      "question_id": 1501
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1505
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "moderate",
+      "question_id": 1506
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1507
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "moderate",
+      "question_id": 1509
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1514
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1515
+    },
+    {
+      "ambiguity_candidate": false,
+      "db_id": "debit_card_specializing",
+      "difficulty": "moderate",
+      "question_id": 1521
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1525
+    },
+    {
+      "ambiguity_candidate": true,
+      "db_id": "debit_card_specializing",
+      "difficulty": "simple",
+      "question_id": 1528
+    }
+  ],
+  "validity": {
+    "aligned_count": 498,
+    "automatic_threshold": "95.00%",
+    "automatic_threshold_met": false,
+    "candidate_count": 500,
+    "missing_ids": [
+      119,
+      120
+    ],
+    "original_count": 500,
+    "per_database_original": {
+      "california_schools": 30,
+      "card_games": 52,
+      "codebase_community": 49,
+      "debit_card_specializing": 30,
+      "european_football_2": 51,
+      "financial": 32,
+      "formula_1": 66,
+      "student_club": 48,
+      "superhero": 52,
+      "thrombosis_prediction": 50,
+      "toxicology": 40
+    },
+    "per_database_usable": {
+      "california_schools": 24,
+      "card_games": 51,
+      "codebase_community": 41,
+      "debit_card_specializing": 19,
+      "european_football_2": 47,
+      "financial": 26,
+      "formula_1": 52,
+      "student_club": 36,
+      "superhero": 50,
+      "thrombosis_prediction": 42,
+      "toxicology": 36
+    },
+    "per_difficulty_usable": {
+      "challenging": 80,
+      "moderate": 217,
+      "simple": 127
+    },
+    "reason_counts": {
+      "data_error": 2,
+      "missing_id": 2,
+      "postgres_error": 4,
+      "query_timeout": 2,
+      "result_mismatch": 58,
+      "undefined_object": 8
+    },
+    "status_counts": {
+      "excluded": 2,
+      "failed": 16,
+      "matched": 424,
+      "mismatched": 58
+    },
+    "survival_rate": "85.14%",
+    "unusable_ids_by_reason": {
+      "data_error": [
+        963,
+        988
+      ],
+      "missing_id": [
+        119,
+        120
+      ],
+      "postgres_error": [
+        892,
+        994,
+        1381,
+        1410
+      ],
+      "query_timeout": [
+        518,
+        701
+      ],
+      "result_mismatch": [
+        12,
+        31,
+        32,
+        39,
+        125,
+        152,
+        186,
+        192,
+        197,
+        219,
+        239,
+        281,
+        532,
+        533,
+        563,
+        565,
+        639,
+        683,
+        750,
+        791,
+        854,
+        857,
+        868,
+        880,
+        881,
+        895,
+        910,
+        954,
+        955,
+        978,
+        1039,
+        1068,
+        1094,
+        1115,
+        1179,
+        1195,
+        1225,
+        1339,
+        1340,
+        1361,
+        1378,
+        1380,
+        1390,
+        1401,
+        1404,
+        1409,
+        1460,
+        1473,
+        1476,
+        1481,
+        1482,
+        1483,
+        1498,
+        1524,
+        1526,
+        1529,
+        1531,
+        1533
+      ],
+      "undefined_object": [
+        5,
+        72,
+        604,
+        1171,
+        1229,
+        1242,
+        1243,
+        1257
+      ]
+    },
+    "usable_count": 424
+  }
+}

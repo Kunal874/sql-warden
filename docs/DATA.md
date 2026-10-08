@@ -5,9 +5,10 @@ California import checked on 2026-10-03; correction-source inspection added
 import, content/types/keys, descriptions and direct privileges are verified.
 One guarded local model-driven question ran on 2026-10-04, documented separately
 in [CLI_SMOKE.md](CLI_SMOKE.md). This is not an evaluation
-result or a completed conversion-validity manifest.
+result. The C1 conversion-validity manifest is now frozen below for the selected
+corrected pool; the evaluation split and model score are still future work.
 
-## Provisional cross-dialect validity measurement (2026-10-08)
+## C1 cross-dialect validity manifest (2026-10-08)
 
 The bounded checker ran the fixed SQLite reference and PostgreSQL candidate tracks
 through all 11 dataset-specific restricted logins. Its ignored evidence contains
@@ -37,8 +38,28 @@ errors and 2 timeouts. Recovery evidence SHA-256:
 `280b1dde0a08a9add7a42ebdb017db5dc43469804756615e10ffb1a0772a4780`.
 Even perfect repair of all 16 remaining execution failures and 2 timeouts would
 reach only 442/498 (88.76%) because the 58 exact-result mismatches remain. The 95%
-automatic C1 branch is therefore unattainable under the frozen lossless rule;
-an owner track choice is still required.
+automatic C1 branch is therefore unattainable under the frozen lossless rule.
+
+Kunal chose the 424 verified corrected items as the primary C1 pool on
+2026-10-08. The tracked compact manifest is
+[`gold-validity-manifest.json`](gold-validity-manifest.json). It freezes:
+
+- primary labels: `arcwise_full_verified_corrected_pool`
+- primary descriptions: corrected descriptions
+- alternate descriptions: original descriptions
+- usable corrected items: 424
+- aligned IDs: 498, with source IDs 119 and 120 missing from the correction set
+- unscorable/failed outcomes: 58 result mismatches, 16 execution failures and
+  2 excluded data-error items
+- ambiguity-candidate IDs: matched IDs whose original and corrected literal
+  question or evidence text differs
+- negative-control IDs: matched IDs whose original and corrected literal text is
+  unchanged
+
+The ambiguity labels are candidates from literal text differences only; they are
+not a human semantic review. The manifest does not contain question prose, SQL,
+result cells or credentials. It does not freeze the development/held-out split,
+run E0 or create a benchmark score.
 
 ## Sources and selected release
 

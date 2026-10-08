@@ -4,7 +4,10 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. G0.7a's first thin slice is complete: guard, bounded executor,
+Current group: G0. C1 is now closed on the corrected pool: Kunal selected the
+424 exact verified corrected items, corrected descriptions are primary, original
+descriptions remain alternate material, and `gold-validity-manifest.json` freezes
+the compact ID-only evidence. G0.7a's first thin slice is complete: guard, bounded executor,
 pinned comparator and safe local single-candidate CLI. Tasks saved at 227f869,
 f8b8150 and 3e1f72e; sole final read-only review found two Important parsing gaps,
 both fixed in one TDD pass. CLI checkpoint full suite 719/719, zero skips, including 165
@@ -13,9 +16,9 @@ The sole approved live question matched 17686 in 11.387s, one preload/generation
 89/18 reported tokens. Runtime-only copy is private/ignored; automatic model
 unload observed after tool-blocked explicit stop. CLI_SMOKE preserves exact
 pre-fix live checkpoint, D-031 all 18 rulings/costs. No inference repeated.
-Progress snapshot: 8 of 12 numbered top-level G0 items complete, excluding the
+Progress snapshot: 10 of 12 numbered top-level G0 items complete, excluding the
 interview drill. This is checklist coverage, not overall project effort.
-G0 data/validity/models/evaluation and G1–G5/G7 remain unfinished. No benchmark score.
+G0 split/E0/C2 and G1–G5/G7 remain unfinished. No benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -129,6 +132,18 @@ release PostgreSQL checks321passed; no-env746passed/470skipped; full configured
 gold SQL, benchmark split, remote or publication action changed. G0 remains8/12:
 C1, split/E0/C2 and interview drill are still unfinished.
 
+2026-10-08 C1 corrected-pool freeze: Kunal chose the corrected option after the
+recovery ceiling proved the 95% automatic line unreachable. `scripts/freeze_c1.py`
+and `docs/gold-validity-manifest.json` freeze the 424 usable corrected IDs from
+ignored evidence SHA-256
+280b1dde0a08a9add7a42ebdb017db5dc43469804756615e10ffb1a0772a4780. Corrected
+labels/descriptions are primary; original descriptions stay alternate material.
+Ambiguity candidates and negative controls are literal text-difference labels
+only, not semantic judgments. No raw questions, SQL, result cells or credentials
+are committed. Focused gold validation31passed/1expected skip; no-env full suite
+749passed/470skipped; full configured suite1217passed/2skipped; Ruff lint/format
+pass. Split/E0/C2 still remain.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -175,7 +190,7 @@ C1, split/E0/C2 and interview drill are still unfinished.
   - [x] Build/test the safe one-database model/CLI flow (39 deterministic flow checks).
   - [x] Actual CLI controls, exclusive runtime copy, one bounded live question and confirmed unload.
   - [x] Sole final CLI review and one test-first parsing correction pass; 719 full checks pass.
-- [ ] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
+- [x] G0.5: remaining datasets/descriptions/corrections; ID alignment and conversion validity manifest; DATA.
   - [x] Approved four-file correction intake and offline ID/text-difference manifest.
   - [x] Sole correction-intake review and tested streaming-deadline fix.
   - [x] Inspect/pin full source archive/native layouts and 75 original/corrected descriptions.
@@ -188,8 +203,8 @@ C1, split/E0/C2 and interview drill are still unfinished.
   - [x] Complete the sole full-source batch final read-only review.
   - [x] Read-only remaining-import key/resource preflight and four-task plan.
   - [x] Review/approve new import artifact, ten restricted credentials and FK policy.
-  - [ ] Remaining description/import/conversion work and validity manifest.
-- [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
+  - [x] Remaining description/import/conversion work and validity manifest.
+- [x] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [x] G0.6: second model smoke, recorded availability, one GPU model at a time.
 - [ ] G0.7: freeze split; E0 on the development slice; measured summaries with exact n.
   - [x] General restricted dataset executor for E0; fixed policies and real restricted logins verified.
@@ -1311,6 +1326,24 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-08 — C1 corrected pool frozen
+
+Kunal chose the corrected pool after the 424/498 recovery result. Task 2 now
+freezes `docs/gold-validity-manifest.json` from ignored evidence SHA-256
+`280b1dde0a08a9add7a42ebdb017db5dc43469804756615e10ffb1a0772a4780`. The manifest
+uses corrected labels and corrected descriptions as primary, keeps original
+descriptions as alternate reference, and stores only compact IDs/counts/fingerprints.
+It contains no question prose, SQL, result cells or credentials. Ambiguity candidates
+and negative controls are literal text-difference labels only, not semantic review.
+
+Verification: focused gold validation31passed/1expected skip; full no-env suite
+749passed/470skipped; full configured suite1217passed/2skipped; Ruff lint and
+format pass. G0 is now 10/12 top-level foundation items complete, excluding the
+interview drill. Next Task 3 of
+`docs/superpowers/plans/2026-10-08-finish-g0-start-g1.md` should freeze the
+development/held-out split and E0 protocol. Do not run E0 until that split/protocol
+commit exists.
 
 ### 2026-10-08 — G0.6 Arctic acquisition and smoke complete
 

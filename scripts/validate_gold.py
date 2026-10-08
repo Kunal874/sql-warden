@@ -435,6 +435,118 @@ def publish_manifest(path: Path, manifest: dict) -> None:
         raise ValidationError("manifest publication failed") from None
 
 
+def _ids_for(outcomes: list[dict], *, status: str | None = None, reason: str | None = None):
+    return [
+        item["question_id"]
+        for item in outcomes
+        if (status is None or item["status"] == status)
+        and (reason is None or item.get("reason") == reason)
+    ]
+
+
+def build_c1_manifest(
+    validation_report: dict,
+    label_report: dict,
+    original: dict[int, dict],
+    *,
+    evidence_sha256: str,
+    evidence_path: str,
+    decision_source: str,
+) -> dict:
+    if not re.fullmatch(r"[a-f0-9]{64}", evidence_sha256):
+        raise ValidationError("evidence hash refused")
+    try:
+        track = validation_report["tracks"]["arcwise_full"]
+        outcomes = track["outcomes"]
+        label_alignment = label_report["alignment"]
+        label_track = label_alignment["by_source"]["arcwise_full"]
+        original_count = label_alignment["original_count"]
+        aligned_count = label_track["identity_aligned_count"]
+    except (KeyError, TypeError):
+        raise ValidationError("manifest input mismatch") from None
+    if not isinstance(outcomes, list) or original_count != len(original):
+        raise ValidationError("manifest input mismatch")
+    by_id = {}
+    for item in outcomes:
+        identifier = item.get("question_id")
+        if identifier not in original or identifier in by_id:
+            raise ValidationError("manifest input mismatch")
+        public_outcome(identifier, item.get("db_id"), item.get("status"), item.get("reason"))
+        by_id[identifier] = item
+    usable = [item for item in outcomes if item["status"] == "matched"]
+    if len(usable) != track["summary"]["status_counts"].get("matched", 0):
+        raise ValidationError("manifest input mismatch")
+    text_difference_ids = set(label_track["question_difference_ids"]) | set(
+        label_track["evidence_difference_ids"]
+    )
+    usable_items = []
+    for item in sorted(usable, key=lambda row: row["question_id"]):
+        source = original[item["question_id"]]
+        if source["db_id"] != item["db_id"]:
+            raise ValidationError("manifest input mismatch")
+        usable_items.append(
+            {
+                "question_id": item["question_id"],
+                "db_id": item["db_id"],
+                "difficulty": source["difficulty"],
+                "ambiguity_candidate": item["question_id"] in text_difference_ids,
+            }
+        )
+    candidate_ids = [item["question_id"] for item in usable_items if item["ambiguity_candidate"]]
+    negative_ids = [item["question_id"] for item in usable_items if not item["ambiguity_candidate"]]
+    survival = Decimal(len(usable)) / Decimal(aligned_count)
+    return {
+        "format_version": 1,
+        "checked_on": "2026-10-08",
+        "primary_track": "arcwise_full",
+        "primary_labels": "arcwise_full_verified_corrected_pool",
+        "primary_descriptions": "corrected",
+        "alternate_descriptions": "original",
+        "decision_source": decision_source,
+        "evidence": {
+            "ignored_path": evidence_path,
+            "sha256": evidence_sha256,
+            "contains": "question IDs, database IDs and bounded outcome classes only",
+            "excludes": ["question text", "SQL", "result cells", "credentials"],
+        },
+        "limits": validation_report["limits"],
+        "validity": {
+            "original_count": original_count,
+            "candidate_count": track["summary"]["total"],
+            "aligned_count": aligned_count,
+            "usable_count": len(usable),
+            "automatic_threshold": "95.00%",
+            "automatic_threshold_met": False,
+            "survival_rate": f"{survival * 100:.2f}%",
+            "status_counts": track["summary"]["status_counts"],
+            "reason_counts": track["summary"]["reason_counts"],
+            "per_database_original": label_alignment["per_database"],
+            "per_database_usable": dict(
+                sorted(Counter(item["db_id"] for item in usable_items).items())
+            ),
+            "per_difficulty_usable": dict(
+                sorted(Counter(item["difficulty"] for item in usable_items).items())
+            ),
+            "missing_ids": label_track["missing_ids"],
+            "unusable_ids_by_reason": {
+                reason: _ids_for(outcomes, reason=reason)
+                for reason in sorted(track["summary"]["reason_counts"])
+            },
+        },
+        "ambiguity_policy": {
+            "candidate_ids": candidate_ids,
+            "negative_control_ids": negative_ids,
+            "status": "literal_text_difference_only_not_semantic_review",
+        },
+        "usable_items": usable_items,
+        "label_source_revisions": {
+            "original": label_report.get("original_revision"),
+            "correction": label_report.get("correction_revision"),
+        },
+        "splits": "not_frozen",
+    }
+
+
 def _source_pins() -> dict[str, dict]:
     try:
         raw = SOURCE_PINS.read_bytes()

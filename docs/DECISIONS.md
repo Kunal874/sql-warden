@@ -1584,6 +1584,33 @@ Cost if wrong: an incorrect fixed table list or role derivation could false-bloc
 valid local E0 query or misroute it to the wrong restricted login; the real identity
 tests reduce that risk but do not replace the broader G2 security audit.
 
+## D-053 — C1 uses the verified corrected pool (2026-10-08)
+
+Kunal answered the C1 pool choice with “GO WITH CORRECTED ONCE.” This selects the
+verified corrected track despite the precommitted automatic 95% line not being
+reached. The tracked manifest is `docs/gold-validity-manifest.json`, generated
+from ignored evidence SHA-256
+`280b1dde0a08a9add7a42ebdb017db5dc43469804756615e10ffb1a0772a4780`.
+
+Decision: use the 424 exact verified corrected items as the primary local
+PostgreSQL-adapted gold pool. Corrected descriptions are primary; original
+descriptions remain alternate/reference material. Matched IDs with literal
+question/evidence text differences become ambiguity candidates, and matched IDs
+with unchanged text become negative controls. This is a data/evaluation input
+decision only: it does not change source SQL, gold results, rounding, tolerance,
+lossless comparator rules, generated-SQL guard policy or database permissions.
+
+Rationale: the corrected pool preserves the reviewed correction source and avoids
+silently changing the scoring method after measurement. Cost: it is 15 items
+smaller than the verified original pool and may be an easier or different subset;
+therefore future E0 numbers must report this 424-item denominator and cannot be
+presented as an official BIRD Mini-Dev leaderboard score.
+
+Verification: manifest generation is test-covered and records only compact IDs,
+database IDs, difficulty labels, candidate-control labels, counts, rates and
+evidence fingerprints. It contains no raw question prose, SQL, result cells or
+credentials. Split freezing, E0 and C2 remain separate steps.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

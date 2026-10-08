@@ -2,11 +2,12 @@ import json
 import sqlite3
 from datetime import UTC, date, datetime, time
 from decimal import Decimal
+from pathlib import Path
 
 import asyncpg
 import pytest
 
-from scripts import validate_gold
+from scripts import freeze_c1, validate_gold
 
 
 def test_load_tracks_refuses_unpinned_input(tmp_path):
@@ -335,3 +336,156 @@ def test_publish_manifest_is_atomic_and_refuses_overwrite_or_symlink(tmp_path):
         pytest.skip("symlinks unavailable")
     with pytest.raises(validate_gold.ValidationError, match="target is a symlink"):
         validate_gold.publish_manifest(link, manifest)
+
+
+def test_c1_manifest_freezes_corrected_pool_without_payload_text():
+    validation_report = {
+        "format_version": 1,
+        "limits": {"query_seconds": 10, "rows": 100000, "result_bytes": 1, "cell_bytes": 1},
+        "tracks": {
+            "arcwise_full": {
+                "track": "arcwise_full",
+                "summary": {
+                    "total": 3,
+                    "status_counts": {"failed": 1, "matched": 2},
+                    "reason_counts": {"missing_id": 1},
+                    "per_database": {"financial": 2, "toxicology": 1},
+                },
+                "outcomes": [
+                    {"question_id": 1, "db_id": "financial", "status": "matched"},
+                    {
+                        "question_id": 2,
+                        "db_id": "financial",
+                        "status": "failed",
+                        "reason": "missing_id",
+                    },
+                    {"question_id": 3, "db_id": "toxicology", "status": "matched"},
+                ],
+            }
+        },
+    }
+    label_report = {
+        "correction_revision": "revision",
+        "original_revision": "original",
+        "alignment": {
+            "original_count": 3,
+            "per_database": {"financial": 2, "toxicology": 1},
+            "by_source": {
+                "arcwise_full": {
+                    "identity_aligned_count": 2,
+                    "missing_ids": [2],
+                    "question_difference_ids": [1],
+                    "evidence_difference_ids": [],
+                }
+            },
+        },
+    }
+    original = {
+        1: {
+            "db_id": "financial",
+            "difficulty": "simple",
+            "question": "private-question",
+            "SQL": "SELECT private_sql",
+        },
+        2: {
+            "db_id": "financial",
+            "difficulty": "moderate",
+            "question": "missing",
+            "SQL": "SELECT missing",
+        },
+        3: {
+            "db_id": "toxicology",
+            "difficulty": "challenging",
+            "question": "clear",
+            "SQL": "SELECT clear",
+        },
+    }
+
+    manifest = validate_gold.build_c1_manifest(
+        validation_report,
+        label_report,
+        original,
+        evidence_sha256="a" * 64,
+        evidence_path=".tools/gold-validation/recovery-final.json",
+        decision_source="test decision",
+    )
+
+    assert manifest["primary_track"] == "arcwise_full"
+    assert manifest["primary_labels"] == "arcwise_full_verified_corrected_pool"
+    assert manifest["primary_descriptions"] == "corrected"
+    assert manifest["validity"]["usable_count"] == 2
+    assert manifest["validity"]["aligned_count"] == 2
+    assert manifest["validity"]["survival_rate"] == "100.00%"
+    assert manifest["usable_items"] == [
+        {
+            "question_id": 1,
+            "db_id": "financial",
+            "difficulty": "simple",
+            "ambiguity_candidate": True,
+        },
+        {
+            "question_id": 3,
+            "db_id": "toxicology",
+            "difficulty": "challenging",
+            "ambiguity_candidate": False,
+        },
+    ]
+    assert manifest["ambiguity_policy"] == {
+        "candidate_ids": [1],
+        "negative_control_ids": [3],
+        "status": "literal_text_difference_only_not_semantic_review",
+    }
+    rendered = json.dumps(manifest)
+    assert "private-question" not in rendered
+    assert "private_sql" not in rendered
+
+
+def test_c1_manifest_refuses_untrusted_or_inconsistent_inputs():
+    base = {
+        "tracks": {
+            "arcwise_full": {
+                "summary": {"total": 1, "status_counts": {"matched": 1}, "reason_counts": {}},
+                "outcomes": [{"question_id": 1, "db_id": "financial", "status": "matched"}],
+            }
+        }
+    }
+    labels = {
+        "alignment": {
+            "original_count": 1,
+            "per_database": {"financial": 1},
+            "by_source": {
+                "arcwise_full": {
+                    "identity_aligned_count": 1,
+                    "missing_ids": [],
+                    "question_difference_ids": [],
+                    "evidence_difference_ids": [],
+                }
+            },
+        }
+    }
+
+    with pytest.raises(validate_gold.ValidationError, match="evidence hash refused"):
+        validate_gold.build_c1_manifest(
+            base,
+            labels,
+            {1: {"db_id": "financial", "difficulty": "simple"}},
+            evidence_sha256="bad",
+            evidence_path="x",
+            decision_source="d",
+        )
+    with pytest.raises(validate_gold.ValidationError, match="manifest input mismatch"):
+        validate_gold.build_c1_manifest(
+            base, labels, {}, evidence_sha256="a" * 64, evidence_path="x", decision_source="d"
+        )
+
+
+def test_freeze_c1_records_relative_evidence_paths_from_absolute_or_relative_inputs(tmp_path):
+    root = tmp_path.resolve()
+    evidence = root / ".tools" / "gold-validation" / "report.json"
+    evidence.parent.mkdir(parents=True)
+    evidence.write_text("{}", encoding="utf-8")
+
+    assert freeze_c1.project_relative(evidence, root=root) == ".tools/gold-validation/report.json"
+    assert freeze_c1.project_relative(Path(".tools/gold-validation/report.json"), root=root) == (
+        ".tools/gold-validation/report.json"
+    )

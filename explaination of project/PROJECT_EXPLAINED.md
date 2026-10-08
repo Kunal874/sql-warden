@@ -45,8 +45,9 @@ It is not a finished public service yet.
   is complete; it reused existing Python tools without adding a package.
 - The local AI connection code now passes 67 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
-- The latest full configured checkpoint has 1,162 passing tests with no skips.
-  The ten-dataset release matrix alone has 292 real PostgreSQL checks.
+- The latest full configured checkpoint has 1,214 passing tests and 2 expected
+  skips before the corrected-pool freeze. The ten-dataset release matrix alone
+  has 292 real PostgreSQL checks.
 - The offline answer-file checker and small download tool pass 49 checks.
   The four approved files match their saved fingerprints. Their summary lists
   missing items and changed wording; it does not contain the answer text.
@@ -54,17 +55,20 @@ It is not a finished public service yet.
   The ten previously missing datasets are now in PostgreSQL: 72 tables and
   3,868,173 rows. This proves checked loading, not that every question has the
   correct answer or that every SQLite query behaves identically.
+- The corrected answer pool is now selected for C1. It has 424 verified questions.
+  The project saved only IDs and summary labels, not private question text, SQL,
+  answer cells or credentials.
 
 The first narrow AI question-to-database flow works for one checked question.
 The full agent, evaluation scores, website and public release are not finished.
-G0, the foundation group, is still in progress. Model unload, final review and
-its two test-first corrections are complete. The first small demo is finished.
+G0, the foundation group, is still in progress. Split/E0/C2 and then G1
+agent-core work still remain.
 
-Where we are: 7 of the 12 numbered foundation tasks are complete. The query
+Where we are: 10 of the 12 numbered foundation tasks are complete. The query
 guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
-demonstration is complete; data checks come next before expanding the agent.
+demonstration is complete; split/E0/C2 come next before expanding the agent.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -1632,8 +1636,35 @@ here it is set to `pg_catalog` first and then exactly one dataset. **Restricted
 login** means a database user that can only read its own dataset and cannot become
 another user.
 
-This does not finish G0 by itself. The answer-pool choice at C1 is still open, and
-model evaluation cannot start until the split/E0 inputs are frozen.
+This does not finish G0 by itself. The corrected answer-pool choice is now handled
+below, but model evaluation cannot start until the split/E0 inputs are frozen.
+
+### Corrected answer pool chosen and frozen (2026-10-08)
+
+You chose the corrected option for C1. That means future local evaluation will use
+the 424 questions whose corrected SQL produced the exact same answer after being
+adapted to PostgreSQL. The project now has a small tracked manifest with those
+question IDs, database IDs, difficulty labels and simple ambiguity labels.
+
+Corrected descriptions are now the main column descriptions for evaluation.
+Original descriptions are still kept as alternate reference material. The 58 exact
+answer mismatches and 18 failed/excluded questions are not hidden; they are simply
+not in this verified pool. No score has been run yet.
+
+Checks for this subtask: the manifest builder has focused tests for corrected-pool
+counts, evidence fingerprints, no raw payload text, and stable relative evidence
+paths. The focused gold tests passed 31 checks with 1 expected skip. The full
+offline suite passed 749 checks and skipped 470 database-only checks. The full
+configured suite passed 1217 checks and skipped 2 expected checks. Ruff lint and
+format passed.
+
+**Benchmark pool** means the fixed set of questions used for measurement.
+**Primary label** means the answer SQL we treat as the reference for this project.
+**Alternate description** means older text we keep for comparison, but do not use
+as the main input. **Ambiguity candidate** means the original and corrected wording
+are literally different, so the item may be useful later for testing clarification.
+**Negative control** means the wording did not change, so it helps compare against
+the ambiguity candidates.
 
 ## 6. What comes next?
 
@@ -1641,7 +1672,8 @@ G0.6a's first model smoke and G0.7a's guard, including real-database checks and
 final review fixes, are complete. You approved the runner plan, and its answer-size
 rules, guarded workflow, real recovery tests and final review are complete.
 The answer checker and its independent final review are also complete. It passes
-60 pure and 17 real database checks. The separate plan for a small command-line
+60 pure and 17 real database checks. The corrected C1 pool is now chosen and saved
+as a compact manifest. The separate plan for a small command-line
 question-to-database demonstration is approved. Its local AI connection is now
 checked, and the safe command passes its flow and real database tests. Its sole
 live question returned the expected answer; model unload, final review and its
@@ -1656,8 +1688,8 @@ Source key problems are recorded, not repaired. The four-task native import plan
 has finished all implementation and acceptance checks. All ten new datasets are
 saved, and its one fresh final review is complete. The executor can now route
 guarded read-only SQL to any fixed restricted dataset login for E0.
-Gold conversion and C1, then second-model/split/E0/C2 work follow their checkpoints.
-The approved imports use existing software and do not run the AI model.
+Next comes the split/E0/C2 work, then G1 agent-core work. The approved imports
+use existing software and do not run the AI model.
 Important new permissions outside this scope will be asked as questions.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 
