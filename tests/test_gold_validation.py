@@ -3,6 +3,7 @@ import sqlite3
 from datetime import UTC, date, datetime, time
 from decimal import Decimal
 
+import asyncpg
 import pytest
 
 from scripts import validate_gold
@@ -110,6 +111,22 @@ def test_unsupported_or_nonfinite_cells_are_refused(value):
         validate_gold.canonical_cell(value)
 
 
+@pytest.mark.parametrize(
+    ("error", "reason"),
+    [
+        (asyncpg.PostgresSyntaxError("detail"), "postgres_syntax_error"),
+        (asyncpg.UndefinedFunctionError("detail"), "undefined_object"),
+        (asyncpg.DivisionByZeroError("detail"), "arithmetic_error"),
+        (asyncpg.DataError("detail"), "data_error"),
+        (asyncpg.InsufficientPrivilegeError("detail"), "permission_error"),
+        (asyncpg.PostgresError("detail"), "postgres_error"),
+    ],
+)
+def test_postgres_failure_classification_is_bounded_and_drops_detail(error, reason):
+    assert validate_gold.classify_postgres_error(error) == reason
+    assert "detail" not in validate_gold.classify_postgres_error(error)
+
+
 def test_collect_rows_enforces_row_cell_and_result_byte_limits():
     with pytest.raises(validate_gold.LimitExceeded, match="row_limit"):
         validate_gold.collect_rows([(1,), (2,)], max_rows=1)
@@ -153,6 +170,61 @@ def test_public_outcome_contains_only_bounded_classification():
     }
     with pytest.raises(validate_gold.ValidationError, match="classification refused"):
         validate_gold.public_outcome(7, "financial", "failed", "SELECT secret")
+
+
+def test_postgres_options_map_california_and_release_dataset_credentials():
+    california = "a" * 48
+    financial = "b" * 48
+    values = {
+        "WARDEN_CALIFORNIA_PASSWORD": california,
+        "WARDEN_DATASET_FINANCIAL_PASSWORD": financial,
+    }
+
+    california_options = validate_gold.postgres_options("california_schools", values)
+    financial_options = validate_gold.postgres_options("financial", values)
+
+    assert california_options["user"] == "warden_sandbox_california_schools"
+    assert california_options["password"] == california
+    assert financial_options["user"] == "warden_sandbox_financial"
+    assert financial_options["password"] == financial
+
+
+@pytest.mark.asyncio
+async def test_postgres_execution_keeps_admin_only_temp_limit_from_restricted_role():
+    class Transaction:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_):
+            return None
+
+    class Records:
+        def __init__(self):
+            self._items = iter([(1,)])
+
+        def __aiter__(self):
+            return self
+
+        async def __anext__(self):
+            try:
+                return next(self._items)
+            except StopIteration:
+                raise StopAsyncIteration from None
+
+    class Connection:
+        def transaction(self, *, readonly):
+            assert readonly is True
+            return Transaction()
+
+        async def execute(self, sql):
+            assert "temp_file_limit" not in sql
+
+        def cursor(self, sql, *, prefetch):
+            assert sql == "SELECT 1"
+            assert prefetch == 100
+            return Records()
+
+    assert await validate_gold.execute_postgres(Connection(), "SELECT 1") == [(1,)]
 
 
 def test_summarize_counts_statuses_and_reasons_without_payloads():

@@ -1540,6 +1540,32 @@ This finishes the checker itself, not the gold-validity decision. The next step 
 to run it on the real pinned questions and use the measured corrected-label survival
 rate for C1.
 
+### Real gold check reached an important choice (2026-10-08)
+
+The checker ran across all 11 databases. The original converted answers matched
+439 of 500 questions. The full corrected set has 498 available questions, but only
+365 produced exactly the same complete answer in SQLite and PostgreSQL: 73.29%.
+That is below the 95% safety line chosen before seeing results, so I did not quietly
+pick a dataset, freeze a split or start scoring models.
+
+For the 133 aligned corrected questions that did not pass, 75 refer to a table,
+column or function PostgreSQL cannot find after automatic translation; 52 run but
+return a different exact answer; two time out; and four have other database/data
+errors. Two more question IDs are missing from the correction source. No query,
+answer or source data was edited to improve these numbers.
+
+**Survival rate** is the share of converted reference questions that still produce
+the same answer after moving database systems. **Undefined object** means the
+translated query names a function, table or column that PostgreSQL cannot resolve.
+**Precommitted threshold** means the pass line was written down before measuring,
+which prevents changing the rule merely because the result is inconvenient.
+
+C1 now needs a real product choice: use the smaller 365-question corrected pool;
+use the larger 439-question original verified pool and keep corrections only for
+research; or first do a separate manual/adaptation review of the 133 corrected
+failures. Work stops at this choice because each option changes what later model
+scores mean.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and

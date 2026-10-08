@@ -19,7 +19,6 @@ from sqlglot import exp, parse
 from sqlglot.errors import SqlglotError as SQLGlotError
 
 from scripts.inspect_labels import DATABASES, PINS, LabelError, decode_labels, read_pinned
-from scripts.load_release import password_key
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PINS = ROOT / "docs/source-release-pins.json"
@@ -40,6 +39,11 @@ REASONS = frozenset(
         "transpile_error",
         "sqlite_error",
         "postgres_error",
+        "postgres_syntax_error",
+        "undefined_object",
+        "arithmetic_error",
+        "data_error",
+        "permission_error",
         "query_error",
         "query_timeout",
         "row_limit",
@@ -317,7 +321,12 @@ def checked_sqlite_path(db_id: str) -> Path:
 def postgres_options(db_id: str, values: dict[str, str]) -> dict:
     if db_id not in DATABASES:
         raise ValidationError("database refused")
-    password = values.get(password_key(db_id), "")
+    key = (
+        "WARDEN_CALIFORNIA_PASSWORD"
+        if db_id == "california_schools"
+        else "WARDEN_DATASET_" + db_id.upper() + "_PASSWORD"
+    )
+    password = values.get(key, "")
     if not isinstance(password, str) or len(password) != 48:
         raise ValidationError("restricted credential unavailable")
     return {
@@ -331,6 +340,28 @@ def postgres_options(db_id: str, values: dict[str, str]) -> dict:
     }
 
 
+def classify_postgres_error(error: asyncpg.PostgresError) -> str:
+    if isinstance(error, asyncpg.PostgresSyntaxError):
+        return "postgres_syntax_error"
+    if isinstance(
+        error,
+        (
+            asyncpg.UndefinedTableError,
+            asyncpg.UndefinedColumnError,
+            asyncpg.UndefinedFunctionError,
+            asyncpg.InvalidSchemaNameError,
+        ),
+    ):
+        return "undefined_object"
+    if isinstance(error, asyncpg.DivisionByZeroError):
+        return "arithmetic_error"
+    if isinstance(error, (asyncpg.InsufficientPrivilegeError, asyncpg.ReadOnlySQLTransactionError)):
+        return "permission_error"
+    if isinstance(error, asyncpg.DataError):
+        return "data_error"
+    return "postgres_error"
+
+
 async def execute_postgres(connection, sql: str):
     rows = []
     total_bytes = 0
@@ -339,8 +370,8 @@ async def execute_postgres(connection, sql: str):
             await connection.execute(
                 "SET LOCAL statement_timeout='10s'; SET LOCAL lock_timeout='500ms'; "
                 "SET LOCAL idle_in_transaction_session_timeout='12s'; "
-                "SET LOCAL work_mem='16MB'; SET LOCAL temp_file_limit='64MB'; "
-                "SET LOCAL timezone='UTC'; SET LOCAL DateStyle='ISO,YMD'"
+                "SET LOCAL work_mem='16MB'; SET LOCAL timezone='UTC'; "
+                "SET LOCAL DateStyle='ISO,YMD'"
             )
             async for record in connection.cursor(sql, prefetch=100):
                 if len(rows) >= MAX_ROWS:
@@ -358,7 +389,9 @@ async def execute_postgres(connection, sql: str):
         raise
     except TimeoutError:
         raise LimitExceeded("query_timeout") from None
-    except (asyncpg.PostgresError, OSError):
+    except asyncpg.PostgresError as error:
+        raise ValidationError(classify_postgres_error(error)) from None
+    except OSError:
         raise ValidationError("postgres_error") from None
     return rows
 
@@ -385,8 +418,8 @@ async def validate_pair(connection, sqlite_path: Path, sqlite_sql: str, postgres
         postgres_rows = await execute_postgres(connection, postgres_query)
     except LimitExceeded as error:
         return "excluded", _reason(error, "query_timeout")
-    except ValidationError:
-        return "failed", "postgres_error"
+    except ValidationError as error:
+        return "failed", _reason(error, "postgres_error")
     try:
         if canonical_rows(sqlite_rows) == canonical_rows(postgres_rows):
             return "matched", None
@@ -470,8 +503,11 @@ def main() -> int:
     try:
         report = asyncio.run(validate_all(ROOT / "data", dict(os.environ), args.track))
         publish_manifest(args.output, report)
-    except (ValidationError, OSError) as error:
+    except ValidationError as error:
         print(json.dumps({"status": "failed", "reason": str(error)}))
+        return 1
+    except (OSError, ValueError, asyncpg.PostgresError, TimeoutError):
+        print(json.dumps({"status": "failed", "reason": "validation runtime error"}))
         return 1
     print(json.dumps({"status": "complete", "output": str(args.output), "tracks": args.track}))
     return 0

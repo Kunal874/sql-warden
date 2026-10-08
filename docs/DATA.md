@@ -7,6 +7,27 @@ One guarded local model-driven question ran on 2026-10-04, documented separately
 in [CLI_SMOKE.md](CLI_SMOKE.md). This is not an evaluation
 result or a completed conversion-validity manifest.
 
+## Provisional cross-dialect validity measurement (2026-10-08)
+
+The bounded checker ran the fixed SQLite reference and PostgreSQL candidate tracks
+through all 11 dataset-specific restricted logins. Its ignored evidence contains
+only question IDs, database IDs and bounded outcome classes; it contains no SQL,
+question prose, result cells or credentials. Evidence SHA-256:
+`8cb8fcf92dcb0096af629f703ce61371803d53b17c44fcaa07cef2270e5ca4d3`.
+
+| Track | Total | Matched | Result mismatch | Query excluded | Other failure |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| original SQLite / proposed PostgreSQL | 500 | 439 | 59 | 2 | 0 |
+| SQL-only correction | 500 | 378 | 53 | 2 | 67, including 2 missing IDs |
+| full correction | 500 | 365 | 52 | 2 | 81, including 2 missing IDs |
+
+For the full correction, 498 IDs align and 365 match, so measured survival is
+73.29%, below the precommitted 95% C1 default. Its remaining aligned outcomes are
+75 undefined-object failures, one data error, three other database errors, two
+timeouts and 52 exact typed-result mismatches. This is measured conversion
+evidence, not a semantic review or benchmark score. No primary track, description
+policy, ambiguity labels, denominator or split is frozen until C1 is answered.
+
 ## Sources and selected release
 
 The [official Mini-Dev README](https://github.com/bird-bench/mini_dev/tree/abd11b6db92a1c9f809b32f7564c7c71b34d67f0)

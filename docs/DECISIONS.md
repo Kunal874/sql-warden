@@ -1502,6 +1502,26 @@ Decision: accept the four-task batch locally and keep feat/foundation without
 merge, remote or push. G0 remains7/12; next is a separately reviewed gold/
 description/conversion/C1 increment, not a repeat import or benchmark score.
 
+## D-049 — C1 threshold reached below default; owner choice required (2026-10-08)
+
+The fixed cross-dialect validator completed all three candidate comparisons under
+the precommitted exact typed multiset and resource limits. Full correction survival
+is365/498 aligned IDs (73.29%), below the95% automatic-selection threshold. The133
+aligned nonmatches are75 undefined objects after transpilation,1 data error,3 other
+database errors,2 timeouts and52 exact result mismatches; IDs119/120 are absent.
+Original proposed PostgreSQL labels match439/500 (87.80%); SQL-only corrections
+match378/498 (75.90%). Evidence is ignored, contains no SQL/results/questions/
+credentials and hashes to8cb8fcf92dcb0096af629f703ce61371803d53b17c44fcaa07cef2270e5ca4d3.
+
+Decision intentionally open: the active spec forbids silently selecting corrected
+labels below95%. Owner must choose among (A) a conservative365-item corrected-only
+verified pool, (B) the439-item verified original pool with corrections retained as
+research candidates, or (C) a separate manual/adaptation review of the133 corrected
+failures before C1. Cost of A: smaller, correction-biased pool. Cost of B: loses
+corrected-SQL improvements as primary labels. Cost of C: delays G0 and adds human/
+methodology work but may recover corrected coverage. No split, ambiguity-positive
+claim, primary description/label policy or E0 run is permitted until this closes.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

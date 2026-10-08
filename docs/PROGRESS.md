@@ -1298,6 +1298,29 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-08 — Task 2 measured C1 checkpoint (owner choice required)
+
+Task 1 commit b422504 added the bounded validator. Its first actual launch exposed
+two wiring defects before useful evidence: California used a separate private key
+name, and restricted roles cannot reset the administrator-owned `temp_file_limit`.
+Both are fixed test-first; the latter stays enforced by each role's imported
+64MiB default. Failure reasons are now bounded categories with no server detail.
+Focused validator result: 25 passed, 1 optional Windows symlink skip. Full configured
+result: 1181 passed, 1 optional skip. PostgreSQL/Ollama preflight showed the local
+database healthy and no model loaded; 369 label/release/login checks passed.
+
+Fresh ignored evidence SHA-256 is
+`8cb8fcf92dcb0096af629f703ce61371803d53b17c44fcaa07cef2270e5ca4d3`.
+Original conversion matched439/500 (87.80%); SQL-only corrections matched378/498
+aligned (75.90%); full corrections matched365/498 aligned (73.29%). Full-correction
+nonmatches:75 undefined-object,1 data,3 other database,2 timeout and52 exact-result
+mismatch; IDs119/120 are missing separately. Because73.29% is below the plan's
+precommitted95% threshold, do not infer C1, freeze a manifest/split, or start E0.
+Ask Kunal to choose: conservative365 corrected matches; verified439 original
+matches with corrections retained only as research candidates; or a separate
+manual/adaptation review of the133 aligned full-correction failures before C1.
+No gold SQL/source/result was changed and no benchmark score is claimed.
+
 ### 2026-10-08 — remaining G0 Task 1 / bounded gold validator
 
 The approved finish-G0/start-G1 plan is at
