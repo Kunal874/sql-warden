@@ -1298,6 +1298,29 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-08 — corrected-track recovery complete; C1 has real options
+
+Kunal selected review/recovery of the 133 initial aligned full-correction failures.
+Test-first deterministic adaptations now use the reviewed native identifier mapping
+and make SQLite date/numeric/aggregate/string behavior explicit in PostgreSQL.
+No gold SQL/source/result was edited and exact typed comparison was not relaxed.
+Focused validator: 28 passed, 1 optional Windows symlink skip. Actual recovery raises
+full corrections from 365 to 424 exact matches of 498 aligned (85.14%). Remaining:
+58 result mismatches, 8 undefined objects, 4 other database errors, 2 data errors and
+2 timeouts; IDs 119/120 remain missing. Evidence SHA-256 is
+`280b1dde0a08a9add7a42ebdb017db5dc43469804756615e10ffb1a0772a4780`.
+
+The fixed 95% threshold needs 473 matches. Even repairing every 18 non-mismatch
+outcome would cap this track at 442/498 (88.76%), so more syntax work cannot enter
+the automatic branch. Numeric diagnostics show 23 mismatches agree only after
+forbidden six-decimal rounding; four differ in row count and the rest differ in
+values. Do not weaken the lossless comparator or silently discard these IDs. C1
+must now select either the 424 verified corrected pool (recommended for correction
+fidelity) or the 439 verified original pool (recommended for larger coverage). A
+methodology change such as tolerance/rounding is a third option but changes what
+validity means and is not authorized. Split/E0 remains paused only at this required
+choice; the model stays unloaded.
+
 ### 2026-10-08 — Task 2 measured C1 checkpoint (owner choice required)
 
 Task 1 commit b422504 added the bounded validator. Its first actual launch exposed

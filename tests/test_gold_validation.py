@@ -63,6 +63,76 @@ def test_corrected_sql_is_transpiled_from_sqlite_to_postgres(sql, fragment):
     assert fragment in converted.upper()
 
 
+def test_corrected_identifiers_use_reviewed_native_names_without_changing_aliases():
+    tables = {
+        "patient": {
+            "source_name": "Patient",
+            "columns": [
+                {"source_name": "ID", "name": "id"},
+                {"source_name": "Given Name", "name": "Given Name"},
+            ],
+        }
+    }
+
+    converted = validate_gold.transpile_corrected(
+        'SELECT p."ID", p."Given Name" FROM "Patient" AS p', tables=tables
+    )
+
+    assert converted == 'SELECT p.id, p."Given Name" FROM patient AS p'
+    assert (
+        validate_gold.transpile_corrected('SELECT "Patient"."ID" FROM "Patient"', tables=tables)
+        == "SELECT patient.id FROM patient"
+    )
+
+
+def test_reviewed_reserved_table_name_remains_quoted():
+    tables = {
+        "order": {
+            "source_name": "Order",
+            "columns": [{"source_name": "id", "name": "id", "native_type": "BIGINT"}],
+        }
+    }
+
+    converted = validate_gold.transpile_corrected("SELECT id FROM `Order`", tables=tables)
+
+    assert converted == 'SELECT id FROM "order"'
+
+
+def test_sqlite_numeric_date_and_aggregate_semantics_are_made_explicit():
+    tables = {
+        "sample": {
+            "source_name": "Sample",
+            "columns": [
+                {"source_name": "d", "name": "d", "native_type": "DATE"},
+                {"source_name": "txt", "name": "txt", "native_type": "TEXT"},
+                {"source_name": "n", "name": "n", "native_type": "BIGINT"},
+                {"source_name": "r", "name": "r", "native_type": "REAL"},
+            ],
+        }
+    }
+    sql = (
+        "SELECT d, DATE(d, '+1 year'), JULIANDAY(d), SUM(n > 1), ROUND(r, 2), "
+        "AVG(txt), GROUP_CONCAT(n, ','), GROUP_CONCAT(DISTINCT n), "
+        "d LIKE '2026%', txt = 3, txt - txt, "
+        "STRFTIME('%Y', d) - STRFTIME('%Y', d) FROM Sample"
+    )
+
+    converted = validate_gold.transpile_corrected(sql, tables=tables)
+
+    assert converted.startswith("SELECT CAST(d AS TEXT), CAST(CAST(d + INTERVAL '+1 YEAR'")
+    assert "EXTRACT(EPOCH FROM CAST(d AS TIMESTAMP))" in converted
+    assert "/ 86400 + 2440587.5" in converted
+    assert "SUM(CAST(n > 1 AS INT))" in converted
+    assert "ROUND(CAST(r AS DECIMAL), 2)" in converted
+    assert "AVG(CAST(txt AS DECIMAL))" in converted
+    assert "STRING_AGG(CAST(n AS TEXT), ',')" in converted
+    assert "STRING_AGG(DISTINCT CAST(n AS TEXT), ',')" in converted
+    assert "CAST(d AS TEXT) LIKE '2026%'" in converted
+    assert "txt = CAST(3 AS TEXT)" in converted
+    assert "CAST(txt AS DECIMAL) - CAST(txt AS DECIMAL)" in converted
+    assert "CAST(TO_CHAR" in converted
+
+
 @pytest.mark.parametrize(
     "sql",
     [

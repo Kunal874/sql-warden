@@ -1566,6 +1566,28 @@ research; or first do a separate manual/adaptation review of the 133 corrected
 failures. Work stops at this choice because each option changes what later model
 scores mean.
 
+### Corrected-answer recovery finished (2026-10-08)
+
+You chose to review the failures first. I added automatic, tested translations for
+renamed PostgreSQL tables and columns, reserved words, dates, SQLite number behavior
+and aggregate functions. These rules recovered 59 more corrected questions, taking
+the exact pass count from 365 to 424 of 498, or 85.14%. The original source SQL was
+never edited and the answer checker was not made looser.
+
+There are 58 remaining questions that run but return an exactly different answer.
+Another 18 either fail or time out. Even if all 18 were repaired, the best possible
+total would be 442, still below the 473 needed for 95%. Twenty-three of the 58 become
+similar only if numbers are rounded to six decimal places, but rounding is forbidden
+by the rule written before testing.
+
+**Dialect adaptation** is a documented translation rule for a known difference
+between SQLite and PostgreSQL. **Ceiling** means the highest possible result even if
+all repairable failures were fixed. The recovery proves that more syntax fixes alone
+cannot reach the safety line. The honest remaining choice is between 424 verified
+corrected questions and 439 verified original questions, unless you deliberately
+change the exact-comparison method. I recommend the corrected pool because it keeps
+the reviewed corrections without hiding failures.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and

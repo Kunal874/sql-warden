@@ -28,6 +28,18 @@ timeouts and 52 exact typed-result mismatches. This is measured conversion
 evidence, not a semantic review or benchmark score. No primary track, description
 policy, ambiguity labels, denominator or split is frozen until C1 is answered.
 
+Deterministic recovery then applied reviewed native table/column names and explicit
+SQLite semantics for dates, numeric aggregates, formatting, grouping strings and
+reserved identifiers. It never edited a source label or relaxed exact comparison.
+The full-correction track improved to 424/498 aligned exact matches (85.14%), with
+58 exact-result mismatches, 8 undefined objects, 4 other database errors, 2 data
+errors and 2 timeouts. Recovery evidence SHA-256:
+`280b1dde0a08a9add7a42ebdb017db5dc43469804756615e10ffb1a0772a4780`.
+Even perfect repair of all 16 remaining execution failures and 2 timeouts would
+reach only 442/498 (88.76%) because the 58 exact-result mismatches remain. The 95%
+automatic C1 branch is therefore unattainable under the frozen lossless rule;
+an owner track choice is still required.
+
 ## Sources and selected release
 
 The [official Mini-Dev README](https://github.com/bird-bench/mini_dev/tree/abd11b6db92a1c9f809b32f7564c7c71b34d67f0)

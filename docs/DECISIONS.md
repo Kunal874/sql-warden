@@ -1522,6 +1522,25 @@ corrected-SQL improvements as primary labels. Cost of C: delays G0 and adds huma
 methodology work but may recover corrected coverage. No split, ambiguity-positive
 claim, primary description/label policy or E0 run is permitted until this closes.
 
+## D-050 — deterministic corrected-label recovery cannot reach 95% (2026-10-08)
+
+Kunal chose the D-049 review/recovery route. Reviewed native identifier mapping and
+explicit SQLite date/numeric/aggregate/string conversions were implemented test-first.
+They recover 59 additional exact matches: full correction is now 424/498 (85.14%).
+Remaining aligned outcomes are 58 exact mismatches, 8 undefined objects, 4 other
+database errors, 2 data errors and 2 timeouts. No source/gold query/result changed;
+no tolerance, rounding or denominator filtering was added. Recovery evidence hashes
+to `280b1dde0a08a9add7a42ebdb017db5dc43469804756615e10ffb1a0772a4780`.
+
+The automatic 95% route requires 473 matches. Repairing every remaining execution
+failure and timeout could reach at most 442/498 (88.76%); 23 mismatches match only
+under six-decimal diagnostic rounding, which the frozen lossless rule forbids.
+Therefore continued syntax repair cannot close C1. Decision remains an actual owner
+option: use 424 verified corrected items for correction fidelity, use 439 verified
+originals for larger coverage, or explicitly change methodology. Recommend the 424
+corrected pool because it preserves the selected correction source without weakening
+evidence; cost: 15 fewer usable items and a potentially conversion-easier subset.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

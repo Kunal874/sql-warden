@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import sqlite3
 from collections import Counter
 from contextlib import closing, contextmanager, suppress
@@ -19,6 +20,7 @@ from sqlglot import exp, parse
 from sqlglot.errors import SqlglotError as SQLGlotError
 
 from scripts.inspect_labels import DATABASES, PINS, LabelError, decode_labels, read_pinned
+from scripts.prepare_import_bundle import load_specs
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PINS = ROOT / "docs/source-release-pins.json"
@@ -121,8 +123,158 @@ def _query(sql: str, *, dialect: str):
     return statements[0]
 
 
-def transpile_corrected(sql: str) -> str:
+def _native_identifier(name: str, *, table: bool = False) -> exp.Identifier:
+    reserved_table = table and name in {"order"}
+    quoted = reserved_table or re.fullmatch(r"[a-z_][a-z0-9_]*", name) is None
+    return exp.to_identifier(name, quoted=quoted)
+
+
+def _adapt_identifiers(statement: exp.Expression, tables: dict) -> exp.Expression:
+    table_names = {}
+    column_candidates: dict[str, set[str]] = {}
+    for native_name, table in tables.items():
+        for name in {native_name, table["source_name"]}:
+            table_names[name.casefold()] = native_name
+        for column in table["columns"]:
+            for name in {column["name"], column["source_name"]}:
+                column_candidates.setdefault(name.casefold(), set()).add(column["name"])
+    column_names = {
+        name: next(iter(candidates))
+        for name, candidates in column_candidates.items()
+        if len(candidates) == 1
+    }
+
+    def adapt(node):
+        if isinstance(node, exp.Table):
+            native = table_names.get(node.name.casefold())
+            if native:
+                node.set("this", _native_identifier(native, table=True))
+        elif isinstance(node, exp.Column):
+            native = column_names.get(node.name.casefold())
+            if native:
+                node.set("this", _native_identifier(native))
+            if node.table:
+                native_table = table_names.get(node.table.casefold())
+                if native_table:
+                    node.set("table", _native_identifier(native_table, table=True))
+        return node
+
+    return statement.transform(adapt, copy=False)
+
+
+def _adapt_sqlite_semantics(statement: exp.Expression, tables: dict) -> exp.Expression:
+    table_columns = {
+        table_name: {
+            column["name"].casefold(): column.get("native_type") for column in table["columns"]
+        }
+        for table_name, table in tables.items()
+    }
+    aliases = {
+        table.alias_or_name.casefold(): table.name
+        for table in statement.find_all(exp.Table)
+        if table.alias_or_name
+    }
+    global_types: dict[str, set[str]] = {}
+    for columns in table_columns.values():
+        for name, native_type in columns.items():
+            if native_type:
+                global_types.setdefault(name, set()).add(native_type)
+
+    def column_type(node):
+        if not isinstance(node, exp.Column):
+            return None
+        if node.table:
+            table_name = aliases.get(node.table.casefold(), node.table)
+            return table_columns.get(table_name, {}).get(node.name.casefold())
+        candidates = global_types.get(node.name.casefold(), set())
+        return next(iter(candidates)) if len(candidates) == 1 else None
+
+    def numeric(value):
+        return exp.cast(value.copy(), "DECIMAL")
+
+    boolean = (exp.Predicate, exp.And, exp.Or)
+    comparisons = (exp.EQ, exp.NEQ, exp.GT, exp.GTE, exp.LT, exp.LTE)
+
+    def adapt(node):
+        if isinstance(node, exp.Date) and isinstance(node.args.get("zone"), exp.Literal):
+            modifier = node.args["zone"].this.strip()
+            match = re.fullmatch(r"([+-]?\d+)\s+(day|month|year)s?", modifier, re.I)
+            if match:
+                added = exp.DateAdd(
+                    this=node.this.copy(),
+                    expression=exp.Literal.number(match.group(1)),
+                    unit=exp.Var(this=match.group(2).upper()),
+                )
+                return exp.cast(exp.cast(added, "DATE"), "TEXT")
+            return exp.cast(exp.cast(node.this.copy(), "DATE"), "TEXT")
+        if isinstance(node, exp.Anonymous) and node.name.upper() == "JULIANDAY":
+            arguments = node.expressions
+            if len(arguments) == 1:
+                epoch = exp.Extract(
+                    this=exp.Var(this="EPOCH"),
+                    expression=exp.cast(arguments[0].copy(), "TIMESTAMP"),
+                )
+                return exp.Add(
+                    this=exp.Div(this=epoch, expression=exp.Literal.number(86400)),
+                    expression=exp.Literal.number("2440587.5"),
+                )
+        if isinstance(node, exp.Sum) and isinstance(node.this, boolean):
+            node.set("this", exp.cast(node.this.copy(), "INT"))
+        elif (isinstance(node, exp.Round) and node.args.get("decimals") is not None) or (
+            isinstance(node, exp.Avg) and column_type(node.this) == "TEXT"
+        ):
+            node.set("this", numeric(node.this))
+        elif isinstance(node, exp.GroupConcat):
+            if isinstance(node.this, exp.Distinct):
+                node.this.set(
+                    "expressions",
+                    [exp.cast(value.copy(), "TEXT") for value in node.this.expressions],
+                )
+            else:
+                node.set("this", exp.cast(node.this.copy(), "TEXT"))
+        elif isinstance(node, exp.Like):
+            node.set("this", exp.cast(node.this.copy(), "TEXT"))
+        elif isinstance(node, exp.Sub):
+            if column_type(node.this) == "TEXT" or isinstance(node.this, exp.TimeToStr):
+                node.set("this", numeric(node.this))
+            if column_type(node.expression) == "TEXT" or isinstance(node.expression, exp.TimeToStr):
+                node.set("expression", numeric(node.expression))
+        elif isinstance(node, comparisons):
+            if (
+                column_type(node.this) == "TEXT"
+                and isinstance(node.expression, exp.Literal)
+                and not node.expression.is_string
+            ):
+                node.set("expression", exp.cast(node.expression.copy(), "TEXT"))
+            if (
+                column_type(node.expression) == "TEXT"
+                and isinstance(node.this, exp.Literal)
+                and not node.this.is_string
+            ):
+                node.set("this", exp.cast(node.this.copy(), "TEXT"))
+        return node
+
+    statement = statement.transform(adapt, copy=False)
+    for select in statement.find_all(exp.Select):
+        projections = []
+        for projection in select.expressions:
+            value = projection.this if isinstance(projection, exp.Alias) else projection
+            if isinstance(value, exp.Column) and column_type(value) == "DATE":
+                value = exp.cast(value.copy(), "TEXT")
+                if isinstance(projection, exp.Alias):
+                    projection = exp.Alias(this=value, alias=projection.args["alias"].copy())
+                else:
+                    projection = value
+            projections.append(projection)
+        select.set("expressions", projections)
+    return statement
+
+
+def transpile_corrected(sql: str, *, tables: dict | None = None) -> str:
     statement = _query(sql, dialect="sqlite")
+    if tables is not None:
+        statement = _adapt_identifiers(statement, tables)
+        statement = _adapt_sqlite_semantics(statement, tables)
     try:
         return statement.sql(dialect="postgres")
     except SQLGlotError:
@@ -442,6 +594,7 @@ async def validate_track(name: str, tracks: dict[str, dict], values: dict[str, s
                 public_outcome(identifier, original[identifier]["db_id"], "failed", "missing_id")
             )
     grouped = {db_id: [] for db_id in DATABASES}
+    _, audit = load_specs()
     for item in aligned:
         grouped[item[1]["db_id"]].append(item)
     for db_id in sorted(DATABASES):
@@ -457,7 +610,7 @@ async def validate_track(name: str, tracks: dict[str, dict], values: dict[str, s
                 sqlite_sql = item["SQL"] if name.startswith("arcwise_") else source["SQL"]
                 try:
                     postgres_sql = (
-                        transpile_corrected(item["SQL"])
+                        transpile_corrected(item["SQL"], tables=audit["databases"][db_id]["tables"])
                         if name.startswith("arcwise_")
                         else tracks["bird_pg"][identifier]["SQL"]
                     )
