@@ -1511,6 +1511,35 @@ database data. **Scope:** the exact work a check covers. Passing import tests do
 not automatically prove model accuracy, every possible database attack, or the
 meaning of official answers; those stay at their later checkpoints.
 
+### Gold-answer validator built (2026-10-08)
+
+The next G0 part now has a safe checker. It can run one official answer query on
+the original SQLite database and its converted query on the matching restricted
+PostgreSQL database, then compare the complete answers. It does not save the SQL,
+answer cells, questions or passwords in its report. It records only the question
+number, dataset and a short result such as matched, different, timed out or too
+large.
+
+The checker refuses changed input files, write statements and multiple statements.
+It opens SQLite as an unchangeable read-only file and uses only the matching
+dataset login for PostgreSQL. Each query is limited to 10 seconds, 100,000 rows,
+16 MiB total and 1 MiB for one cell. The comparison ignores row order but keeps
+duplicate rows and value types. Its focused checks passed 17 tests; one optional
+Windows symlink check was skipped because this account cannot create a test link.
+The full offline project run passed 722 tests and skipped 458 database-only checks.
+
+**Gold answer** means the trusted reference query used to decide whether a model's
+answer is correct. **Transpilation** means translating SQL syntax from one database
+language to another without manually rewriting the intended answer. **Canonical
+form** means converting values into one exact comparison format; for example, a
+number remains a number and is not silently treated as text. **Atomic file write**
+means the final report appears completely or not at all, so an interrupted run
+cannot look finished.
+
+This finishes the checker itself, not the gold-validity decision. The next step is
+to run it on the real pinned questions and use the measured corrected-label survival
+rate for C1.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and

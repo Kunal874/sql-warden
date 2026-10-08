@@ -1298,6 +1298,23 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-08 — remaining G0 Task 1 / bounded gold validator
+
+The approved finish-G0/start-G1 plan is at
+`docs/superpowers/plans/2026-10-08-finish-g0-start-g1.md`; sequential inline
+execution is selected. Task 1 now adds `scripts/validate_gold.py` and 17 focused
+tests for pinned labels, ID/database alignment, immutable/query-only SQLite,
+SQLite-to-PostgreSQL transpilation, read-only statement refusal, lossless typed
+bag comparison, 10s/100000-row/16MiB/1MiB limits, sanitized classifications and
+atomic no-overwrite publication. Focused result: 17 passed, 1 optional Windows
+symlink test skipped. No-env regression: 722 passed, 458 expected database skips.
+Ruff and format pass. No real gold query has run yet, no validity rate or C1 choice
+is claimed, and overall G0 stays 7/12. Resume Task 2 by loading the private
+restricted-login environments without printing values, validating all three
+PostgreSQL tracks, and applying C1 only if `arcwise_full` survival is at least 95%.
+The ignored execution ledger is
+`.superpowers/sdd/2026-10-08-finish-g0-start-g1/progress.md`.
+
 Current action: approved four-task remaining-native-imports batch and its one
 fresh whole-batch read-only review are complete. Do not rerun its preparation or
 review, regenerate .env.datasets, reimport any target, rotate its ten private

@@ -1,0 +1,481 @@
+"""Offline, bounded cross-dialect gold validation; never used by the runtime."""
+
+import argparse
+import asyncio
+import hashlib
+import json
+import math
+import os
+import sqlite3
+from collections import Counter
+from contextlib import closing, contextmanager, suppress
+from datetime import date, datetime, time
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+from time import monotonic
+
+import asyncpg
+from sqlglot import exp, parse
+from sqlglot.errors import SqlglotError as SQLGlotError
+
+from scripts.inspect_labels import DATABASES, PINS, LabelError, decode_labels, read_pinned
+from scripts.load_release import password_key
+
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE_PINS = ROOT / "docs/source-release-pins.json"
+SQLITE_ROOT = ROOT / "data/source-release/minidev-0703"
+MAX_ROWS = 100_000
+MAX_RESULT_BYTES = 16 * 1024 * 1024
+MAX_CELL_BYTES = 1024 * 1024
+QUERY_TIMEOUT_SECONDS = 10
+_SQLITE_DEADLINES: dict[int, float] = {}
+
+STATUSES = frozenset({"matched", "mismatched", "failed", "excluded"})
+REASONS = frozenset(
+    {
+        "database_mismatch",
+        "unexpected_id",
+        "missing_id",
+        "statement_refused",
+        "transpile_error",
+        "sqlite_error",
+        "postgres_error",
+        "query_error",
+        "query_timeout",
+        "row_limit",
+        "result_bytes",
+        "cell_bytes",
+        "result_mismatch",
+        "cell_type_refused",
+    }
+)
+
+
+class ValidationError(ValueError):
+    """Stable validation refusal that never embeds SQL, results, or credentials."""
+
+
+class LimitExceeded(ValidationError):
+    """A stable resource-limit classification."""
+
+
+def load_tracks(data_root: Path) -> dict[str, dict[int, dict]]:
+    try:
+        return {
+            name: decode_labels(
+                read_pinned(data_root / filename, size, digest),
+                corrected=name.startswith("arcwise_"),
+            )
+            for name, (filename, size, digest) in PINS.items()
+        }
+    except LabelError as error:
+        raise ValidationError(str(error)) from None
+
+
+def align_track(original: dict[int, dict], candidate: dict[int, dict]):
+    aligned = []
+    rejected = {}
+    for identifier in sorted(candidate):
+        if identifier not in original:
+            rejected[identifier] = "unexpected_id"
+        elif candidate[identifier]["db_id"] != original[identifier]["db_id"]:
+            rejected[identifier] = "database_mismatch"
+        else:
+            aligned.append((identifier, original[identifier], candidate[identifier]))
+    return aligned, rejected
+
+
+@contextmanager
+def open_sqlite(path: Path, *, timeout_seconds: float = QUERY_TIMEOUT_SECONDS):
+    try:
+        resolved = path.resolve(strict=True)
+        if path.is_symlink() or not resolved.is_file():
+            raise ValidationError("SQLite source refused")
+    except OSError:
+        raise ValidationError("SQLite source unavailable") from None
+    deadline = monotonic() + timeout_seconds
+    uri = resolved.as_uri() + "?mode=ro&immutable=1"
+    with closing(sqlite3.connect(uri, uri=True)) as connection:
+        connection.execute("PRAGMA query_only=ON")
+        connection.execute("PRAGMA trusted_schema=OFF")
+        connection.execute("PRAGMA cache_size=-8192")
+        _SQLITE_DEADLINES[id(connection)] = deadline
+        connection.set_progress_handler(lambda: int(monotonic() >= deadline), 10_000)
+        try:
+            yield connection
+        finally:
+            _SQLITE_DEADLINES.pop(id(connection), None)
+
+
+def _query(sql: str, *, dialect: str):
+    try:
+        statements = parse(sql, read=dialect)
+    except SQLGlotError:
+        raise ValidationError("statement refused") from None
+    if len(statements) != 1 or not isinstance(statements[0], exp.Query):
+        raise ValidationError("statement refused")
+    return statements[0]
+
+
+def transpile_corrected(sql: str) -> str:
+    statement = _query(sql, dialect="sqlite")
+    try:
+        return statement.sql(dialect="postgres")
+    except SQLGlotError:
+        raise ValidationError("transpile error") from None
+
+
+def validate_postgres_query(sql: str) -> str:
+    return _query(sql, dialect="postgres").sql(dialect="postgres")
+
+
+def _decimal_text(value: Decimal) -> str:
+    if not value.is_finite():
+        raise ValidationError("cell type refused")
+    if value == 0:
+        return "0"
+    normalized = value.normalize()
+    return format(normalized, "f")
+
+
+def canonical_cell(value):
+    if value is None:
+        return ("null", "")
+    if isinstance(value, bool):
+        return ("bool", "true" if value else "false")
+    if type(value) is int:
+        return ("number", str(value))
+    if isinstance(value, Decimal):
+        return ("number", _decimal_text(value))
+    if type(value) is float:
+        if not math.isfinite(value):
+            raise ValidationError("cell type refused")
+        try:
+            return ("number", _decimal_text(Decimal(str(value))))
+        except InvalidOperation:
+            raise ValidationError("cell type refused") from None
+    if isinstance(value, str):
+        return ("text", value)
+    if isinstance(value, bytes):
+        return ("bytes", value.hex())
+    if isinstance(value, datetime):
+        return ("datetime", value.isoformat())
+    if isinstance(value, date):
+        return ("date", value.isoformat())
+    if isinstance(value, time):
+        return ("time", value.isoformat())
+    raise ValidationError("cell type refused")
+
+
+def canonical_row(row):
+    return tuple(canonical_cell(value) for value in row)
+
+
+def canonical_rows(rows):
+    return sorted(canonical_row(row) for row in rows)
+
+
+def _cell_bytes(value) -> int:
+    if value is None:
+        return 0
+    if isinstance(value, bytes):
+        return len(value)
+    if isinstance(value, str):
+        return len(value.encode("utf-8"))
+    tag, text = canonical_cell(value)
+    return len(tag) + len(text.encode("utf-8"))
+
+
+def collect_rows(
+    rows,
+    *,
+    max_rows: int = MAX_ROWS,
+    max_result_bytes: int = MAX_RESULT_BYTES,
+    max_cell_bytes: int = MAX_CELL_BYTES,
+):
+    collected = []
+    total_bytes = 0
+    for row in rows:
+        if len(collected) >= max_rows:
+            raise LimitExceeded("row_limit")
+        current = tuple(row)
+        for value in current:
+            size = _cell_bytes(value)
+            if size > max_cell_bytes:
+                raise LimitExceeded("cell_bytes")
+            total_bytes += size
+            if total_bytes > max_result_bytes:
+                raise LimitExceeded("result_bytes")
+        collected.append(current)
+    return collected
+
+
+def execute_sqlite(connection, sql: str, *, progress_steps: int = 10_000):
+    deadline_reached = False
+    deadline = _SQLITE_DEADLINES.get(id(connection), monotonic() + QUERY_TIMEOUT_SECONDS)
+
+    def bounded_progress():
+        nonlocal deadline_reached
+        deadline_reached = monotonic() >= deadline
+        return int(deadline_reached)
+
+    connection.set_progress_handler(bounded_progress, progress_steps)
+    try:
+        return collect_rows(connection.execute(sql))
+    except sqlite3.OperationalError:
+        if deadline_reached:
+            raise LimitExceeded("query_timeout") from None
+        raise ValidationError("sqlite_error") from None
+    finally:
+        connection.set_progress_handler(None, 0)
+
+
+def public_outcome(identifier: int, db_id: str, status: str, reason: str | None):
+    if (
+        type(identifier) is not int
+        or db_id not in DATABASES
+        or status not in STATUSES
+        or (reason is not None and reason not in REASONS)
+        or (status == "matched" and reason is not None)
+        or (status != "matched" and reason is None)
+    ):
+        raise ValidationError("classification refused")
+    result = {"question_id": identifier, "db_id": db_id, "status": status}
+    if reason is not None:
+        result["reason"] = reason
+    return result
+
+
+def summarize(outcomes: list[dict]) -> dict:
+    return {
+        "total": len(outcomes),
+        "status_counts": dict(sorted(Counter(item["status"] for item in outcomes).items())),
+        "reason_counts": dict(
+            sorted(Counter(item["reason"] for item in outcomes if "reason" in item).items())
+        ),
+        "per_database": dict(sorted(Counter(item["db_id"] for item in outcomes).items())),
+    }
+
+
+def publish_manifest(path: Path, manifest: dict) -> None:
+    if path.is_symlink():
+        raise ValidationError("target is a symlink")
+    if path.exists():
+        raise ValidationError("target exists")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + ".tmp")
+    if temporary.exists() or temporary.is_symlink():
+        raise ValidationError("temporary target exists")
+    payload = json.dumps(manifest, sort_keys=True, indent=2, ensure_ascii=True) + "\n"
+    try:
+        with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+        temporary.replace(path)
+    except OSError:
+        with suppress(OSError):
+            temporary.unlink(missing_ok=True)
+        raise ValidationError("manifest publication failed") from None
+
+
+def _source_pins() -> dict[str, dict]:
+    try:
+        raw = SOURCE_PINS.read_bytes()
+        if len(raw) > 256 * 1024:
+            raise ValidationError("source pins refused")
+        document = json.loads(raw)
+        sources = document["sqlite_sources"]
+    except (OSError, KeyError, TypeError, json.JSONDecodeError):
+        raise ValidationError("source pins refused") from None
+    result = {}
+    for item in sources:
+        if set(item) < {"db_id", "output", "bytes", "sha256"} or item["db_id"] in result:
+            raise ValidationError("source pins refused")
+        result[item["db_id"]] = item
+    if set(result) != DATABASES:
+        raise ValidationError("source pins refused")
+    return result
+
+
+def checked_sqlite_path(db_id: str) -> Path:
+    pin = _source_pins().get(db_id)
+    if pin is None:
+        raise ValidationError("SQLite source refused")
+    path = SQLITE_ROOT / pin["output"]
+    try:
+        if path.is_symlink() or path.stat().st_size != pin["bytes"]:
+            raise ValidationError("SQLite source pin mismatch")
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError:
+        raise ValidationError("SQLite source unavailable") from None
+    if digest != pin["sha256"]:
+        raise ValidationError("SQLite source pin mismatch")
+    return path
+
+
+def postgres_options(db_id: str, values: dict[str, str]) -> dict:
+    if db_id not in DATABASES:
+        raise ValidationError("database refused")
+    password = values.get(password_key(db_id), "")
+    if not isinstance(password, str) or len(password) != 48:
+        raise ValidationError("restricted credential unavailable")
+    return {
+        "host": "127.0.0.1",
+        "port": 55432,
+        "database": "sqlwarden",
+        "user": "warden_sandbox_" + db_id,
+        "password": password,
+        "timeout": 5,
+        "command_timeout": QUERY_TIMEOUT_SECONDS,
+    }
+
+
+async def execute_postgres(connection, sql: str):
+    rows = []
+    total_bytes = 0
+    try:
+        async with asyncio.timeout(QUERY_TIMEOUT_SECONDS), connection.transaction(readonly=True):
+            await connection.execute(
+                "SET LOCAL statement_timeout='10s'; SET LOCAL lock_timeout='500ms'; "
+                "SET LOCAL idle_in_transaction_session_timeout='12s'; "
+                "SET LOCAL work_mem='16MB'; SET LOCAL temp_file_limit='64MB'; "
+                "SET LOCAL timezone='UTC'; SET LOCAL DateStyle='ISO,YMD'"
+            )
+            async for record in connection.cursor(sql, prefetch=100):
+                if len(rows) >= MAX_ROWS:
+                    raise LimitExceeded("row_limit")
+                current = tuple(record)
+                for value in current:
+                    size = _cell_bytes(value)
+                    if size > MAX_CELL_BYTES:
+                        raise LimitExceeded("cell_bytes")
+                    total_bytes += size
+                    if total_bytes > MAX_RESULT_BYTES:
+                        raise LimitExceeded("result_bytes")
+                rows.append(current)
+    except LimitExceeded:
+        raise
+    except TimeoutError:
+        raise LimitExceeded("query_timeout") from None
+    except (asyncpg.PostgresError, OSError):
+        raise ValidationError("postgres_error") from None
+    return rows
+
+
+def _reason(error: ValidationError, default: str) -> str:
+    reason = str(error).replace(" ", "_")
+    return reason if reason in REASONS else default
+
+
+async def validate_pair(connection, sqlite_path: Path, sqlite_sql: str, postgres_sql: str):
+    try:
+        sqlite_query = _query(sqlite_sql, dialect="sqlite").sql(dialect="sqlite")
+        postgres_query = validate_postgres_query(postgres_sql)
+    except ValidationError as error:
+        return "failed", _reason(error, "statement_refused")
+    try:
+        with open_sqlite(sqlite_path) as sqlite:
+            sqlite_rows = execute_sqlite(sqlite, sqlite_query)
+    except LimitExceeded as error:
+        return "excluded", _reason(error, "query_timeout")
+    except ValidationError:
+        return "failed", "sqlite_error"
+    try:
+        postgres_rows = await execute_postgres(connection, postgres_query)
+    except LimitExceeded as error:
+        return "excluded", _reason(error, "query_timeout")
+    except ValidationError:
+        return "failed", "postgres_error"
+    try:
+        if canonical_rows(sqlite_rows) == canonical_rows(postgres_rows):
+            return "matched", None
+    except ValidationError:
+        return "excluded", "cell_type_refused"
+    return "mismatched", "result_mismatch"
+
+
+async def validate_track(name: str, tracks: dict[str, dict], values: dict[str, str]):
+    original = tracks["bird_sqlite"]
+    candidate = tracks[name]
+    aligned, rejected = align_track(original, candidate)
+    outcomes = [
+        public_outcome(identifier, candidate[identifier]["db_id"], "failed", reason)
+        for identifier, reason in sorted(rejected.items())
+    ]
+    if name != "bird_sqlite":
+        for identifier in sorted(original.keys() - candidate.keys()):
+            outcomes.append(
+                public_outcome(identifier, original[identifier]["db_id"], "failed", "missing_id")
+            )
+    grouped = {db_id: [] for db_id in DATABASES}
+    for item in aligned:
+        grouped[item[1]["db_id"]].append(item)
+    for db_id in sorted(DATABASES):
+        if not grouped[db_id]:
+            continue
+        path = checked_sqlite_path(db_id)
+        connection = await asyncpg.connect(**postgres_options(db_id, values))
+        try:
+            identity = await connection.fetchrow("SELECT current_database(), current_user")
+            if tuple(identity) != ("sqlwarden", "warden_sandbox_" + db_id):
+                raise ValidationError("restricted identity differs")
+            for identifier, source, item in grouped[db_id]:
+                sqlite_sql = item["SQL"] if name.startswith("arcwise_") else source["SQL"]
+                try:
+                    postgres_sql = (
+                        transpile_corrected(item["SQL"])
+                        if name.startswith("arcwise_")
+                        else tracks["bird_pg"][identifier]["SQL"]
+                    )
+                    status, reason = await validate_pair(connection, path, sqlite_sql, postgres_sql)
+                except ValidationError as error:
+                    status, reason = "failed", _reason(error, "transpile_error")
+                outcomes.append(public_outcome(identifier, db_id, status, reason))
+        finally:
+            await connection.close()
+    outcomes.sort(key=lambda item: item["question_id"])
+    return {"track": name, "summary": summarize(outcomes), "outcomes": outcomes}
+
+
+async def validate_all(data_root: Path, values: dict[str, str], tracks_to_run: list[str]):
+    tracks = load_tracks(data_root)
+    reports = {}
+    for name in tracks_to_run:
+        if name not in {"bird_pg", "arcwise_sql", "arcwise_full"}:
+            raise ValidationError("track refused")
+        reports[name] = await validate_track(name, tracks, values)
+    return {
+        "format_version": 1,
+        "limits": {
+            "query_seconds": QUERY_TIMEOUT_SECONDS,
+            "rows": MAX_ROWS,
+            "result_bytes": MAX_RESULT_BYTES,
+            "cell_bytes": MAX_CELL_BYTES,
+        },
+        "tracks": reports,
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--track",
+        action="append",
+        choices=("bird_pg", "arcwise_sql", "arcwise_full"),
+        required=True,
+    )
+    args = parser.parse_args()
+    try:
+        report = asyncio.run(validate_all(ROOT / "data", dict(os.environ), args.track))
+        publish_manifest(args.output, report)
+    except (ValidationError, OSError) as error:
+        print(json.dumps({"status": "failed", "reason": str(error)}))
+        return 1
+    print(json.dumps({"status": "complete", "output": str(args.output), "tracks": args.track}))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
