@@ -1,0 +1,95 @@
+{
+  "excludes": [
+    "prompts",
+    "generated query text",
+    "gold query text",
+    "rows",
+    "credentials"
+  ],
+  "format_version": 1,
+  "models": {
+    "arctic": {
+      "confidence_interval": {
+        "high": 0.28,
+        "low": 0.13,
+        "mean": 0.2,
+        "n": 100
+      },
+      "correct": 20,
+      "denominator": 100,
+      "dev_id_sha256": "47466fd8c8a374b98b4b4d81edb8a9652daceabb59cb8dc942c2fa9bb4aa6793",
+      "ex": 0.2,
+      "median_seconds": 1.247,
+      "model": "arctic",
+      "p95_seconds": 2.556,
+      "peak_vram_bytes": 5133943438,
+      "reason_counts": {
+        "ex_match": 20,
+        "function_not_allowed": 7,
+        "identifier_invalid": 1,
+        "model output invalid": 11,
+        "parse_error": 6,
+        "result_mismatch": 43,
+        "row_limit": 3,
+        "syntax_error": 1,
+        "undefined_object": 8
+      },
+      "status_counts": {
+        "blocked": 14,
+        "correct": 20,
+        "failed": 12,
+        "generation_failed": 11,
+        "incorrect": 43,
+        "missing": 0
+      },
+      "usage": {
+        "completion_tokens": 5276,
+        "known_items": 89,
+        "prompt_tokens": 112326
+      }
+    },
+    "qwen": {
+      "confidence_interval": {
+        "high": 0.07,
+        "low": 0.0,
+        "mean": 0.03,
+        "n": 100
+      },
+      "correct": 3,
+      "denominator": 100,
+      "dev_id_sha256": "47466fd8c8a374b98b4b4d81edb8a9652daceabb59cb8dc942c2fa9bb4aa6793",
+      "ex": 0.03,
+      "median_seconds": 1.2595,
+      "model": "qwen",
+      "p95_seconds": 1.514,
+      "peak_vram_bytes": 4628519320,
+      "reason_counts": {
+        "database_error": 1,
+        "ex_match": 3,
+        "model output invalid": 2,
+        "prompt_budget": 86,
+        "result_mismatch": 7,
+        "undefined_object": 1
+      },
+      "status_counts": {
+        "correct": 3,
+        "failed": 2,
+        "generation_failed": 88,
+        "incorrect": 7,
+        "missing": 0
+      },
+      "usage": {
+        "completion_tokens": 718,
+        "known_items": 12,
+        "prompt_tokens": 4162
+      }
+    }
+  },
+  "protocol": {
+    "dev_count": 100,
+    "dev_id_sha256": "47466fd8c8a374b98b4b4d81edb8a9652daceabb59cb8dc942c2fa9bb4aa6793",
+    "full_dev_count": 100,
+    "path": "docs/e0-protocol.json"
+  },
+  "raw_records": "results/E0_smoke/raw/<model>/<question_id>.json ignored"
+}

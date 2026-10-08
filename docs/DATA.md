@@ -73,6 +73,26 @@ It contains no prompt text, SQL, answer payloads or secret values.
 This protocol is a measurement plan, not a result. E0 has not been run yet, and
 no model has been selected by this split alone.
 
+## E0 development-slice results (2026-10-09)
+
+The local two-model E0 run executed the 100 frozen development IDs in
+[`e0-protocol.json`](e0-protocol.json), one model at a time, with guard and
+restricted dataset execution enabled. The tracked compact summary is
+[`../results/E0_smoke/summary.json`](../results/E0_smoke/summary.json). Raw records
+under `results/E0_smoke/raw/` are ignored and contain prompt/generated-query
+details for local debugging only; they are not committed.
+
+| Model | Correct / n | EX | 95% bootstrap interval | Median seconds | p95 seconds | Peak VRAM bytes |
+| --- | ---: | ---: | --- | ---: | ---: | ---: |
+| Arctic Text2SQL Q4_K_M ctx8192 | 20 / 100 | 0.20 | 0.13–0.28 | 1.247 | 2.556 | 5133943438 |
+| Qwen2.5-Coder Q4_K_M ctx2048 | 3 / 100 | 0.03 | 0.00–0.07 | 1.2595 | 1.514 | 4628519320 |
+
+Qwen had 86 `prompt_budget` generation failures under the full-schema E0 contract
+because the ctx2048 alias could not fit many full schemas while reserving output
+tokens. Arctic completed more generations and achieved the higher local EX on this
+development slice. This is still a local PostgreSQL-adapted, quantized, 100-item
+development measurement, not an official BIRD leaderboard score or held-out result.
+
 ## Sources and selected release
 
 The [official Mini-Dev README](https://github.com/bird-bench/mini_dev/tree/abd11b6db92a1c9f809b32f7564c7c71b34d67f0)

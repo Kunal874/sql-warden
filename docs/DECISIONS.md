@@ -1634,6 +1634,33 @@ then passed. The tracked protocol manifest stores IDs, stratum counts, hashes an
 metric settings only. It contains no prompt text, SQL, answer payloads or secret
 values. E0 itself has not been run.
 
+## D-055 — E0 measured Arctic ahead on the local development slice (2026-10-09)
+
+Task 6 ran the frozen 100 development IDs from `docs/e0-protocol.json` for Qwen and
+Arctic, one model at a time, with guard and restricted PostgreSQL execution enabled.
+The compact tracked result is `results/E0_smoke/summary.json`; raw per-item records
+remain ignored under `results/E0_smoke/raw/`.
+
+Observed local EX:
+
+- Arctic Text2SQL Q4_K_M ctx8192: 20/100 correct, EX 0.20, seeded 95% bootstrap
+  interval 0.13–0.28, median 1.247s, p95 2.556s, peak VRAM 5,133,943,438 bytes.
+- Qwen2.5-Coder Q4_K_M ctx2048: 3/100 correct, EX 0.03, seeded 95% bootstrap
+  interval 0.00–0.07, median 1.2595s for completed calls, p95 1.514s, peak VRAM
+  4,628,519,320 bytes.
+
+Qwen failed generation before a model call on 86/100 items with `prompt_budget`,
+because the required full-schema prompt plus 1024 reserved output tokens exceeded
+its ctx2048 alias. Arctic had 20 exact matches, 43 result mismatches, 14 guard
+blocks, 12 execution failures and 11 generation failures. No hidden retries,
+repair, retrieval, voting, clarification or held-out tuning were used.
+
+Decision: record E0 as development evidence for C2; do not claim official benchmark
+accuracy. The next C2 step should use these measured results to choose the retained
+model/helper strategy. Cost if wrong: a different context setting or prompt strategy
+could improve Qwen later, but changing that now would be a new measured experiment
+rather than this frozen E0.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -1689,6 +1689,36 @@ set** means questions kept aside to check later whether the project generalizes.
 **Bootstrap interval** means estimating a score range by repeatedly resampling
 the measured answers; it helps report uncertainty instead of just one number.
 
+### First two-model E0 measurement finished (2026-10-09)
+
+I ran the first local evaluation on the 100-question development set. Both models
+used the same frozen questions, the same checked database logins, the same SQL
+guard and the same exact answer checker. This was single-shot: no repair, no vote,
+no retrieval helper and no hidden retry.
+
+Arctic answered 20 out of 100 exactly. Qwen answered 3 out of 100 exactly. Qwen's
+main problem was not only wrong SQL: 86 questions were stopped before a model call
+because the full database schema plus reserved answer space did not fit inside the
+small 2048-token Qwen alias. Arctic used more GPU memory but handled the full-schema
+prompt better.
+
+The compact result file is saved as `results/E0_smoke/summary.json`. It includes
+counts, speed, token totals and peak GPU memory. The detailed per-question raw files
+are ignored and not committed. The tracked summary does not include prompts,
+generated SQL, answer rows, gold SQL or credentials.
+
+Checks for this subtask: 13 focused E0 tests passed. The full offline suite passed
+766 checks and skipped 470 database-only checks. The full configured suite passed
+1234 checks and skipped 2 expected checks. Ruff lint and format passed. Ollama
+reported no model still loaded after the run.
+
+**EX** means exact match: the generated query's complete answer matched the frozen
+reference answer exactly. **Prompt budget** means the model input plus reserved
+output space would not fit into the chosen context window, so the program refused
+to call the model. **p95 seconds** means 95% of measured calls were at or below
+that time. **Peak VRAM** means the largest GPU-memory amount Ollama reported for
+that model during the run.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and

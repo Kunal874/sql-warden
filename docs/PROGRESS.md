@@ -4,7 +4,10 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. C1 is now closed on the corrected pool: Kunal selected the
+Current group: G0. E0 has now run on the frozen 100-item development slice:
+Arctic scored 20/100 EX and Qwen scored 3/100 EX in
+`results/E0_smoke/summary.json`, with guard and restricted PostgreSQL execution
+enabled. C1 is closed on the corrected pool: Kunal selected the
 424 exact verified corrected items, corrected descriptions are primary, original
 descriptions remain alternate material, and `gold-validity-manifest.json` freezes
 the compact ID-only evidence. G0.7a's first thin slice is complete: guard, bounded executor,
@@ -16,9 +19,9 @@ The sole approved live question matched 17686 in 11.387s, one preload/generation
 89/18 reported tokens. Runtime-only copy is private/ignored; automatic model
 unload observed after tool-blocked explicit stop. CLI_SMOKE preserves exact
 pre-fix live checkpoint, D-031 all 18 rulings/costs. No inference repeated.
-Progress snapshot: 10 of 12 numbered top-level G0 items complete, excluding the
+Progress snapshot: 11 of 12 numbered top-level G0 items complete, excluding the
 interview drill. This is checklist coverage, not overall project effort.
-G0 split/E0/C2 and G1–G5/G7 remain unfinished. No benchmark score.
+G0 C2 and G1–G5/G7 remain unfinished. No official benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -154,6 +157,18 @@ values. Focused protocol4passed; no-env full suite753passed/470skipped; full
 configured suite1221passed/2skipped; Ruff lint/format pass. E0 model evaluation
 has not run yet.
 
+2026-10-09 E0 measured run: Task 6 adds `src/sqlwarden/evaluation.py`,
+`scripts/run_e0.py`, `tests/test_evaluation.py` and
+`results/E0_smoke/summary.json`. Full 100-item development run completed for both
+models, one at a time, and Ollama reports zero loaded models afterward. Arctic:
+20/100 EX, CI0.13–0.28, median1.247s, p95 2.556s, peakVRAM5133943438. Qwen:
+3/100 EX, CI0.00–0.07, median1.2595s for completed calls, p95 1.514s,
+peakVRAM4628519320. Qwen had86 prompt-budget generation failures under the
+full-schema ctx2048 contract. Raw per-item records are ignored; tracked summary
+excludes prompts, generated SQL, gold SQL, rows and credentials. Focused E0
+tests13passed; no-env full suite766passed/470skipped; full configured suite
+1234passed/2skipped; Ruff lint/format pass. C2 remains next.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -216,9 +231,10 @@ has not run yet.
   - [x] Remaining description/import/conversion work and validity manifest.
 - [x] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [x] G0.6: second model smoke, recorded availability, one GPU model at a time.
-- [ ] G0.7: freeze split; E0 on the development slice; measured summaries with exact n.
+- [x] G0.7: freeze split; E0 on the development slice; measured summaries with exact n.
   - [x] General restricted dataset executor for E0; fixed policies and real restricted logins verified.
   - [x] Freeze deterministic 100-item development split and E0 protocol manifest.
+  - [x] Run local two-model E0 on 100 dev IDs and track compact summary.
 - [ ] G0.8 / C2: model/slice/helper choices from speed and memory evidence.
 - [ ] G0 interview drill (may be skipped by Kunal).
 
@@ -1366,6 +1382,19 @@ Bootstrap interval edge cases are covered. Focused protocol checks pass4/4;
 no-env full suite753passed/470skipped; full configured suite1221passed/2skipped;
 Ruff lint/format pass. Commit is next. Do not run model E0 before this protocol
 commit lands.
+
+### 2026-10-09 — Task 6 E0 run complete; C2 next
+
+Task 6 implementation and live E0 run are complete in the worktree, pending final
+verification/commit. `results/E0_smoke/summary.json` records 100/100 raw records
+for each model. Arctic scored 20/100 EX; Qwen scored 3/100 EX and hit prompt budget
+on 86 items because full schema plus reserved output exceeded ctx2048. Peak VRAM
+was recorded from Ollama ps: Arctic5133943438 bytes, Qwen4628519320 bytes. Raw
+records are ignored; compact summary excludes prompts, generated SQL, gold SQL,
+rows and credentials. `/api/ps` reports no loaded models after the run. Focused
+E0 tests13passed; no-env full suite766passed/470skipped; full configured suite
+1234passed/2skipped; Ruff lint/format pass. Next: commit
+`feat(eval): record local two-model e0`, ledger Task 6, then Task 7 C2/provider-cache.
 
 ### 2026-10-08 — G0.6 Arctic acquisition and smoke complete
 
