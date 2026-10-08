@@ -4,10 +4,17 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G0. E0 has now run on the frozen 100-item development slice:
-Arctic scored 20/100 EX and Qwen scored 3/100 EX in
-`results/E0_smoke/summary.json`, with guard and restricted PostgreSQL execution
-enabled. C1 is closed on the corrected pool: Kunal selected the
+Current group: G1. G0 is complete except for the optional interview drill. C2 keeps
+Arctic as the local full-schema SQL-generation model because it scored 20/100 EX
+on the frozen development slice while Qwen scored 3/100 and hit 86 prompt-budget
+failures under its ctx2048 full-schema contract. The 100-item development slice
+stays frozen; the 324 held-out IDs remain untouched. Qwen remains available for
+the already-tested safe local CLI/helper path, while Arctic is not used as the
+general helper because its model card is SQL-specific. G1.1's first provider/cache
+slice is implemented locally: typed provider request/outcome records, no hidden
+retries, local-only Ollama config, atomic JSON cache keys and secret/gold refusal.
+E0 summary is in `results/E0_smoke/summary.json`, with guard and restricted
+PostgreSQL execution enabled. C1 is closed on the corrected pool: Kunal selected the
 424 exact verified corrected items, corrected descriptions are primary, original
 descriptions remain alternate material, and `gold-validity-manifest.json` freezes
 the compact ID-only evidence. G0.7a's first thin slice is complete: guard, bounded executor,
@@ -19,9 +26,9 @@ The sole approved live question matched 17686 in 11.387s, one preload/generation
 89/18 reported tokens. Runtime-only copy is private/ignored; automatic model
 unload observed after tool-blocked explicit stop. CLI_SMOKE preserves exact
 pre-fix live checkpoint, D-031 all 18 rulings/costs. No inference repeated.
-Progress snapshot: 11 of 12 numbered top-level G0 items complete, excluding the
-interview drill. This is checklist coverage, not overall project effort.
-G0 C2 and G1–G5/G7 remain unfinished. No official benchmark score.
+Progress snapshot: 12 of 12 numbered top-level G0 items complete, excluding the
+optional interview drill. This is checklist coverage, not overall project effort.
+G1 has started; G1.2–G5/G7 remain unfinished. No official benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -169,6 +176,22 @@ excludes prompts, generated SQL, gold SQL, rows and credentials. Focused E0
 tests13passed; no-env full suite766passed/470skipped; full configured suite
 1234passed/2skipped; Ruff lint/format pass. C2 remains next.
 
+2026-10-09 C2 and G1.1 provider/cache slice: Task 7 records C2 from the measured
+E0 evidence. Arctic is the retained full-schema SQL generator for G1/E0-style work;
+Qwen remains only for the already-tested local CLI/helper path because its ctx2048
+alias cannot fit the frozen full-schema prompt for most E0 items. The development
+slice remains100 IDs, held-out remains324 IDs, and no held-out tuning occurred.
+Added `src/sqlwarden/provider.py`, `src/sqlwarden/cache.py`,
+`tests/test_provider.py` and `tests/test_cache.py`; `LocalQwen` now delegates its
+local URL/retry contract through the shared provider config without changing the
+safe CLI public behavior. The cache stores only replay metadata and bounded JSON
+payloads, refuses overwrite/symlink/corruption/oversize cases, and refuses secret
+or gold-answer storage. Focused provider/cache/LLM/CLI tests117passed/1expected
+Windows symlink skip; no-env full suite777passed/471skipped; full configured suite
+1245passed/3skipped; Ruff lint/format and diff whitespace pass. One final
+read-only review of the complete finish-G0/start-G1 plan range remains before the
+branch is considered fully reviewed.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -235,12 +258,12 @@ tests13passed; no-env full suite766passed/470skipped; full configured suite
   - [x] General restricted dataset executor for E0; fixed policies and real restricted logins verified.
   - [x] Freeze deterministic 100-item development split and E0 protocol manifest.
   - [x] Run local two-model E0 on 100 dev IDs and track compact summary.
-- [ ] G0.8 / C2: model/slice/helper choices from speed and memory evidence.
+- [x] G0.8 / C2: model/slice/helper choices from speed and memory evidence.
 - [ ] G0 interview drill (may be skipped by Kunal).
 
 ### G1 — agent core
 
-- [ ] G1.1: LLM providers, bounded retries/timeouts, usage and sample-safe atomic cache.
+- [x] G1.1: LLM providers, bounded retries/timeouts, usage and sample-safe atomic cache.
 - [ ] G1.2: schema extraction/serializer, keys/descriptions and bounded untrusted samples.
 - [ ] G1.3 / C3: BM25, scope-aware recall; choose retrieval size, n/k and helper strategy.
 - [ ] G1.4: versioned generation/repair/clarify/explain prompts and per-model output formats.

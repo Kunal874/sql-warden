@@ -1661,6 +1661,57 @@ model/helper strategy. Cost if wrong: a different context setting or prompt stra
 could improve Qwen later, but changing that now would be a new measured experiment
 rather than this frozen E0.
 
+## D-056 — C2 keeps Arctic for full-schema SQL generation (2026-10-09)
+
+Context: E0 ran both local models on the same frozen 100 development IDs with full
+schema prompts, guard enabled and restricted PostgreSQL execution. Arctic scored
+20/100 EX. Qwen scored 3/100 EX and failed 86 items before any model call because
+the frozen full-schema prompt plus reserved output did not fit its ctx2048 alias.
+
+Decision: retain Arctic Text2SQL Q4_K_M ctx8192 as the local full-schema
+SQL-generation model for the next G1 work. Keep the development slice at 100 IDs
+and the held-out split at 324 untouched IDs. Do not tune from held-out results.
+Keep Qwen available only for the already-tested safe local CLI/helper path and
+future explicitly measured experiments; do not use Arctic as a general helper
+because its model card is SQL-specific.
+
+Rationale: Arctic is the only measured model that completed the frozen full-schema
+E0 contract on most items and produced materially better exact-match results.
+Changing Qwen's context or prompt now would be a new experiment, not the frozen E0
+decision. Cost if wrong: a larger Qwen context or retrieval-first prompt might help
+later, but that belongs behind a new measured C3/G1 decision.
+
+Verification: C2 is based on tracked `results/E0_smoke/summary.json` and the
+committed E0 protocol. No held-out inference, hosted inference, prompt change,
+gold mutation, remote push or publication occurred.
+
+## D-057 — G1.1 starts with a local provider/cache contract (2026-10-09)
+
+Context: the active spec requires provider identity, bounded retries/timeouts,
+usage accounting and a sample-safe response cache before the broader agent loop.
+
+Decision: add a small stdlib-only provider/cache slice. `ProviderRequest` records
+local-only Ollama URL, model/revision/digest/template, messages, params, seed and
+zero hidden retries. `ProviderOutcome` records status, content hash, usage counters,
+provider-call count and cache-hit status without inventing missing usage as zero.
+`JsonDiskCache` uses a complete replay key, atomic create-only writes, exact replay
+validation and refusal of corruption, symlink paths, oversize payloads, secrets and
+gold-answer fields. Existing `LocalQwen` reuses the shared local provider config
+without changing the public safe CLI behavior.
+
+Rationale: this is enough for exact local replay later without adding dependencies,
+hosted configuration or a second runtime abstraction. Cost if wrong: the first
+cache is deliberately conservative and may refuse payloads that are safe but not yet
+needed; loosening it later requires tests and a recorded reason.
+
+Verification: provider/cache tests were written before the implementation and first
+failed on missing modules/outcome types. Final focused provider/cache/LLM/CLI checks
+passed117 with1 expected Windows symlink skip. Full no-env suite passed777 with471
+expected skips. Full configured PostgreSQL suite passed1245 with3 expected skips.
+Ruff lint, format check and diff whitespace passed. No prompt text, generated SQL,
+gold SQL, result rows, credentials, model weights, raw runs, remote or publication
+artifact was committed.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

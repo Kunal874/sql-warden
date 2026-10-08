@@ -1719,32 +1719,51 @@ to call the model. **p95 seconds** means 95% of measured calls were at or below
 that time. **Peak VRAM** means the largest GPU-memory amount Ollama reported for
 that model during the run.
 
+### C2 model choice and first G1 provider/cache slice (2026-10-09)
+
+I used the E0 results to choose the next local SQL model. Arctic is now the main
+full-schema SQL-generation model for the next agent work, because it handled the
+full database schema and got 20 exact answers out of 100. Qwen is not removed, but
+it is not the full-schema SQL model right now because 86 of the 100 questions did
+not fit into its small 2048-token context. Qwen can still be used for the already
+tested safe local command-line/helper path, and we can test a different Qwen setup
+later if needed.
+
+I also started G1.1. I added a small provider contract and a small disk cache. The
+provider contract records which local model is being called, which exact model
+digest/template is expected, the input settings and the rule that there are no
+hidden retries. The outcome record stores only safe summary information such as
+status, token counts when available, cache-hit status and a hash of the content.
+The cache writes JSON files atomically, refuses overwriting an existing cache file,
+and refuses secrets or gold answers.
+
+The old safe CLI still behaves the same. It now gets its local Ollama URL and retry
+settings from the shared provider code, so future G1 work can reuse one checked
+contract instead of hard-coding it again.
+
+Checks for this subtask: provider/cache/LLM/CLI focused tests passed 117 checks
+with 1 expected Windows symlink skip. The full offline suite passed 777 checks and
+skipped 471 database-only checks. The full configured PostgreSQL suite passed 1245
+checks and skipped 3 expected checks. Ruff lint, format check and whitespace check
+passed.
+
+**Context window** means how much text a model can read at once. **Provider** means
+the local model service being called, here Ollama on this laptop. **Digest** means
+a fingerprint that identifies the exact local model artifact. **Cache** means saved
+model-call output that can be replayed exactly later. **Atomic write** means a file
+is created all at once, so an interrupted write does not look like a finished cache
+entry. **Hidden retry** means the software silently tries a failed model call again;
+we keep this at zero so measurements count the real number of calls.
+
 ## 6. What comes next?
 
-G0.6a's first model smoke and G0.7a's guard, including real-database checks and
-final review fixes, are complete. You approved the runner plan, and its answer-size
-rules, guarded workflow, real recovery tests and final review are complete.
-The answer checker and its independent final review are also complete. It passes
-60 pure and 17 real database checks. The corrected C1 pool is now chosen and saved
-as a compact manifest. The separate plan for a small command-line
-question-to-database demonstration is approved. Its local AI connection is now
-checked, and the safe command passes its flow and real database tests. Its sole
-live question returned the expected answer; model unload, final review and its
-verified parsing fixes are complete. Next we resume the remaining foundation:
-datasets and validity decisions, the second model, then split/evaluation/model
-choices. You approved the two-task correction-intake plan; its first checker
-and the four-file intake and their final review are complete. Next comes the
-remaining descriptions/layout/import and answer-validity work. The three-task
-offline source-preparation batch has now unpacked the fixed sources, saved the
-small descriptions and audited real layouts; its sole final review is complete.
-Source key problems are recorded, not repaired. The four-task native import plan
-has finished all implementation and acceptance checks. All ten new datasets are
-saved, and its one fresh final review is complete. The executor can now route
-guarded read-only SQL to any fixed restricted dataset login for E0.
-Next comes the E0 model run and C2 choices, then G1 agent-core work. The approved
-imports use existing software and do not run the AI model.
-Important new permissions outside this scope will be asked as questions.
-The rest of the data, agent loop, website, broader attack suite and release come later.
+G0's numbered checklist is complete, except the optional interview drill. The next
+step is the final read-only review of this whole finish-G0/start-G1 plan range.
+After that, the project should continue into G1.2: schema extraction, descriptions,
+keys and bounded untrusted sample values for retrieval. The rest of the agent loop,
+website, broader attack suite, hosted/deployment work and release still come later.
+Important new permissions outside the approved local scope will still be asked as
+questions.
 
 ## 7. How this notebook will be kept up to date
 
