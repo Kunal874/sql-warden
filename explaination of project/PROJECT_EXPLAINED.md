@@ -1588,6 +1588,25 @@ corrected questions and 439 verified original questions, unless you deliberately
 change the exact-comparison method. I recommend the corrected pool because it keeps
 the reviewed corrections without hiding failures.
 
+### Second local AI model installed and checked (2026-10-08)
+
+The Arctic Text2SQL 7B model is now installed locally. The exact 4.68 GB file was
+checked against its expected digital fingerprint before Ollama accepted it. The
+downloader keeps at least 12 GiB free, can safely resume an interrupted transfer,
+and will not replace a different existing file.
+
+I tested Arctic with an invented `planets` table, not project data. Two identical
+requests produced the same small SQL answer. A third request proved the four-token
+output limit stops generation. The first call took 8.718 seconds while loading;
+the warm call took 0.360 seconds. Ollama showed the requested 8,192-token context
+and about 5.13 GB of GPU memory. The model was unloaded afterward.
+
+**Quantization** means storing model numbers in a smaller format so the model fits
+on ordinary hardware; Q4_K_M is the selected four-bit format. **Model digest** is
+Ollama's fingerprint for the complete local model package. **Context window** is
+how much prompt text the model can consider at once. This smoke proves the model can
+load and make a tiny SQL-shaped answer; it does not prove benchmark accuracy.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and

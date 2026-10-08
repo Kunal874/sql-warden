@@ -1,0 +1,81 @@
+{
+  "format_version": 1,
+  "status": "bounded local capability smoke passed; not an accuracy benchmark",
+  "checked_date": "2026-10-08",
+  "source": {
+    "official_model": "Snowflake/Arctic-Text2SQL-R1-7B",
+    "official_revision": "2d73facaf7e15831d0b918d219e0d565f113f592",
+    "gguf_repository": "mradermacher/Arctic-Text2SQL-R1-7B-GGUF",
+    "gguf_revision": "8e1a51188952afa8021bce6c8b3e5b495b3e85cd",
+    "license": "Apache-2.0",
+    "filename": "Arctic-Text2SQL-R1-7B.Q4_K_M.gguf",
+    "bytes": 4683074144,
+    "sha256": "9c005244e3ab7fada2c53a9511999f4d22fbbd4f76a4416416a6d41d82702255"
+  },
+  "ollama": {
+    "version": "0.35.1",
+    "alias": "sqlwarden-arctic-text2sql-r1-7b-q4km-ctx8192:smoke-v1",
+    "digest": "d4e34b35065d29da2566b3b201d9e6bd54d005c565e1e182a9e318086168b19d",
+    "format": "gguf",
+    "family": "qwen2",
+    "parameter_size": "7.6B",
+    "quantization": "Q4_K_M",
+    "parameters": {
+      "num_ctx": 8192,
+      "num_predict": 1024,
+      "temperature": 0
+    },
+    "template_bytes": 2507,
+    "template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f"
+  },
+  "probe": {
+    "input": "tiny synthetic planets schema and question only",
+    "database_or_gold_data_sent": false,
+    "credentials_sent": false,
+    "call_count": 3,
+    "deterministic_sql_calls": [
+      {
+        "seconds": 8.718,
+        "prompt_tokens": 56,
+        "output_tokens": 18,
+        "done_reason": "stop",
+        "sql_found": true,
+        "content_sha256": "424d88261a05c04d4802b6af9b406570d1756e0930f2526dcc945c7bb44f35a2"
+      },
+      {
+        "seconds": 0.36,
+        "prompt_tokens": 56,
+        "output_tokens": 18,
+        "done_reason": "stop",
+        "sql_found": true,
+        "content_sha256": "424d88261a05c04d4802b6af9b406570d1756e0930f2526dcc945c7bb44f35a2"
+      }
+    ],
+    "output_cap_control": {
+      "seconds": 0.109,
+      "prompt_tokens": 56,
+      "output_tokens": 4,
+      "done_reason": "length",
+      "sql_found": false
+    },
+    "usage_available": true,
+    "one_model_loaded": true,
+    "loaded_size_bytes": 5133943438,
+    "loaded_vram_bytes": 5133943438,
+    "observed_context_length": 8192,
+    "pre_gpu_free_mib": 7956,
+    "loaded_gpu_free_mib": 2956,
+    "post_unload_gpu_free_mib": 7956,
+    "minimum_observed_available_ram_bytes": 948318208,
+    "unloaded_after_probe": true
+  },
+  "attempt_notes": [
+    "An initial metadata-only show request exceeded the probe's 128 KiB response cap; no model was loaded and cleanup was verified.",
+    "The successful retry requested ordinary bounded metadata, then made exactly three generation calls."
+  ],
+  "limitations": [
+    "This proves only local loading, bounded output, usage reporting, repeatability for one seed and a tiny SQL-shaped response.",
+    "It does not prove full-schema fit, benchmark accuracy, guard acceptance, database execution or general non-SQL capability.",
+    "The official model card says the model is intended for text-to-SQL rather than general non-SQL work."
+  ]
+}

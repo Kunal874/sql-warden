@@ -13,7 +13,7 @@ The sole approved live question matched 17686 in 11.387s, one preload/generation
 89/18 reported tokens. Runtime-only copy is private/ignored; automatic model
 unload observed after tool-blocked explicit stop. CLI_SMOKE preserves exact
 pre-fix live checkpoint, D-031 all 18 rulings/costs. No inference repeated.
-Progress snapshot: 7 of 12 numbered top-level G0 items complete, excluding the
+Progress snapshot: 8 of 12 numbered top-level G0 items complete, excluding the
 interview drill. This is checklist coverage, not overall project effort.
 G0 data/validity/models/evaluation and G1–G5/G7 remain unfinished. No benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
@@ -177,7 +177,7 @@ no Critical/Important issues; its one Minor checklist mismatch is corrected.
   - [x] Review/approve new import artifact, ten restricted credentials and FK policy.
   - [ ] Remaining description/import/conversion work and validity manifest.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
-- [ ] G0.6: second model smoke, recorded availability, one GPU model at a time.
+- [x] G0.6: second model smoke, recorded availability, one GPU model at a time.
 - [ ] G0.7: freeze split; E0 on the development slice; measured summaries with exact n.
 - [ ] G0.8 / C2: model/slice/helper choices from speed and memory evidence.
 - [ ] G0 interview drill (may be skipped by Kunal).
@@ -1297,6 +1297,25 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-08 — G0.6 Arctic acquisition and smoke complete
+
+While C1 awaits the required corrected-vs-original pool choice, independent Task 5
+completed sequentially. The fixed 4,683,074,144-byte Q4_K_M artifact was downloaded
+from GGUF revision `8e1a5118`, with exact SHA-256
+`9c005244e3ab7fada2c53a9511999f4d22fbbd4f76a4416416a6d41d82702255`, identity
+encoding, resumable exact ranges, staging publication and 12GiB reserve. Five fetch
+tests pass; one optional Windows symlink case skips. The context-8192 Ollama alias
+digest is `d4e34b35065d29da2566b3b201d9e6bd54d005c565e1e182a9e318086168b19d`.
+
+Exactly three tiny synthetic generation calls ran: two deterministic SQL-capability
+calls (8.718s cold/0.360s warm, 56/18 tokens each, matching content hashes) and one
+four-token cap control (0.109s, length stop). No database/gold/credential content was
+used. Context8192 and 5,133,943,438 bytes all-VRAM were observed; minimum sampled
+RAM was948,318,208 bytes. An earlier oversized metadata-only response was refused
+before loading/generation. Arctic is unloaded and GPU free returned to7956MiB.
+`docs/arctic-smoke-manifest.json` is compact evidence. G0.6 is complete, but C1,
+split/E0/C2 and the interview drill still prevent G0 completion.
 
 ### 2026-10-08 — corrected-track recovery complete; C1 has real options
 

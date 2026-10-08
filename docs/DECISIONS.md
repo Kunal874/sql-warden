@@ -1541,6 +1541,20 @@ originals for larger coverage, or explicitly change methodology. Recommend the 4
 corrected pool because it preserves the selected correction source without weakening
 evidence; cost: 15 fewer usable items and a potentially conversion-easier subset.
 
+## D-051 — Arctic second local model accepted for E0 (2026-10-08)
+
+The approved pinned Arctic Q4_K_M was acquired from community revision8e1a5118 and
+hashes exactly to9c005244e3ab7fada2c53a9511999f4d22fbbd4f76a4416416a6d41d82702255
+at4,683,074,144 bytes. Official upstream revision is2d73faca, Apache-2.0. The fixed
+context8192 alias digest is d4e34b35065d29da2566b3b201d9e6bd54d005c565e1e182a9e318086168b19d.
+
+Decision: accept Arctic as E0's second text-to-SQL candidate. Two exact repeated
+synthetic calls produced parseable SQL and matching hashes; a four-token request
+stopped at its cap. Only one model loaded, reported usage/context, and was unloaded.
+No gold/database/credential input or SQL execution occurred. Do not use Arctic as
+the general helper: its official card excludes general non-SQL use. C2 remains based
+on measured E0; this smoke does not select a winner or claim benchmark accuracy.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

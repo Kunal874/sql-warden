@@ -1,5 +1,46 @@
 # Local model evidence
 
+## G0.6 — Arctic Text2SQL second-model smoke (2026-10-08)
+
+The second 7B candidate is installed and passed a bounded local synthetic SQL
+capability smoke. This is not an accuracy score. The prompt contained only a tiny
+invented `planets` table and question; it contained no project database data,
+labels, gold SQL, result cells or credentials.
+
+The official source is
+[Snowflake/Arctic-Text2SQL-R1-7B](https://huggingface.co/Snowflake/Arctic-Text2SQL-R1-7B/tree/2d73facaf7e15831d0b918d219e0d565f113f592)
+at revision `2d73facaf7e15831d0b918d219e0d565f113f592`, Apache-2.0. The
+fixed local artifact is the community Q4_K_M conversion from
+[revision 8e1a5118](https://huggingface.co/mradermacher/Arctic-Text2SQL-R1-7B-GGUF/tree/8e1a51188952afa8021bce6c8b3e5b495b3e85cd):
+
+- `Arctic-Text2SQL-R1-7B.Q4_K_M.gguf`, 4,683,074,144 bytes.
+- SHA-256 `9c005244e3ab7fada2c53a9511999f4d22fbbd4f76a4416416a6d41d82702255`.
+- Download used the revision-addressed URL, identity encoding, explicit no-proxy
+  client, exact byte/range checks, staging rename and a 12 GiB disk reserve.
+- The ignored local weight was hashed again after download; weights are not in Git.
+
+The fixed Ollama alias is
+`sqlwarden-arctic-text2sql-r1-7b-q4km-ctx8192:smoke-v1`, digest
+`d4e34b35065d29da2566b3b201d9e6bd54d005c565e1e182a9e318086168b19d`.
+It sets context 8,192, default output 1,024 and temperature zero. Ollama identifies
+the artifact as Qwen2-family, 7.6B, Q4_K_M. The effective 2,507-byte template hashes
+to `cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f`.
+
+Two identical temperature-zero/seed-42 calls each reported 56 input and 18 output
+tokens, produced parseable SQL for the synthetic schema, and had the same output
+hash. They took 8.718 seconds cold and 0.360 seconds warm. A third request stopped at
+the four-token cap in 0.109 seconds with `done_reason=length`. Usage was available.
+Only Arctic was loaded; Ollama reported context 8,192 and 5,133,943,438 bytes wholly
+on GPU. Sampled GPU free memory moved from 7,956 MiB to 2,956 MiB and returned to
+7,956 MiB after unload. Minimum sampled available system RAM was 948,318,208 bytes.
+
+An initial metadata-only request exceeded the probe's 128 KiB response cap before
+loading the model. It made no generation call and cleanup was verified. The successful
+retry requested ordinary metadata and made exactly three calls. The compact tracked
+record is [arctic-smoke-manifest.json](arctic-smoke-manifest.json); raw content stays
+ignored. The model is now unloaded. The official card limits intended use to
+text-to-SQL, so Arctic is not selected as the general helper model.
+
 ## G0.6a — Qwen feasibility smoke (2026-10-03)
 
 The warmed-up Qwen model responds locally on this laptop. Six tiny synthetic
