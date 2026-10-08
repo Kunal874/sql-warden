@@ -61,6 +61,18 @@ not a human semantic review. The manifest does not contain question prose, SQL,
 result cells or credentials. It does not freeze the development/held-out split,
 run E0 or create a benchmark score.
 
+## E0 protocol split (2026-10-08)
+
+[`e0-protocol.json`](e0-protocol.json) freezes the first local evaluation split
+from the C1 manifest with seed `20261008`. It contains 100 development IDs and
+324 held-out IDs. The split is deterministic, keeps family IDs together when a
+future manifest supplies them, and approximately stratifies by database and
+difficulty. It stores only IDs, stratum counts, hashes and bootstrap settings.
+It contains no prompt text, SQL, answer payloads or secret values.
+
+This protocol is a measurement plan, not a result. E0 has not been run yet, and
+no model has been selected by this split alone.
+
 ## Sources and selected release
 
 The [official Mini-Dev README](https://github.com/bird-bench/mini_dev/tree/abd11b6db92a1c9f809b32f7564c7c71b34d67f0)

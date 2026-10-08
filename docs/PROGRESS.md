@@ -144,6 +144,16 @@ are committed. Focused gold validation31passed/1expected skip; no-env full suite
 749passed/470skipped; full configured suite1217passed/2skipped; Ruff lint/format
 pass. Split/E0/C2 still remain.
 
+2026-10-08 E0 protocol freeze: Task 3 adds `src/sqlwarden/protocol.py`,
+`tests/test_protocol.py` and `docs/e0-protocol.json`. The protocol freezes a
+seeded development split of100 IDs and a held-out split of324 IDs from the
+424-item corrected C1 pool, with database/difficulty stratum counts and stable
+hashes. Bootstrap interval edge behavior is test-covered. The protocol manifest
+contains IDs/hashes/metadata only, no prompt text, SQL, answer payloads or secret
+values. Focused protocol4passed; no-env full suite753passed/470skipped; full
+configured suite1221passed/2skipped; Ruff lint/format pass. E0 model evaluation
+has not run yet.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -208,6 +218,7 @@ pass. Split/E0/C2 still remain.
 - [x] G0.6: second model smoke, recorded availability, one GPU model at a time.
 - [ ] G0.7: freeze split; E0 on the development slice; measured summaries with exact n.
   - [x] General restricted dataset executor for E0; fixed policies and real restricted logins verified.
+  - [x] Freeze deterministic 100-item development split and E0 protocol manifest.
 - [ ] G0.8 / C2: model/slice/helper choices from speed and memory evidence.
 - [ ] G0 interview drill (may be skipped by Kunal).
 
@@ -1344,6 +1355,17 @@ interview drill. Next Task 3 of
 `docs/superpowers/plans/2026-10-08-finish-g0-start-g1.md` should freeze the
 development/held-out split and E0 protocol. Do not run E0 until that split/protocol
 commit exists.
+
+### 2026-10-08 — E0 protocol split frozen
+
+Task 3 of the finish-G0/start-G1 plan creates deterministic protocol helpers and
+`docs/e0-protocol.json`. The split uses seed `20261008`, 100 development IDs and
+324 held-out IDs from the corrected C1 pool. It keeps family IDs together when
+available, otherwise one ID is one family, and balances by database/difficulty.
+Bootstrap interval edge cases are covered. Focused protocol checks pass4/4;
+no-env full suite753passed/470skipped; full configured suite1221passed/2skipped;
+Ruff lint/format pass. Commit is next. Do not run model E0 before this protocol
+commit lands.
 
 ### 2026-10-08 — G0.6 Arctic acquisition and smoke complete
 

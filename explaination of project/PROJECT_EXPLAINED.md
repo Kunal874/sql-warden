@@ -1666,6 +1666,29 @@ are literally different, so the item may be useful later for testing clarificati
 **Negative control** means the wording did not change, so it helps compare against
 the ambiguity candidates.
 
+### E0 split and protocol frozen (2026-10-08)
+
+I added the rule for the first local evaluation split. From the 424 verified
+corrected questions, 100 are now the development set and 324 are held out for
+later. The split is saved in a small protocol file with IDs and hashes only. It
+does not contain the natural-language questions, SQL, answers or secrets.
+
+The split uses a fixed seed, so the same input produces the same IDs every time.
+It also tries to keep the mix of databases and difficulty levels balanced. If we
+later add groups of related variants, the splitter keeps each group together so a
+near-duplicate does not leak between development and held-out sets.
+
+Checks for this subtask: the protocol tests first failed because the module did
+not exist. After implementation, 4 focused tests passed. The full offline suite
+passed 753 checks and skipped 470 database-only checks. The full configured suite
+passed 1221 checks and skipped 2 expected checks. Ruff lint and format passed.
+
+**Development set** means the questions used while tuning choices. **Held-out
+set** means questions kept aside to check later whether the project generalizes.
+**Seed** means a fixed number that makes a random-looking split repeatable.
+**Bootstrap interval** means estimating a score range by repeatedly resampling
+the measured answers; it helps report uncertainty instead of just one number.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
@@ -1688,8 +1711,8 @@ Source key problems are recorded, not repaired. The four-task native import plan
 has finished all implementation and acceptance checks. All ten new datasets are
 saved, and its one fresh final review is complete. The executor can now route
 guarded read-only SQL to any fixed restricted dataset login for E0.
-Next comes the split/E0/C2 work, then G1 agent-core work. The approved imports
-use existing software and do not run the AI model.
+Next comes the E0 model run and C2 choices, then G1 agent-core work. The approved
+imports use existing software and do not run the AI model.
 Important new permissions outside this scope will be asked as questions.
 The rest of the data, agent loop, website, broader attack suite and release come later.
 

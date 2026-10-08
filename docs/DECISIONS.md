@@ -1611,6 +1611,29 @@ database IDs, difficulty labels, candidate-control labels, counts, rates and
 evidence fingerprints. It contains no raw question prose, SQL, result cells or
 credentials. Split freezing, E0 and C2 remain separate steps.
 
+## D-054 — E0 uses a deterministic 100-item development split (2026-10-08)
+
+Task 3 freezes the first local evaluation protocol in `docs/e0-protocol.json`.
+It derives from the C1 corrected manifest and uses seed `20261008`.
+
+Decision: use 100 C1 items as the development slice and keep the remaining 324
+as held-out. The splitter is deterministic, groups items by `family_id` if a
+future manifest provides one and otherwise treats each question ID as its own
+family, and allocates development items approximately by database/difficulty
+strata. Bootstrap accuracy intervals use a seeded percentile method with explicit
+empty/all-correct/all-wrong edge behavior.
+
+Rationale: E0 needs enough local items to compare Qwen and Arctic speed/quality
+without consuming the whole 424-item pool. A fixed seed and hashes make later
+results reproducible. Cost: a 100-item development slice is still a local,
+adapted subset; it is not an official leaderboard and may not represent every
+database/difficulty perfectly.
+
+Verification: new protocol tests first failed because the module did not exist,
+then passed. The tracked protocol manifest stores IDs, stratum counts, hashes and
+metric settings only. It contains no prompt text, SQL, answer payloads or secret
+values. E0 itself has not been run.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
