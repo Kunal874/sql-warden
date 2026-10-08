@@ -116,6 +116,19 @@ imports do not establish full SQLite/gold conversion validity, primary descripti
 C1 labels, the second model, a frozen split/E0 or C2. Final batch review found
 no Critical/Important issues; its one Minor checklist mismatch is corrected.
 
+2026-10-08 fixed-dataset executor routing: while C1 remains paused at the required
+corrected-vs-original pool choice, independent Task 4 from the finish-G0 plan is
+complete. The guard now exposes an immutable 11-dataset policy map, and the executor
+can open only a fixed `db_id`/password pair, deriving the restricted role and
+search path server-side. The old California wrapper remains. New RED→GREEN checks
+cover policy immutability, dataset credential-key mapping, all 11 real restricted
+identities, own reads, cross-schema guard blocks, write/SET ROLE blocks and the
+existing complete-result limits. Focused pure checks355passed; real executor/
+release PostgreSQL checks321passed; no-env746passed/470skipped; full configured
+1214passed/2skipped; Ruff lint/format pass. No runtime env file, model prompt,
+gold SQL, benchmark split, remote or publication action changed. G0 remains8/12:
+C1, split/E0/C2 and interview drill are still unfinished.
+
 ## Preflight evidence (2026-10-03)
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
@@ -179,6 +192,7 @@ no Critical/Important issues; its one Minor checklist mismatch is corrected.
 - [ ] G0.5b / C1: confirm layout, labels, conversion survival and ambiguity-label policy.
 - [x] G0.6: second model smoke, recorded availability, one GPU model at a time.
 - [ ] G0.7: freeze split; E0 on the development slice; measured summaries with exact n.
+  - [x] General restricted dataset executor for E0; fixed policies and real restricted logins verified.
 - [ ] G0.8 / C2: model/slice/helper choices from speed and memory evidence.
 - [ ] G0 interview drill (may be skipped by Kunal).
 

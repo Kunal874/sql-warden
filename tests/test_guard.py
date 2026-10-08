@@ -8,7 +8,7 @@ import pytest
 from sqlglot import exp
 from sqlglot.errors import OptimizeError, ParseError, TokenError
 
-from sqlwarden.guard import CALIFORNIA_POLICY, DatasetPolicy, guard_sql
+from sqlwarden.guard import CALIFORNIA_POLICY, DATASET_POLICIES, DatasetPolicy, guard_sql
 
 SAFE = [
     "SELECT 1",
@@ -228,6 +228,80 @@ def test_policy_and_decision_cannot_be_mutated_after_a_check():
     decision = guard_sql("SELECT 1", CALIFORNIA_POLICY)
     with pytest.raises(FrozenInstanceError):
         decision.sql = "DELETE FROM schools"
+
+
+def test_dataset_policies_are_fixed_for_all_loaded_release_databases():
+    assert DATASET_POLICIES["california_schools"] is CALIFORNIA_POLICY
+    assert {policy.schema for policy in DATASET_POLICIES.values()} == set(DATASET_POLICIES)
+    assert {name: policy.tables for name, policy in DATASET_POLICIES.items()} == {
+        "california_schools": frozenset({"frpm", "satscores", "schools"}),
+        "card_games": frozenset(
+            {"cards", "foreign_data", "legalities", "rulings", "set_translations", "sets"}
+        ),
+        "codebase_community": frozenset(
+            {"badges", "comments", "posthistory", "postlinks", "posts", "tags", "users", "votes"}
+        ),
+        "debit_card_specializing": frozenset(
+            {"customers", "gasstations", "products", "transactions_1k", "yearmonth"}
+        ),
+        "european_football_2": frozenset(
+            {"country", "league", "match", "player", "player_attributes", "team", "team_attributes"}
+        ),
+        "financial": frozenset(
+            {"account", "card", "client", "disp", "district", "loan", "order", "trans"}
+        ),
+        "formula_1": frozenset(
+            {
+                "circuits",
+                "constructorresults",
+                "constructors",
+                "constructorstandings",
+                "drivers",
+                "driverstandings",
+                "laptimes",
+                "pitstops",
+                "qualifying",
+                "races",
+                "results",
+                "seasons",
+                "status",
+            }
+        ),
+        "student_club": frozenset(
+            {"attendance", "budget", "event", "expense", "income", "major", "member", "zip_code"}
+        ),
+        "superhero": frozenset(
+            {
+                "alignment",
+                "attribute",
+                "colour",
+                "gender",
+                "hero_attribute",
+                "hero_power",
+                "publisher",
+                "race",
+                "superhero",
+                "superpower",
+            }
+        ),
+        "thrombosis_prediction": frozenset({"examination", "laboratory", "patient"}),
+        "toxicology": frozenset({"atom", "bond", "connected", "molecule"}),
+    }
+
+
+def test_dataset_policy_map_cannot_be_mutated():
+    with pytest.raises(TypeError):
+        DATASET_POLICIES["app"] = DatasetPolicy("app", frozenset({"runs"}))
+
+
+def test_non_california_dataset_policy_accepts_only_its_own_schema_and_tables():
+    financial = DATASET_POLICIES["financial"]
+    assert guard_sql('SELECT count(*) FROM "order"', financial).accepted
+    assert guard_sql("SELECT count(*) FROM financial.account", financial).accepted
+    assert guard_sql("SELECT count(*) FROM schools", financial).reason == "table_not_allowed"
+    assert guard_sql("SELECT count(*) FROM california_schools.schools", financial).reason == (
+        "schema_not_allowed"
+    )
 
 
 @pytest.mark.parametrize("sql", [None, 4, b"SELECT 1", "", " ", "SELECT '\x00'", "\ud800"])

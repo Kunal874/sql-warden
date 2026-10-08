@@ -1,6 +1,7 @@
 """Pure, fail-closed checks; acceptance is not permission to execute a query."""
 
 from dataclasses import dataclass
+from types import MappingProxyType
 
 import sqlglot
 from sqlglot import exp
@@ -122,7 +123,115 @@ class DatasetPolicy:
             raise ValueError("Invalid dataset table allowlist")
 
 
-CALIFORNIA_POLICY = DatasetPolicy("california_schools", frozenset({"schools", "frpm", "satscores"}))
+DATASET_POLICIES = MappingProxyType(
+    {
+        "california_schools": DatasetPolicy(
+            "california_schools", frozenset({"schools", "frpm", "satscores"})
+        ),
+        "card_games": DatasetPolicy(
+            "card_games",
+            frozenset(
+                {"cards", "foreign_data", "legalities", "rulings", "set_translations", "sets"}
+            ),
+        ),
+        "codebase_community": DatasetPolicy(
+            "codebase_community",
+            frozenset(
+                {
+                    "badges",
+                    "comments",
+                    "posthistory",
+                    "postlinks",
+                    "posts",
+                    "tags",
+                    "users",
+                    "votes",
+                }
+            ),
+        ),
+        "debit_card_specializing": DatasetPolicy(
+            "debit_card_specializing",
+            frozenset({"customers", "gasstations", "products", "transactions_1k", "yearmonth"}),
+        ),
+        "european_football_2": DatasetPolicy(
+            "european_football_2",
+            frozenset(
+                {
+                    "country",
+                    "league",
+                    "match",
+                    "player",
+                    "player_attributes",
+                    "team",
+                    "team_attributes",
+                }
+            ),
+        ),
+        "financial": DatasetPolicy(
+            "financial",
+            frozenset({"account", "card", "client", "disp", "district", "loan", "order", "trans"}),
+        ),
+        "formula_1": DatasetPolicy(
+            "formula_1",
+            frozenset(
+                {
+                    "circuits",
+                    "constructorresults",
+                    "constructors",
+                    "constructorstandings",
+                    "drivers",
+                    "driverstandings",
+                    "laptimes",
+                    "pitstops",
+                    "qualifying",
+                    "races",
+                    "results",
+                    "seasons",
+                    "status",
+                }
+            ),
+        ),
+        "student_club": DatasetPolicy(
+            "student_club",
+            frozenset(
+                {
+                    "attendance",
+                    "budget",
+                    "event",
+                    "expense",
+                    "income",
+                    "major",
+                    "member",
+                    "zip_code",
+                }
+            ),
+        ),
+        "superhero": DatasetPolicy(
+            "superhero",
+            frozenset(
+                {
+                    "alignment",
+                    "attribute",
+                    "colour",
+                    "gender",
+                    "hero_attribute",
+                    "hero_power",
+                    "publisher",
+                    "race",
+                    "superhero",
+                    "superpower",
+                }
+            ),
+        ),
+        "thrombosis_prediction": DatasetPolicy(
+            "thrombosis_prediction", frozenset({"examination", "laboratory", "patient"})
+        ),
+        "toxicology": DatasetPolicy(
+            "toxicology", frozenset({"atom", "bond", "connected", "molecule"})
+        ),
+    }
+)
+CALIFORNIA_POLICY = DATASET_POLICIES["california_schools"]
 
 
 @dataclass(frozen=True, slots=True)

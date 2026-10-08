@@ -11,7 +11,14 @@ import asyncpg
 import pytest
 
 from sqlwarden.config import QueryLimits
-from sqlwarden.executor import QueryExecutor, QueryResult, _check_plan, _ResultBuffer
+from sqlwarden.executor import (
+    QueryExecutor,
+    QueryResult,
+    _check_plan,
+    _ResultBuffer,
+    dataset_password_key,
+)
+from sqlwarden.guard import DATASET_POLICIES
 
 
 def limits(**changes):
@@ -353,6 +360,54 @@ async def test_wrong_identity_never_plans_or_executes():
     assert not any(call[0] in {"plan", "prepare", "cursor"} for call in pool.conn.calls)
 
 
+async def test_dataset_executor_uses_fixed_policy_identity_and_search_path():
+    pool = FakePool()
+    pool.conn.identity = (
+        "warden_sandbox_financial",
+        "sqlwarden",
+        "on",
+        "pg_catalog, financial",
+        5000,
+        500,
+        16384,
+        65536,
+    )
+    result = await QueryExecutor(pool, QueryLimits(), DATASET_POLICIES["financial"]).execute(
+        "SELECT count(*) FROM account"
+    )
+    assert result.status == "ok"
+    assert ("settings", pool.conn.calls[1][1], pool.conn.calls[1][2]) == (
+        "settings",
+        "SELECT pg_catalog.set_config('statement_timeout',$1,true), "
+        "pg_catalog.set_config('lock_timeout',$2,true), "
+        "pg_catalog.set_config('search_path',$3,true), "
+        "pg_catalog.set_config('work_mem','16MB',true)",
+        ("5000ms", "500ms", "pg_catalog, financial"),
+    )
+
+
+async def test_dataset_executor_guard_uses_that_dataset_policy():
+    pool = FakePool()
+    pool.conn.identity = (
+        "warden_sandbox_financial",
+        "sqlwarden",
+        "on",
+        "pg_catalog, financial",
+        5000,
+        500,
+        16384,
+        65536,
+    )
+    accepted = await QueryExecutor(pool, QueryLimits(), DATASET_POLICIES["financial"]).execute(
+        "SELECT count(*) FROM account"
+    )
+    denied = await QueryExecutor(pool, QueryLimits(), DATASET_POLICIES["financial"]).execute(
+        "SELECT count(*) FROM schools"
+    )
+    assert accepted.status == "ok"
+    assert (denied.status, denied.reason) == ("blocked", "table_not_allowed")
+
+
 @pytest.mark.parametrize(
     "phase",
     ["begin", "settings", "identity", "plan", "prepare", "cursor", "fetch", "rollback", "release"],
@@ -562,6 +617,47 @@ async def test_opener_fixes_identity_bounds_and_closes_its_pool(monkeypatch):
         "command_timeout": 15.0,
     }
     assert pool.closes == 1 and pool.terminated and not pool.leased
+
+
+def test_dataset_password_key_uses_only_fixed_database_ids():
+    assert dataset_password_key("california_schools") == "WARDEN_CALIFORNIA_PASSWORD"
+    assert dataset_password_key("financial") == "WARDEN_DATASET_FINANCIAL_PASSWORD"
+    with pytest.raises(ValueError, match="^Unknown dataset id$"):
+        dataset_password_key("financial;SET ROLE warden_owner")
+
+
+async def test_dataset_opener_fixes_role_from_dataset_id(monkeypatch):
+    from sqlwarden.executor import open_dataset_executor
+
+    pool = FakePool()
+    pool.conn.identity = (
+        "warden_sandbox_financial",
+        "sqlwarden",
+        "on",
+        "pg_catalog, financial",
+        5000,
+        500,
+        16384,
+        65536,
+    )
+    install_pool(monkeypatch, pool)
+    async with open_dataset_executor("financial", "credential-canary") as executor:
+        assert (await executor.execute("SELECT count(*) FROM account")).status == "ok"
+    assert pool.options["user"] == "warden_sandbox_financial"
+    assert pool.options["password"] == "credential-canary"
+    assert pool.closes == 1 and pool.terminated and not pool.leased
+
+
+async def test_unknown_dataset_never_reaches_pool_creation(monkeypatch):
+    from sqlwarden.executor import open_dataset_executor
+
+    async def forbidden_creation(**options):
+        pytest.fail("Unknown dataset reached pool creation", pytrace=False)
+
+    monkeypatch.setattr(asyncpg, "create_pool", forbidden_creation)
+    with pytest.raises(ValueError, match="^Unknown dataset id$"):
+        async with open_dataset_executor("app", "credential-canary"):
+            pytest.fail("Unknown dataset opened the executor", pytrace=False)
 
 
 @pytest.mark.parametrize("credential", [None, 42, "", "\x00"])

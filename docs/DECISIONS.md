@@ -1555,6 +1555,35 @@ No gold/database/credential input or SQL execution occurred. Do not use Arctic a
 the general helper: its official card excludes general non-SQL use. C2 remains based
 on measured E0; this smoke does not select a winner or claim benchmark accuracy.
 
+## D-052 — fixed restricted dataset executor routing for E0 (2026-10-08)
+
+The early executor was intentionally California-only. For E0, generated candidates
+must run against any loaded release dataset without giving a caller or model a way
+to choose database roles, schemas or credentials directly.
+
+Decision: keep one immutable trusted dataset-policy map for the 11 loaded release
+databases, and let the server derive `warden_sandbox_<db_id>` plus `pg_catalog,
+<db_id>` from that fixed map. `open_dataset_executor(db_id, password)` rejects
+unknown IDs before creating a pool; `dataset_password_key` maps only fixed IDs to
+the expected private env key names. The existing `open_california_executor` remains
+as a compatibility wrapper.
+
+Rationale: E0 needs multi-dataset execution, but the security boundary remains
+dataset-specific restricted logins and guard policies, not a broad login or a
+client-supplied role. This is executor routing only; it does not select C1 labels,
+freeze a split, run model evaluation, add runtime dataset credentials or weaken the
+SQL guard.
+
+Verification: new tests first failed on missing fixed policies and credential
+mapping, then passed. Pure guard/executor/comparator checks: 355 passed. Actual
+executor plus release PostgreSQL checks: 321 passed. Full no-env suite: 746 passed,
+470 skipped. Full configured suite with setup, California and dataset envs: 1214
+passed, 2 skipped. Ruff lint and format passed.
+
+Cost if wrong: an incorrect fixed table list or role derivation could false-block a
+valid local E0 query or misroute it to the wrong restricted login; the real identity
+tests reduce that risk but do not replace the broader G2 security audit.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

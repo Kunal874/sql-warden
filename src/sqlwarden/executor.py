@@ -12,7 +12,7 @@ from typing import Literal
 import asyncpg
 
 from sqlwarden.config import QueryLimits
-from sqlwarden.guard import CALIFORNIA_POLICY, guard_sql
+from sqlwarden.guard import CALIFORNIA_POLICY, DATASET_POLICIES, DatasetPolicy, guard_sql
 
 Cell = str | int | float | bool | Decimal | date | None
 Row = tuple[Cell, ...]
@@ -155,15 +155,23 @@ def _remaining(deadline):
 
 
 class QueryExecutor:
-    def __init__(self, pool, limits: QueryLimits):
+    def __init__(
+        self,
+        pool,
+        limits: QueryLimits,
+        policy: DatasetPolicy = CALIFORNIA_POLICY,
+    ):
         self._pool = pool
         self._limits = limits
+        self._policy = policy
+        self._expected_user = "warden_sandbox_" + policy.schema
+        self._search_path = "pg_catalog, " + policy.schema
 
     async def execute(self, sql: str) -> QueryResult:
         conn = None
         deadline = asyncio.get_running_loop().time() + self._limits.total_timeout_ms / 1000
         try:
-            decision = guard_sql(sql, CALIFORNIA_POLICY)
+            decision = guard_sql(sql, self._policy)
             if not decision.accepted:
                 return QueryResult("blocked", decision.reason)
             async with asyncio.timeout_at(deadline):
@@ -210,15 +218,15 @@ class QueryExecutor:
             _SETTINGS_SQL,
             f"{self._limits.statement_timeout_ms}ms",
             f"{self._limits.lock_timeout_ms}ms",
-            "pg_catalog, california_schools",
+            self._search_path,
             timeout=_remaining(deadline),
         )
         identity = await conn.fetchrow(_IDENTITY_SQL, timeout=_remaining(deadline))
         expected = (
-            "warden_sandbox_california_schools",
+            self._expected_user,
             "sqlwarden",
             "on",
-            "pg_catalog, california_schools",
+            self._search_path,
             self._limits.statement_timeout_ms,
             self._limits.lock_timeout_ms,
             16384,
@@ -258,8 +266,19 @@ class ExecutorLifecycleError(RuntimeError):
     """A fixed lifecycle category, never a library error message."""
 
 
+def dataset_password_key(db_id: str) -> str:
+    if db_id not in DATASET_POLICIES:
+        raise ValueError("Unknown dataset id")
+    if db_id == "california_schools":
+        return "WARDEN_CALIFORNIA_PASSWORD"
+    return "WARDEN_DATASET_" + db_id.upper() + "_PASSWORD"
+
+
 @asynccontextmanager
-async def open_california_executor(password: str, limits: QueryLimits = _DEFAULT_LIMITS):
+async def open_dataset_executor(db_id: str, password: str, limits: QueryLimits = _DEFAULT_LIMITS):
+    policy = DATASET_POLICIES.get(db_id)
+    if policy is None:
+        raise ValueError("Unknown dataset id") from None
     if type(password) is not str or not password or "\x00" in password:
         raise ValueError("Invalid restricted-reader credential") from None
     try:
@@ -268,7 +287,7 @@ async def open_california_executor(password: str, limits: QueryLimits = _DEFAULT
                 host="127.0.0.1",
                 port=55432,
                 database="sqlwarden",
-                user="warden_sandbox_california_schools",
+                user="warden_sandbox_" + policy.schema,
                 password=password,
                 ssl=False,
                 min_size=0,
@@ -281,7 +300,7 @@ async def open_california_executor(password: str, limits: QueryLimits = _DEFAULT
     except Exception:
         raise ExecutorLifecycleError("connection_error") from None
     try:
-        yield QueryExecutor(pool, limits)
+        yield QueryExecutor(pool, limits, policy)
     except BaseException:
         # Preserve the caller's exception/cancellation; do not wait for close here.
         pool.terminate()
@@ -296,3 +315,9 @@ async def open_california_executor(password: str, limits: QueryLimits = _DEFAULT
             raise ExecutorLifecycleError("connection_error") from None
         finally:
             pool.terminate()
+
+
+@asynccontextmanager
+async def open_california_executor(password: str, limits: QueryLimits = _DEFAULT_LIMITS):
+    async with open_dataset_executor("california_schools", password, limits) as executor:
+        yield executor

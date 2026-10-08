@@ -1607,6 +1607,34 @@ Ollama's fingerprint for the complete local model package. **Context window** is
 how much prompt text the model can consider at once. This smoke proves the model can
 load and make a tiny SQL-shaped answer; it does not prove benchmark accuracy.
 
+### Executor now supports every fixed dataset safely (2026-10-08)
+
+The safe SQL runner no longer works only for California Schools. It now has a fixed
+list of all 11 loaded datasets and their table names. When the program is told a
+dataset ID, it chooses the matching restricted database login and search path by
+itself. The user, model and generated SQL still cannot choose a role or switch to a
+different dataset.
+
+The old California function still exists, so the earlier CLI and tests keep working.
+For the new path, I added checks for every real local dataset login. Each one can
+read its own tables through the guarded executor. Each one is blocked from reading
+the app schema, running writes and using `SET ROLE`. I also kept the older complete
+result-size and timeout checks.
+
+Checks that actually ran: 355 focused pure checks passed; 321 real PostgreSQL
+executor/release checks passed; the full offline suite passed 746 tests and skipped
+470 database-only tests; the full configured suite passed 1214 tests and skipped 2.
+Ruff lint and format also passed.
+
+**Dataset policy** means the trusted list of tables that one dataset is allowed to
+query. **Search path** means the database lookup order for unqualified table names;
+here it is set to `pg_catalog` first and then exactly one dataset. **Restricted
+login** means a database user that can only read its own dataset and cannot become
+another user.
+
+This does not finish G0 by itself. The answer-pool choice at C1 is still open, and
+model evaluation cannot start until the split/E0 inputs are frozen.
+
 ## 6. What comes next?
 
 G0.6a's first model smoke and G0.7a's guard, including real-database checks and
@@ -1626,7 +1654,8 @@ offline source-preparation batch has now unpacked the fixed sources, saved the
 small descriptions and audited real layouts; its sole final review is complete.
 Source key problems are recorded, not repaired. The four-task native import plan
 has finished all implementation and acceptance checks. All ten new datasets are
-saved, and its one fresh final review is complete.
+saved, and its one fresh final review is complete. The executor can now route
+guarded read-only SQL to any fixed restricted dataset login for E0.
 Gold conversion and C1, then second-model/split/E0/C2 work follow their checkpoints.
 The approved imports use existing software and do not run the AI model.
 Important new permissions outside this scope will be asked as questions.

@@ -7,7 +7,8 @@ import pytest
 from test_bird_load import california_connected
 
 from sqlwarden.config import QueryLimits
-from sqlwarden.executor import QueryExecutor, open_california_executor
+from sqlwarden.executor import QueryExecutor, dataset_password_key, open_california_executor
+from sqlwarden.guard import DATASET_POLICIES
 
 pytestmark = pytest.mark.integration
 
@@ -19,6 +20,13 @@ async def ready():
 
 def password():
     return os.environ["WARDEN_CALIFORNIA_PASSWORD"]
+
+
+def dataset_password(db_id):
+    key = dataset_password_key(db_id)
+    if os.environ.get("WARDEN_TEST_TARGET") != "sqlwarden-local" or not os.environ.get(key):
+        pytest.skip("Supply dedicated setup, California and dataset test environments")
+    return os.environ[key]
 
 
 async def test_real_handwritten_count_and_duplicate_positions():
@@ -233,3 +241,33 @@ async def test_real_guard_denial_never_returns_data(sql):
         result = await executor.execute(sql)
         assert result.status == "blocked" and result.columns == () and result.rows == ()
         assert (await executor.execute("SELECT 1 AS n")).status == "ok"
+
+
+@pytest.mark.parametrize(
+    "db_id, table",
+    [(db_id, sorted(policy.tables)[0]) for db_id, policy in DATASET_POLICIES.items()],
+)
+async def test_real_dataset_executor_uses_each_restricted_identity(db_id, table):
+    from sqlwarden.executor import open_dataset_executor
+
+    async with open_dataset_executor(db_id, dataset_password(db_id)) as executor:
+        result = await executor.execute(f"SELECT count(*) AS n FROM {table}")
+        assert result.status == "ok" and type(result.rows[0][0]) is int
+        async with executor._pool.acquire(timeout=1) as conn:
+            identity = await conn.fetchrow(
+                "SELECT current_user AS u, current_schemas(false) AS p", timeout=1
+            )
+        assert tuple(identity) == (f"warden_sandbox_{db_id}", ["pg_catalog", db_id])
+        blocked = await executor.execute("SELECT count(*) AS n FROM app.boundary_probe")
+        assert (blocked.status, blocked.reason, blocked.rows) == (
+            "blocked",
+            "schema_not_allowed",
+            (),
+        )
+        for sql in (f"DELETE FROM {table}", "SET ROLE warden_owner"):
+            denied = await executor.execute(sql)
+            assert (denied.status, denied.reason, denied.rows) == (
+                "blocked",
+                "statement_not_allowed",
+                (),
+            )
