@@ -5,7 +5,7 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 amends their order and checks.
 
 Current group: G1. G0 is complete except for the optional interview drill. C2 keeps
-Arctic as the local full-schema SQL-generation model because it scored 20/100 EX
+Arctic as the local full-schema SQL-generation model because it scored 22/100 EX
 on the frozen development slice while Qwen scored 3/100 and hit 86 prompt-budget
 failures under its ctx2048 full-schema contract. The 100-item development slice
 stays frozen; the 324 held-out IDs remain untouched. Qwen remains available for
@@ -174,23 +174,31 @@ peakVRAM4628519320. Qwen had86 prompt-budget generation failures under the
 full-schema ctx2048 contract. Raw per-item records are ignored; tracked summary
 excludes prompts, generated SQL, gold SQL, rows and credentials. Focused E0
 tests13passed; no-env full suite766passed/470skipped; full configured suite
-1234passed/2skipped; Ruff lint/format pass. C2 remains next.
+1234passed/2skipped; Ruff lint/format pass. C2 remained next.
 
-2026-10-09 C2 and G1.1 provider/cache slice: Task 7 records C2 from the measured
-E0 evidence. Arctic is the retained full-schema SQL generator for G1/E0-style work;
-Qwen remains only for the already-tested local CLI/helper path because its ctx2048
-alias cannot fit the frozen full-schema prompt for most E0 items. The development
-slice remains100 IDs, held-out remains324 IDs, and no held-out tuning occurred.
+2026-10-09 C2 and G1.1 provider/cache slice plus review fix pass: Task 7 records
+C2 from the corrected measured E0 evidence. Arctic is the retained full-schema SQL
+generator for G1/E0-style work after the final review fix pass rebuilt E0 with the
+pinned EX comparator: Arctic22/100 EX, CI0.14–0.30, median1.2865s, p952.235s;
+Qwen remains3/100 EX, CI0.00–0.07, with86 prompt-budget failures. Qwen remains
+only for the already-tested local CLI/helper path because its ctx2048 alias cannot
+fit the frozen full-schema prompt for most E0 items. The development slice remains
+100 IDs, held-out remains324 IDs, and no held-out tuning occurred.
 Added `src/sqlwarden/provider.py`, `src/sqlwarden/cache.py`,
 `tests/test_provider.py` and `tests/test_cache.py`; `LocalQwen` now delegates its
 local URL/retry contract through the shared provider config without changing the
 safe CLI public behavior. The cache stores only replay metadata and bounded JSON
 payloads, refuses overwrite/symlink/corruption/oversize cases, and refuses secret
-or gold-answer storage. Focused provider/cache/LLM/CLI tests117passed/1expected
-Windows symlink skip; no-env full suite777passed/471skipped; full configured suite
-1245passed/3skipped; Ruff lint/format and diff whitespace pass. One final
-read-only review of the complete finish-G0/start-G1 plan range remains before the
-branch is considered fully reviewed.
+or gold-answer storage. Final review found no Critical issues and eight Important
+issues; all were fixed test-first in two commits (`dbd267c`, `390c145`) before the
+clean E0 rebuild. Corrected raw records are ignored but preserved with
+git_commit390c145 and git_dirty=false; legacy pre-fix raw records remain ignored
+under `results/E0_smoke/raw/legacy-*`. Focused review-fix tests57passed/2skipped;
+no-env full suite783passed/471skipped; full configured suite1251passed/3skipped;
+Ruff lint/format and diff whitespace pass. Ollama reported no loaded models after
+the clean rerun. Final review has no remaining Critical/Important issue recorded;
+Minors are deferred in D-058. G0's numbered checklist and G1.1 are complete except
+the optional interview drill.
 
 ## Preflight evidence (2026-10-03)
 
@@ -1376,6 +1384,22 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — current handoff after finish-G0/start-G1 review fix
+
+The finish-G0/start-G1 plan is complete through Task 7 and its final review/fix
+pass. HEAD includes review-fix commits `dbd267c` and `390c145`; tracked E0 summary
+was rebuilt from clean commit `390c145`. G0's numbered checklist is complete
+except the optional interview drill. G1.1 is complete. Do not rerun C1, split,
+model smoke, E0 or final review unless investigating a new issue. Corrected E0:
+Arctic22/100 EX, Qwen3/100 EX on the 100-item dev slice; raw records are ignored
+with `git_dirty=false`; old pre-fix raw records are preserved ignored under
+`results/E0_smoke/raw/legacy-*`. Latest verification: focused review-fix57passed/
+2skipped; no-env full783passed/471skipped; configured full1251passed/3skipped;
+Ruff lint/format/diff whitespace passed; Ollama `/api/ps` reported no loaded
+models. Next implementation task is G1.2 schema extraction/serializer, keys/
+descriptions and bounded untrusted samples. Still local only: no remote, push,
+publication, hosted inference, source/gold mutation or new dependency approval.
 
 ### 2026-10-08 — C1 corrected pool frozen
 

@@ -1641,7 +1641,12 @@ Arctic, one model at a time, with guard and restricted PostgreSQL execution enab
 The compact tracked result is `results/E0_smoke/summary.json`; raw per-item records
 remain ignored under `results/E0_smoke/raw/`.
 
-Observed local EX:
+Observed local EX was later corrected by D-058 after the final review found the
+first implementation had used the stricter duplicate-preserving conversion
+comparator instead of the pinned EX set comparator. The current tracked summary is
+the D-058 clean rebuild, not the numbers below.
+
+Initial local EX:
 
 - Arctic Text2SQL Q4_K_M ctx8192: 20/100 correct, EX 0.20, seeded 95% bootstrap
   interval 0.13–0.28, median 1.247s, p95 2.556s, peak VRAM 5,133,943,438 bytes.
@@ -1663,10 +1668,11 @@ rather than this frozen E0.
 
 ## D-056 — C2 keeps Arctic for full-schema SQL generation (2026-10-09)
 
-Context: E0 ran both local models on the same frozen 100 development IDs with full
-schema prompts, guard enabled and restricted PostgreSQL execution. Arctic scored
-20/100 EX. Qwen scored 3/100 EX and failed 86 items before any model call because
-the frozen full-schema prompt plus reserved output did not fit its ctx2048 alias.
+Context: corrected E0 ran both local models on the same frozen 100 development IDs
+with full schema prompts, guard enabled and restricted PostgreSQL execution. Arctic
+scored22/100 EX after the D-058 comparator/provenance fix and clean rebuild. Qwen
+scored3/100 EX and failed86 items before any model call because the frozen
+full-schema prompt plus reserved output did not fit its ctx2048 alias.
 
 Decision: retain Arctic Text2SQL Q4_K_M ctx8192 as the local full-schema
 SQL-generation model for the next G1 work. Keep the development slice at 100 IDs
@@ -1681,8 +1687,9 @@ Changing Qwen's context or prompt now would be a new experiment, not the frozen 
 decision. Cost if wrong: a larger Qwen context or retrieval-first prompt might help
 later, but that belongs behind a new measured C3/G1 decision.
 
-Verification: C2 is based on tracked `results/E0_smoke/summary.json` and the
-committed E0 protocol. No held-out inference, hosted inference, prompt change,
+Verification: C2 is based on tracked `results/E0_smoke/summary.json`, rebuilt from
+ignored raw records produced at clean commit390c145 with `git_dirty=false`, and
+the committed E0 protocol. No held-out inference, hosted inference, prompt change,
 gold mutation, remote push or publication occurred.
 
 ## D-057 — G1.1 starts with a local provider/cache contract (2026-10-09)
@@ -1705,12 +1712,58 @@ cache is deliberately conservative and may refuse payloads that are safe but not
 needed; loosening it later requires tests and a recorded reason.
 
 Verification: provider/cache tests were written before the implementation and first
-failed on missing modules/outcome types. Final focused provider/cache/LLM/CLI checks
-passed117 with1 expected Windows symlink skip. Full no-env suite passed777 with471
-expected skips. Full configured PostgreSQL suite passed1245 with3 expected skips.
-Ruff lint, format check and diff whitespace passed. No prompt text, generated SQL,
-gold SQL, result rows, credentials, model weights, raw runs, remote or publication
-artifact was committed.
+failed on missing modules/outcome types. Initial focused provider/cache/LLM/CLI
+checks passed117 with1 expected Windows symlink skip; after D-058 review fixes,
+focused review-fix tests passed57 with2 expected skips, full no-env suite passed783
+with471 expected skips, and full configured PostgreSQL suite passed1251 with3
+expected skips. Ruff lint, format check and diff whitespace passed. No prompt text,
+generated SQL, gold SQL, result rows, credentials, model weights, raw runs, remote
+or publication artifact was committed.
+
+## D-058 — final finish-G0/G1.1 review fixes E0 evidence contracts (2026-10-09)
+
+One fresh read-only reviewer inspected the complete finish-G0/start-G1 range
+`6370ec3..0edae7c`. It made no filesystem, Git, database, import or live-inference
+changes. It found no Critical issue. It found eight Important issues:
+
+1. E0 used duplicate-preserving conversion comparison instead of the pinned EX row-set comparator.
+2. Scored raw records lacked prediction/provenance needed for safe resume and rescoring.
+3. E0 lacked explicit absolute generation/total-item deadlines and safe failure cleanup.
+4. Invalid model output dropped real usage/latency measurements.
+5. Full-schema prompts silently truncated selected descriptions.
+6. Decimal canonicalization used context-dependent normalization and could collapse distinct values.
+7. Cache reads and symlink/corruption refusal had boundary gaps.
+8. Gold validation lacked the approved 30-minute per-track cap.
+
+Decision: fix every Critical/Important item test-first before treating G0/C2 as
+complete. Preserve the original raw E0 records as ignored legacy evidence instead
+of overwriting them silently. Rebuild E0 after the fixes from a clean commit, with
+raw records carrying git commit and dirty-state provenance. Defer only the three
+Minor findings: protocol/runner bootstrap-sample mismatch is fixed now because it
+was one-line and relevant; cache concurrent-writer no-clobber and stronger
+secret/gold semantic detection remain later hardening, with the current cache
+documented as a conservative local single-user slice.
+
+Rulings on set-aside review areas:
+
+- Retrieval, repair, voting, clarification and hosted inference stay outside G1.1.
+- Wider function/operator attacks and tenant RLS stay in G2.
+- Qwen context expansion or alternate prompting is a future measured experiment,
+not a repair to frozen E0.
+- Semantic ambiguity review is still not claimed; literal text differences remain candidates only.
+- Concurrent privileged replacement of pinned inputs stays outside the trusted local-source workflow.
+- Distributed cache and crash-durable recovery stay outside the current local slice.
+
+Verification: fixes landed in `dbd267c` and `390c145`. Regression tests first failed
+for the reviewed gaps, then passed: focused review-fix suite57passed/2expected
+skips; no-env full suite783passed/471expected skips; configured full suite
+1251passed/3expected skips; Ruff lint, format and diff whitespace passed. A clean
+local E0 rebuild then produced `results/E0_smoke/summary.json`: Arctic22/100 EX
+(CI0.14–0.30, median1.2865s, p952.235s, peakVRAM5133943438) and Qwen3/100 EX
+(CI0.00–0.07, median1.356s, p951.608s, peakVRAM4628519320). Each model has100
+ignored raw records with `git_commit=390c1454619a849ab80d798bde41c82440f7b34a`
+and `git_dirty=false`; Ollama reported no loaded models after the run. No held-out
+inference, hosted call, source/gold mutation, remote, push or publication occurred.
 
 ## Native-import execution and final-review rulings
 

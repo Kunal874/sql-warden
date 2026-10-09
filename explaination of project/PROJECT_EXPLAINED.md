@@ -1,6 +1,6 @@
 # SQLWarden explained in simple English
 
-Last updated: 2026-10-08.
+Last updated: 2026-10-09.
 
 This is your learning notebook for the project. It will be updated after every
 completed subtask and group. It explains what was built, why it matters, how it
@@ -45,8 +45,8 @@ It is not a finished public service yet.
   is complete; it reused existing Python tools without adding a package.
 - The local AI connection code now passes 67 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
-- The latest full configured checkpoint has 1,214 passing tests and 2 expected
-  skips before the corrected-pool freeze. The ten-dataset release matrix alone
+- The latest full configured checkpoint has 1,251 passing tests and 3 expected
+  skips after the final E0 review-fix pass. The ten-dataset release matrix alone
   has 292 real PostgreSQL checks.
 - The offline answer-file checker and small download tool pass 49 checks.
   The four approved files match their saved fingerprints. Their summary lists
@@ -60,15 +60,16 @@ It is not a finished public service yet.
   answer cells or credentials.
 
 The first narrow AI question-to-database flow works for one checked question.
-The full agent, evaluation scores, website and public release are not finished.
-G0, the foundation group, is still in progress. Split/E0/C2 and then G1
-agent-core work still remain.
+The first local E0 evaluation is now corrected and recorded. The full agent,
+website and public release are not finished. G0's numbered checklist is complete
+except for the optional interview drill, and G1.1 has started the agent core.
 
-Where we are: 10 of the 12 numbered foundation tasks are complete. The query
+Where we are: 12 of the 12 numbered foundation tasks are complete. The query
 guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
-demonstration is complete; split/E0/C2 come next before expanding the agent.
+demonstration, corrected E0 run and C2 model choice are complete; G1.2 comes next
+before expanding the agent loop.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -1696,7 +1697,8 @@ used the same frozen questions, the same checked database logins, the same SQL
 guard and the same exact answer checker. This was single-shot: no repair, no vote,
 no retrieval helper and no hidden retry.
 
-Arctic answered 20 out of 100 exactly. Qwen answered 3 out of 100 exactly. Qwen's
+Arctic answered 22 out of 100 exactly after the final review fix pass. Qwen
+answered 3 out of 100 exactly. Qwen's
 main problem was not only wrong SQL: 86 questions were stopped before a model call
 because the full database schema plus reserved answer space did not fit inside the
 small 2048-token Qwen alias. Arctic used more GPU memory but handled the full-schema
@@ -1707,10 +1709,13 @@ counts, speed, token totals and peak GPU memory. The detailed per-question raw f
 are ignored and not committed. The tracked summary does not include prompts,
 generated SQL, answer rows, gold SQL or credentials.
 
-Checks for this subtask: 13 focused E0 tests passed. The full offline suite passed
-766 checks and skipped 470 database-only checks. The full configured suite passed
-1234 checks and skipped 2 expected checks. Ruff lint and format passed. Ollama
-reported no model still loaded after the run.
+Initial checks for this subtask: 13 focused E0 tests passed. The full offline
+suite passed 766 checks and skipped 470 database-only checks. The full configured
+suite passed 1234 checks and skipped 2 expected checks. After the final review
+found the stricter comparator/provenance gaps, the corrected fix-pass checks passed
+57 focused checks with 2 expected skips, 783 full offline checks with 471 skips,
+and 1251 full configured checks with 3 skips. Ruff lint and format passed. Ollama
+reported no model still loaded after the clean rerun.
 
 **EX** means exact match: the generated query's complete answer matched the frozen
 reference answer exactly. **Prompt budget** means the model input plus reserved
@@ -1723,7 +1728,7 @@ that model during the run.
 
 I used the E0 results to choose the next local SQL model. Arctic is now the main
 full-schema SQL-generation model for the next agent work, because it handled the
-full database schema and got 20 exact answers out of 100. Qwen is not removed, but
+full database schema and got 22 exact answers out of 100. Qwen is not removed, but
 it is not the full-schema SQL model right now because 86 of the 100 questions did
 not fit into its small 2048-token context. Qwen can still be used for the already
 tested safe local command-line/helper path, and we can test a different Qwen setup
@@ -1747,6 +1752,35 @@ skipped 471 database-only checks. The full configured PostgreSQL suite passed 12
 checks and skipped 3 expected checks. Ruff lint, format check and whitespace check
 passed.
 
+### Final review of finish-G0/start-G1 and the E0 fix pass (2026-10-09)
+
+A fresh read-only reviewer checked the whole finish-G0/start-G1 change. It found
+no Critical issues, but it found Important problems in the first E0 evidence path.
+The main problem was that the code used the stricter duplicate-preserving answer
+comparison instead of the pinned EX comparison rule. That made the old Arctic
+20/100 number not the exact metric we promised.
+
+I fixed the review findings test-first. The E0 runner now uses the pinned EX
+comparison, saves enough ignored raw information to safely resume or rescore, keeps
+model usage even when output is invalid, has explicit per-item deadlines, keeps
+complete selected descriptions instead of silently cutting them, records Git commit
+and clean/dirty state, avoids Decimal rounding in the gold checker, and hardens the
+small cache boundary checks. I then reran E0 from a clean commit. The new tracked
+summary is Arctic 22/100 and Qwen 3/100. Old pre-fix raw records are still local
+and ignored as legacy evidence, not committed.
+
+Checks for this review-fix pass: 57 focused checks passed with 2 expected skips.
+The full offline suite passed 783 checks and skipped 471 database-only checks. The
+full configured PostgreSQL suite passed 1251 checks and skipped 3 expected checks.
+Ruff lint, format check and whitespace check passed. The final raw records have
+`git_dirty: false`, and Ollama reported no model loaded afterward.
+
+**Final review** means a separate read-only check after the work is finished.
+**Provenance** means information that proves where a result came from, like the
+Git commit, model digest and data fingerprint. **Rescore** means checking old model
+outputs again with a corrected scoring rule. **Dirty Git state** means files were
+changed when a result was produced; for the corrected E0 run it was false.
+
 **Context window** means how much text a model can read at once. **Provider** means
 the local model service being called, here Ollama on this laptop. **Digest** means
 a fingerprint that identifies the exact local model artifact. **Cache** means saved
@@ -1757,9 +1791,9 @@ we keep this at zero so measurements count the real number of calls.
 
 ## 6. What comes next?
 
-G0's numbered checklist is complete, except the optional interview drill. The next
-step is the final read-only review of this whole finish-G0/start-G1 plan range.
-After that, the project should continue into G1.2: schema extraction, descriptions,
+G0's numbered checklist is complete, except the optional interview drill. The final
+read-only review and its fix pass are complete. The project should continue into
+G1.2: schema extraction, descriptions,
 keys and bounded untrusted sample values for retrieval. The rest of the agent loop,
 website, broader attack suite, hosted/deployment work and release still come later.
 Important new permissions outside the approved local scope will still be asked as

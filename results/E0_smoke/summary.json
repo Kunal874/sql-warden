@@ -10,42 +10,42 @@
   "models": {
     "arctic": {
       "confidence_interval": {
-        "high": 0.28,
-        "low": 0.13,
-        "mean": 0.2,
+        "high": 0.3,
+        "low": 0.14,
+        "mean": 0.22,
         "n": 100
       },
-      "correct": 20,
+      "correct": 22,
       "denominator": 100,
       "dev_id_sha256": "47466fd8c8a374b98b4b4d81edb8a9652daceabb59cb8dc942c2fa9bb4aa6793",
-      "ex": 0.2,
-      "median_seconds": 1.247,
+      "ex": 0.22,
+      "median_seconds": 1.2865,
       "model": "arctic",
-      "p95_seconds": 2.556,
+      "p95_seconds": 2.235,
       "peak_vram_bytes": 5133943438,
       "reason_counts": {
-        "ex_match": 20,
+        "ex_match": 22,
         "function_not_allowed": 7,
         "identifier_invalid": 1,
         "model output invalid": 11,
-        "parse_error": 6,
-        "result_mismatch": 43,
+        "parse_error": 7,
+        "result_mismatch": 40,
         "row_limit": 3,
         "syntax_error": 1,
         "undefined_object": 8
       },
       "status_counts": {
-        "blocked": 14,
-        "correct": 20,
+        "blocked": 15,
+        "correct": 22,
         "failed": 12,
         "generation_failed": 11,
-        "incorrect": 43,
+        "incorrect": 40,
         "missing": 0
       },
       "usage": {
-        "completion_tokens": 5276,
-        "known_items": 89,
-        "prompt_tokens": 112326
+        "completion_tokens": 5778,
+        "known_items": 100,
+        "prompt_tokens": 133081
       }
     },
     "qwen": {
@@ -59,9 +59,9 @@
       "denominator": 100,
       "dev_id_sha256": "47466fd8c8a374b98b4b4d81edb8a9652daceabb59cb8dc942c2fa9bb4aa6793",
       "ex": 0.03,
-      "median_seconds": 1.2595,
+      "median_seconds": 1.3559999999999999,
       "model": "qwen",
-      "p95_seconds": 1.514,
+      "p95_seconds": 1.608,
       "peak_vram_bytes": 4628519320,
       "reason_counts": {
         "database_error": 1,
@@ -79,9 +79,9 @@
         "missing": 0
       },
       "usage": {
-        "completion_tokens": 718,
-        "known_items": 12,
-        "prompt_tokens": 4162
+        "completion_tokens": 855,
+        "known_items": 14,
+        "prompt_tokens": 4871
       }
     }
   },
