@@ -62,16 +62,18 @@ It is not a finished public service yet.
 The first narrow AI question-to-database flow works for one checked question.
 The first local E0 evaluation is now corrected and recorded. The G1 local agent
 core is implemented through schema retrieval, prompts, voting, clarification seams
-and command-line loop settings. The website and public release are not finished.
-G0's numbered checklist is complete except for the optional interview drill.
+and command-line loop settings. G2 has now recorded guard, cost and direct
+database-permission evidence through G2.5. The website and public release are not
+finished. G0's numbered checklist is complete except for the optional interview
+drill.
 
 Where we are: 12 of the 12 numbered foundation tasks are complete. The query
 guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
 demonstration, corrected E0 run, C2 model choice and G1 core implementation are
-complete locally. Final configured verification/review for this G1 slice is still
-being finished before moving into G2.
+complete locally. G2.1 through G2.5 are complete locally; tenant RLS, attack
+experiments, evaluation expansion, website and release still remain.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -1983,6 +1985,43 @@ use that for untrusted SQL cost checks.
 
 **Estimated cost** is PostgreSQL's guess about query expense. It helps block risky
 queries early, but it is not perfect, so timeouts still matter.
+
+### G2.5 grant and default-grant evidence slice (2026-10-09)
+
+I recorded the real database permission checks for all 11 restricted dataset
+logins.
+
+What changed:
+
+- A compact manifest now lists the direct PostgreSQL tests that prove each
+  dataset login is restricted.
+- The tests connect as the restricted dataset users directly, not through the SQL
+  guard.
+- They check that each reader has no admin powers, cannot change into other roles,
+  cannot write, cannot create temp tables, cannot read the app schema, cannot read
+  another dataset and cannot use selected risky PostgreSQL functions.
+- They also check future default grants: if a new table is created in a dataset
+  schema, only that dataset's reader gets SELECT, and not INSERT.
+
+Checks: the manifest test first failed because the manifest did not exist. After
+adding it, 6 focused security-contract tests passed. The real PostgreSQL
+permission checks passed 210 tests against the local database. The full offline
+suite passed 803 tests and skipped 471 database-only tests. Ruff lint and format
+passed too.
+
+New simple terms:
+
+**Grant** means permission in the database, such as permission to read a table.
+
+**Default grant** means permission automatically given to future tables created
+later.
+
+**Direct-connection test** means the test logs into PostgreSQL as the restricted
+user and tries actions directly. This proves the database itself refuses those
+actions, even without help from the SQL guard.
+
+**ACL** means an access-control list. In simple words, it is a list of who can do
+what.
 
 ## 7. How this notebook will be kept up to date
 

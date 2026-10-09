@@ -1,0 +1,29 @@
+{
+  "contains": "direct PostgreSQL permission evidence test names and expected protections only",
+  "excludes": [
+    "credentials",
+    "SQL text beyond fixed test names",
+    "question text",
+    "result rows",
+    "model prompts"
+  ],
+  "expected_protections": [
+    "dataset_reader_has_no_admin_flags_memberships_or_inheritance",
+    "dataset_reader_default_transaction_read_only_is_on",
+    "dataset_reader_search_path_is_pg_catalog_then_own_schema",
+    "dataset_reader_cannot_execute_reviewed_risky_functions",
+    "dataset_reader_cannot_write_create_temp_or_read_app_schema",
+    "dataset_reader_cannot_read_peer_dataset_or_set_role",
+    "future_owner_default_grants_are_select_only_for_own_reader"
+  ],
+  "format_version": 1,
+  "scope": "11 restricted dataset logins",
+  "verification": {
+    "postgres": [
+      "tests/test_release_postgres.py::test_dataset_reader_privileges_memberships_defaults_and_function_acls",
+      "tests/test_release_postgres.py::test_direct_denial_after_read_only_default_disabled",
+      "tests/test_release_postgres.py::test_all_datasets_cross_read_and_role_denials",
+      "tests/test_release_postgres.py::test_future_owner_defaults_are_dataset_specific"
+    ]
+  }
+}

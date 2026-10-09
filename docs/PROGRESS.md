@@ -31,8 +31,9 @@ optional interview drill. This is checklist coverage, not overall project effort
 G1 core is implemented and committed locally through G1.9: schema catalog/retrieval,
 C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
-settings. G2.1/C4 now records the explicit guardrail contract. The G1/G2 interview
-drills and G2.5-G5/G7 remain unfinished. No official benchmark score.
+settings. G2.1-C4 through G2.5 now record the explicit guardrail/cost/grant
+evidence. The G1/G2 interview drills and G2.6-G5/G7 remain unfinished. No official
+benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -292,7 +293,7 @@ the optional interview drill.
 - [x] G2.2: expand guard to at least 40 meaningful cases plus safe-gold acceptance audit.
 - [x] G2.3: expand executor settings/caps/deadlines/cancellation and sanitized error categories.
 - [x] G2.4: guarded EXPLAIN, same identity/settings and calibrated cost checks.
-- [ ] G2.5: effective grants/default grants; real direct-connection permission tests.
+- [x] G2.5: effective grants/default grants; real direct-connection permission tests.
 - [ ] G2.6: forced tenant RLS, separate tenant identities and boundary tests.
 - [ ] G2.7: untrusted data and explanation isolation tests with benign controls.
 - [ ] G2.8: at least 40 attacks, threat-specific success predicates; disposable-only E5 and false blocks.
@@ -1388,6 +1389,25 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G2.5 grants/default-grants direct permission evidence
+
+G2.5 now has compact permission evidence in `docs/grants-permission-manifest.json`.
+It records the existing real PostgreSQL direct-connection tests for all 11
+restricted dataset logins: no admin flags/memberships/inheritance, default
+read-only on, `pg_catalog` then own schema in search path, no EXECUTE on reviewed
+risky functions, denial of writes/DDL/temp/app-schema access, denial of peer
+dataset reads and SET ROLE, and future default grants that give SELECT only to the
+own dataset reader. The manifest contains only fixed test names/protection labels;
+no credentials, question text, result rows or model prompts.
+
+Verification: the manifest test first failed because
+`docs/grants-permission-manifest.json` did not exist. After adding it, the new
+manifest test passed 1. Final focused security-contract tests passed 6. Real
+G2.5 PostgreSQL permission checks passed 210 with `.env.setup`, `.env.california`
+and `.env.datasets`. Full no-env suite passed 803/471 skipped. Ruff lint, format
+and diff whitespace passed. Next: commit as `feat(security): record grant
+permission evidence`, then continue to G2.6 forced tenant RLS.
 
 ### 2026-10-09 — G2.4 guarded EXPLAIN and cost calibration
 

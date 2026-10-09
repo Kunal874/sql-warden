@@ -1905,6 +1905,32 @@ security/executor tests passed104 and full no-env suite passed802/471skipped. Ru
 lint, format and diff whitespace passed. No credential change, source/gold
 mutation, live model call, hosted action, raw run, remote or push occurred.
 
+## D-064 — G2.5 records effective grant and default-grant evidence (2026-10-09)
+
+Context: the release PostgreSQL tests already connect directly as each restricted
+dataset reader and bypass the SQL guard. G2.5 needs that effective-permission and
+future-default-grant evidence named in one compact artifact before stronger
+sandbox claims are made.
+
+Decision: add `docs/grants-permission-manifest.json`. It records only fixed test
+names and protection labels for all 11 restricted dataset logins: role flags,
+memberships/inheritance, default read-only setting, search path, risky function
+ACLs, denial of write/DDL/temp/app/peer/SET ROLE operations and dataset-specific
+future SELECT-only grants.
+
+Rationale: no database policy change is needed because the real tests already
+exercise the boundary. The manifest makes the evidence easy to audit without
+copying credentials, SQL rows, question text, prompts or raw run output. Cost if
+wrong: the manifest can drift from the actual test names, so the contract test
+checks the names and exclusions explicitly.
+
+Verification: the manifest test first failed because the file did not exist. After
+adding it, focused security-contract tests passed 6 and the real G2.5 PostgreSQL
+permission checks passed 210 with `.env.setup`, `.env.california` and
+`.env.datasets`. Full no-env suite passed 803/471 skipped. Ruff lint, format and
+diff whitespace passed. No database object change, credential change, source/gold
+mutation, live model call, hosted action, raw run, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
