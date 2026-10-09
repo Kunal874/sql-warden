@@ -2007,6 +2007,30 @@ passed 3. Focused attack/guard/prompt tests passed 210. Full no-env suite passed
 change, credential change, source/gold mutation, model call, hosted action, raw
 run, remote or push occurred.
 
+## D-068 — G2.9 documents current security evidence and residual limits (2026-10-09)
+
+Context: G2.9 requires SECURITY documentation with evidence and limitations. The
+repo had no existing root `SECURITY.md`; the Codex Security resolver inventory
+returned an empty policy list before this slice.
+
+Decision: add root `SECURITY.md` covering local-only system scope, trust
+boundaries, attacker-controlled inputs, security invariants, evidence artifacts,
+reportable finding criteria and known limitations. It points to the G2 evidence
+manifests instead of duplicating secrets, raw SQL, prompts or result rows.
+
+Rationale: security claims should be reviewable and bounded. The policy states
+what has evidence and what remains residual risk, avoiding universal safety or
+hosted-production claims. Cost if wrong: future reviewers may need to update this
+policy when API/web/hosting work changes the actual exposure.
+
+Verification: the SECURITY policy test first failed because `SECURITY.md` did not
+exist. After adding it, the test passed 1 and the Codex Security resolver listed
+and resolved the root policy. Final focused policy/security tests passed 10. Full
+no-env suite passed 810/475 skipped. Full configured suite passed 1282/3 skipped.
+Ruff lint, format and diff whitespace passed. No database object change,
+credential change, source/gold mutation, model call, hosted action, raw run,
+remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -31,9 +31,9 @@ optional interview drill. This is checklist coverage, not overall project effort
 G1 core is implemented and committed locally through G1.9: schema catalog/retrieval,
 C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
-settings. G2.1-C4 through G2.8 now record the explicit guardrail/cost/grant/RLS/
-untrusted-data/attack evidence. The G1/G2 interview drills and G2.9-G5/G7 remain
-unfinished. No official
+settings. G2.1-C4 through G2.9 now record the explicit guardrail/cost/grant/RLS/
+untrusted-data/attack/SECURITY evidence. The G1/G2 interview drills and G3-G5/G7
+remain unfinished. No official
 benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
@@ -298,7 +298,7 @@ the optional interview drill.
 - [x] G2.6: forced tenant RLS, separate tenant identities and boundary tests.
 - [x] G2.7: untrusted data and explanation isolation tests with benign controls.
 - [x] G2.8: at least 40 attacks, threat-specific success predicates; disposable-only E5 and false blocks.
-- [ ] G2.9: SECURITY with evidence and residual limitations.
+- [x] G2.9: SECURITY with evidence and residual limitations.
 - [ ] G2 interview drill.
 
 ### G3 — evaluation
@@ -1390,6 +1390,26 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G2.9 SECURITY evidence and residual limitations
+
+G2.9 now adds root `SECURITY.md`. It documents the current local-only system scope,
+trusted boundaries, attacker-controlled inputs, security invariants, G2 evidence
+artifacts, reportable finding criteria, severity context and known limitations. It
+links the core G2 evidence manifests: guard/gold audit, guarded EXPLAIN cost
+calibration, grants/default grants and attack-suite evidence. It also explicitly
+states residual limits: not production SaaS, no official benchmark score, layer-off
+E5 not run, no universal prompt-injection proof, PostgreSQL estimates/work_mem
+limits, normally visible catalog metadata, current false blocks and tenant RLS only
+proven on the synthetic fixture.
+
+Verification: SECURITY test first failed because `SECURITY.md` did not exist.
+After adding it, `tests/test_security_policy_doc.py` passed 1. The Codex Security
+policy resolver lists `SECURITY.md` and resolves it for the repo root. Final
+focused policy/security tests passed 10. Full no-env suite passed 810/475 skipped.
+Full configured suite passed 1282/3 skipped. Ruff lint, format and diff whitespace
+passed. Next: commit as `docs(security): document g2 security evidence`, then only
+the G2 interview drill remains in G2.
 
 ### 2026-10-09 — G2.8 attack-suite evidence manifest
 

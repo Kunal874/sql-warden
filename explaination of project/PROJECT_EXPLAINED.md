@@ -63,17 +63,17 @@ The first narrow AI question-to-database flow works for one checked question.
 The first local E0 evaluation is now corrected and recorded. The G1 local agent
 core is implemented through schema retrieval, prompts, voting, clarification seams
 and command-line loop settings. G2 has now recorded guard, cost, direct database
-permission, tenant-row-security, untrusted-data and attack-suite evidence through
-G2.8. The website and public release are not finished. G0's numbered checklist is
-complete except for the optional interview drill.
+permission, tenant-row-security, untrusted-data, attack-suite and SECURITY
+evidence through G2.9. The website and public release are not finished. G0's
+numbered checklist is complete except for the optional interview drill.
 
 Where we are: 12 of the 12 numbered foundation tasks are complete. The query
 guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
 demonstration, corrected E0 run, C2 model choice and G1 core implementation are
-complete locally. G2.1 through G2.8 are complete locally; SECURITY documentation,
-evaluation expansion, website and release still remain.
+complete locally. G2.1 through G2.9 are complete locally; evaluation expansion,
+website and release still remain.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -2126,6 +2126,40 @@ allowing unsafe SQL, but too many false blocks make the tool less useful.
 **Layer-off experiment** means deliberately turning off one safety layer to see
 what it was protecting. That is risky, so SQLWarden only allows it later in a
 disposable local setup.
+
+### G2.9 SECURITY file slice (2026-10-09)
+
+I added the root `SECURITY.md` file.
+
+What changed:
+
+- The file explains what SQLWarden is protecting right now.
+- It lists the important trust boundaries: model output is not trusted, database
+  roles decide permissions and gold answers stay out of prompts.
+- It lists the security rules that must stay true, like guard before execution,
+  restricted dataset logins, forced tenant RLS and escaped explanation text.
+- It links the G2 evidence files instead of copying raw SQL, prompts, result rows
+  or credentials.
+- It clearly says what is not proven yet, including hosted security, universal
+  prompt-injection resistance and layer-off E5 experiments.
+
+Checks: the test first failed because `SECURITY.md` did not exist. After adding
+the file, the SECURITY test passed. The security-policy resolver also found and
+resolved the root policy. The final focused policy/security tests passed 10. The
+full offline suite passed 810 tests and skipped 475 database-only tests. The full
+configured suite passed 1282 tests and skipped 3 expected tests. Ruff lint and
+format passed too.
+
+New simple terms:
+
+**Security policy** means a document that tells reviewers what must be protected
+and what counts as a real security problem.
+
+**Residual limitation** means a known risk or unfinished proof that remains after
+the current work.
+
+**Trust boundary** means the line between things the program trusts and things it
+must treat carefully.
 
 ## 7. How this notebook will be kept up to date
 
