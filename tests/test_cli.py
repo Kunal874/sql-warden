@@ -140,6 +140,37 @@ async def test_cancellation_propagates_and_does_not_continue_to_database(monkeyp
         await task
 
 
+async def test_loop_mode_uses_bounded_settings_and_trace(monkeypatch):
+    class Provider:
+        async def complete(self, messages, *, model_config):
+            assert "g1_generate_v1" in messages[-1]["content"]
+            return {"content": '{"sql":"SELECT school FROM schools"}'}
+
+    class Executor:
+        async def execute(self, sql):
+            assert sql == "SELECT school FROM schools"
+            return QueryResult("ok", "ok", ("school",), (("A",),))
+
+    @asynccontextmanager
+    async def opened(password):
+        assert password == "a" * 48
+        yield Executor()
+
+    monkeypatch.setattr(cli, "open_california_executor", opened)
+    answer = await cli.ask_loop(
+        "List schools.",
+        "a" * 48,
+        Provider(),
+        cli.AgentConfig(candidates=1, max_repairs=0, explain=False),
+    )
+
+    assert answer["status"] == "answered"
+    assert answer["loop_settings"]["candidates"] == 1
+    assert answer["agreement"] == 1
+    assert answer["high_confidence"] is False
+    assert "trace_summary" in answer
+
+
 def test_setup_copy_is_exclusive_and_contains_only_restricted_runtime_value(tmp_path):
     (tmp_path / ".env.california").write_text("WARDEN_CALIFORNIA_PASSWORD=" + "a" * 48 + "\n")
     prepare(tmp_path)
@@ -237,6 +268,28 @@ def test_main_refuses_setup_environment_before_constructing_provider(monkeypatch
     assert stopped.value.code == 1
     assert json.loads(output.out)["reason"] == "runtime_or_input_configuration"
     assert "PRIVATE_CANARY" not in output.out + output.err
+
+
+def test_main_refuses_bad_loop_settings_before_provider(monkeypatch, capsys):
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "sqlwarden",
+            "ask",
+            "--db",
+            "california_schools",
+            "--loop",
+            "--candidates",
+            "0",
+            "One.",
+        ],
+    )
+    monkeypatch.setattr(cli, "LocalQwen", lambda: pytest.fail("Model constructed"))
+    with pytest.raises(SystemExit) as stopped:
+        cli.main()
+    output = capsys.readouterr()
+    assert stopped.value.code == 1
+    assert json.loads(output.out)["reason"] == "runtime_or_input_configuration"
 
 
 def test_main_success_uses_only_runtime_credential_and_escaped_output(monkeypatch, capsys):

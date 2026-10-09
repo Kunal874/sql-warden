@@ -60,16 +60,18 @@ It is not a finished public service yet.
   answer cells or credentials.
 
 The first narrow AI question-to-database flow works for one checked question.
-The first local E0 evaluation is now corrected and recorded. The full agent,
-website and public release are not finished. G0's numbered checklist is complete
-except for the optional interview drill, and G1.1 has started the agent core.
+The first local E0 evaluation is now corrected and recorded. The G1 local agent
+core is implemented through schema retrieval, prompts, voting, clarification seams
+and command-line loop settings. The website and public release are not finished.
+G0's numbered checklist is complete except for the optional interview drill.
 
 Where we are: 12 of the 12 numbered foundation tasks are complete. The query
 guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
-demonstration, corrected E0 run and C2 model choice are complete; G1.2 comes next
-before expanding the agent loop.
+demonstration, corrected E0 run, C2 model choice and G1 core implementation are
+complete locally. Final configured verification/review for this G1 slice is still
+being finished before moving into G2.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -1791,13 +1793,68 @@ we keep this at zero so measurements count the real number of calls.
 
 ## 6. What comes next?
 
-G0's numbered checklist is complete, except the optional interview drill. The final
-read-only review and its fix pass are complete. The project should continue into
-G1.2: schema extraction, descriptions,
-keys and bounded untrusted sample values for retrieval. The rest of the agent loop,
-website, broader attack suite, hosted/deployment work and release still come later.
-Important new permissions outside the approved local scope will still be asked as
-questions.
+G0's numbered checklist is complete, except the optional interview drill. G1's
+core code is now also implemented through the first command-line loop settings,
+but it still needs final configured verification and final review before I treat
+the group as fully finished. The website, broader attack suite, hosted/deployment
+work and release still come later. Important new permissions outside the approved
+local scope will still be asked as questions.
+
+### G1 core agent slice (2026-10-09)
+
+I added the first real local agent core.
+
+What changed:
+
+- The project can now turn database schema information into a smaller schema
+  “scope” for one question. It keeps table names, column names, descriptions,
+  primary keys, foreign keys and a few bounded sample values.
+- It has versioned prompts for four actions: make SQL, repair SQL, ask a
+  clarification question and explain an already executed answer.
+- It has a plain Python state machine. That means the loop is written as clear
+  steps: validate, retrieve schema, generate candidates, guard SQL, execute safely,
+  repair once if allowed, vote, possibly clarify, and finish.
+- It has result voting. Failed candidates still count in the denominator, ties
+  abstain, and one candidate is never called “high confidence”.
+- The CLI now has an explicit `--loop` mode with settings for candidates, repairs
+  and retrieved columns. The old safe one-candidate command still works by default.
+
+The C3 retrieval check used the frozen 100 development questions, not the held-out
+set. Top 24 retrieved columns gave mean table recall of 0.968333 and full-table
+recall of 0.93. Top 32 was only slightly better, so I chose 24 columns to save
+prompt space. I also chose 3 candidates and 1 repair for the first loop.
+
+Checks: 118 focused G1/CLI/LLM tests passed after the read-only review fixes. The
+full offline suite passed 795 tests and skipped 471 database-only tests. The
+configured PostgreSQL suite passed 1263 tests and skipped 3 expected tests. Ruff
+lint and format passed too.
+
+New simple terms:
+
+**Schema retrieval** means picking only the tables and columns that look relevant
+to the user's question, instead of sending the whole database map every time.
+
+**BM25** is a classic keyword-scoring method. In simple terms, it gives more points
+to schema fields whose words match the question, while avoiding over-rewarding
+very common words.
+
+**Primary key** is the column or columns that identify one row in a table.
+
+**Foreign key** is a column that points to a row in another table. It helps the
+agent know how tables can join.
+
+**Untrusted sample values** means example cell values from the database are treated
+as data, not instructions. If a sample value says “ignore previous rules”, the
+program must not obey it.
+
+**State machine** means the agent can only move through allowed steps and must end
+in a clear final state like answered, needs clarification, abstained or failed.
+
+**Abstain** means SQLWarden refuses to give an answer because the candidates were
+not reliable enough.
+
+**Clarification** means asking the user one bounded follow-up question when the
+agent cannot safely decide what was meant.
 
 ## 7. How this notebook will be kept up to date
 

@@ -1765,6 +1765,35 @@ ignored raw records with `git_commit=390c1454619a849ab80d798bde41c82440f7b34a`
 and `git_dirty=false`; Ollama reported no loaded models after the run. No held-out
 inference, hosted call, source/gold mutation, remote, push or publication occurred.
 
+## D-059 — G1/C3 uses measured lexical retrieval and a small local loop (2026-10-09)
+
+Context: G1 needs schema retrieval, prompts, repair, voting, clarification,
+explanation and CLI loop settings before broader guardrail/evaluation work. The
+project already has full schema metadata, corrected descriptions and a frozen
+100-item development split, but no approved embeddings service or hosted helper.
+
+Decision: implement G1 with a stdlib BM25-style lexical retriever over table/column
+names and descriptions, plus bounded untrusted sample serialization. C3 selects
+24 retrieved columns because the read-only dev-split measurement gave mean table
+recall0.968333/full-table recall0.93, while 32 columns only improved to
+0.971667/0.94 and costs more prompt space. Use n=3 candidates and k=1 repair for
+the first loop. Do not add a general helper model to the core loop yet; keep
+clarification and explanation as bounded helper seams covered by fake-LLM tests
+until a local helper is separately measured.
+
+Rationale: this satisfies the local G1 loop without a new dependency, hosted call
+or held-out tuning. Top24 is a better prompt-budget trade-off than top32 for the
+first measured agent. Cost if wrong: lexical retrieval can miss semantic aliases;
+G3 can add a measured hybrid/embedding retriever later if it beats this baseline
+without weakening security or budget accounting.
+
+Verification: focused G1/CLI/LLM tests118passed after review fixes. Full no-env
+suite795passed/471skipped and configured PostgreSQL suite1263passed/3skipped.
+Ruff lint, format and diff whitespace passed. The measurement summary is
+`results/G1_retrieval/summary.json`. No live model call, hosted inference,
+credential change, source/gold mutation, raw run, remote or push occurred in this
+slice.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -60,6 +60,25 @@ async def test_one_generation_uses_only_fixed_local_transport_and_reports_usage(
     assert "tools" not in body and "gold" not in body
 
 
+async def test_loop_complete_uses_supplied_messages_and_local_contract():
+    seen = []
+    usage = {"prompt_tokens": 90, "completion_tokens": 12, "total_tokens": 102}
+    provider = LocalQwen(httpx.MockTransport(fake_handler(payload(usage=usage), seen)))
+    messages = [
+        {"role": "system", "content": "Return JSON."},
+        {"role": "user", "content": '{"question":"List schools"}'},
+    ]
+
+    result = await provider.complete(messages, model_config={"max_tokens": 64})
+
+    assert result["content"] == '{"sql":"SELECT 1"}'
+    assert result["usage"] == {"prompt_tokens": 90, "completion_tokens": 12}
+    request = [r for r in seen if r.url.path == "/v1/chat/completions"][0]
+    body = json.loads(request.content)
+    assert body["messages"] == messages
+    assert body["max_tokens"] == 64
+
+
 @pytest.mark.parametrize(
     "content,finish",
     [

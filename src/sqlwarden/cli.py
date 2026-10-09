@@ -10,11 +10,31 @@ from collections.abc import Mapping
 from datetime import date
 from decimal import Decimal
 
+from sqlwarden.agent import AgentConfig, run_agent
 from sqlwarden.executor import ExecutorLifecycleError, open_california_executor
 from sqlwarden.guard import CALIFORNIA_POLICY, guard_sql
 from sqlwarden.llm import ALIAS, DIGEST, PRIVATE_SDK_KEYS, PROMPT_VERSION, LocalQwen
+from sqlwarden.schema import SchemaCatalog
 
 RUNTIME_KEY = "WARDEN_RUNTIME_CALIFORNIA_PASSWORD"
+CALIFORNIA_SCHEMA = SchemaCatalog.from_mapping(
+    "california_schools",
+    {
+        "tables": {
+            "schools": {
+                "description": "California school directory",
+                "primary_key": ["cdscode"],
+                "foreign_keys": [],
+                "columns": [
+                    {"name": "cdscode", "type": "TEXT", "description": "school identifier"},
+                    {"name": "county", "type": "TEXT", "description": "county name"},
+                    {"name": "school", "type": "TEXT", "description": "school name"},
+                    {"name": "city", "type": "TEXT", "description": "school city"},
+                ],
+            }
+        }
+    },
+)
 
 
 def validate_question(question: str) -> str | None:
@@ -123,6 +143,50 @@ async def ask_once(question: str, password: str, provider) -> dict:
     return answer
 
 
+async def ask_loop(question: str, password: str, provider, config: AgentConfig) -> dict:
+    if validate_question(question):
+        return {"status": "failed", "reason": "input_invalid", "trace": ["validate", "failed"]}
+    try:
+        async with open_california_executor(password) as executor:
+            result = await run_agent(
+                question,
+                catalog=CALIFORNIA_SCHEMA,
+                provider=provider,
+                executor=executor,
+                policy=CALIFORNIA_POLICY,
+                config=config,
+                model=ALIAS,
+            )
+    except ExecutorLifecycleError:
+        return {"status": "failed", "reason": "connection_error", "trace": ["validate", "failed"]}
+    answer = {
+        "status": result.status,
+        "reason": result.reason,
+        "trace": [event.step for event in result.trace],
+        "trace_summary": [
+            {"step": event.step, "status": event.status, "reason": event.reason}
+            for event in result.trace
+        ],
+        "loop_settings": {
+            "candidates": config.candidates,
+            "max_repairs": config.max_repairs,
+            "retrieve_columns": config.retrieve_columns,
+        },
+    }
+    if result.status == "answered":
+        answer.update(
+            sql=result.sql,
+            columns=result.columns,
+            rows=result.rows,
+            row_count=len(result.rows),
+            agreement=result.vote.agreement if result.vote else None,
+            high_confidence=result.vote.high_confidence if result.vote else False,
+        )
+    if result.clarification:
+        answer["clarification"] = result.clarification
+    return answer
+
+
 def _display_cell(value):
     if type(value) in (Decimal, date) or type(value) is float and not math.isfinite(value):
         return str(value)
@@ -151,13 +215,27 @@ def main() -> None:
     sub = parser.add_subparsers(dest="command", required=True, parser_class=_Parser)
     ask = sub.add_parser("ask")
     ask.add_argument("--db", required=True, choices=["california_schools"])
+    ask.add_argument("--loop", action="store_true")
+    ask.add_argument("--candidates", type=int, default=1)
+    ask.add_argument("--repairs", type=int, default=0)
+    ask.add_argument("--retrieve-columns", type=int, default=24)
     ask.add_argument("question")
     args = parser.parse_args()
     try:
         if validate_question(args.question):
             raise ValueError("input_invalid")
+        config = AgentConfig(
+            candidates=args.candidates,
+            max_repairs=args.repairs,
+            retrieve_columns=args.retrieve_columns,
+            explain=False,
+        )
         password = runtime_password(os.environ)
-        answer = asyncio.run(ask_once(args.question, password, LocalQwen()))
+        provider = LocalQwen()
+        if args.loop:
+            answer = asyncio.run(ask_loop(args.question, password, provider, config))
+        else:
+            answer = asyncio.run(ask_once(args.question, password, provider))
     except ValueError:
         answer = {"status": "failed", "reason": "runtime_or_input_configuration"}
     except KeyboardInterrupt:

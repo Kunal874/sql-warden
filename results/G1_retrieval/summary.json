@@ -1,0 +1,34 @@
+{
+  "chosen": {
+    "candidates": 3,
+    "helper_setup": "no general helper in the core loop; clarification/explanation use a bounded helper seam with fake-LLM tests until a local helper is separately measured",
+    "max_repairs": 1,
+    "retrieve_columns": 24
+  },
+  "format_version": 1,
+  "protocol": "g1-retrieval-c3-dev-v1",
+  "retriever": "stdlib BM25-style lexical over table/column names and descriptions",
+  "split": "docs/e0-protocol.json development IDs only",
+  "top_k_columns": {
+    "16": {
+      "full_table_recall": 0.88,
+      "items": 100,
+      "mean_table_recall": 0.943333
+    },
+    "24": {
+      "full_table_recall": 0.93,
+      "items": 100,
+      "mean_table_recall": 0.968333
+    },
+    "32": {
+      "full_table_recall": 0.94,
+      "items": 100,
+      "mean_table_recall": 0.971667
+    },
+    "8": {
+      "full_table_recall": 0.73,
+      "items": 100,
+      "mean_table_recall": 0.874167
+    }
+  }
+}

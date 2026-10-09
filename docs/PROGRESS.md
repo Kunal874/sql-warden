@@ -28,7 +28,10 @@ unload observed after tool-blocked explicit stop. CLI_SMOKE preserves exact
 pre-fix live checkpoint, D-031 all 18 rulings/costs. No inference repeated.
 Progress snapshot: 12 of 12 numbered top-level G0 items complete, excluding the
 optional interview drill. This is checklist coverage, not overall project effort.
-G1 has started; G1.2–G5/G7 remain unfinished. No official benchmark score.
+G1 core is implemented locally through G1.9: schema catalog/retrieval, C3 BM25
+choice, versioned prompts, plain Python state machine, complete-result voting,
+bounded clarification/explanation seams, fake-LLM loop tests and CLI loop settings.
+The G1 interview drill and G2-G5/G7 remain unfinished. No official benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -272,14 +275,14 @@ the optional interview drill.
 ### G1 — agent core
 
 - [x] G1.1: LLM providers, bounded retries/timeouts, usage and sample-safe atomic cache.
-- [ ] G1.2: schema extraction/serializer, keys/descriptions and bounded untrusted samples.
-- [ ] G1.3 / C3: BM25, scope-aware recall; choose retrieval size, n/k and helper strategy.
-- [ ] G1.4: versioned generation/repair/clarify/explain prompts and per-model output formats.
-- [ ] G1.5: typed state machine/events, quality ablations and explicit terminal states.
-- [ ] G1.6: complete-result voting, ties/failed denominator/n=1, agreement and abstention.
-- [ ] G1.7: bounded clarification and labelled simulated/oracle assistance.
-- [ ] G1.8: fake-LLM limits, errors, malformed output, ties and abstention tests.
-- [ ] G1.9: extend the early CLI with loop settings and trace summary.
+- [x] G1.2: schema extraction/serializer, keys/descriptions and bounded untrusted samples.
+- [x] G1.3 / C3: BM25, scope-aware recall; choose retrieval size, n/k and helper strategy.
+- [x] G1.4: versioned generation/repair/clarify/explain prompts and per-model output formats.
+- [x] G1.5: typed state machine/events, quality ablations and explicit terminal states.
+- [x] G1.6: complete-result voting, ties/failed denominator/n=1, agreement and abstention.
+- [x] G1.7: bounded clarification and labelled simulated/oracle assistance.
+- [x] G1.8: fake-LLM limits, errors, malformed output, ties and abstention tests.
+- [x] G1.9: extend the early CLI with loop settings and trace summary.
 - [ ] G1 interview drill.
 
 ### G2 — guardrails and sandbox
@@ -1384,6 +1387,35 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G1 core implementation through CLI loop settings
+
+G1.2-G1.9 now have a first checked local implementation. Added `src/sqlwarden/schema.py`
+for a schema catalog that keeps descriptions, primary keys, foreign keys and bounded
+untrusted sample values; `src/sqlwarden/prompts.py` for versioned generate/repair/
+clarify/explain prompts; `src/sqlwarden/voting.py` for complete-result voting; and
+`src/sqlwarden/agent.py` for the plain Python state machine. The early CLI keeps
+its old safe default behavior and adds explicit `--loop`, `--candidates`, `--repairs`
+and `--retrieve-columns` settings with a trace summary. The loop uses fake-LLM tests
+for limits/terminal states and the existing restricted California executor when run
+from CLI.
+
+C3 measurement is tracked in `results/G1_retrieval/summary.json`. On the frozen
+100 development IDs, lexical BM25-style retrieval over names/descriptions measured:
+top8 mean table recall0.874167/full0.73; top16 mean0.943333/full0.88; top24
+mean0.968333/full0.93; top32 mean0.971667/full0.94. Decision: use 24 retrieved
+columns, n=3 candidates, k=1 repair, no general helper inside the core loop yet;
+clarification/explanation stay as bounded helper seams with fake-LLM tests until a
+local helper is separately measured.
+
+Verification: focused G1/CLI/LLM tests118passed; full no-env suite795passed/
+471skipped; configured PostgreSQL suite1263passed/3skipped; Ruff lint, format and
+diff whitespace passed. Read-only review found three
+Important issues; fixes now make C3 table extraction scope-aware, make CLI loop
+mode call the real versioned prompt path, and bound clarification options. No raw
+runs, live model calls, hosted calls, credential changes, data imports, source/gold
+changes, remote or push. Next: commit under Kunal's identity and move to G2 unless
+Kunal chooses the optional G1 interview drill.
 
 ### 2026-10-09 — current handoff after finish-G0/start-G1 review fix
 
