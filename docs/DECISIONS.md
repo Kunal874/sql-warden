@@ -1794,6 +1794,36 @@ Ruff lint, format and diff whitespace passed. The measurement summary is
 credential change, source/gold mutation, raw run, remote or push occurred in this
 slice.
 
+## D-060 — C4 records explicit guardrail contract and tenant boundary design (2026-10-09)
+
+Context: G2 starts the broader guardrails/sandbox group. The existing guard already
+blocks unreviewed functions, qualified function calls, dangerous casts and
+cross-schema relations, and the executor already has finite row/byte/time/cost
+limits. C4 needs these choices made explicit before expanding attack coverage and
+tenant RLS.
+
+Decision: add `src/sqlwarden/security_contract.py` as the single local record for
+reviewed SQL function classes, allowed scalar cast types, default query limits and
+the future tenant-boundary design. The runtime guard derives its function and cast
+allowlists from this contract. The default limits remain: 1000 rows, 2 MiB result,
+64 KiB cell, 5 s statement timeout, 500 ms lock timeout, 5 s pool timeout, 15 s
+total timeout, estimated cost cap100000 and estimated row cap100000. For tenant
+isolation, G2.6 will use server-chosen role-specific database identities with
+forced RLS policies; a client-supplied tenant id or mutable `app.tenant_id` setting
+alone is rejected as an independent boundary.
+
+Rationale: this makes the security policy auditable without adding dependencies or
+claiming a broader sandbox than the current code has proven. Cost if wrong: the
+explicit contract may be conservative and block benign queries until later review,
+but that is safer than accidentally expanding SQL capability.
+
+Verification: `tests/test_security_contract.py` first failed because the contract
+module did not exist. After the minimal implementation, focused
+`tests/test_security_contract.py tests/test_guard.py tests/test_executor.py`
+passed298 and the full no-env suite passed798/471skipped. Ruff lint, format and
+diff whitespace passed. No database object change, credential change, source/gold
+mutation, live model call, hosted action, raw run, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

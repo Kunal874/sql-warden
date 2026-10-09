@@ -4,7 +4,7 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G1. G0 is complete except for the optional interview drill. C2 keeps
+Current group: G2. G0 is complete except for the optional interview drill. C2 keeps
 Arctic as the local full-schema SQL-generation model because it scored 22/100 EX
 on the frozen development slice while Qwen scored 3/100 and hit 86 prompt-budget
 failures under its ctx2048 full-schema contract. The 100-item development slice
@@ -28,10 +28,11 @@ unload observed after tool-blocked explicit stop. CLI_SMOKE preserves exact
 pre-fix live checkpoint, D-031 all 18 rulings/costs. No inference repeated.
 Progress snapshot: 12 of 12 numbered top-level G0 items complete, excluding the
 optional interview drill. This is checklist coverage, not overall project effort.
-G1 core is implemented locally through G1.9: schema catalog/retrieval, C3 BM25
-choice, versioned prompts, plain Python state machine, complete-result voting,
-bounded clarification/explanation seams, fake-LLM loop tests and CLI loop settings.
-The G1 interview drill and G2-G5/G7 remain unfinished. No official benchmark score.
+G1 core is implemented and committed locally through G1.9: schema catalog/retrieval,
+C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
+voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
+settings. G2.1/C4 now records the explicit guardrail contract. The G1/G2 interview
+drills and G2.2-G5/G7 remain unfinished. No official benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -287,7 +288,7 @@ the optional interview drill.
 
 ### G2 — guardrails and sandbox
 
-- [ ] G2.1 / C4: reviewed functions, limits, cost thresholds and role-specific tenant design.
+- [x] G2.1 / C4: reviewed functions, limits, cost thresholds and role-specific tenant design.
 - [ ] G2.2: expand guard to at least 40 meaningful cases plus safe-gold acceptance audit.
 - [ ] G2.3: expand executor settings/caps/deadlines/cancellation and sanitized error categories.
 - [ ] G2.4: guarded EXPLAIN, same identity/settings and calibrated cost checks.
@@ -1388,6 +1389,22 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-09 — G2.1/C4 guardrail contract slice
+
+G2.1/C4 now has an explicit local security contract in
+`src/sqlwarden/security_contract.py`. It records the reviewed SQL function classes,
+allowed scalar cast types, current default query limits/cost thresholds, and the
+tenant design for G2.6: the server chooses separate database roles and mutable
+session-setting tenant boundaries are rejected. `src/sqlwarden/guard.py` now derives
+its runtime function/cast allowlists from that contract.
+
+Verification: RED import failure for `tests/test_security_contract.py`,
+then focused GREEN `uv run pytest tests/test_security_contract.py tests/test_guard.py
+tests/test_executor.py -q --tb=line` passed298; full no-env suite passed798/
+471skipped; Ruff lint, format and diff whitespace passed. No database object, credential,
+source/gold, live model, hosted, remote or push action occurred. Next: final focused
+commit, then continue to G2.2 guard-case expansion.
+
 ### 2026-10-09 — G1 core implementation through CLI loop settings
 
 G1.2-G1.9 now have a first checked local implementation. Added `src/sqlwarden/schema.py`
@@ -1414,8 +1431,8 @@ diff whitespace passed. Read-only review found three
 Important issues; fixes now make C3 table extraction scope-aware, make CLI loop
 mode call the real versioned prompt path, and bound clarification options. No raw
 runs, live model calls, hosted calls, credential changes, data imports, source/gold
-changes, remote or push. Next: commit under Kunal's identity and move to G2 unless
-Kunal chooses the optional G1 interview drill.
+changes, remote or push. Committed locally as `fe7ecc0 feat(agent): complete g1 core
+loop`.
 
 ### 2026-10-09 — current handoff after finish-G0/start-G1 review fix
 

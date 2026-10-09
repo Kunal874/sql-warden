@@ -8,6 +8,8 @@ from sqlglot import exp
 from sqlglot.errors import ErrorLevel, OptimizeError, ParseError, TokenError
 from sqlglot.optimizer.scope import Scope, traverse_scope
 
+from sqlwarden.security_contract import allowed_cast_type_names, allowed_function_classes
+
 MAX_SQL_BYTES = 8192
 MAX_AST_NODES = 1000
 MAX_AST_DEPTH = 64
@@ -74,24 +76,8 @@ STRUCTURAL_NAMES = frozenset(
         "WindowSpec",
     ]
 )
-FUNCTION_NAMES = frozenset(
-    [
-        "Count",
-        "Sum",
-        "Avg",
-        "Min",
-        "Max",
-        "Abs",
-        "Round",
-        "Length",
-        "Lower",
-        "Upper",
-        "Coalesce",
-        "Nullif",
-        "RowNumber",
-    ]
-)
-CAST_TYPES = frozenset(["INT", "BIGINT", "FLOAT", "DOUBLE", "DECIMAL", "TEXT", "DATE", "BOOLEAN"])
+FUNCTION_NAMES = allowed_function_classes()
+CAST_TYPES = allowed_cast_type_names()
 ALLOWED_NODES = frozenset(getattr(exp, name) for name in STRUCTURAL_NAMES | FUNCTION_NAMES)
 QUERY_ROOTS = frozenset({exp.Select, exp.Union, exp.Intersect, exp.Except})
 

@@ -1794,11 +1794,10 @@ we keep this at zero so measurements count the real number of calls.
 ## 6. What comes next?
 
 G0's numbered checklist is complete, except the optional interview drill. G1's
-core code is now also implemented through the first command-line loop settings,
-but it still needs final configured verification and final review before I treat
-the group as fully finished. The website, broader attack suite, hosted/deployment
-work and release still come later. Important new permissions outside the approved
-local scope will still be asked as questions.
+core code is implemented and committed through the first command-line loop settings.
+G2 has started with the first guardrail-contract slice. The website, broader attack
+suite, hosted/deployment work and release still come later. Important new
+permissions outside the approved local scope will still be asked as questions.
 
 ### G1 core agent slice (2026-10-09)
 
@@ -1855,6 +1854,42 @@ not reliable enough.
 
 **Clarification** means asking the user one bounded follow-up question when the
 agent cannot safely decide what was meant.
+
+### G2.1/C4 guardrail contract slice (2026-10-09)
+
+I started G2, the broader guardrails and sandbox group, with a small contract file.
+This file records the security choices that were already partly inside the code:
+which SQL functions are reviewed, which cast types are allowed, what the default
+query limits are, and how tenant isolation should work later.
+
+What changed:
+
+- The guard now gets its allowed function and cast lists from one explicit contract.
+- The contract records the current query caps: row limit, result-size limit,
+  cell-size limit, timeouts and estimated-cost/row caps.
+- The tenant design is written down before implementation: the server must choose
+  separate database roles for tenants, and a user/model-supplied tenant id is not
+  trusted as the security boundary.
+
+Checks: I first wrote a test that failed because the contract file did not exist.
+After adding the contract, 298 focused security/guard/executor tests passed. The
+full offline suite passed 798 tests and skipped 471 database-only tests. Ruff lint
+and format passed too.
+
+New simple terms:
+
+**Allowlist** means only the listed safe things are allowed. Anything not listed is
+blocked by default.
+
+**Cast** means converting a value from one type to another, like text to date or
+integer to text.
+
+**Cost threshold** means PostgreSQL estimates whether a query may be too expensive
+before it runs. This is useful, but not perfect, so timeouts still stay enabled.
+
+**Tenant isolation** means one user's or tenant's data should not be readable by
+another tenant. SQLWarden will use separate database roles for that later instead
+of trusting a changeable setting inside the SQL session.
 
 ## 7. How this notebook will be kept up to date
 
