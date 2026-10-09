@@ -2098,6 +2098,31 @@ passed 25. Full offline tests passed 818/475 skipped. Ruff lint, format and diff
 whitespace passed. No model call, database execution, held-out evaluation,
 benchmark-policy change, remote or push occurred.
 
+## D-072 — G4 starts with dependency-free API/web core before FastAPI/Vite install (2026-10-10)
+
+Context: G4 requires a tested run API/SSE/protections and three web pages. The
+active stack names FastAPI, React, Vite and Recharts, but AGENTS.md requires
+asking before adding direct dependencies. Kunal asked to proceed with G4.
+
+Decision: implement a dependency-free local G4 core first instead of modifying
+`pyproject.toml` or adding Node dependencies. Add `sqlwarden.api` with run IDs,
+hashed bearer capabilities, body/origin/db/rate/admission checks, SSE event
+serialization/replay, cancellation and restart interruption behavior. Add static
+local Ask, Attack Lab and Benchmark pages plus a scripted local smoke that uses a
+fake answered run. Do not check off full G4.1/G4.2/G4.4/G4.5 until the real
+FastAPI adapter/routes and frontend dependency decision are complete.
+
+Rationale: this advances the security/lifecycle contract under test while
+respecting the dependency-approval gate. Cost if wrong: some adapter-specific
+FastAPI/SSE/CORS/browser issues remain untested until the dependency-backed
+server is approved and implemented.
+
+Verification: tests first failed because `sqlwarden.api` and static smoke files
+did not exist. Focused G4 core/static tests passed 6 after implementation. Full
+offline tests passed 824/475 skipped. Ruff lint, format and diff whitespace
+passed. No new dependency, model call, database execution, hosted action, remote
+or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

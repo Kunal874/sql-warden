@@ -2307,6 +2307,48 @@ Simple answer: because they can contain sensitive or bulky experiment details.
 The project tracks compact evidence that reviewers can use, while raw prompts,
 generated SQL, gold SQL, answer rows and credentials stay out of Git.
 
+### G4 first API/web slice (2026-10-10)
+
+I started G4 with the safe local core instead of installing new web packages.
+This is not the full FastAPI/React website yet.
+
+What changed:
+
+- Added a local API core that can create a run, store events, replay events and
+  cancel a run.
+- Run access uses a secret capability token. The program stores only a hash of
+  that token, not the token itself.
+- Added checks for allowed database IDs, request size, browser origin, overload
+  and simple per-IP rate limits.
+- Added SSE-style event formatting so a future web client can replay events.
+- Added restart handling that marks unfinished runs as interrupted.
+- Added three static local page artifacts: Ask, Attack Lab and Benchmark.
+- Added a local smoke script that checks those pages and a fake answered API
+  flow without starting a network server.
+
+Checks: the focused G4 API/static tests passed 6 tests. The full offline suite
+passed 824 tests and skipped 475 database-only tests. Ruff lint, format and diff
+checks passed. No AI model, database, hosted service, dependency install, push or
+publication happened.
+
+New simple terms:
+
+**API** means the interface the web page will call to start and watch a run.
+
+**Bearer capability** means a secret token that gives access to exactly one run.
+It is not a user account.
+
+**Hash** means a one-way fingerprint. The server can check the token without
+storing the token itself.
+
+**SSE** means Server-Sent Events. It is a simple way for the server to stream
+progress updates to a browser.
+
+**CORS/origin** means checking which browser site is allowed to call the API.
+
+What remains for full G4: the real FastAPI adapter/routes and React/Vite frontend
+need direct dependencies. Project rules say I must ask before adding those.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

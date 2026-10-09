@@ -320,10 +320,17 @@ the optional interview drill.
 ### G4 — API and web
 
 - [ ] G4.1: API, capabilities, atomic lifecycle, SSE replay, admission/budgets/rate limits and CORS.
+  - [x] Dependency-free local API core: run IDs, bearer capabilities hashed server-side,
+    admission/rate/body/origin/db checks, SSE serialization/replay, cancel and restart
+    interruption behavior. FastAPI adapter/routes still require the dependency decision.
 - [ ] G4.2: API lifecycle/races/restart/disconnect/cancellation tests.
+  - [x] Core lifecycle tests for creation, replay, overload, cancel and restart interruption.
 - [ ] G4.3 / C6: confirm existing three-page scope and polish level.
 - [ ] G4.4: Ask, Attack Lab, Benchmark with real artifacts and complete failure/loading states.
+  - [x] Static local Ask, Attack Lab and Benchmark page artifacts with required states and
+    no inline model HTML/script execution.
 - [ ] G4.5: clean local full-stack run and scripted request/clarification/result flow.
+  - [x] Dependency-free local smoke script verifies static pages and a fake answered API flow.
 - [ ] G4 interview drill.
 
 ### G5 — deployment preparation only
@@ -1987,6 +1994,22 @@ occurred and no official benchmark/public claim was made.
 Verification: focused evaluation/artifact tests passed 25. Full offline
 `uv run pytest -q --tb=line` passed 818/475 skipped. `uv run ruff check .`,
 `uv run ruff format --check .` and `git diff --check` passed.
+
+### 2026-10-10 — G4 first API/web slice complete, dependency gate remains
+
+The first G4 slice is complete without adding direct dependencies. `src/sqlwarden/api.py`
+implements a dependency-free local API core with unguessable run IDs, hashed bearer
+capabilities, body/origin/db/rate/admission checks, SSE event serialization/replay,
+cancel and restart-interruption behavior. `web/ask.html`, `web/attack-lab.html`
+and `web/benchmark.html` provide static local page artifacts for the three G4
+pages, and `scripts/smoke_g4_local.py` verifies the pages plus a fake answered
+API flow without starting a network server.
+
+Do not mark full G4 complete yet. FastAPI routes, real network SSE, React/Vite
+frontend build and browser-level scripted flow still require the direct dependency
+decision required by AGENTS.md. Verification: focused G4 core/static tests passed
+6. Full offline `uv run pytest -q --tb=line` passed 824/475 skipped. `uv run ruff
+check .`, `uv run ruff format --check .` and `git diff --check` passed.
 
 Python checks (project virtual environment):
 

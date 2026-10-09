@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SQLWarden Ask</title>
+<link rel="stylesheet" href="style.css">
+<main>
+  <h1>Ask SQLWarden</h1>
+  <p>Local demo page for a guarded, read-only text-to-SQL run.</p>
+  <section aria-labelledby="states">
+    <h2 id="states">Run states</h2>
+    <ul>
+      <li>loading</li>
+      <li>overload</li>
+      <li>model-unavailable</li>
+      <li>interrupted</li>
+      <li>empty</li>
+      <li>truncated</li>
+      <li>blocked</li>
+      <li>abstained</li>
+    </ul>
+  </section>
+  <section aria-labelledby="flow">
+    <h2 id="flow">Safe flow</h2>
+    <ol>
+      <li>Submit one bounded natural-language question.</li>
+      <li>Use a bearer capability for status, events, continue and cancel actions.</li>
+      <li>Render text only; never inject model HTML.</li>
+    </ol>
+  </section>
+</main>
+</html>
