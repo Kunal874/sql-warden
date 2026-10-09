@@ -31,8 +31,9 @@ optional interview drill. This is checklist coverage, not overall project effort
 G1 core is implemented and committed locally through G1.9: schema catalog/retrieval,
 C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
-settings. G2.1-C4 through G2.6 now record the explicit guardrail/cost/grant/RLS
-evidence. The G1/G2 interview drills and G2.7-G5/G7 remain unfinished. No official
+settings. G2.1-C4 through G2.7 now record the explicit guardrail/cost/grant/RLS/
+untrusted-data evidence. The G1/G2 interview drills and G2.8-G5/G7 remain
+unfinished. No official
 benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
@@ -295,7 +296,7 @@ the optional interview drill.
 - [x] G2.4: guarded EXPLAIN, same identity/settings and calibrated cost checks.
 - [x] G2.5: effective grants/default grants; real direct-connection permission tests.
 - [x] G2.6: forced tenant RLS, separate tenant identities and boundary tests.
-- [ ] G2.7: untrusted data and explanation isolation tests with benign controls.
+- [x] G2.7: untrusted data and explanation isolation tests with benign controls.
 - [ ] G2.8: at least 40 attacks, threat-specific success predicates; disposable-only E5 and false blocks.
 - [ ] G2.9: SECURITY with evidence and residual limitations.
 - [ ] G2 interview drill.
@@ -1389,6 +1390,23 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G2.7 untrusted data and explanation isolation
+
+G2.7 now has focused isolation coverage for untrusted schema/sample data and the
+explanation step. A poisoned sample value can appear in the generation prompt only
+inside the existing `untrusted samples` schema text; if the model follows it and
+tries to query `app.boundary_probe`, the guard blocks it before executor use. The
+explanation prompt now receives only a bounded three-row result preview marked as
+untrusted data, plus complete row count/truncation metadata. Explanation output is
+escaped as plain text before it is returned. The explanation step still has only
+the provider seam; it does not call the executor.
+
+Verification: new focused tests first failed because `build_explanation_prompt`
+had no `rows` parameter/result preview and the agent did not return escaped
+explanation text. After implementation, the three focused G2.7 tests passed. Next:
+run final focused/full checks, commit as `feat(security): isolate untrusted
+explanations`, then continue to G2.8 attacks.
 
 ### 2026-10-09 — G2.6 forced tenant RLS and separate identities
 

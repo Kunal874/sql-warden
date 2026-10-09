@@ -63,7 +63,7 @@ The first narrow AI question-to-database flow works for one checked question.
 The first local E0 evaluation is now corrected and recorded. The G1 local agent
 core is implemented through schema retrieval, prompts, voting, clarification seams
 and command-line loop settings. G2 has now recorded guard, cost, direct database
-permission and tenant-row-security evidence through G2.6. The website and public
+permission, tenant-row-security and untrusted-data evidence through G2.7. The website and public
 release are not finished. G0's numbered checklist is complete except for the
 optional interview drill.
 
@@ -72,8 +72,8 @@ guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
 demonstration, corrected E0 run, C2 model choice and G1 core implementation are
-complete locally. G2.1 through G2.6 are complete locally; untrusted-data tests,
-attack experiments, evaluation expansion, website and release still remain.
+complete locally. G2.1 through G2.7 are complete locally; attack experiments,
+evaluation expansion, website and release still remain.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -2057,6 +2057,37 @@ see.
 data separated from other tenants.
 
 **Database role** means the login identity PostgreSQL uses for permissions.
+
+### G2.7 untrusted data and explanation isolation slice (2026-10-09)
+
+I added tests and a small code change for data that looks like instructions.
+
+What changed:
+
+- Schema sample values are still sent as `untrusted samples`.
+- A test now puts a fake instruction inside a sample value. If the model follows
+  that fake instruction and tries to read the app-private table, the SQL guard
+  blocks it before the database runner is called.
+- The explanation step now sees only a tiny result preview: at most 3 rows, with
+  long cells shortened.
+- The preview is labelled as untrusted data.
+- Explanation text from the model is escaped before being returned, so HTML-like
+  text such as `<script>` is shown as text instead of being treated as page code.
+
+Checks: the new tests first failed because explanation prompts did not include
+bounded rows and explanation text was not escaped. After the change, the 3 focused
+G2.7 tests passed.
+
+New simple terms:
+
+**Prompt injection** means text inside data tries to act like an instruction to
+the AI.
+
+**Escaping** means changing special characters so they display as text instead of
+being interpreted as code.
+
+**Result preview** means a small sample of answer rows given to the explanation
+step, not the full result.
 
 ## 7. How this notebook will be kept up to date
 

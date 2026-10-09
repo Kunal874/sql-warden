@@ -1957,6 +1957,30 @@ full configured suite passed 1275/3 skipped. Ruff lint, format and diff whitespa
 passed. No source/gold mutation, benchmark change, model call, hosted action, raw
 run, remote or push occurred.
 
+## D-066 — G2.7 bounds and escapes explanation data paths (2026-10-09)
+
+Context: G1 had separate prompt builders and an explanation seam, but G2.7 needs
+explicit untrusted-data and benign-control evidence. Schema samples and result
+values can contain instruction-like text, so the safety boundary must be code and
+database controls, not prompt wording alone.
+
+Decision: keep schema samples labelled as untrusted and add regression coverage
+that a poisoned sample cannot cause unsafe SQL execution. Add a bounded
+`result_preview` to explanation prompts: at most three rows, each cell truncated
+to 120 UTF-8 bytes, with row count and truncation metadata. Mark the preview as
+untrusted data and escape returned explanation text as plain text before exposing
+it from the agent.
+
+Rationale: explanations need enough data to be useful without gaining an
+execution path or a large/raw result channel. Cost if wrong: result previews may
+be too small for some friendly explanations, but the full answer table remains in
+the structured result and UI preview work can make a separate display choice.
+
+Verification: focused tests first failed because explanation prompts had no row
+preview and returned text was not escaped. After adding the preview and escaping,
+the three G2.7 focused tests passed. No database object change, credential change,
+source/gold mutation, model call, hosted action, raw run, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

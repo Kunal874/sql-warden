@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import html
 import json
 from dataclasses import dataclass, field
 from typing import Any, Literal
@@ -242,13 +243,14 @@ async def _explain(question: str, sql: str, result: QueryResult, provider, trace
                 sql,
                 columns=result.columns,
                 row_count=len(result.rows),
+                rows=result.rows,
             ),
             model_config={},
         )
         data = json.loads(response["content"])
         if type(data) is dict and type(data.get("answer")) is str and data["answer"].strip():
             trace.add("explain", "ok")
-            return data["answer"][:1000]
+            return html.escape(data["answer"].strip()[:1000], quote=False)
     except (json.JSONDecodeError, KeyError, TypeError, ValueError):
         pass
     trace.add("explain", "failed", "explanation_unavailable")
