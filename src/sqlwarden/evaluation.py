@@ -7,6 +7,7 @@ belongs in ignored run records; tracked summaries must stay compact.
 from __future__ import annotations
 
 import json
+import os
 import re
 import statistics
 from hashlib import sha256
@@ -192,6 +193,38 @@ def write_atomic_record(path: Path, record: dict[str, Any]) -> None:
     except OSError:
         temporary.unlink(missing_ok=True)
         raise EvaluationError("record write failed") from None
+
+
+def append_jsonl_record(path: Path, record: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = json.dumps(record, sort_keys=True, ensure_ascii=True) + "\n"
+    try:
+        with path.open("a", encoding="utf-8", newline="\n") as stream:
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+    except OSError:
+        raise EvaluationError("record write failed") from None
+
+
+def load_jsonl_records(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    lines = path.read_text(encoding="utf-8").splitlines()
+    records = []
+    for index, line in enumerate(lines):
+        if not line.strip():
+            continue
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError:
+            if index == len(lines) - 1:
+                break
+            raise EvaluationError("jsonl record invalid") from None
+        if type(record) is not dict:
+            raise EvaluationError("jsonl record invalid")
+        records.append(record)
+    return records
 
 
 def pending_record(question_id: int, model: str) -> dict[str, Any]:

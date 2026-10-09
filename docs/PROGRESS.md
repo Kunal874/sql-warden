@@ -4,7 +4,7 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G2. G0 is complete except for the optional interview drill. C2 keeps
+Current group: G3. G0, G1 and G2 are complete locally. C2 keeps
 Arctic as the local full-schema SQL-generation model because it scored 22/100 EX
 on the frozen development slice while Qwen scored 3/100 and hit 86 prompt-budget
 failures under its ctx2048 full-schema contract. The 100-item development slice
@@ -33,8 +33,9 @@ C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
 settings. G2.1-C4 through G2.9 now record the explicit guardrail/cost/grant/RLS/
 untrusted-data/attack/SECURITY evidence, and the G2 interview drill is saved in
-the simple-English notebook. The G1 interview drill and G3-G5/G7 remain unfinished. No official
-benchmark score.
+the simple-English notebook. G3.1 adds ignored E0 run manifests plus durable JSONL
+resume records around the existing per-question raw JSON path. The G1 interview
+drill and G3.2-G5/G7 remain unfinished. No official benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -303,7 +304,7 @@ the optional interview drill.
 
 ### G3 — evaluation
 
-- [ ] G3.1: extend E0 runner: fingerprinted config/metadata, durable JSONL and safe resume.
+- [x] G3.1: extend E0 runner: fingerprinted config/metadata, durable JSONL and safe resume.
 - [ ] G3.2: separately report parse/guard/execution/EX, coverage and answered-only metrics; tests.
 - [ ] G3.3: seeded bootstrap/paired comparisons, boundary-rate intervals and exact n.
 - [ ] G3.4 / C5: freeze protocol, experiment matrix and time budget before tuning.
@@ -1943,6 +1944,22 @@ in simple English, preserving previous entries and expanding the term glossary.
 Archive download session 71692 and read-only native inspection session 69421 completed.
 No data download or inspection process remains running. Native extraction session
 42513 completed. Database import is complete and no import process is running.
+
+### 2026-10-10 — G3.1 E0 resume metadata complete
+
+G3.1 extends the E0 runner without rerunning E0. New runs write an ignored
+`results/E0_smoke/raw/<model>/manifest.json` fingerprint for the protocol/model
+settings and an ignored `records.jsonl` stream beside the existing per-question
+raw JSON files. Resume first validates the manifest when present, prefers valid
+JSONL records, tolerates only an interrupted final JSONL line and falls back to
+the legacy per-question JSON record path. The manifest and tracked summary still
+exclude prompts, generated SQL, gold SQL, rows and credentials.
+
+Verification: `uv run pytest tests/test_evaluation.py` passed 21. Full offline
+`uv run pytest -q --tb=line` passed 814/475 skipped. `uv run ruff check .`,
+`uv run ruff format --check .` and `git diff --check` passed. No Ollama call,
+PostgreSQL execution, raw result migration, benchmark-score change, remote or
+push occurred.
 
 Python checks (project virtual environment):
 

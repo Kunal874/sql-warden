@@ -30,8 +30,10 @@ from scripts.validate_gold import (
 )
 from sqlwarden.evaluation import (
     EvaluationError,
+    append_jsonl_record,
     build_prompt,
     generate_item,
+    load_jsonl_records,
     score_execution,
     serialize_schema,
     summarize_model,
@@ -300,10 +302,36 @@ async def run_models(model_names: list[str], *, limit: int | None, resume: bool)
     for model_name in model_names:
         provider = OllamaProvider()
         records = []
+        manifest = build_run_manifest(model_name, items, protocol)
+        manifest_path = RAW / model_name / "manifest.json"
+        jsonl_path = RAW / model_name / "records.jsonl"
+        raw_paths = [RAW / model_name / f"{item['question_id']}.json" for item in items]
+        jsonl_by_id = {}
+        if resume:
+            if manifest_path.exists():
+                validate_resume_manifest(load_json(manifest_path), manifest)
+            jsonl_by_id = {
+                record["question_id"]: record
+                for record in load_jsonl_records(jsonl_path)
+                if record.get("model") == model_name and type(record.get("question_id")) is int
+            }
+        elif (
+            manifest_path.exists()
+            or jsonl_path.exists()
+            or any(path.exists() for path in raw_paths)
+        ):
+            raise EvaluationError("run records exist")
+        else:
+            write_atomic_record(manifest_path, manifest)
         try:
             for item in items:
                 raw_path = RAW / model_name / f"{item['question_id']}.json"
                 expected = expected_resume_record(model_name, item)
+                if resume and item["question_id"] in jsonl_by_id:
+                    record = jsonl_by_id[item["question_id"]]
+                    validate_resume_record(record, expected)
+                    records.append(record)
+                    continue
                 if resume and raw_path.exists():
                     record = load_json(raw_path)
                     validate_resume_record(record, expected)
@@ -311,6 +339,7 @@ async def run_models(model_names: list[str], *, limit: int | None, resume: bool)
                     continue
                 record = await run_item(model_name, provider, item, values)
                 write_atomic_record(raw_path, record)
+                append_jsonl_record(jsonl_path, record)
                 records.append(record)
         finally:
             await unload_model(MODELS[model_name])
@@ -375,6 +404,42 @@ def expected_resume_record(model_name: str, item: dict[str, Any]) -> dict[str, A
 def validate_resume_record(record: dict[str, Any], expected: dict[str, Any]) -> None:
     if any(record.get(key) != expected.get(key) for key in PROVENANCE_KEYS):
         raise EvaluationError("resume provenance mismatch")
+
+
+def build_run_manifest(
+    model_name: str, items: list[dict[str, Any]], protocol: dict
+) -> dict[str, Any]:
+    config = MODELS[model_name]
+    manifest = {
+        "format_version": 1,
+        "protocol": {
+            "path": "docs/e0-protocol.json",
+            "dev_count": len(items),
+            "full_dev_count": len(protocol["split"]["dev_ids"]),
+            "dev_id_sha256": protocol["split"]["dev_id_sha256"],
+            "selected_id_sha256": _hash_json([item["question_id"] for item in items]),
+        },
+        "model": {
+            "name": config["name"],
+            "alias": config["alias"],
+            "digest": config["digest"],
+            "context_tokens": config["context_tokens"],
+            "max_output_tokens": config["max_output_tokens"],
+            "generation_timeout_seconds": config["generation_timeout_seconds"],
+            "total_timeout_seconds": config["total_timeout_seconds"],
+        },
+        "git": {
+            "commit": items[0]["git_commit"] if items else _git_commit(),
+            "dirty": items[0]["git_dirty"] if items else _git_dirty(),
+        },
+        "excludes": ["prompts", "generated query text", "gold query text", "rows", "credentials"],
+    }
+    return manifest | {"run_fingerprint": _hash_json(manifest)}
+
+
+def validate_resume_manifest(recorded: dict[str, Any], expected: dict[str, Any]) -> None:
+    if recorded != expected:
+        raise EvaluationError("resume manifest mismatch")
 
 
 def _hash_json(value: Any) -> str:

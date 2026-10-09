@@ -1,6 +1,6 @@
 # SQLWarden explained in simple English
 
-Last updated: 2026-10-09.
+Last updated: 2026-10-10.
 
 This is your learning notebook for the project. It will be updated after every
 completed subtask and group. It explains what was built, why it matters, how it
@@ -45,6 +45,9 @@ It is not a finished public service yet.
   is complete; it reused existing Python tools without adding a package.
 - The local AI connection code now passes 67 checks using fake replies. It
   can make only one limited SQL suggestion and refuses unexpected model settings.
+- The E0 experiment runner now has safer restart files for future runs. It can
+  save a run fingerprint and a line-by-line record stream without putting prompts,
+  SQL text, answer rows or passwords into tracked files.
 - The latest full configured checkpoint has 1,251 passing tests and 3 expected
   skips after the final E0 review-fix pass. The ten-dataset release matrix alone
   has 292 real PostgreSQL checks.
@@ -72,8 +75,8 @@ guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
 demonstration, corrected E0 run, C2 model choice and G1 core implementation are
-complete locally. G2.1 through G2.9 are complete locally; evaluation expansion,
-website and release still remain.
+complete locally. G2.1 through G2.9 are complete locally. G3.1 is now complete
+locally; the rest of evaluation expansion, website and release still remain.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -2194,6 +2197,44 @@ run, prompt injection is reduced but not magically solved, PostgreSQL cost
 estimates can be wrong, some catalog metadata is normally visible, and tenant RLS
 is proven only on the small synthetic tenant demo. Hosted/API/web security still
 comes later.
+
+### G3.1 E0 safer resume files (2026-10-10)
+
+I improved the E0 experiment runner for future evaluation runs. I did not rerun
+the AI models or change the saved E0 scores.
+
+What changed:
+
+- Future E0 runs save a small ignored `manifest.json` file for each model.
+- Future E0 runs also save an ignored `records.jsonl` file with one result per
+  line.
+- If a run stops in the middle, resume can reuse good saved lines and ignore only
+  a broken final line.
+- The old per-question raw JSON files still work, so existing raw evidence does
+  not need to be rewritten.
+- The saved metadata still avoids prompts, generated SQL, gold SQL, answer rows
+  and credentials.
+
+Checks: the focused E0/evaluation test file passed 21 tests. The full offline
+test suite passed 814 tests and skipped 475 database-only tests. Ruff lint,
+format and diff checks also passed. No AI model, database query or benchmark
+rerun happened.
+
+New simple terms:
+
+**Manifest** means a small facts file that says exactly what settings a run used.
+Here it records the protocol, model identity and Git state so the program can
+notice if someone tries to resume with different settings.
+
+**Fingerprint** means a short hash made from those facts. If the facts change,
+the fingerprint changes too.
+
+**JSONL** means "JSON Lines". It is a text file where every line is its own small
+JSON record. This is useful for experiments because the program can save each
+answer as soon as it is finished.
+
+**Resume** means continuing a stopped run from the saved records instead of
+starting again from the beginning.
 
 ## 7. How this notebook will be kept up to date
 

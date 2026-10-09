@@ -2047,6 +2047,30 @@ and it avoids stopping the build on an optional conversational checkpoint. Cost 
 wrong: Kunal may still want a live practice round later, but the G2 implementation
 and written interview material are complete.
 
+## D-070 — G3.1 adds E0 manifests and JSONL without migrating raw runs (2026-10-10)
+
+Context: G3.1 requires fingerprinted E0 config/metadata, durable JSONL and safe
+resume. The runner already had ignored per-question raw JSON records with
+provenance checks, and the corrected E0 summary was already tracked.
+
+Decision: keep the existing per-question raw JSON format and add two ignored
+sidecar files for future runs: `manifest.json` for the protocol/model/git
+fingerprint and `records.jsonl` for durable append-only records. Resume validates
+the manifest when present, prefers valid JSONL records, tolerates only an
+interrupted final JSONL line and falls back to legacy per-question JSON records.
+Do not migrate or rewrite the existing ignored raw E0 evidence.
+
+Rationale: this gives future E0/E-series runs a safer checkpoint without changing
+the already-recorded development-slice result or exposing raw prompts, SQL, rows
+or credentials in tracked files. Cost if wrong: legacy raw runs without a manifest
+still rely on the older per-record provenance validation until they are rerun.
+
+Verification: tests first covered JSONL truncation/corruption, manifest mismatch
+and no-resume overwrite refusal. Final focused E0/evaluation tests passed 21.
+Full offline tests passed 814/475 skipped. Ruff lint, format and diff whitespace
+passed. No model call, database execution, raw run migration, benchmark score
+change, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -218,6 +218,27 @@ def test_atomic_records_refuse_overwrite_and_mark_interrupted_pending(tmp_path):
     }
 
 
+def test_jsonl_records_resume_after_interrupted_final_line(tmp_path):
+    path = tmp_path / "raw" / "qwen" / "records.jsonl"
+    first = {"question_id": 7, "model": "qwen", "status": "correct"}
+    second = {"question_id": 8, "model": "qwen", "status": "incorrect"}
+
+    evaluation.append_jsonl_record(path, first)
+    evaluation.append_jsonl_record(path, second)
+    with path.open("a", encoding="utf-8", newline="\n") as stream:
+        stream.write('{"question_id": ')
+
+    assert evaluation.load_jsonl_records(path) == [first, second]
+
+
+def test_jsonl_records_reject_corrupt_middle_line(tmp_path):
+    path = tmp_path / "records.jsonl"
+    path.write_text('{"ok": true}\nnot-json\n{"ok": false}\n', encoding="utf-8")
+
+    with pytest.raises(evaluation.EvaluationError, match="jsonl record invalid"):
+        evaluation.load_jsonl_records(path)
+
+
 def test_resume_record_requires_matching_provenance():
     record = {
         "question_id": 7,
@@ -239,6 +260,55 @@ def test_resume_record_requires_matching_provenance():
     changed = record | {"model_digest": "changed"}
     with pytest.raises(evaluation.EvaluationError, match="resume provenance"):
         run_e0.validate_resume_record(record, changed)
+
+
+def test_run_manifest_fingerprints_config_without_raw_prompt_or_sql():
+    item = {
+        "question_id": 7,
+        "git_commit": "e" * 40,
+        "git_dirty": False,
+    }
+    protocol = {
+        "split": {
+            "dev_ids": [7, 8],
+            "dev_id_sha256": "abc",
+        }
+    }
+
+    manifest = run_e0.build_run_manifest("qwen", [item], protocol)
+    rendered = json.dumps(manifest, sort_keys=True)
+
+    assert manifest["run_fingerprint"]
+    assert manifest["protocol"]["selected_id_sha256"]
+    assert manifest["model"]["digest"] == run_e0.MODELS["qwen"]["digest"]
+    assert "generated query text" in manifest["excludes"]
+    assert "SELECT" not in rendered
+    assert "messages" not in rendered
+    assert "gold_sql" not in rendered
+    run_e0.validate_resume_manifest(manifest, manifest)
+
+    changed = manifest | {"model": manifest["model"] | {"digest": "changed"}}
+    with pytest.raises(evaluation.EvaluationError, match="resume manifest"):
+        run_e0.validate_resume_manifest(changed, manifest)
+
+
+@pytest.mark.asyncio
+async def test_run_models_refuses_existing_records_without_resume(tmp_path, monkeypatch):
+    protocol = {"split": {"dev_ids": [7], "dev_id_sha256": "abc"}}
+    item = {"question_id": 7, "git_commit": "e" * 40, "git_dirty": False}
+    raw = tmp_path / "raw"
+    existing = raw / "qwen" / "7.json"
+    existing.parent.mkdir(parents=True)
+    existing.write_text('{"question_id": 7}\n', encoding="utf-8")
+    monkeypatch.setattr(run_e0, "RESULTS", tmp_path)
+    monkeypatch.setattr(run_e0, "RAW", raw)
+    monkeypatch.setattr(run_e0, "load_json", lambda path: protocol)
+    monkeypatch.setattr(run_e0, "build_items", lambda limit: [item])
+
+    with pytest.raises(evaluation.EvaluationError, match="run records exist"):
+        await run_e0.run_models(["qwen"], limit=None, resume=False)
+
+    assert not (raw / "qwen" / "manifest.json").exists()
 
 
 def test_summary_uses_exact_denominator_and_seeded_interval():
