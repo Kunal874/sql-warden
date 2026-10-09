@@ -1856,6 +1856,30 @@ The script regenerated `docs/guard-gold-audit-manifest.json`. No database
 connection, SQL execution, credential change, source/gold mutation, live model
 call, hosted action, raw run, remote or push occurred.
 
+## D-062 — G2.3 records stable executor error categories (2026-10-09)
+
+Context: the executor already enforces finite pool/statement/lock/total deadlines,
+row/result/cell caps, guarded EXPLAIN cost checks, cancellation propagation, pool
+recovery and sanitized error categories. G2.3 needs those categories explicit so
+later API/UI and repair prompts do not depend on raw driver errors.
+
+Decision: add `EXECUTOR_REASON_STATUS` to `src/sqlwarden/security_contract.py`.
+The map documents every stable reason currently exposed by the guard/executor and
+assigns it to one terminal status class: `ok`, `blocked`, `failed` or `overflow`.
+This records the existing behavior rather than broadening SQL capability.
+
+Rationale: a single audited reason map makes it harder for future code to leak raw
+database/library details or invent new error strings accidentally. Cost if wrong:
+the map may need updates when G2.4/G2.8 add new deliberate categories, but tests
+will force that change to be explicit.
+
+Verification: the new focused test first failed because `EXECUTOR_REASON_STATUS`
+did not exist. After adding the map, `tests/test_security_contract.py` and
+`tests/test_executor.py` passed103 and the full no-env suite passed801/471skipped.
+Ruff lint, format and diff whitespace passed. No database object change,
+credential change, SQL execution, source/gold mutation, live model call, hosted
+action, raw run, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

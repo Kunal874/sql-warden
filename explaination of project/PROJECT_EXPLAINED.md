@@ -1930,6 +1930,32 @@ pass the safety guard, without running it and without changing the reference dat
 **Function not allowed** means a SQL function is not on the reviewed allowlist yet,
 so the guard blocks it until we intentionally review it.
 
+### G2.3 executor error-contract slice (2026-10-09)
+
+I added an explicit list of the stable executor error reasons.
+
+What changed:
+
+- The project now records which public reason strings can come out of the
+  guard/executor path.
+- Each reason is grouped into one status: ok, blocked, failed or overflow.
+- This is for safety and clarity; it does not give the model or user any new SQL
+  power.
+
+Checks: I first wrote a test that failed because the reason map did not exist.
+After adding the map, 103 focused security/executor tests passed. The full offline
+suite passed 801 tests and skipped 471 database-only tests. Ruff lint and format
+passed too.
+
+New simple terms:
+
+**Error category** means a safe label like `timeout` or `syntax_error`, instead of
+showing a raw database traceback.
+
+**Overflow** means the query may be read-only, but the answer was too large for the
+configured row/byte/cell limits, so SQLWarden refuses to return a partial answer as
+complete.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

@@ -32,7 +32,7 @@ G1 core is implemented and committed locally through G1.9: schema catalog/retrie
 C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
 settings. G2.1/C4 now records the explicit guardrail contract. The G1/G2 interview
-drills and G2.3-G5/G7 remain unfinished. No official benchmark score.
+drills and G2.4-G5/G7 remain unfinished. No official benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -290,7 +290,7 @@ the optional interview drill.
 
 - [x] G2.1 / C4: reviewed functions, limits, cost thresholds and role-specific tenant design.
 - [x] G2.2: expand guard to at least 40 meaningful cases plus safe-gold acceptance audit.
-- [ ] G2.3: expand executor settings/caps/deadlines/cancellation and sanitized error categories.
+- [x] G2.3: expand executor settings/caps/deadlines/cancellation and sanitized error categories.
 - [ ] G2.4: guarded EXPLAIN, same identity/settings and calibrated cost checks.
 - [ ] G2.5: effective grants/default grants; real direct-connection permission tests.
 - [ ] G2.6: forced tenant RLS, separate tenant identities and boundary tests.
@@ -1388,6 +1388,23 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G2.3 executor error-category contract
+
+G2.3 now has an explicit executor reason/status contract in
+`src/sqlwarden/security_contract.py` as `EXECUTOR_REASON_STATUS`. It documents the
+stable reasons the guard/executor can expose and maps each to `ok`, `blocked`,
+`failed` or `overflow`. This records the existing executor caps/deadlines/error
+behavior without changing database objects or credentials. Existing executor tests
+still cover finite pool/statement/lock/total deadlines, row/result/cell caps,
+cancellation propagation, pool recovery and sanitized database/library errors.
+
+Verification so far: RED import failure for the new
+`test_executor_reason_contract_documents_stable_status_categories`, then focused
+GREEN `uv run pytest tests/test_security_contract.py tests/test_executor.py -q
+--tb=line` passed103; full no-env suite passed801/471skipped; Ruff lint, format
+and diff whitespace passed. Next: commit as `feat(security): record executor error
+contract`, then continue to G2.4 guarded EXPLAIN calibration.
 
 ### 2026-10-09 — G2.2 guard coverage and safe-gold acceptance audit
 

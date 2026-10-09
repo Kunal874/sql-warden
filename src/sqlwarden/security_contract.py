@@ -40,6 +40,37 @@ TENANT_AUTHORIZATION_DESIGN = MappingProxyType(
         "client_supplied_tenant_id": "rejected",
     }
 )
+EXECUTOR_REASON_STATUS = MappingProxyType(
+    {
+        "accepted": "blocked",
+        "cell_limit": "overflow",
+        "configuration_error": "failed",
+        "connection_error": "failed",
+        "cost_limit": "blocked",
+        "database_error": "failed",
+        "identifier_invalid": "blocked",
+        "input_invalid": "blocked",
+        "input_limit": "blocked",
+        "internal_error": "failed",
+        "ok": "ok",
+        "parse_error": "blocked",
+        "permission_error": "failed",
+        "plan_error": "failed",
+        "plan_limit": "failed",
+        "plan_row_limit": "blocked",
+        "result_limit": "overflow",
+        "row_limit": "overflow",
+        "schema_not_allowed": "blocked",
+        "statement_not_allowed": "blocked",
+        "syntax_error": "failed",
+        "table_not_allowed": "blocked",
+        "timeout": "failed",
+        "undefined_object": "failed",
+        "unsupported_node": "blocked",
+        "unsupported_relation": "blocked",
+        "unsupported_result": "failed",
+    }
+)
 
 
 def allowed_function_classes() -> frozenset[str]:
