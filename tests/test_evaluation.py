@@ -297,6 +297,7 @@ def test_score_execution_categories_use_complete_gold_comparison():
         "model": "qwen",
         "seconds": 1.2,
         "memory": {"vram_bytes": 123},
+        "git_dirty": False,
     }
 
     correct = evaluation.score_execution(
@@ -323,6 +324,7 @@ def test_score_execution_categories_use_complete_gold_comparison():
     assert "rows" not in correct
     assert correct["seconds"] == 1.2
     assert correct["memory"] == {"vram_bytes": 123}
+    assert correct["git_dirty"] is False
 
 
 def test_description_csv_reader_handles_known_windows_encoding(tmp_path):

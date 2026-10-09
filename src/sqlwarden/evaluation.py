@@ -290,6 +290,7 @@ def score_execution(
         "data_sha256": generated.get("data_sha256"),
         "label_sha256": generated.get("label_sha256"),
         "git_commit": generated.get("git_commit"),
+        "git_dirty": generated.get("git_dirty"),
     }
     status = execution.get("status")
     if status == "ok":
