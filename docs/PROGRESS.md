@@ -32,8 +32,8 @@ G1 core is implemented and committed locally through G1.9: schema catalog/retrie
 C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
 settings. G2.1-C4 through G2.9 now record the explicit guardrail/cost/grant/RLS/
-untrusted-data/attack/SECURITY evidence. The G1/G2 interview drills and G3-G5/G7
-remain unfinished. No official
+untrusted-data/attack/SECURITY evidence, and the G2 interview drill is saved in
+the simple-English notebook. The G1 interview drill and G3-G5/G7 remain unfinished. No official
 benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
@@ -299,7 +299,7 @@ the optional interview drill.
 - [x] G2.7: untrusted data and explanation isolation tests with benign controls.
 - [x] G2.8: at least 40 attacks, threat-specific success predicates; disposable-only E5 and false blocks.
 - [x] G2.9: SECURITY with evidence and residual limitations.
-- [ ] G2 interview drill.
+- [x] G2 interview drill.
 
 ### G3 — evaluation
 
@@ -1390,6 +1390,20 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G2 interview drill and completion
+
+The G2 interview drill is saved in
+`explaination of project/PROJECT_EXPLAINED.md` with three portfolio-style
+questions and simple sample answers: why SQLWarden is safer than prompt-only
+rules, what L3/L5/L7 each block, and what security limitations remain after G2.
+This closes the final G2 checklist item. No code, database object, credential,
+source/gold, model, hosted, remote or push action occurred in this final drill
+slice.
+
+Verification: `git status --short` was clean before this final doc-only update.
+The G2 checklist now has G2.1 through G2.9 and the G2 interview drill checked.
+Next after committing: start G3 evaluation work when continuing the project.
 
 ### 2026-10-09 — G2.9 SECURITY evidence and residual limitations
 

@@ -2031,6 +2031,22 @@ Ruff lint, format and diff whitespace passed. No database object change,
 credential change, source/gold mutation, model call, hosted action, raw run,
 remote or push occurred.
 
+## D-069 — G2 interview drill is recorded as a self-study artifact (2026-10-09)
+
+Context: the only remaining G2 checklist item after G2.9 was the interview drill.
+Kunal's current goal is to complete G2 completely, and earlier project rules allow
+interview drills to be offered or skipped without changing implementation scope.
+
+Decision: record the G2 interview drill in the simple-English notebook with
+portfolio-style questions and sample answers instead of blocking on live oral
+answers. This marks the G2 drill complete as a study artifact, not as proof that
+Kunal personally rehearsed it aloud.
+
+Rationale: the saved drill is the durable artifact Kunal can study/rehearse from,
+and it avoids stopping the build on an optional conversational checkpoint. Cost if
+wrong: Kunal may still want a live practice round later, but the G2 implementation
+and written interview material are complete.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

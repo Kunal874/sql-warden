@@ -2161,6 +2161,40 @@ the current work.
 **Trust boundary** means the line between things the program trusts and things it
 must treat carefully.
 
+### G2 interview drill (2026-10-09)
+
+Use these as simple interview practice answers.
+
+Question 1: Why is SQLWarden safer than just telling the AI “only write SELECT
+queries”?
+
+Simple answer: because an AI instruction is only a request, not a lock. SQLWarden
+uses code and database permissions as the lock. The model can suggest SQL, but the
+SQL guard checks the shape first, and PostgreSQL restricted logins decide what the
+query is actually allowed to read. If the model suggests unsafe SQL, the program
+blocks it before execution.
+
+Question 2: What do L3, L5 and L7 each block?
+
+Simple answer:
+
+- L3 is the SQL guard. It blocks unsafe SQL shapes, like writes, DDL, dangerous
+  functions, catalog reads and tables outside the allowed dataset.
+- L5 is least-privilege database permissions. It blocks damage even if something
+  reaches PostgreSQL directly, because the dataset login cannot write, switch
+  roles or read other schemas.
+- L7 is tenant row-level security. It blocks one tenant from seeing another
+  tenant's rows by using separate database roles and forced RLS policies.
+
+Question 3: What are the biggest remaining security limitations after G2?
+
+Simple answer: G2 proves local tested boundaries, not universal security. The
+project is still not a production SaaS, the layer-off E5 experiment has not been
+run, prompt injection is reduced but not magically solved, PostgreSQL cost
+estimates can be wrong, some catalog metadata is normally visible, and tenant RLS
+is proven only on the small synthetic tenant demo. Hosted/API/web security still
+comes later.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,
