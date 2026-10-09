@@ -63,16 +63,16 @@ The first narrow AI question-to-database flow works for one checked question.
 The first local E0 evaluation is now corrected and recorded. The G1 local agent
 core is implemented through schema retrieval, prompts, voting, clarification seams
 and command-line loop settings. G2 has now recorded guard, cost, direct database
-permission, tenant-row-security and untrusted-data evidence through G2.7. The website and public
-release are not finished. G0's numbered checklist is complete except for the
-optional interview drill.
+permission, tenant-row-security, untrusted-data and attack-suite evidence through
+G2.8. The website and public release are not finished. G0's numbered checklist is
+complete except for the optional interview drill.
 
 Where we are: 12 of the 12 numbered foundation tasks are complete. The query
 guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
 demonstration, corrected E0 run, C2 model choice and G1 core implementation are
-complete locally. G2.1 through G2.7 are complete locally; attack experiments,
+complete locally. G2.1 through G2.8 are complete locally; SECURITY documentation,
 evaluation expansion, website and release still remain.
 
 You approved the answer-checker plan. Its small comparison function passes
@@ -2088,6 +2088,44 @@ being interpreted as code.
 
 **Result preview** means a small sample of answer rows given to the explanation
 step, not the full result.
+
+### G2.8 attack-suite evidence slice (2026-10-09)
+
+I organized the existing security tests into an attack-suite evidence file.
+
+What changed:
+
+- A new manifest records 40 deterministic SQL attack fixtures.
+- It also records 3 fake-LLM/model-mediated controls for poisoned samples,
+  explanation manipulation and unsafe generated SQL.
+- Each attack record says what threat it belongs to, which test fixture proves it,
+  what would count as success for the attacker, which layer blocked it and which
+  test is the evidence.
+- The manifest records false-block evidence too: from 424 safe-gold items, the
+  current guard accepts 368 and blocks 56 because their SQL functions are not yet
+  reviewed.
+- The layer-off E5 experiment is not run here. Instead, the manifest records the
+  safety rule for later: it must use a separate disposable local Docker project
+  and volume, must reject hosted targets and must not mount host directories.
+
+Checks: the tests first failed because the attack audit module and manifest did
+not exist. After adding them, the 3 attack-manifest tests passed. The focused
+attack/guard/prompt tests passed 210 checks. The full offline suite passed 809
+tests and skipped 475 database-only tests. Ruff lint and format passed too.
+
+New simple terms:
+
+**Attack fixture** means a saved test input used to check whether a defense works.
+
+**Success predicate** means the exact condition that would mean an attack
+succeeded or failed.
+
+**False block** means SQLWarden blocks a harmless/valid query. This is safer than
+allowing unsafe SQL, but too many false blocks make the tool less useful.
+
+**Layer-off experiment** means deliberately turning off one safety layer to see
+what it was protecting. That is risky, so SQLWarden only allows it later in a
+disposable local setup.
 
 ## 7. How this notebook will be kept up to date
 

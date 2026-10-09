@@ -1,0 +1,553 @@
+{
+  "attacks": [
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-001",
+      "input_fixture": "tests/test_guard.py::UNSAFE[0]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-002",
+      "input_fixture": "tests/test_guard.py::UNSAFE[1]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-003",
+      "input_fixture": "tests/test_guard.py::UNSAFE[2]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-004",
+      "input_fixture": "tests/test_guard.py::UNSAFE[3]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-005",
+      "input_fixture": "tests/test_guard.py::UNSAFE[4]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-006",
+      "input_fixture": "tests/test_guard.py::UNSAFE[5]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-007",
+      "input_fixture": "tests/test_guard.py::UNSAFE[6]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-008",
+      "input_fixture": "tests/test_guard.py::UNSAFE[7]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-009",
+      "input_fixture": "tests/test_guard.py::UNSAFE[8]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-010",
+      "input_fixture": "tests/test_guard.py::UNSAFE[9]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-011",
+      "input_fixture": "tests/test_guard.py::UNSAFE[10]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-012",
+      "input_fixture": "tests/test_guard.py::UNSAFE[11]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-013",
+      "input_fixture": "tests/test_guard.py::UNSAFE[12]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-014",
+      "input_fixture": "tests/test_guard.py::UNSAFE[13]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-015",
+      "input_fixture": "tests/test_guard.py::UNSAFE[14]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-016",
+      "input_fixture": "tests/test_guard.py::UNSAFE[15]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A1-017",
+      "input_fixture": "tests/test_guard.py::UNSAFE[16]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A1"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A4-018",
+      "input_fixture": "tests/test_guard.py::UNSAFE[17]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A4"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A4-019",
+      "input_fixture": "tests/test_guard.py::UNSAFE[18]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A4"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A3-020",
+      "input_fixture": "tests/test_guard.py::UNSAFE[19]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A3"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A3-021",
+      "input_fixture": "tests/test_guard.py::UNSAFE[20]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A3"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A3-022",
+      "input_fixture": "tests/test_guard.py::UNSAFE[21]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A3"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A3-023",
+      "input_fixture": "tests/test_guard.py::UNSAFE[22]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A3"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A3-024",
+      "input_fixture": "tests/test_guard.py::UNSAFE[23]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A3"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A3-025",
+      "input_fixture": "tests/test_guard.py::UNSAFE[24]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A3"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A3-026",
+      "input_fixture": "tests/test_guard.py::UNSAFE[25]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A3"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A3-027",
+      "input_fixture": "tests/test_guard.py::UNSAFE[26]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A3"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A3-028",
+      "input_fixture": "tests/test_guard.py::UNSAFE[27]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A3"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-029",
+      "input_fixture": "tests/test_guard.py::UNSAFE[28]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A5-030",
+      "input_fixture": "tests/test_guard.py::UNSAFE[29]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A5"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-031",
+      "input_fixture": "tests/test_guard.py::UNSAFE[30]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-032",
+      "input_fixture": "tests/test_guard.py::UNSAFE[31]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A5-033",
+      "input_fixture": "tests/test_guard.py::UNSAFE[32]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A5"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A5-034",
+      "input_fixture": "tests/test_guard.py::UNSAFE[33]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A5"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-035",
+      "input_fixture": "tests/test_guard.py::UNSAFE[34]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-036",
+      "input_fixture": "tests/test_guard.py::UNSAFE[35]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-037",
+      "input_fixture": "tests/test_guard.py::UNSAFE[36]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-038",
+      "input_fixture": "tests/test_guard.py::UNSAFE[37]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A5-039",
+      "input_fixture": "tests/test_guard.py::UNSAFE[38]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A5"
+    },
+    {
+      "evidence": [
+        "tests/test_guard.py::test_unsafe_or_unreviewed_sql_never_returns_executable_text"
+      ],
+      "id": "A2-040",
+      "input_fixture": "tests/test_guard.py::UNSAFE[39]",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "deterministic_sql_no_model",
+      "success_predicate": "guard rejects and returns no executable SQL",
+      "threat_id": "A2"
+    },
+    {
+      "evidence": [
+        "tests/test_prompts_voting_agent.py::test_poisoned_sample_value_cannot_force_unsafe_sql_execution"
+      ],
+      "id": "A6-001",
+      "input_fixture": "tests/test_prompts_voting_agent.py::test_poisoned_sample_value_cannot_force_unsafe_sql_execution",
+      "observed_layer": "L3_sql_guard_after_untrusted_retrieval",
+      "outcome": "blocked",
+      "seed_configuration": "fake_llm_poisoned_sample_no_seed",
+      "success_predicate": "unsafe model-proposed SQL is blocked before executor use",
+      "threat_id": "A6"
+    },
+    {
+      "evidence": [
+        "tests/test_prompts_voting_agent.py::test_explanation_has_no_execution_path_and_escapes_plain_text"
+      ],
+      "id": "A6-002",
+      "input_fixture": "tests/test_prompts_voting_agent.py::test_explanation_has_no_execution_path_and_escapes_plain_text",
+      "observed_layer": "L8_explanation_separation",
+      "outcome": "escaped_plain_text",
+      "seed_configuration": "fake_llm_poisoned_explanation_no_seed",
+      "success_predicate": "explanation output is escaped and explanation has no executor call",
+      "threat_id": "A6"
+    },
+    {
+      "evidence": [
+        "tests/test_prompts_voting_agent.py::test_poisoned_sample_value_cannot_force_unsafe_sql_execution"
+      ],
+      "id": "A7-001",
+      "input_fixture": "tests/test_prompts_voting_agent.py::test_poisoned_sample_value_cannot_force_unsafe_sql_execution",
+      "observed_layer": "L3_sql_guard",
+      "outcome": "blocked",
+      "seed_configuration": "fake_llm_direct_jailbreak_no_seed",
+      "success_predicate": "unsafe generated SQL is blocked regardless of prompt source",
+      "threat_id": "A7"
+    }
+  ],
+  "contains": "attack metadata, fixture references, outcomes and aggregate counts only",
+  "deterministic_sql_attack_count": 40,
+  "e5_layer_off_policy": {
+    "cleanup_scope": [
+      "docker project sqlwarden_e5_disposable",
+      "volume sqlwarden_e5_disposable_pg16_data"
+    ],
+    "docker_project": "sqlwarden_e5_disposable",
+    "host_directory_mounts": "forbidden",
+    "hosted_targets": "rejected",
+    "network": "disposable_internal_only",
+    "status": "not_run_in_this_slice",
+    "target": "local_disposable_only",
+    "volume": "sqlwarden_e5_disposable_pg16_data"
+  },
+  "excludes": [
+    "raw SQL",
+    "question text",
+    "result rows",
+    "credentials",
+    "model prompts"
+  ],
+  "false_block_measurement": {
+    "safe_gold_blocked_reason_counts": {
+      "function_not_allowed": 56
+    },
+    "safe_gold_guard_accepted": 368,
+    "safe_gold_guard_blocked": 56,
+    "safe_gold_items": 424,
+    "safe_guard_cases": 46
+  },
+  "format_version": 1,
+  "model_mediated_attack_count": 3
+}

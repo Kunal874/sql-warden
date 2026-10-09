@@ -31,8 +31,8 @@ optional interview drill. This is checklist coverage, not overall project effort
 G1 core is implemented and committed locally through G1.9: schema catalog/retrieval,
 C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
-settings. G2.1-C4 through G2.7 now record the explicit guardrail/cost/grant/RLS/
-untrusted-data evidence. The G1/G2 interview drills and G2.8-G5/G7 remain
+settings. G2.1-C4 through G2.8 now record the explicit guardrail/cost/grant/RLS/
+untrusted-data/attack evidence. The G1/G2 interview drills and G2.9-G5/G7 remain
 unfinished. No official
 benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
@@ -297,7 +297,7 @@ the optional interview drill.
 - [x] G2.5: effective grants/default grants; real direct-connection permission tests.
 - [x] G2.6: forced tenant RLS, separate tenant identities and boundary tests.
 - [x] G2.7: untrusted data and explanation isolation tests with benign controls.
-- [ ] G2.8: at least 40 attacks, threat-specific success predicates; disposable-only E5 and false blocks.
+- [x] G2.8: at least 40 attacks, threat-specific success predicates; disposable-only E5 and false blocks.
 - [ ] G2.9: SECURITY with evidence and residual limitations.
 - [ ] G2 interview drill.
 
@@ -1390,6 +1390,29 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G2.8 attack-suite evidence manifest
+
+G2.8 now has `scripts/audit_attack_suite.py` and
+`docs/attack-suite-manifest.json`. The manifest records 40 deterministic SQL
+attack fixtures from the guard corpus plus three model-mediated/fake-LLM controls
+for poisoned samples, explanation manipulation and direct jailbreak-style unsafe
+generation. Each record has a threat ID, fixture reference, success predicate,
+seed/configuration, observed layer, outcome and evidence test. It contains
+metadata only, not raw SQL, prompts, rows, credentials or question text.
+
+The manifest also records benign false-block evidence from the existing guard/gold
+audit: 46 safe guard cases, 424 safe-gold items, 368 accepted and 56 blocked by
+`function_not_allowed`. E5 layer-off experiments are explicitly not run in this
+slice; the saved policy requires local disposable-only targets, project
+`sqlwarden_e5_disposable`, volume `sqlwarden_e5_disposable_pg16_data`, no host
+directory mounts, hosted target rejection and narrow cleanup scope.
+
+Verification: manifest tests first failed because the audit module/manifest did
+not exist, then the direct script path was fixed and the manifest tests passed 3.
+Focused attack/guard/prompt tests passed 210. Full no-env suite passed 809/475
+skipped. Ruff lint, format and diff whitespace passed. Next: commit as
+`feat(security): record attack suite evidence`, then continue to G2.9 SECURITY.
 
 ### 2026-10-09 — G2.7 untrusted data and explanation isolation
 

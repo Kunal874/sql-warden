@@ -1981,6 +1981,32 @@ preview and returned text was not escaped. After adding the preview and escaping
 the three G2.7 focused tests passed. No database object change, credential change,
 source/gold mutation, model call, hosted action, raw run, remote or push occurred.
 
+## D-067 — G2.8 records attack evidence without running layer-off E5 (2026-10-09)
+
+Context: G2.8 needs at least 40 attack cases with threat-specific predicates,
+explicit observed blockers, false-block evidence and safe handling of layer-off
+experiments. Existing guard and agent tests already contain deterministic attack
+fixtures, but they were not organized as an attack-suite artifact.
+
+Decision: add `scripts/audit_attack_suite.py` and
+`docs/attack-suite-manifest.json`. The manifest records 40 deterministic SQL
+attack fixtures from `tests/test_guard.py::UNSAFE` and three model-mediated
+fake-LLM controls from prompt/agent tests. It keeps fixture references and
+metadata only. Layer-off E5 is not executed in this slice; the saved policy
+requires a local disposable Docker project/volume and rejects hosted targets.
+
+Rationale: this completes the documented all-layers-on attack evidence without
+creating a destructive layer-off harness in the real project volume. Cost if
+wrong: the manifest relies on fixture references rather than duplicating raw SQL,
+so reviewers must inspect the named tests to see exact payload text.
+
+Verification: tests first failed because the audit module/manifest did not exist.
+After adding them and fixing direct script import behavior, G2.8 manifest tests
+passed 3. Focused attack/guard/prompt tests passed 210. Full no-env suite passed
+809/475 skipped. Ruff lint, format and diff whitespace passed. No database object
+change, credential change, source/gold mutation, model call, hosted action, raw
+run, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
