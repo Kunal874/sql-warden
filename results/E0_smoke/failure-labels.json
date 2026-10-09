@@ -1,0 +1,413 @@
+{
+  "excludes": [
+    "prompts",
+    "generated query text",
+    "gold query text",
+    "rows",
+    "credentials"
+  ],
+  "format_version": 1,
+  "label_count": 50,
+  "labels": [
+    {
+      "db_id": "california_schools",
+      "model": "arctic",
+      "question_id": 23,
+      "reason": "parse_error",
+      "status": "blocked",
+      "taxonomy": "guard_blocked"
+    },
+    {
+      "db_id": "california_schools",
+      "model": "arctic",
+      "question_id": 41,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "california_schools",
+      "model": "arctic",
+      "question_id": 47,
+      "reason": "function_not_allowed",
+      "status": "blocked",
+      "taxonomy": "guard_blocked"
+    },
+    {
+      "db_id": "california_schools",
+      "model": "arctic",
+      "question_id": 83,
+      "reason": "parse_error",
+      "status": "blocked",
+      "taxonomy": "guard_blocked"
+    },
+    {
+      "db_id": "california_schools",
+      "model": "arctic",
+      "question_id": 85,
+      "reason": "parse_error",
+      "status": "blocked",
+      "taxonomy": "guard_blocked"
+    },
+    {
+      "db_id": "financial",
+      "model": "arctic",
+      "question_id": 89,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "financial",
+      "model": "arctic",
+      "question_id": 117,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "financial",
+      "model": "arctic",
+      "question_id": 118,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "financial",
+      "model": "arctic",
+      "question_id": 149,
+      "reason": "undefined_object",
+      "status": "failed",
+      "taxonomy": "execution_failed"
+    },
+    {
+      "db_id": "financial",
+      "model": "arctic",
+      "question_id": 194,
+      "reason": "function_not_allowed",
+      "status": "blocked",
+      "taxonomy": "guard_blocked"
+    },
+    {
+      "db_id": "toxicology",
+      "model": "arctic",
+      "question_id": 198,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "toxicology",
+      "model": "arctic",
+      "question_id": 206,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "toxicology",
+      "model": "arctic",
+      "question_id": 226,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "toxicology",
+      "model": "arctic",
+      "question_id": 242,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "toxicology",
+      "model": "arctic",
+      "question_id": 255,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "toxicology",
+      "model": "arctic",
+      "question_id": 260,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "toxicology",
+      "model": "arctic",
+      "question_id": 268,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 344,
+      "reason": "model output invalid",
+      "status": "generation_failed",
+      "taxonomy": "generation_failed"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 349,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 366,
+      "reason": "model output invalid",
+      "status": "generation_failed",
+      "taxonomy": "generation_failed"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 397,
+      "reason": "model output invalid",
+      "status": "generation_failed",
+      "taxonomy": "generation_failed"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 405,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 407,
+      "reason": "model output invalid",
+      "status": "generation_failed",
+      "taxonomy": "generation_failed"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 415,
+      "reason": "model output invalid",
+      "status": "generation_failed",
+      "taxonomy": "generation_failed"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 440,
+      "reason": "model output invalid",
+      "status": "generation_failed",
+      "taxonomy": "generation_failed"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 459,
+      "reason": "row_limit",
+      "status": "failed",
+      "taxonomy": "execution_failed"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 466,
+      "reason": "model output invalid",
+      "status": "generation_failed",
+      "taxonomy": "generation_failed"
+    },
+    {
+      "db_id": "card_games",
+      "model": "arctic",
+      "question_id": 473,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "codebase_community",
+      "model": "arctic",
+      "question_id": 555,
+      "reason": "model output invalid",
+      "status": "generation_failed",
+      "taxonomy": "generation_failed"
+    },
+    {
+      "db_id": "codebase_community",
+      "model": "arctic",
+      "question_id": 578,
+      "reason": "model output invalid",
+      "status": "generation_failed",
+      "taxonomy": "generation_failed"
+    },
+    {
+      "db_id": "codebase_community",
+      "model": "arctic",
+      "question_id": 586,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "codebase_community",
+      "model": "arctic",
+      "question_id": 669,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "codebase_community",
+      "model": "arctic",
+      "question_id": 671,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "codebase_community",
+      "model": "arctic",
+      "question_id": 682,
+      "reason": "function_not_allowed",
+      "status": "blocked",
+      "taxonomy": "guard_blocked"
+    },
+    {
+      "db_id": "codebase_community",
+      "model": "arctic",
+      "question_id": 716,
+      "reason": "undefined_object",
+      "status": "failed",
+      "taxonomy": "execution_failed"
+    },
+    {
+      "db_id": "superhero",
+      "model": "arctic",
+      "question_id": 724,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "superhero",
+      "model": "arctic",
+      "question_id": 736,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "superhero",
+      "model": "arctic",
+      "question_id": 753,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "superhero",
+      "model": "arctic",
+      "question_id": 781,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "superhero",
+      "model": "arctic",
+      "question_id": 788,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "superhero",
+      "model": "arctic",
+      "question_id": 792,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "superhero",
+      "model": "arctic",
+      "question_id": 794,
+      "reason": "undefined_object",
+      "status": "failed",
+      "taxonomy": "execution_failed"
+    },
+    {
+      "db_id": "superhero",
+      "model": "arctic",
+      "question_id": 829,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "formula_1",
+      "model": "arctic",
+      "question_id": 859,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "formula_1",
+      "model": "arctic",
+      "question_id": 866,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "formula_1",
+      "model": "arctic",
+      "question_id": 872,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "formula_1",
+      "model": "arctic",
+      "question_id": 884,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "formula_1",
+      "model": "arctic",
+      "question_id": 902,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "formula_1",
+      "model": "arctic",
+      "question_id": 944,
+      "reason": "result_mismatch",
+      "status": "incorrect",
+      "taxonomy": "wrong_result"
+    },
+    {
+      "db_id": "formula_1",
+      "model": "arctic",
+      "question_id": 960,
+      "reason": "undefined_object",
+      "status": "failed",
+      "taxonomy": "execution_failed"
+    }
+  ]
+}

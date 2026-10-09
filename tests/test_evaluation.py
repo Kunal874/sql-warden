@@ -360,6 +360,103 @@ def test_summary_uses_exact_denominator_and_seeded_interval():
     assert 0 <= summary["confidence_interval"]["low"] <= summary["confidence_interval"]["high"] <= 1
 
 
+def test_summary_reports_phase_coverage_and_answered_only_metrics():
+    protocol = {"split": {"dev_ids": [1, 2, 3, 4, 5], "dev_id_sha256": "abc"}}
+    records = [
+        {"question_id": 1, "model": "qwen", "status": "correct", "reason": "ex_match"},
+        {"question_id": 2, "model": "qwen", "status": "incorrect", "reason": "result_mismatch"},
+        {"question_id": 3, "model": "qwen", "status": "blocked", "reason": "table_not_allowed"},
+        {"question_id": 4, "model": "qwen", "status": "failed", "reason": "execution_failed"},
+    ]
+
+    summary = evaluation.summarize_model("qwen", records, protocol, seed=5, samples=200)
+
+    assert summary["coverage"] == {"records": 4, "missing": 1, "rate": 0.8}
+    assert summary["phase_metrics"] == {
+        "parse": {"count": 4, "rate": 0.8},
+        "guard": {"count": 3, "rate": 0.6},
+        "execution": {"count": 2, "rate": 0.4},
+        "ex": {"count": 1, "rate": 0.2},
+    }
+    assert summary["answered_only"] == {"denominator": 2, "correct": 1, "ex": 0.5}
+    assert summary["boundary_intervals"]["blocked"]["n"] == 5
+    assert summary["boundary_intervals"]["failed"]["mean"] == 0.2
+
+
+def test_paired_summary_reports_seeded_accuracy_difference():
+    protocol = {"split": {"dev_ids": [1, 2, 3, 4], "dev_id_sha256": "abc"}}
+    left = [
+        {"question_id": 1, "model": "arctic", "status": "correct"},
+        {"question_id": 2, "model": "arctic", "status": "correct"},
+        {"question_id": 3, "model": "arctic", "status": "incorrect"},
+        {"question_id": 4, "model": "arctic", "status": "failed"},
+    ]
+    right = [
+        {"question_id": 1, "model": "qwen", "status": "incorrect"},
+        {"question_id": 2, "model": "qwen", "status": "correct"},
+        {"question_id": 3, "model": "qwen", "status": "correct"},
+        {"question_id": 4, "model": "qwen", "status": "failed"},
+    ]
+
+    paired = evaluation.summarize_paired_models(
+        "arctic", left, "qwen", right, protocol, seed=9, samples=200
+    )
+
+    assert paired["paired_count"] == 4
+    assert paired["arctic_only_correct"] == 1
+    assert paired["qwen_only_correct"] == 1
+    assert paired["both_correct"] == 1
+    assert paired["both_not_correct"] == 1
+    assert paired["accuracy_difference"] == 0.0
+    assert paired["confidence_interval"]["n"] == 4
+
+
+def test_failure_labels_are_compact_and_exclude_raw_sql_or_prompts():
+    records = [
+        {
+            "question_id": 1,
+            "db_id": "financial",
+            "model": "arctic",
+            "status": "incorrect",
+            "reason": "result_mismatch",
+            "sql": "SELECT secret FROM table",
+            "messages": [{"content": "raw prompt"}],
+        },
+        {
+            "question_id": 2,
+            "db_id": "financial",
+            "model": "arctic",
+            "status": "blocked",
+            "reason": "table_not_allowed",
+        },
+        {"question_id": 3, "db_id": "financial", "model": "arctic", "status": "correct"},
+    ]
+
+    labels = evaluation.label_failures(records, limit=10)
+    rendered = json.dumps(labels, sort_keys=True)
+
+    assert labels == [
+        {
+            "question_id": 1,
+            "db_id": "financial",
+            "model": "arctic",
+            "status": "incorrect",
+            "reason": "result_mismatch",
+            "taxonomy": "wrong_result",
+        },
+        {
+            "question_id": 2,
+            "db_id": "financial",
+            "model": "arctic",
+            "status": "blocked",
+            "reason": "table_not_allowed",
+            "taxonomy": "guard_blocked",
+        },
+    ]
+    assert "SELECT" not in rendered
+    assert "raw prompt" not in rendered
+
+
 def test_score_execution_categories_use_complete_gold_comparison():
     generated = {
         "question_id": 7,

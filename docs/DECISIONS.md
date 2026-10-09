@@ -2071,6 +2071,33 @@ Full offline tests passed 814/475 skipped. Ruff lint, format and diff whitespace
 passed. No model call, database execution, raw run migration, benchmark score
 change, remote or push occurred.
 
+## D-071 — G3 freezes compact local evaluation evidence, not a public benchmark (2026-10-10)
+
+Context: after G3.1, the remaining G3 checklist required phase metrics,
+paired/statistical reporting, a C5 experiment matrix, failure labels, dashboard,
+EVAL, README/resume evidence and an interview drill. Existing corrected E0 raw
+records were available locally under ignored paths.
+
+Decision: rebuild compact tracked evaluation artifacts from existing ignored E0
+records without rerunning models or databases. `results/E0_smoke/summary.json`
+now includes coverage, parse/guard/execution/EX phase metrics, answered-only EX,
+boundary intervals and paired Arctic-vs-Qwen statistics. Add
+`results/E0_smoke/dashboard.json`, `results/E0_smoke/failure-labels.json`,
+`docs/evaluation-matrix.json`, `docs/EVAL.md` and `docs/RESUME.md`. Freeze E1-E4
+and E6-E8 in the matrix with the approved 15-20 hour weekly budget. Keep E5 tied
+to G2 security evidence and layer-off approval gates; keep E9 optional.
+
+Rationale: G3 needs a defensible local evidence package and next-experiment
+matrix, not a fresh inference run or public claim. Cost if wrong: phase labels
+may need refinement before publication, but raw prompts, generated SQL, gold SQL,
+rows and credentials remain excluded from tracked artifacts.
+
+Verification: tests first failed for missing phase metrics, paired summary,
+failure labels and resume generation. Final focused evaluation/artifact tests
+passed 25. Full offline tests passed 818/475 skipped. Ruff lint, format and diff
+whitespace passed. No model call, database execution, held-out evaluation,
+benchmark-policy change, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

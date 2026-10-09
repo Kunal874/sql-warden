@@ -1,0 +1,67 @@
+{
+  "deferred": {
+    "E5": "security attack evidence already covered in G2; layer-off stays approval-gated",
+    "E9": "optional fine-tuning, not part of the local portfolio minimum"
+  },
+  "experiments": [
+    {
+      "evidence_mode": "separate_rerun",
+      "id": "E1",
+      "name": "corrected/original label baselines",
+      "status": "planned"
+    },
+    {
+      "evidence_mode": "rescore",
+      "id": "E2",
+      "name": "same-input full schema/retrieval/repair/voting effects",
+      "status": "planned"
+    },
+    {
+      "evidence_mode": "rescore",
+      "id": "E3",
+      "name": "matched rescoring and annotation-change case studies",
+      "status": "planned"
+    },
+    {
+      "evidence_mode": "separate_rerun",
+      "id": "E4",
+      "name": "seeded messy-schema transformation",
+      "status": "planned"
+    },
+    {
+      "evidence_mode": "separate_rerun",
+      "id": "E6",
+      "name": "fresh/cached latency, tokens, helper overhead and VRAM",
+      "status": "planned"
+    },
+    {
+      "evidence_mode": "rescore",
+      "id": "E7",
+      "name": "ambiguity, negatives and simulated/oracle assistance labels",
+      "status": "planned"
+    },
+    {
+      "evidence_mode": "separate_rerun",
+      "id": "E8",
+      "name": "held-out accuracy-coverage curve",
+      "status": "planned"
+    }
+  ],
+  "format_version": 1,
+  "protocol": {
+    "base": "docs/e0-protocol.json",
+    "dev_count": 100,
+    "dev_id_sha256": "47466fd8c8a374b98b4b4d81edb8a9652daceabb59cb8dc942c2fa9bb4aa6793",
+    "held_out_count": 324,
+    "held_out_id_sha256": "db975459a6295fbf9748597e18c07af6834aaefc897925da39b546f62c49ed74"
+  },
+  "rules": [
+    "Development evidence may tune defaults; held-out IDs remain untouched until E8.",
+    "Rescoring reuses unchanged model outputs; separate reruns must record new run fingerprints.",
+    "Tracked artifacts exclude prompts, generated SQL, gold SQL, rows and credentials."
+  ],
+  "time_budget": {
+    "source": "Kunal approved weekly budget",
+    "weekly_hours": "15-20"
+  }
+}

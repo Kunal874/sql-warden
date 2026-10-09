@@ -6,9 +6,34 @@
     "rows",
     "credentials"
   ],
-  "format_version": 1,
+  "format_version": 2,
   "models": {
     "arctic": {
+      "answered_only": {
+        "correct": 22,
+        "denominator": 62,
+        "ex": 0.3548387096774194
+      },
+      "boundary_intervals": {
+        "blocked": {
+          "high": 0.22,
+          "low": 0.08,
+          "mean": 0.15,
+          "n": 100
+        },
+        "failed": {
+          "high": 0.19,
+          "low": 0.06,
+          "mean": 0.12,
+          "n": 100
+        },
+        "generation_failed": {
+          "high": 0.17,
+          "low": 0.05,
+          "mean": 0.11,
+          "n": 100
+        }
+      },
       "confidence_interval": {
         "high": 0.3,
         "low": 0.14,
@@ -16,6 +41,11 @@
         "n": 100
       },
       "correct": 22,
+      "coverage": {
+        "missing": 0,
+        "rate": 1.0,
+        "records": 100
+      },
       "denominator": 100,
       "dev_id_sha256": "47466fd8c8a374b98b4b4d81edb8a9652daceabb59cb8dc942c2fa9bb4aa6793",
       "ex": 0.22,
@@ -23,6 +53,24 @@
       "model": "arctic",
       "p95_seconds": 2.235,
       "peak_vram_bytes": 5133943438,
+      "phase_metrics": {
+        "ex": {
+          "count": 22,
+          "rate": 0.22
+        },
+        "execution": {
+          "count": 62,
+          "rate": 0.62
+        },
+        "guard": {
+          "count": 74,
+          "rate": 0.74
+        },
+        "parse": {
+          "count": 89,
+          "rate": 0.89
+        }
+      },
       "reason_counts": {
         "ex_match": 22,
         "function_not_allowed": 7,
@@ -49,6 +97,31 @@
       }
     },
     "qwen": {
+      "answered_only": {
+        "correct": 3,
+        "denominator": 10,
+        "ex": 0.3
+      },
+      "boundary_intervals": {
+        "blocked": {
+          "high": 0.0,
+          "low": 0.0,
+          "mean": 0.0,
+          "n": 100
+        },
+        "failed": {
+          "high": 0.05,
+          "low": 0.0,
+          "mean": 0.02,
+          "n": 100
+        },
+        "generation_failed": {
+          "high": 0.94,
+          "low": 0.81,
+          "mean": 0.88,
+          "n": 100
+        }
+      },
       "confidence_interval": {
         "high": 0.07,
         "low": 0.0,
@@ -56,6 +129,11 @@
         "n": 100
       },
       "correct": 3,
+      "coverage": {
+        "missing": 0,
+        "rate": 1.0,
+        "records": 100
+      },
       "denominator": 100,
       "dev_id_sha256": "47466fd8c8a374b98b4b4d81edb8a9652daceabb59cb8dc942c2fa9bb4aa6793",
       "ex": 0.03,
@@ -63,6 +141,24 @@
       "model": "qwen",
       "p95_seconds": 1.608,
       "peak_vram_bytes": 4628519320,
+      "phase_metrics": {
+        "ex": {
+          "count": 3,
+          "rate": 0.03
+        },
+        "execution": {
+          "count": 10,
+          "rate": 0.1
+        },
+        "guard": {
+          "count": 12,
+          "rate": 0.12
+        },
+        "parse": {
+          "count": 12,
+          "rate": 0.12
+        }
+      },
       "reason_counts": {
         "database_error": 1,
         "ex_match": 3,
@@ -83,6 +179,25 @@
         "known_items": 14,
         "prompt_tokens": 4871
       }
+    }
+  },
+  "paired": {
+    "arctic_vs_qwen": {
+      "accuracy_difference": 0.19,
+      "arctic_only_correct": 21,
+      "both_correct": 1,
+      "both_not_correct": 76,
+      "confidence_interval": {
+        "high": 0.28,
+        "low": 0.11,
+        "mean": 0.19,
+        "n": 100
+      },
+      "dev_id_sha256": "47466fd8c8a374b98b4b4d81edb8a9652daceabb59cb8dc942c2fa9bb4aa6793",
+      "left_model": "arctic",
+      "paired_count": 100,
+      "qwen_only_correct": 2,
+      "right_model": "qwen"
     }
   },
   "protocol": {

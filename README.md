@@ -13,9 +13,13 @@ One bounded local AI/database question returned the expected count of 17,686;
 Automatic model unload and final review/fix verification are complete. This
 finishes the first thin slice (G0.7a), not the full agent. The local database
 is PostgreSQL 16.15 on 127.0.0.1:55432.
-There are no text-to-SQL accuracy results or
-published security measurements yet. The first milestone is one real database
-and local model answering a question through a tested guard and bounded executor.
+Local development-slice text-to-SQL evidence is now tracked in
+[EVAL](docs/EVAL.md), [dashboard JSON](results/E0_smoke/dashboard.json) and
+[resume evidence](docs/RESUME.md). On the frozen 100-question development slice,
+Arctic measured 22/100 exact matches and Qwen measured 3/100; this is not an
+official benchmark or public leaderboard score. The first milestone remains one
+real database and local model answering a question through a tested guard and
+bounded executor.
 
 The first BIRD database source and canonical labels are downloaded and pinned.
 [Data provenance](docs/DATA.md) records actual hashes, counts and dialect differences.

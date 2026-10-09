@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import random
 import re
 import statistics
 from hashlib import sha256
@@ -284,11 +285,43 @@ def summarize_model(
     }
     correct = sum(outcomes)
     denominator = len(dev_ids)
+    coverage_count = sum(1 for identifier in dev_ids if identifier in by_id)
+    parsed_count = sum(
+        1
+        for identifier in dev_ids
+        if by_id.get(identifier, {}).get("status") in {"blocked", "failed", "incorrect", "correct"}
+    )
+    guard_count = sum(
+        1
+        for identifier in dev_ids
+        if by_id.get(identifier, {}).get("status") in {"failed", "incorrect", "correct"}
+    )
+    execution_count = sum(
+        1
+        for identifier in dev_ids
+        if by_id.get(identifier, {}).get("status") in {"incorrect", "correct"}
+    )
     return {
         "model": model,
         "denominator": denominator,
         "correct": correct,
         "ex": correct / denominator if denominator else None,
+        "coverage": {
+            "records": coverage_count,
+            "missing": denominator - coverage_count,
+            "rate": coverage_count / denominator if denominator else None,
+        },
+        "phase_metrics": {
+            "parse": _count_rate(parsed_count, denominator),
+            "guard": _count_rate(guard_count, denominator),
+            "execution": _count_rate(execution_count, denominator),
+            "ex": _count_rate(correct, denominator),
+        },
+        "answered_only": {
+            "denominator": execution_count,
+            "correct": correct,
+            "ex": correct / execution_count if execution_count else None,
+        },
         "status_counts": status_counts,
         "reason_counts": reason_counts,
         "median_seconds": statistics.median(seconds) if seconds else None,
@@ -298,10 +331,83 @@ def summarize_model(
             "prompt_tokens": sum(record["prompt_tokens"] for record in usage_records),
             "completion_tokens": sum(record["completion_tokens"] for record in usage_records),
         },
+        "boundary_intervals": {
+            status: bootstrap_accuracy_interval(
+                [by_id.get(identifier, {}).get("status") == status for identifier in dev_ids],
+                samples=samples,
+                seed=seed,
+            )
+            for status in ("generation_failed", "blocked", "failed")
+        },
         "peak_vram_bytes": max(vram_values) if vram_values else None,
         "confidence_interval": bootstrap_accuracy_interval(outcomes, samples=samples, seed=seed),
         "dev_id_sha256": protocol["split"]["dev_id_sha256"],
     }
+
+
+def summarize_paired_models(
+    left_model: str,
+    left_records: list[dict[str, Any]],
+    right_model: str,
+    right_records: list[dict[str, Any]],
+    protocol: dict[str, Any],
+    *,
+    seed: int,
+    samples: int,
+) -> dict[str, Any]:
+    dev_ids = protocol["split"]["dev_ids"]
+    left = {
+        record["question_id"]: record
+        for record in left_records
+        if record.get("model") == left_model and record.get("question_id") in dev_ids
+    }
+    right = {
+        record["question_id"]: record
+        for record in right_records
+        if record.get("model") == right_model and record.get("question_id") in dev_ids
+    }
+    rows = [
+        (
+            left.get(identifier, {}).get("status") == "correct",
+            right.get(identifier, {}).get("status") == "correct",
+        )
+        for identifier in dev_ids
+    ]
+    left_only = sum(1 for left_ok, right_ok in rows if left_ok and not right_ok)
+    right_only = sum(1 for left_ok, right_ok in rows if right_ok and not left_ok)
+    return {
+        "left_model": left_model,
+        "right_model": right_model,
+        "paired_count": len(rows),
+        f"{left_model}_only_correct": left_only,
+        f"{right_model}_only_correct": right_only,
+        "both_correct": sum(1 for left_ok, right_ok in rows if left_ok and right_ok),
+        "both_not_correct": sum(1 for left_ok, right_ok in rows if not left_ok and not right_ok),
+        "accuracy_difference": (left_only - right_only) / len(rows) if rows else None,
+        "confidence_interval": _bootstrap_difference_interval(rows, samples=samples, seed=seed),
+        "dev_id_sha256": protocol["split"]["dev_id_sha256"],
+    }
+
+
+def label_failures(records: list[dict[str, Any]], *, limit: int) -> list[dict[str, Any]]:
+    failures = []
+    for record in sorted(records, key=lambda item: (str(item.get("model")), item["question_id"])):
+        status = record.get("status")
+        if status == "correct":
+            continue
+        failures.append(
+            {
+                "question_id": record["question_id"],
+                "db_id": record["db_id"],
+                "model": record["model"],
+                "status": status,
+                "reason": record.get("reason"),
+                "taxonomy": _failure_taxonomy(status, record.get("reason")),
+            }
+        )
+        if len(failures) == limit:
+            break
+    return failures
 
 
 def score_execution(
@@ -344,6 +450,44 @@ def _percentile(values: list[float], quantile: float) -> float:
     ordered = sorted(values)
     index = min(len(ordered) - 1, int(round((len(ordered) - 1) * quantile)))
     return ordered[index]
+
+
+def _count_rate(count: int, denominator: int) -> dict[str, int | float | None]:
+    return {"count": count, "rate": count / denominator if denominator else None}
+
+
+def _bootstrap_difference_interval(
+    rows: list[tuple[bool, bool]], *, samples: int, seed: int
+) -> dict[str, float | int | None]:
+    if samples <= 0:
+        raise EvaluationError("bootstrap samples refused")
+    if not rows:
+        return {"n": 0, "mean": None, "low": None, "high": None}
+    values = [(1 if left else 0) - (1 if right else 0) for left, right in rows]
+    observed = sum(values) / len(values)
+    rng = random.Random(seed)
+    estimates = []
+    for _ in range(samples):
+        estimates.append(sum(rng.choice(values) for _ in values) / len(values))
+    estimates.sort()
+    return {
+        "n": len(values),
+        "mean": round(observed, 6),
+        "low": round(estimates[int(0.025 * (samples - 1))], 6),
+        "high": round(estimates[int(0.975 * (samples - 1))], 6),
+    }
+
+
+def _failure_taxonomy(status: Any, reason: Any) -> str:
+    if status == "generation_failed":
+        return "generation_failed"
+    if status == "blocked":
+        return "guard_blocked"
+    if status == "failed":
+        return "execution_failed"
+    if reason == "result_mismatch":
+        return "wrong_result"
+    return "other_failure"
 
 
 def _clean_text(value: str) -> str:

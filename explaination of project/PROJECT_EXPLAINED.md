@@ -76,7 +76,7 @@ reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
 demonstration, corrected E0 run, C2 model choice and G1 core implementation are
 complete locally. G2.1 through G2.9 are complete locally. G3.1 is now complete
-locally; the rest of evaluation expansion, website and release still remain.
+locally. G3 is now complete locally; website and release still remain.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -2235,6 +2235,77 @@ answer as soon as it is finished.
 
 **Resume** means continuing a stopped run from the saved records instead of
 starting again from the beginning.
+
+### G3 full evaluation package (2026-10-10)
+
+I completed the rest of G3 using the already-saved E0 run records. I did not ask
+the AI models new questions and I did not touch the held-out test IDs.
+
+What changed:
+
+- The E0 summary now separates the path into simple steps: parse, guard,
+  execution and exact match.
+- It reports coverage, meaning how many expected records were present.
+- It reports answered-only accuracy, meaning accuracy only among questions that
+  reached a database answer comparison.
+- It reports paired Arctic-vs-Qwen numbers on the same 100 development questions.
+- It labels 50 observed failures using compact labels like `wrong_result`,
+  `guard_blocked` and `execution_failed`.
+- It adds a compact dashboard file, an EVAL document, a frozen next-experiment
+  matrix and resume-safe bullets.
+- The README now links to the local evaluation evidence.
+
+Important measured numbers:
+
+- Arctic: 22 exact matches out of 100 development questions.
+- Qwen: 3 exact matches out of 100 development questions.
+- Arctic answered-only EX: about 35.5%.
+- Qwen answered-only EX: 30%.
+- Arctic beat Qwen by 19 percentage points on the matched development slice.
+
+Checks: the focused evaluation/artifact tests passed 25 tests. The full offline
+suite passed 818 tests and skipped 475 database-only tests. Ruff lint, format and
+diff checks passed. No model call, database query, held-out run, push or public
+release happened.
+
+New simple terms:
+
+**Coverage** means how much of the planned test set actually has a saved record.
+
+**Parse rate** means how often the AI output became usable SQL text.
+
+**Guard rate** means how often that SQL passed the safety guard.
+
+**Execution rate** means how often the guarded SQL reached a database comparison.
+
+**Answered-only EX** means exact-match accuracy only among questions where a
+database answer was produced and compared. It is useful, but it can hide skipped
+or blocked questions, so we also keep the full 100-question denominator.
+
+**Paired comparison** means comparing two models on the exact same question IDs.
+
+**Failure taxonomy** means short labels for why something failed.
+
+G3 interview practice:
+
+Question 1: Why is Arctic 22/100 not called an official benchmark score?
+
+Simple answer: because it is a local development slice. It used a frozen 100-item
+development set, which is good evidence for the project, but official claims need
+the agreed held-out run, release checks and public reporting rules.
+
+Question 2: Why report parse, guard and execution separately?
+
+Simple answer: because one final accuracy number hides where the system failed.
+If parsing failed, that is a model/output-format problem. If the guard blocked
+the SQL, that is a safety boundary doing its job. If execution failed, that is a
+database or SQL compatibility problem. Different failures need different fixes.
+
+Question 3: Why keep raw SQL and prompts out of tracked files?
+
+Simple answer: because they can contain sensitive or bulky experiment details.
+The project tracks compact evidence that reviewers can use, while raw prompts,
+generated SQL, gold SQL, answer rows and credentials stay out of Git.
 
 ## 7. How this notebook will be kept up to date
 
