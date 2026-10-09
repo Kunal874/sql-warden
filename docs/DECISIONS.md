@@ -1880,6 +1880,31 @@ Ruff lint, format and diff whitespace passed. No database object change,
 credential change, SQL execution, source/gold mutation, live model call, hosted
 action, raw run, remote or push occurred.
 
+## D-063 — G2.4 records guarded EXPLAIN calibration evidence (2026-10-09)
+
+Context: the executor already guards SQL before planning, runs
+`EXPLAIN (FORMAT JSON)` under the same restricted identity/settings as execution,
+and blocks excessive estimated cost or rows before preparing/cursoring a statement.
+G2.4 needs that policy recorded and checked with real PostgreSQL evidence.
+
+Decision: add `docs/executor-cost-calibration-manifest.json`. It records the
+default thresholds: estimated cost cap100000, estimated row cap100000, 5 s
+statement timeout, 500 ms lock timeout and 15 s total timeout. It also records the
+EXPLAIN policy: guard before EXPLAIN, JSON format only, never ANALYZE, and same
+restricted identity/settings as execution.
+
+Rationale: the manifest makes the threshold/policy explicit without changing the
+runtime or benchmark. Cost if wrong: estimates are not perfect and can miss
+expensive work, so G2 keeps runtime deadlines and cancellation recovery as required
+backstops.
+
+Verification: the manifest test first failed because the file did not exist. After
+adding it, focused manifest/unit executor checks passed7. Real PostgreSQL checks
+for cost/estimated-row gates and transaction-local settings passed2. Focused
+security/executor tests passed104 and full no-env suite passed802/471skipped. Ruff
+lint, format and diff whitespace passed. No credential change, source/gold
+mutation, live model call, hosted action, raw run, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

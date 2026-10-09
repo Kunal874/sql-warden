@@ -1,0 +1,35 @@
+{
+  "contains": "executor threshold values and verification test names only",
+  "default_limits": {
+    "lock_timeout_ms": 500,
+    "max_estimated_cost": 100000,
+    "max_estimated_rows": 100000,
+    "statement_timeout_ms": 5000,
+    "total_timeout_ms": 15000
+  },
+  "excludes": [
+    "SQL text beyond fixed test names",
+    "result rows",
+    "credentials",
+    "model prompts"
+  ],
+  "explain_policy": {
+    "analyze": false,
+    "format": "EXPLAIN (FORMAT JSON)",
+    "guard_before_explain": true,
+    "identity": "same_restricted_dataset_identity_as_execution"
+  },
+  "format_version": 1,
+  "verification": {
+    "unit": [
+      "tests/test_executor.py::test_unchanged_sql_uses_guard_then_cost_then_cursor_then_rollback",
+      "tests/test_executor.py::test_wrong_identity_never_plans_or_executes",
+      "tests/test_executor.py::test_dataset_executor_uses_fixed_policy_identity_and_search_path",
+      "tests/test_executor.py::test_plan_denial_never_prepares_the_candidate"
+    ],
+    "postgres": [
+      "tests/test_executor_postgres.py::test_real_cost_and_estimated_row_gates",
+      "tests/test_executor_postgres.py::test_real_transaction_local_overrides_reset_after_release"
+    ]
+  }
+}

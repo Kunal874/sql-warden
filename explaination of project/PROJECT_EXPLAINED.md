@@ -1956,6 +1956,34 @@ showing a raw database traceback.
 configured row/byte/cell limits, so SQLWarden refuses to return a partial answer as
 complete.
 
+### G2.4 guarded EXPLAIN and cost calibration slice (2026-10-09)
+
+I recorded how SQLWarden checks query cost before execution.
+
+What changed:
+
+- A compact manifest now records the default estimated-cost and estimated-row caps.
+- It also records the rule that SQLWarden guards SQL before asking PostgreSQL for
+  an `EXPLAIN` plan.
+- The manifest says SQLWarden uses `EXPLAIN (FORMAT JSON)`, not `EXPLAIN ANALYZE`.
+  That matters because ANALYZE would actually run the query.
+- Real PostgreSQL checks confirm the cost and estimated-row gates still work.
+
+Checks: the manifest test first failed because the file did not exist. After adding
+the manifest, 7 focused manifest/unit executor checks passed and 2 real PostgreSQL
+checks passed. The full offline suite passed 802 tests and skipped 471
+database-only tests. Ruff lint and format passed too.
+
+New simple terms:
+
+**EXPLAIN** means asking PostgreSQL for an estimated plan before running a query.
+
+**EXPLAIN ANALYZE** means running the query while measuring it. SQLWarden does not
+use that for untrusted SQL cost checks.
+
+**Estimated cost** is PostgreSQL's guess about query expense. It helps block risky
+queries early, but it is not perfect, so timeouts still matter.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

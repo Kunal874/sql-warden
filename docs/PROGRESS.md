@@ -32,7 +32,7 @@ G1 core is implemented and committed locally through G1.9: schema catalog/retrie
 C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
 settings. G2.1/C4 now records the explicit guardrail contract. The G1/G2 interview
-drills and G2.4-G5/G7 remain unfinished. No official benchmark score.
+drills and G2.5-G5/G7 remain unfinished. No official benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -291,7 +291,7 @@ the optional interview drill.
 - [x] G2.1 / C4: reviewed functions, limits, cost thresholds and role-specific tenant design.
 - [x] G2.2: expand guard to at least 40 meaningful cases plus safe-gold acceptance audit.
 - [x] G2.3: expand executor settings/caps/deadlines/cancellation and sanitized error categories.
-- [ ] G2.4: guarded EXPLAIN, same identity/settings and calibrated cost checks.
+- [x] G2.4: guarded EXPLAIN, same identity/settings and calibrated cost checks.
 - [ ] G2.5: effective grants/default grants; real direct-connection permission tests.
 - [ ] G2.6: forced tenant RLS, separate tenant identities and boundary tests.
 - [ ] G2.7: untrusted data and explanation isolation tests with benign controls.
@@ -1388,6 +1388,25 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G2.4 guarded EXPLAIN and cost calibration
+
+G2.4 now has compact calibration evidence in
+`docs/executor-cost-calibration-manifest.json`. It records default estimated-cost
+and estimated-row thresholds, statement/lock/total timeouts, and the EXPLAIN policy:
+guard before EXPLAIN, `EXPLAIN (FORMAT JSON)`, never ANALYZE, and the same restricted
+dataset identity/settings as execution. It contains no result rows, credentials or
+model prompts.
+
+Verification: RED missing-manifest failure for
+`test_executor_cost_calibration_manifest_matches_query_limit_defaults`; after adding
+the manifest, the focused manifest/unit executor checks passed7. Real PostgreSQL
+checks `test_real_cost_and_estimated_row_gates` and
+`test_real_transaction_local_overrides_reset_after_release` passed2 with `.env.setup`
+and `.env.california`; focused security/executor tests passed104; full no-env suite
+passed802/471skipped; Ruff lint, format and diff whitespace passed. Next: commit
+as `feat(security): record guarded explain calibration`, then continue to G2.5
+grants/default-grants direct-connection tests.
 
 ### 2026-10-09 — G2.3 executor error-category contract
 

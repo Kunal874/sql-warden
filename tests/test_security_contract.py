@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 from sqlwarden.config import QueryLimits
 from sqlwarden.guard import CALIFORNIA_POLICY, CAST_TYPES, FUNCTION_NAMES, guard_sql
 from sqlwarden.security_contract import (
@@ -84,3 +87,21 @@ def test_executor_reason_contract_documents_stable_status_categories():
         "unsupported_result": "failed",
     }
     assert set(EXECUTOR_REASON_STATUS.values()) == {"ok", "blocked", "failed", "overflow"}
+
+
+def test_executor_cost_calibration_manifest_matches_query_limit_defaults():
+    manifest = json.loads(Path("docs/executor-cost-calibration-manifest.json").read_text())
+
+    assert manifest["default_limits"] == {
+        "max_estimated_cost": QueryLimits().max_estimated_cost,
+        "max_estimated_rows": QueryLimits().max_estimated_rows,
+        "statement_timeout_ms": QueryLimits().statement_timeout_ms,
+        "lock_timeout_ms": QueryLimits().lock_timeout_ms,
+        "total_timeout_ms": QueryLimits().total_timeout_ms,
+    }
+    assert manifest["explain_policy"] == {
+        "guard_before_explain": True,
+        "format": "EXPLAIN (FORMAT JSON)",
+        "analyze": False,
+        "identity": "same_restricted_dataset_identity_as_execution",
+    }
