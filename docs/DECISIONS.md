@@ -1824,6 +1824,38 @@ passed298 and the full no-env suite passed798/471skipped. Ruff lint, format and
 diff whitespace passed. No database object change, credential change, source/gold
 mutation, live model call, hosted action, raw run, remote or push occurred.
 
+## D-061 — G2.2 records guard coverage and safe-gold guard acceptance (2026-10-09)
+
+Context: G2.2 requires at least 40 meaningful guard cases and a safe-gold acceptance
+audit. Existing guard tests already exercise many safe/unsafe SQL boundaries, but
+the count and corrected-gold guard acceptance had not been recorded in one compact
+artifact.
+
+Decision: add `scripts/audit_guard_gold.py` and
+`docs/guard-gold-audit-manifest.json`. The script counts guard-case strings from
+the existing guard test module and audits all 424 usable corrected gold items by
+transpiling their corrected SQL and applying the pure guard. The tracked manifest
+stores only counts by status, database and reason; it excludes SQL text, question
+text, rows, credentials and prompts.
+
+Result: the guard corpus contains 148 counted cases: 46 safe, 40 unsafe and 62
+other guard-boundary cases. The corrected usable pool has 368 guard-accepted items
+and 56 guard-blocked items. All 56 blocked items are `function_not_allowed`, so
+future guard expansion can review those functions deliberately. This does not
+change benchmark labels, gold SQL, execution scoring or guard policy.
+
+Rationale: compact counts are enough to drive G2 work without committing sensitive
+or benchmark-answer material. Cost if wrong: counting test strings is a coverage
+proxy, not proof that every SQL attack is covered; G2.8 still owns the explicit
+attack suite with threat-specific success predicates.
+
+Verification: `tests/test_guard_audit.py` first failed because the audit script did
+not exist. After implementation, focused guard/audit tests passed198 and the full
+no-env suite passed800/471skipped. Ruff lint, format and diff whitespace passed.
+The script regenerated `docs/guard-gold-audit-manifest.json`. No database
+connection, SQL execution, credential change, source/gold mutation, live model
+call, hosted action, raw run, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

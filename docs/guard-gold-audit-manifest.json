@@ -1,0 +1,84 @@
+{
+  "blocked_reason_counts": {
+    "function_not_allowed": 56
+  },
+  "by_db": {
+    "california_schools": {
+      "accepted": 19,
+      "blocked": 5,
+      "transpile_failed": 0
+    },
+    "card_games": {
+      "accepted": 51,
+      "blocked": 0,
+      "transpile_failed": 0
+    },
+    "codebase_community": {
+      "accepted": 37,
+      "blocked": 4,
+      "transpile_failed": 0
+    },
+    "debit_card_specializing": {
+      "accepted": 15,
+      "blocked": 4,
+      "transpile_failed": 0
+    },
+    "european_football_2": {
+      "accepted": 35,
+      "blocked": 12,
+      "transpile_failed": 0
+    },
+    "financial": {
+      "accepted": 20,
+      "blocked": 6,
+      "transpile_failed": 0
+    },
+    "formula_1": {
+      "accepted": 42,
+      "blocked": 10,
+      "transpile_failed": 0
+    },
+    "student_club": {
+      "accepted": 35,
+      "blocked": 1,
+      "transpile_failed": 0
+    },
+    "superhero": {
+      "accepted": 49,
+      "blocked": 1,
+      "transpile_failed": 0
+    },
+    "thrombosis_prediction": {
+      "accepted": 30,
+      "blocked": 12,
+      "transpile_failed": 0
+    },
+    "toxicology": {
+      "accepted": 35,
+      "blocked": 1,
+      "transpile_failed": 0
+    }
+  },
+  "contains": "counts, database IDs, status categories and reason counts only",
+  "excludes": [
+    "SQL text",
+    "question text",
+    "result rows",
+    "credentials",
+    "model prompts"
+  ],
+  "format_version": 1,
+  "guard_case_inventory": {
+    "other_guard_cases": 62,
+    "safe_cases": 46,
+    "total_cases": 148,
+    "unsafe_cases": 40
+  },
+  "items": 424,
+  "source": "docs/gold-validity-manifest.json usable_items",
+  "source_sha256": "be0cfe82b401a2f911d55f5a1ba98d53b1ba3039aa3e299212a806010cf73b24",
+  "status_counts": {
+    "accepted": 368,
+    "blocked": 56
+  }
+}

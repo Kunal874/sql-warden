@@ -32,7 +32,7 @@ G1 core is implemented and committed locally through G1.9: schema catalog/retrie
 C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
 settings. G2.1/C4 now records the explicit guardrail contract. The G1/G2 interview
-drills and G2.2-G5/G7 remain unfinished. No official benchmark score.
+drills and G2.3-G5/G7 remain unfinished. No official benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -289,7 +289,7 @@ the optional interview drill.
 ### G2 — guardrails and sandbox
 
 - [x] G2.1 / C4: reviewed functions, limits, cost thresholds and role-specific tenant design.
-- [ ] G2.2: expand guard to at least 40 meaningful cases plus safe-gold acceptance audit.
+- [x] G2.2: expand guard to at least 40 meaningful cases plus safe-gold acceptance audit.
 - [ ] G2.3: expand executor settings/caps/deadlines/cancellation and sanitized error categories.
 - [ ] G2.4: guarded EXPLAIN, same identity/settings and calibrated cost checks.
 - [ ] G2.5: effective grants/default grants; real direct-connection permission tests.
@@ -1388,6 +1388,23 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G2.2 guard coverage and safe-gold acceptance audit
+
+G2.2 now has a compact guard coverage/gold audit in
+`docs/guard-gold-audit-manifest.json`, produced by
+`scripts/audit_guard_gold.py`. The audit records no SQL text, question text, result
+rows, credentials or prompts. It counts 148 existing guard case strings: 46 safe,
+40 unsafe and 62 other guard-boundary cases. On the 424 usable corrected gold
+items, the current pure guard accepts 368 and blocks 56; every blocked query is
+`function_not_allowed`. This is an audit result, not a benchmark-score change and
+not permission to execute the blocked SQL.
+
+Verification: RED missing-script failure for `tests/test_guard_audit.py`, then
+focused guard/audit tests passed198, full no-env suite passed800/471skipped, Ruff
+lint/format and diff whitespace passed, and the audit script regenerated the
+manifest. Next: commit as `feat(security): audit guard gold coverage`, then
+continue to G2.3 executor/error-category expansion.
 
 ### 2026-10-09 — G2.1/C4 guardrail contract slice
 

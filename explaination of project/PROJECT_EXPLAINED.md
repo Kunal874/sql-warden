@@ -1891,6 +1891,45 @@ before it runs. This is useful, but not perfect, so timeouts still stay enabled.
 another tenant. SQLWarden will use separate database roles for that later instead
 of trusting a changeable setting inside the SQL session.
 
+### G2.2 guard coverage and gold-audit slice (2026-10-09)
+
+I added a small read-only audit for the SQL guard.
+
+What changed:
+
+- The project now records how many guard test cases already exist.
+- It also checks the 424 usable corrected gold questions against the pure SQL guard.
+- The audit file stores only counts and reasons. It does not store question text,
+  SQL text, answer rows, credentials or model prompts.
+
+Result:
+
+- Existing guard test corpus count: 148 case strings.
+- Corrected usable gold items accepted by the current guard: 368.
+- Corrected usable gold items blocked by the current guard: 56.
+- All 56 blocked items were blocked because the query used a function that is not
+  currently reviewed/allowed.
+
+This does not change the benchmark and does not mean the blocked queries are bad.
+It means SQLWarden will not run them until their functions are reviewed and allowed
+on purpose.
+
+Checks: the audit test first failed because the script did not exist. After adding
+the script, 198 focused guard/audit tests passed. The full offline suite passed
+800 tests and skipped 471 database-only tests. Ruff lint and format passed, and
+the compact manifest was regenerated.
+
+New simple terms:
+
+**Guard coverage** means how many different SQL shapes the guard tests already
+check.
+
+**Safe-gold acceptance audit** means checking whether trusted reference SQL would
+pass the safety guard, without running it and without changing the reference data.
+
+**Function not allowed** means a SQL function is not on the reviewed allowlist yet,
+so the guard blocks it until we intentionally review it.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,
