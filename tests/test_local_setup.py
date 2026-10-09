@@ -26,9 +26,11 @@ def test_separates_bootstrap_credentials_from_the_runtime_environment(tmp_path):
             "WARDEN_APP_PASSWORD",
             "WARDEN_SCHOOLS_PASSWORD",
             "WARDEN_OTHER_PASSWORD",
+            "WARDEN_TENANT_A_PASSWORD",
+            "WARDEN_TENANT_B_PASSWORD",
         )
     )
-    assert len({setup[key] for key in setup if key.endswith("_PASSWORD")}) == 4
+    assert len({setup[key] for key in setup if key.endswith("_PASSWORD")}) == 6
 
 
 @pytest.mark.parametrize("existing", [".env", ".env.setup"])

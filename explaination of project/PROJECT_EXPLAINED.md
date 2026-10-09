@@ -62,18 +62,18 @@ It is not a finished public service yet.
 The first narrow AI question-to-database flow works for one checked question.
 The first local E0 evaluation is now corrected and recorded. The G1 local agent
 core is implemented through schema retrieval, prompts, voting, clarification seams
-and command-line loop settings. G2 has now recorded guard, cost and direct
-database-permission evidence through G2.5. The website and public release are not
-finished. G0's numbered checklist is complete except for the optional interview
-drill.
+and command-line loop settings. G2 has now recorded guard, cost, direct database
+permission and tenant-row-security evidence through G2.6. The website and public
+release are not finished. G0's numbered checklist is complete except for the
+optional interview drill.
 
 Where we are: 12 of the 12 numbered foundation tasks are complete. The query
 guard, limited runner, answer checker and first AI command are checked and
 reviewed. This is not the whole project's progress percentage: the agent,
 experiments, website and release still come later. The first small working
 demonstration, corrected E0 run, C2 model choice and G1 core implementation are
-complete locally. G2.1 through G2.5 are complete locally; tenant RLS, attack
-experiments, evaluation expansion, website and release still remain.
+complete locally. G2.1 through G2.6 are complete locally; untrusted-data tests,
+attack experiments, evaluation expansion, website and release still remain.
 
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
@@ -2022,6 +2022,41 @@ actions, even without help from the SQL guard.
 
 **ACL** means an access-control list. In simple words, it is a list of who can do
 what.
+
+### G2.6 tenant RLS slice (2026-10-09)
+
+I added a tiny tenant demo that proves PostgreSQL can hide rows for different
+tenants.
+
+What changed:
+
+- The local setup now creates two tenant database logins.
+- Both tenant logins read the same `tenant_demo.orders` table.
+- PostgreSQL row-level security is enabled and forced on that table.
+- Each tenant role has a policy that only shows its own row.
+- Changing `app.tenant_id` inside the SQL session does not change which rows are
+  visible. The database role is the real boundary.
+- The existing local ignored env files got two new tenant passwords, and the
+  existing local PostgreSQL database was updated with the tenant demo objects.
+  The passwords were not printed or committed.
+
+Checks: the setup test first failed because the tenant passwords were not created.
+After adding setup support, that test passed. The real tenant RLS tests passed 4
+checks against local PostgreSQL. The focused setup/boundary tests passed 51 tests
+and skipped 2 expected checks. The full configured suite passed 1275 tests and
+skipped 3 expected tests. Ruff lint and format passed too.
+
+New simple terms:
+
+**RLS** means row-level security. It lets PostgreSQL decide which rows a login can
+see.
+
+**Forced RLS** means even the table owner must follow the row-security rule.
+
+**Tenant** means one customer or user group sharing the same app but needing its
+data separated from other tenants.
+
+**Database role** means the login identity PostgreSQL uses for permissions.
 
 ## 7. How this notebook will be kept up to date
 

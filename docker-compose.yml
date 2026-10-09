@@ -10,6 +10,8 @@ services:
       WARDEN_APP_PASSWORD: ${WARDEN_APP_PASSWORD:?Missing app credential}
       WARDEN_SCHOOLS_PASSWORD: ${WARDEN_SCHOOLS_PASSWORD:?Missing schools credential}
       WARDEN_OTHER_PASSWORD: ${WARDEN_OTHER_PASSWORD:?Missing other credential}
+      WARDEN_TENANT_A_PASSWORD: ${WARDEN_TENANT_A_PASSWORD:?Missing tenant A credential}
+      WARDEN_TENANT_B_PASSWORD: ${WARDEN_TENANT_B_PASSWORD:?Missing tenant B credential}
     ports:
       - "127.0.0.1:${WARDEN_PG_PORT:-55432}:5432"
     volumes:

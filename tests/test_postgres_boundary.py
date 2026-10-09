@@ -14,6 +14,8 @@ ROLE_KEYS = {
     "warden_app": "WARDEN_APP_PASSWORD",
     "warden_bootstrap": "WARDEN_BOOTSTRAP_PASSWORD",
     "warden_sandbox_california_schools": "WARDEN_CALIFORNIA_PASSWORD",
+    "warden_sandbox_tenant_demo_a": "WARDEN_TENANT_A_PASSWORD",
+    "warden_sandbox_tenant_demo_b": "WARDEN_TENANT_B_PASSWORD",
 }
 
 
@@ -213,6 +215,48 @@ async def test_search_path_and_custom_settings_do_not_grant_other_dataset_access
         await conn.execute("SELECT set_config('app.tenant_id', '99', false)")
         with pytest.raises(asyncpg.InsufficientPrivilegeError):
             await conn.fetch("SELECT * FROM demo_other.canary")
+
+
+@pytest.mark.parametrize(
+    ("role", "own_item"),
+    [
+        ("warden_sandbox_tenant_demo_a", "tenant-a-visible"),
+        ("warden_sandbox_tenant_demo_b", "tenant-b-visible"),
+    ],
+)
+async def test_tenant_demo_uses_role_specific_forced_rls(role, own_item):
+    async with connected(role) as conn:
+        rows = await conn.fetch("SELECT item FROM tenant_demo.orders ORDER BY order_id")
+        assert [row["item"] for row in rows] == [own_item]
+        assert await conn.fetchval("SHOW default_transaction_read_only") == "on"
+        forced = await conn.fetchrow(
+            "SELECT relrowsecurity, relforcerowsecurity "
+            "FROM pg_class WHERE oid='tenant_demo.orders'::regclass"
+        )
+        assert tuple(forced) == (True, True)
+
+
+@pytest.mark.parametrize(
+    ("role", "other_role"),
+    [
+        ("warden_sandbox_tenant_demo_a", "warden_sandbox_tenant_demo_b"),
+        ("warden_sandbox_tenant_demo_b", "warden_sandbox_tenant_demo_a"),
+    ],
+)
+async def test_tenant_demo_rejects_mutable_setting_role_switch_and_writes(role, other_role):
+    async with connected(role) as conn:
+        await conn.execute("SELECT set_config('app.tenant_id','other',false)")
+        rows = await conn.fetch("SELECT item FROM tenant_demo.orders ORDER BY order_id")
+        assert len(rows) == 1
+        async with rolled_back(conn):
+            with pytest.raises(asyncpg.InsufficientPrivilegeError):
+                await conn.execute("SET ROLE " + other_role)
+        await conn.execute("SET default_transaction_read_only=off")
+        async with rolled_back(conn):
+            with pytest.raises(asyncpg.InsufficientPrivilegeError):
+                await conn.execute(
+                    "INSERT INTO tenant_demo.orders VALUES ('tenant_a', 99, 'blocked')"
+                )
 
 
 async def test_read_only_is_an_additional_transaction_boundary():

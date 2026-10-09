@@ -31,8 +31,8 @@ optional interview drill. This is checklist coverage, not overall project effort
 G1 core is implemented and committed locally through G1.9: schema catalog/retrieval,
 C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
 voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
-settings. G2.1-C4 through G2.5 now record the explicit guardrail/cost/grant
-evidence. The G1/G2 interview drills and G2.6-G5/G7 remain unfinished. No official
+settings. G2.1-C4 through G2.6 now record the explicit guardrail/cost/grant/RLS
+evidence. The G1/G2 interview drills and G2.7-G5/G7 remain unfinished. No official
 benchmark score.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
@@ -294,7 +294,7 @@ the optional interview drill.
 - [x] G2.3: expand executor settings/caps/deadlines/cancellation and sanitized error categories.
 - [x] G2.4: guarded EXPLAIN, same identity/settings and calibrated cost checks.
 - [x] G2.5: effective grants/default grants; real direct-connection permission tests.
-- [ ] G2.6: forced tenant RLS, separate tenant identities and boundary tests.
+- [x] G2.6: forced tenant RLS, separate tenant identities and boundary tests.
 - [ ] G2.7: untrusted data and explanation isolation tests with benign controls.
 - [ ] G2.8: at least 40 attacks, threat-specific success predicates; disposable-only E5 and false blocks.
 - [ ] G2.9: SECURITY with evidence and residual limitations.
@@ -1389,6 +1389,31 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-09 — G2.6 forced tenant RLS and separate identities
+
+G2.6 now adds a small `tenant_demo` schema to the local setup path. Fresh bootstrap
+creates two restricted tenant logins, `warden_sandbox_tenant_demo_a` and
+`warden_sandbox_tenant_demo_b`, with separate ignored passwords, no privileged
+flags, no inheritance, no BYPASSRLS and default read-only settings. The shared
+`tenant_demo.orders` table has row-level security enabled and forced. Role-specific
+SELECT policies expose only each tenant's own row. The boundary deliberately does
+not trust mutable `app.tenant_id`; changing that setting in-session does not change
+visible rows. SET ROLE and writes remain denied in direct-connection tests.
+
+Existing local setup was updated in place without printing secrets: two ignored
+tenant password keys were added to `.env.setup`/`.env`, and the tenant schema,
+roles, rows, grants and policies were applied to the local PostgreSQL volume.
+Tracked setup/bootstrap files now make new fresh setups create the same boundary.
+
+Verification: setup test first failed on missing tenant password keys. After the
+setup/bootstrap change, the setup test passed 1. The new real RLS tests first
+showed the read-only backstop firing before privilege denial; the test was corrected
+to disable default read-only before the rollback write probe. Final tenant RLS
+tests passed 4; focused setup/synthetic-boundary tests passed 51/2 skipped. Full
+configured suite passed 1275/3 skipped. Ruff lint, format and diff whitespace
+passed. Next: commit as `feat(security): add tenant rls demo boundary`, then
+continue to G2.7 untrusted data and explanation isolation.
 
 ### 2026-10-09 — G2.5 grants/default-grants direct permission evidence
 

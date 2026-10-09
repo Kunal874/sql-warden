@@ -17,6 +17,8 @@ def initialize(root: Path) -> None:
             "WARDEN_APP_PASSWORD",
             "WARDEN_SCHOOLS_PASSWORD",
             "WARDEN_OTHER_PASSWORD",
+            "WARDEN_TENANT_A_PASSWORD",
+            "WARDEN_TENANT_B_PASSWORD",
         )
     }
     setup = {"WARDEN_PG_PORT": "55432", "WARDEN_TEST_TARGET": "sqlwarden-local", **passwords}

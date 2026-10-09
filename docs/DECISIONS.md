@@ -1931,6 +1931,32 @@ permission checks passed 210 with `.env.setup`, `.env.california` and
 diff whitespace passed. No database object change, credential change, source/gold
 mutation, live model call, hosted action, raw run, remote or push occurred.
 
+## D-065 — G2.6 uses database roles, not mutable settings, for tenant RLS (2026-10-09)
+
+Context: BUILD_SPEC prefers two isolated tenant logins with role-specific forced
+RLS policies and rejects `current_setting('app.tenant_id')` as the sole boundary
+for arbitrary SQL. The earlier demo had dataset roles but no tenant RLS fixture.
+
+Decision: add a small `tenant_demo` schema to bootstrap with
+`warden_sandbox_tenant_demo_a` and `warden_sandbox_tenant_demo_b`. Both are
+restricted LOGIN roles with no privileged flags, no inheritance and no BYPASSRLS.
+The shared `tenant_demo.orders` table has row-level security enabled and forced,
+with one SELECT policy per tenant role. The server/database role chooses the
+tenant; a mutable `app.tenant_id` setting is ignored by the policy.
+
+Rationale: role-specific policies keep the independent boundary inside
+PostgreSQL instead of trusting model/user SQL or client-provided tenant IDs. Cost
+if wrong: this proves only the small synthetic tenant fixture and its direct
+boundary tests; wider tenant-aware runtime routing remains later work.
+
+Verification: the setup test first failed on missing tenant password keys. After
+adding tracked setup/bootstrap support and updating ignored local env files plus
+the existing local PostgreSQL volume, the setup test passed 1 and real tenant RLS
+tests passed 4. Focused setup/synthetic-boundary tests passed 51/2 skipped and
+full configured suite passed 1275/3 skipped. Ruff lint, format and diff whitespace
+passed. No source/gold mutation, benchmark change, model call, hosted action, raw
+run, remote or push occurred.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
