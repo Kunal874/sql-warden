@@ -59,9 +59,11 @@ class JsonDiskCache:
         if len(encoded.encode()) > self.max_bytes:
             raise ValueError("cache oversize")
         path = self.path_for(key)
+        _refuse_symlink(path.parent)
         if path.exists() or path.is_symlink():
             raise FileExistsError(path)
         path.parent.mkdir(parents=True, exist_ok=True)
+        _refuse_symlink(path.parent)
         temporary = path.with_name(path.name + ".tmp")
         if temporary.exists() or temporary.is_symlink():
             raise FileExistsError(temporary)
@@ -75,10 +77,12 @@ class JsonDiskCache:
 
     def read(self, key: CacheKey) -> dict[str, Any]:
         path = self.path_for(key)
+        _refuse_symlink(path.parent)
         if path.is_symlink():
             raise ValueError("cache symlink refused")
         try:
-            raw = path.read_bytes()
+            with path.open("rb") as stream:
+                raw = stream.read(self.max_bytes + 1)
         except OSError:
             raise FileNotFoundError(path) from None
         if len(raw) > self.max_bytes:
@@ -87,6 +91,8 @@ class JsonDiskCache:
             document = json.loads(raw.decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError):
             raise ValueError("cache corrupt") from None
+        if type(document) is not dict:
+            raise ValueError("cache corrupt")
         if document.get("key") != key.to_json() or type(document.get("payload")) is not dict:
             raise ValueError("cache corrupt")
         _refuse_forbidden(document["payload"])
@@ -97,3 +103,11 @@ def _refuse_forbidden(value: Any) -> None:
     text = json.dumps(value, sort_keys=True, ensure_ascii=True).lower()
     if any(term in text for term in FORBIDDEN_TERMS):
         raise ValueError("cache secret/gold storage refused")
+
+
+def _refuse_symlink(path: Path) -> None:
+    current = path
+    while current != current.parent:
+        if current.exists() and current.is_symlink():
+            raise ValueError("cache symlink refused")
+        current = current.parent

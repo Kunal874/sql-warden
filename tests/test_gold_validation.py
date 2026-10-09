@@ -173,7 +173,20 @@ def test_typed_canonicalization_is_lossless_and_preserves_duplicate_rows():
     assert canonical.count(validate_gold.canonical_row(("duplicate",))) == 2
     assert validate_gold.canonical_cell(1) != validate_gold.canonical_cell(True)
     assert validate_gold.canonical_cell(Decimal("1.2300")) == ("number", "1.23")
+    assert validate_gold.canonical_cell(Decimal("1.00000000000000000000000000001")) != (
+        validate_gold.canonical_cell(Decimal("1.00000000000000000000000000002"))
+    )
     assert validate_gold.canonical_cell(-0.0) == ("number", "0")
+
+
+def test_track_deadline_is_enforced_before_each_pair(monkeypatch):
+    ticks = iter([0.0, 1.0, 1801.0])
+    monkeypatch.setattr(validate_gold, "monotonic", lambda: next(ticks, 1801.0))
+    deadline = validate_gold.TrackDeadline(seconds=1800)
+
+    deadline.check()
+    with pytest.raises(validate_gold.LimitExceeded, match="track_timeout"):
+        deadline.check()
 
 
 @pytest.mark.parametrize("value", [float("nan"), float("inf"), object()])

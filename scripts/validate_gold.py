@@ -29,6 +29,7 @@ MAX_ROWS = 100_000
 MAX_RESULT_BYTES = 16 * 1024 * 1024
 MAX_CELL_BYTES = 1024 * 1024
 QUERY_TIMEOUT_SECONDS = 10
+TRACK_TIMEOUT_SECONDS = 30 * 60
 _SQLITE_DEADLINES: dict[int, float] = {}
 
 STATUSES = frozenset({"matched", "mismatched", "failed", "excluded"})
@@ -48,6 +49,7 @@ REASONS = frozenset(
         "permission_error",
         "query_error",
         "query_timeout",
+        "track_timeout",
         "row_limit",
         "result_bytes",
         "cell_bytes",
@@ -63,6 +65,18 @@ class ValidationError(ValueError):
 
 class LimitExceeded(ValidationError):
     """A stable resource-limit classification."""
+
+
+class TrackDeadline:
+    def __init__(self, *, seconds: float = TRACK_TIMEOUT_SECONDS):
+        self.deadline = monotonic() + seconds
+
+    def remaining(self) -> float:
+        return self.deadline - monotonic()
+
+    def check(self) -> None:
+        if self.remaining() <= 0:
+            raise LimitExceeded("track_timeout")
 
 
 def load_tracks(data_root: Path) -> dict[str, dict[int, dict]]:
@@ -290,8 +304,14 @@ def _decimal_text(value: Decimal) -> str:
         raise ValidationError("cell type refused")
     if value == 0:
         return "0"
-    normalized = value.normalize()
-    return format(normalized, "f")
+    text = format(value, "f")
+    if "." in text:
+        text = text.rstrip("0").rstrip(".")
+    if text.startswith("-0."):
+        return "-" + text[2:]
+    if text.startswith("0."):
+        return text
+    return text.lstrip("0") or "0"
 
 
 def canonical_cell(value):
@@ -693,6 +713,7 @@ async def validate_pair(connection, sqlite_path: Path, sqlite_sql: str, postgres
 
 
 async def validate_track(name: str, tracks: dict[str, dict], values: dict[str, str]):
+    track_deadline = TrackDeadline()
     original = tracks["bird_sqlite"]
     candidate = tracks[name]
     aligned, rejected = align_track(original, candidate)
@@ -719,6 +740,7 @@ async def validate_track(name: str, tracks: dict[str, dict], values: dict[str, s
             if tuple(identity) != ("sqlwarden", "warden_sandbox_" + db_id):
                 raise ValidationError("restricted identity differs")
             for identifier, source, item in grouped[db_id]:
+                track_deadline.check()
                 sqlite_sql = item["SQL"] if name.startswith("arcwise_") else source["SQL"]
                 try:
                     postgres_sql = (
@@ -750,6 +772,7 @@ async def validate_all(data_root: Path, values: dict[str, str], tracks_to_run: l
             "rows": MAX_ROWS,
             "result_bytes": MAX_RESULT_BYTES,
             "cell_bytes": MAX_CELL_BYTES,
+            "track_seconds": TRACK_TIMEOUT_SECONDS,
         },
         "tracks": reports,
     }

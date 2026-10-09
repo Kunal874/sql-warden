@@ -79,6 +79,7 @@ def test_real_gold_manifest_freezes_exactly_100_development_ids():
     assert document["split"]["usable_id_sha256"] == protocol.hash_ids(
         sorted(document["split"]["dev_ids"] + document["split"]["held_out_ids"])
     )
+    assert document["metrics"]["bootstrap"]["samples"] == 10_000
     rendered = json.dumps(document)
     assert "SELECT" not in rendered
     assert "question" not in rendered.lower()

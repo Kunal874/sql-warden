@@ -66,6 +66,18 @@ def test_cache_refuses_corruption_symlink_oversize_and_secret_gold_storage(tmp_p
         cache.read(key)
     path.unlink()
 
+    path.write_text("[]", encoding="utf-8")
+    with pytest.raises(ValueError, match="corrupt"):
+        cache.read(key)
+    path.unlink()
+
+    with pytest.raises(ValueError, match="oversize"):
+        cache.write(key, {"content": "x" * 100})
+    with pytest.raises(ValueError, match="secret"):
+        cache.write(replace(_key(), sample_id="secret"), {"status": "ok"})
+    with pytest.raises(ValueError, match="secret"):
+        cache.write(_key(), {"gold_sql": "SELECT 1"})
+
     target = tmp_path / "target.json"
     target.write_text("{}", encoding="utf-8")
     try:
@@ -76,12 +88,16 @@ def test_cache_refuses_corruption_symlink_oversize_and_secret_gold_storage(tmp_p
         cache.read(key)
     path.unlink()
 
+
+def test_cache_reads_are_bounded_before_loading_full_file(tmp_path):
+    cache = JsonDiskCache(tmp_path, max_bytes=8)
+    key = _key()
+    path = cache.path_for(key)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(b"x" * 128)
+
     with pytest.raises(ValueError, match="oversize"):
-        cache.write(key, {"content": "x" * 100})
-    with pytest.raises(ValueError, match="secret"):
-        cache.write(replace(_key(), sample_id="secret"), {"status": "ok"})
-    with pytest.raises(ValueError, match="secret"):
-        cache.write(_key(), {"gold_sql": "SELECT 1"})
+        cache.read(key)
 
 
 def test_cache_file_contains_no_unbounded_prompt_material(tmp_path):

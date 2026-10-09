@@ -1,5 +1,6 @@
 import json
 
+import httpx
 import pytest
 
 from scripts import run_e0
@@ -35,6 +36,24 @@ def test_schema_serialization_is_complete_and_bounded():
     assert "foreign key school(district_id) -> district.id" in rendered
     with pytest.raises(evaluation.EvaluationError, match="schema budget"):
         evaluation.serialize_schema(schema, max_bytes=20)
+
+
+def test_schema_serialization_preserves_long_descriptions_until_budget_refuses():
+    long_description = "important " * 40
+    schema = {
+        "tables": {
+            "school": {
+                "description": "",
+                "primary_key": [],
+                "foreign_keys": [],
+                "columns": [{"name": "note", "type": "TEXT", "description": long_description}],
+            }
+        }
+    }
+
+    rendered = evaluation.serialize_schema(schema, max_bytes=4096)
+
+    assert long_description.strip() in rendered
 
 
 def test_prompt_separates_schema_question_and_reference_data():
@@ -80,6 +99,7 @@ class FakeProvider:
         return {
             "content": self.content,
             "usage": {"prompt_tokens": 10, "completion_tokens": 4},
+            "memory": {"vram_bytes": 123},
             "seconds": 0.25,
             "model": model_config["alias"],
         }
@@ -105,7 +125,55 @@ async def test_single_item_generation_is_one_call_no_retry_and_no_gold():
     assert record["sql"] == "SELECT 1"
     assert record["live_call"] is True
     assert record["usage"] == {"prompt_tokens": 10, "completion_tokens": 4}
+    assert record["model_alias"] == "local-qwen"
+    assert record["model_digest"] == "digest"
     assert "gold" not in json.dumps(record["messages"]).lower()
+
+
+@pytest.mark.asyncio
+async def test_generation_failure_preserves_provider_measurements_without_sql():
+    provider = FakeProvider(content="not JSON")
+
+    record = await evaluation.generate_item(
+        provider,
+        {
+            "question_id": 9,
+            "db_id": "financial",
+            "question": "Count accounts",
+            "schema_text": "table account\ncolumn account.account_id BIGINT",
+        },
+        model_config={"name": "qwen", "alias": "local-qwen", "digest": "digest"},
+    )
+
+    assert record["status"] == "generation_failed"
+    assert record["reason"] == "model output invalid"
+    assert record["usage"] == {"prompt_tokens": 10, "completion_tokens": 4}
+    assert record["seconds"] == 0.25
+    assert record["memory"] == {"vram_bytes": 123}
+    assert record["model_alias"] == "local-qwen"
+    assert "sql" not in record
+
+
+@pytest.mark.asyncio
+async def test_provider_transport_timeout_is_sanitized_generation_failure():
+    class TimeoutProvider:
+        async def complete(self, messages, *, model_config):
+            raise httpx.ReadTimeout("PRIVATE_CANARY")
+
+    record = await evaluation.generate_item(
+        TimeoutProvider(),
+        {
+            "question_id": 10,
+            "db_id": "financial",
+            "question": "Count accounts",
+            "schema_text": "table account\ncolumn account.account_id BIGINT",
+        },
+        model_config={"name": "qwen", "alias": "local-qwen", "digest": "digest"},
+    )
+
+    assert record["status"] == "generation_failed"
+    assert record["reason"] == "model_timeout"
+    assert "PRIVATE_CANARY" not in json.dumps(record)
 
 
 @pytest.mark.asyncio
@@ -148,6 +216,29 @@ def test_atomic_records_refuse_overwrite_and_mark_interrupted_pending(tmp_path):
         "status": "pending",
         "reason": "interrupted",
     }
+
+
+def test_resume_record_requires_matching_provenance():
+    record = {
+        "question_id": 7,
+        "db_id": "financial",
+        "model": "qwen",
+        "model_alias": "local-qwen",
+        "model_digest": "digest",
+        "prompt_sha256": "a" * 64,
+        "schema_sha256": "b" * 64,
+        "data_sha256": "c" * 64,
+        "label_sha256": "d" * 64,
+        "git_commit": "e" * 40,
+        "git_dirty": False,
+        "status": "correct",
+    }
+
+    run_e0.validate_resume_record(record, record)
+
+    changed = record | {"model_digest": "changed"}
+    with pytest.raises(evaluation.EvaluationError, match="resume provenance"):
+        run_e0.validate_resume_record(record, changed)
 
 
 def test_summary_uses_exact_denominator_and_seeded_interval():
@@ -214,6 +305,9 @@ def test_score_execution_categories_use_complete_gold_comparison():
     incorrect = evaluation.score_execution(
         generated, {"status": "ok", "rows": [(2, "a")]}, gold_rows=[(1, "a")]
     )
+    set_match = evaluation.score_execution(
+        generated, {"status": "ok", "rows": [(1,)]}, gold_rows=[(1,), (1,)]
+    )
     blocked = evaluation.score_execution(
         generated, {"status": "blocked", "reason": "table_not_allowed"}, gold_rows=[(1, "a")]
     )
@@ -222,6 +316,7 @@ def test_score_execution_categories_use_complete_gold_comparison():
     )
 
     assert correct["status"] == "correct"
+    assert set_match["status"] == "correct"
     assert incorrect["status"] == "incorrect"
     assert blocked["status"] == "blocked"
     assert failed["status"] == "failed"

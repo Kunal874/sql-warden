@@ -11,6 +11,7 @@ from typing import Any
 
 DEFAULT_DEV_COUNT = 100
 DEFAULT_SEED = 20261008
+DEFAULT_BOOTSTRAP_SAMPLES = 10_000
 
 
 class ProtocolError(ValueError):
@@ -86,7 +87,7 @@ def build_protocol(
         "metrics": {
             "bootstrap": {
                 "statistic": "accuracy",
-                "samples": 1000,
+                "samples": DEFAULT_BOOTSTRAP_SAMPLES,
                 "seed": seed,
                 "interval": "percentile_95",
                 "empty_policy": "null_interval",

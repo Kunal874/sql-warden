@@ -9,8 +9,11 @@ from __future__ import annotations
 import argparse
 import asyncio
 import csv
+import hashlib
 import json
 import os
+import re
+import subprocess
 import time
 from pathlib import Path
 from typing import Any
@@ -27,6 +30,7 @@ from scripts.validate_gold import (
 )
 from sqlwarden.evaluation import (
     EvaluationError,
+    build_prompt,
     generate_item,
     score_execution,
     serialize_schema,
@@ -53,6 +57,8 @@ MODELS = {
         "digest": "b00066f4a0af314f23919f5644e49e37f8ec7210ecd9cc2ae4236f43ef1d9c2b",
         "context_tokens": 2048,
         "max_output_tokens": 1024,
+        "generation_timeout_seconds": 120,
+        "total_timeout_seconds": 150,
     },
     "arctic": {
         "name": "arctic",
@@ -60,6 +66,8 @@ MODELS = {
         "digest": "d4e34b35065d29da2566b3b201d9e6bd54d005c565e1e182a9e318086168b19d",
         "context_tokens": 8192,
         "max_output_tokens": 1024,
+        "generation_timeout_seconds": 120,
+        "total_timeout_seconds": 150,
     },
 }
 
@@ -199,6 +207,10 @@ def build_items(limit: int | None = None) -> list[dict[str, Any]]:
     tracks = load_tracks(DATA)
     _, audit = load_specs()
     by_id = {item["question_id"]: item for item in gold_manifest["usable_items"]}
+    evidence_sha256 = gold_manifest["evidence"]["sha256"]
+    label_sha256 = hashlib.sha256(GOLD.read_bytes()).hexdigest()
+    git_commit = _git_commit()
+    git_dirty = _git_dirty()
     selected_ids = protocol["split"]["dev_ids"][:limit]
     schema_cache = {}
     items = []
@@ -218,6 +230,10 @@ def build_items(limit: int | None = None) -> list[dict[str, Any]]:
                 "gold_sql": transpile_corrected(
                     corrected["SQL"], tables=audit["databases"][db_id]["tables"]
                 ),
+                "data_sha256": evidence_sha256,
+                "label_sha256": label_sha256,
+                "git_commit": git_commit,
+                "git_dirty": git_dirty,
             }
         )
     return items
@@ -225,36 +241,44 @@ def build_items(limit: int | None = None) -> list[dict[str, Any]]:
 
 async def run_item(model_name: str, provider, item: dict[str, Any], values: dict[str, str]) -> dict:
     config = MODELS[model_name]
-    record = await generate_item(provider, item, model_config=config)
-    if record["status"] != "generated":
-        return record
-    decision = guard_sql(record["sql"], DATASET_POLICIES[item["db_id"]])
-    if not decision.accepted:
-        return score_execution(
-            record,
-            {"status": "blocked", "reason": decision.reason},
-            gold_rows=[],
-        )
     try:
-        password = values[dataset_password_key(item["db_id"])]
-        async with open_dataset_executor(item["db_id"], password) as executor:
-            execution = await executor.execute(decision.sql)
-        gold_rows = await _gold_rows(item, values)
-    except (KeyError, ExecutorLifecycleError, ValidationError):
+        async with asyncio.timeout(config["total_timeout_seconds"]):
+            record = await generate_item(provider, item, model_config=config)
+            if record["status"] != "generated":
+                return record
+            decision = guard_sql(record["sql"], DATASET_POLICIES[item["db_id"]])
+            if not decision.accepted:
+                return score_execution(
+                    record,
+                    {"status": "blocked", "reason": decision.reason},
+                    gold_rows=[],
+                )
+            try:
+                password = values[dataset_password_key(item["db_id"])]
+                async with open_dataset_executor(item["db_id"], password) as executor:
+                    execution = await executor.execute(decision.sql)
+                gold_rows = await _gold_rows(item, values)
+            except (KeyError, ExecutorLifecycleError, ValidationError):
+                return score_execution(
+                    record,
+                    {"status": "failed", "reason": "execution_failed"},
+                    gold_rows=[],
+                )
+            return score_execution(
+                record,
+                {
+                    "status": execution.status,
+                    "reason": execution.reason,
+                    "rows": list(execution.rows),
+                },
+                gold_rows=gold_rows,
+            )
+    except TimeoutError:
         return score_execution(
-            record,
-            {"status": "failed", "reason": "execution_failed"},
+            expected_resume_record(model_name, item) | {"status": "generated", "reason": "ok"},
+            {"status": "failed", "reason": "total_timeout"},
             gold_rows=[],
         )
-    return score_execution(
-        record,
-        {
-            "status": execution.status,
-            "reason": execution.reason,
-            "rows": list(execution.rows),
-        },
-        gold_rows=gold_rows,
-    )
 
 
 async def _gold_rows(item: dict[str, Any], values: dict[str, str]):
@@ -276,15 +300,20 @@ async def run_models(model_names: list[str], *, limit: int | None, resume: bool)
     for model_name in model_names:
         provider = OllamaProvider()
         records = []
-        for item in items:
-            raw_path = RAW / model_name / f"{item['question_id']}.json"
-            if resume and raw_path.exists():
-                records.append(load_json(raw_path))
-                continue
-            record = await run_item(model_name, provider, item, values)
-            write_atomic_record(raw_path, record)
-            records.append(record)
-        await unload_model(MODELS[model_name])
+        try:
+            for item in items:
+                raw_path = RAW / model_name / f"{item['question_id']}.json"
+                expected = expected_resume_record(model_name, item)
+                if resume and raw_path.exists():
+                    record = load_json(raw_path)
+                    validate_resume_record(record, expected)
+                    records.append(record)
+                    continue
+                record = await run_item(model_name, provider, item, values)
+                write_atomic_record(raw_path, record)
+                records.append(record)
+        finally:
+            await unload_model(MODELS[model_name])
         summaries[model_name] = summarize_model(
             model_name,
             records,
@@ -308,6 +337,83 @@ async def run_models(model_names: list[str], *, limit: int | None, resume: bool)
     SUMMARY.parent.mkdir(parents=True, exist_ok=True)
     SUMMARY.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return summary
+
+
+PROVENANCE_KEYS = (
+    "question_id",
+    "db_id",
+    "model",
+    "model_alias",
+    "model_digest",
+    "prompt_sha256",
+    "schema_sha256",
+    "data_sha256",
+    "label_sha256",
+    "git_commit",
+    "git_dirty",
+)
+
+
+def expected_resume_record(model_name: str, item: dict[str, Any]) -> dict[str, Any]:
+    config = MODELS[model_name]
+    messages = build_prompt(item["question"], item["schema_text"], model=config["name"])
+    return {
+        "question_id": item["question_id"],
+        "db_id": item["db_id"],
+        "model": config["name"],
+        "model_alias": config["alias"],
+        "model_digest": config["digest"],
+        "prompt_sha256": _hash_json(messages),
+        "schema_sha256": hashlib.sha256(item["schema_text"].encode("utf-8")).hexdigest(),
+        "data_sha256": item["data_sha256"],
+        "label_sha256": item["label_sha256"],
+        "git_commit": item["git_commit"],
+        "git_dirty": item["git_dirty"],
+    }
+
+
+def validate_resume_record(record: dict[str, Any], expected: dict[str, Any]) -> None:
+    if any(record.get(key) != expected.get(key) for key in PROVENANCE_KEYS):
+        raise EvaluationError("resume provenance mismatch")
+
+
+def _hash_json(value: Any) -> str:
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, ensure_ascii=False).encode("utf-8")
+    ).hexdigest()
+
+
+def _git_commit() -> str:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (OSError, subprocess.SubprocessError):
+        raise EvaluationError("git provenance unavailable") from None
+    commit = result.stdout.strip()
+    if not re.fullmatch(r"[a-f0-9]{40}", commit):
+        raise EvaluationError("git provenance unavailable")
+    return commit
+
+
+def _git_dirty() -> bool:
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=no"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (OSError, subprocess.SubprocessError):
+        raise EvaluationError("git provenance unavailable") from None
+    return bool(result.stdout.strip())
 
 
 def main() -> int:

@@ -9,10 +9,14 @@ from __future__ import annotations
 import json
 import re
 import statistics
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
-from scripts.validate_gold import canonical_rows
+import httpx
+
+from sqlwarden.comparator import compare_ex
+from sqlwarden.executor import QueryResult
 from sqlwarden.protocol import bootstrap_accuracy_interval
 
 
@@ -96,6 +100,7 @@ def extract_sql(content: str) -> str:
 
 async def generate_item(provider, item: dict[str, Any], *, model_config: dict[str, str]) -> dict:
     messages = build_prompt(item["question"], item["schema_text"], model=model_config["name"])
+    provenance = _provenance(item, model_config, messages)
     prompt_tokens = _conservative_token_estimate(json.dumps(messages, ensure_ascii=False))
     context_tokens = model_config.get("context_tokens")
     output_tokens = model_config.get("max_output_tokens")
@@ -111,9 +116,12 @@ async def generate_item(provider, item: dict[str, Any], *, model_config: dict[st
             "status": "generation_failed",
             "reason": "prompt_budget",
             "live_call": False,
+            **provenance,
         }
+    response = {}
     try:
-        response = await provider.complete(messages, model_config=model_config)
+        async with asyncio_timeout(model_config.get("generation_timeout_seconds", 120)):
+            response = await provider.complete(messages, model_config=model_config)
         sql = extract_sql(response["content"])
     except EvaluationError as error:
         return {
@@ -123,7 +131,35 @@ async def generate_item(provider, item: dict[str, Any], *, model_config: dict[st
             "status": "generation_failed",
             "reason": str(error),
             "messages": messages,
+            "usage": _safe_usage(response.get("usage")),
+            "memory": response.get("memory") if type(response.get("memory")) is dict else None,
+            "seconds": response.get("seconds")
+            if type(response.get("seconds")) in (int, float)
+            else None,
             "live_call": True,
+            **provenance,
+        }
+    except (TimeoutError, httpx.TimeoutException):
+        return {
+            "question_id": item["question_id"],
+            "db_id": item["db_id"],
+            "model": model_config["name"],
+            "status": "generation_failed",
+            "reason": "model_timeout",
+            "messages": messages,
+            "live_call": True,
+            **provenance,
+        }
+    except (KeyError, TypeError, ValueError, UnicodeError, RecursionError):
+        return {
+            "question_id": item["question_id"],
+            "db_id": item["db_id"],
+            "model": model_config["name"],
+            "status": "generation_failed",
+            "reason": "model_response_invalid",
+            "messages": messages,
+            "live_call": True,
+            **provenance,
         }
     return {
         "question_id": item["question_id"],
@@ -133,12 +169,11 @@ async def generate_item(provider, item: dict[str, Any], *, model_config: dict[st
         "reason": "ok",
         "sql": sql,
         "messages": messages,
-        "usage": response.get("usage"),
+        "usage": _safe_usage(response.get("usage")),
         "memory": response.get("memory"),
         "seconds": response.get("seconds"),
         "live_call": True,
-        "model_alias": model_config["alias"],
-        "model_digest": model_config["digest"],
+        **provenance,
     }
 
 
@@ -243,17 +278,26 @@ def score_execution(
         "question_id": generated["question_id"],
         "db_id": generated["db_id"],
         "model": generated["model"],
+        "sql": generated.get("sql"),
+        "messages": generated.get("messages"),
         "seconds": generated.get("seconds"),
         "usage": generated.get("usage"),
         "memory": generated.get("memory"),
+        "model_alias": generated.get("model_alias"),
+        "model_digest": generated.get("model_digest"),
+        "prompt_sha256": generated.get("prompt_sha256"),
+        "schema_sha256": generated.get("schema_sha256"),
+        "data_sha256": generated.get("data_sha256"),
+        "label_sha256": generated.get("label_sha256"),
+        "git_commit": generated.get("git_commit"),
     }
     status = execution.get("status")
     if status == "ok":
-        base["status"] = (
-            "correct"
-            if canonical_rows(execution.get("rows", [])) == canonical_rows(gold_rows)
-            else "incorrect"
+        comparison = compare_ex(
+            QueryResult("ok", "ok", rows=tuple(tuple(row) for row in execution.get("rows", []))),
+            QueryResult("ok", "ok", rows=tuple(tuple(row) for row in gold_rows)),
         )
+        base["status"] = "correct" if comparison.score == 1 else "incorrect"
         base["reason"] = "ex_match" if base["status"] == "correct" else "result_mismatch"
     elif status == "blocked":
         base.update(status="blocked", reason=execution.get("reason", "blocked"))
@@ -271,8 +315,44 @@ def _percentile(values: list[float], quantile: float) -> float:
 def _clean_text(value: str) -> str:
     if not isinstance(value, str):
         return ""
-    return " ".join(value.split())[:240]
+    return " ".join(value.split())
 
 
 def _conservative_token_estimate(text: str) -> int:
     return max(1, (len(text.encode("utf-8")) + 2) // 3)
+
+
+def _provenance(item: dict[str, Any], model_config: dict[str, Any], messages: list[dict]) -> dict:
+    return {
+        "model_alias": model_config["alias"],
+        "model_digest": model_config["digest"],
+        "prompt_sha256": _hash_json(messages),
+        "schema_sha256": sha256(item["schema_text"].encode("utf-8")).hexdigest(),
+        "data_sha256": item.get("data_sha256", ""),
+        "label_sha256": item.get("label_sha256", ""),
+        "git_commit": item.get("git_commit", ""),
+        "git_dirty": bool(item.get("git_dirty", False)),
+    }
+
+
+def _hash_json(value: Any) -> str:
+    return sha256(json.dumps(value, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
+
+
+def _safe_usage(value: Any) -> dict[str, int | None] | None:
+    if type(value) is not dict:
+        return None
+    prompt = value.get("prompt_tokens")
+    completion = value.get("completion_tokens")
+    return {
+        "prompt_tokens": prompt if type(prompt) is int and prompt >= 0 else None,
+        "completion_tokens": completion if type(completion) is int and completion >= 0 else None,
+    }
+
+
+def asyncio_timeout(seconds: Any):
+    import asyncio
+
+    if type(seconds) not in (int, float) or seconds <= 0:
+        seconds = 120
+    return asyncio.timeout(seconds)
