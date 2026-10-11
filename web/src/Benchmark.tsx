@@ -21,6 +21,7 @@ type Condition = {
   answered: { count: number; rate: number };
   answered_only_ex: { rate: number | null };
 };
+type ChartRow = { label: string; rate: number; tip: string };
 type Comparison = {
   left: string;
   right: string;
@@ -109,6 +110,12 @@ function SplitView({ split }: { split: Split }) {
     ...split.conditions[key],
     rate: split.conditions[key].ex.rate,
   }));
+  // Only the plotted value: extra numeric fields (n, abstained) skew Recharts' scale.
+  const chartRows: ChartRow[] = rows.map((row) => ({
+    label: row.label,
+    rate: row.rate,
+    tip: `${row.ex.count}/${row.n} (${ci(row.ex.exact)})`,
+  }));
   const loop = split.conditions.ret_n3_k1;
   const single = split.conditions.ret_n1_k0;
   const full = split.conditions.full_n1;
@@ -123,16 +130,19 @@ function SplitView({ split }: { split: Split }) {
       <h3>Execution accuracy by loop setting</h3>
       <div className="chart" role="img" aria-label="Execution accuracy by loop setting; table below">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={rows} layout="vertical" margin={{ left: 8, right: 24 }}>
+          <BarChart data={chartRows} layout="vertical" margin={{ left: 8, right: 24 }}>
             <CartesianGrid horizontal={false} stroke="var(--grid)" />
-            <XAxis type="number" domain={[0, 1]} tickFormatter={pct} stroke="var(--muted)" />
+            <XAxis
+              type="number"
+              dataKey="rate"
+              domain={[0, 1]}
+              tickFormatter={pct}
+              stroke="var(--muted)"
+            />
             <YAxis type="category" dataKey="label" width={190} stroke="var(--muted)" />
             <Tooltip
               cursor={{ fill: "var(--hover)" }}
-              formatter={(_value, _name, item) => {
-                const row = item.payload as (typeof rows)[number];
-                return [`${row.ex.count}/${row.n} (${ci(row.ex.exact)})`, "EX"];
-              }}
+              formatter={(_value, _name, item) => [(item.payload as ChartRow).tip, "EX"]}
             />
             <Bar dataKey="rate" fill="var(--series-1)" radius={[0, 4, 4, 0]} barSize={16} />
           </BarChart>
