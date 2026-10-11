@@ -361,7 +361,7 @@ the optional interview drill.
 ### G6 — optional follow-on (not a release blocker)
 
 - [ ] G6.1 / C8: explicit go/no-go, training deps/environment/model/dialect/time/disk choices.
-- [ ] G6.2: tiny GPU training feasibility run.
+- [x] G6.2: tiny GPU training feasibility run (20 steps, clean d865f20, saved/reloaded adapter).
 - [ ] G6.3: frozen data, database-based validation split and project leakage checks.
 - [ ] G6.4: logged training, checkpoints and memory.
 - [ ] G6.5: merge/conversion/GGUF feasibility, local serving and comparable E9.
@@ -1409,6 +1409,27 @@ Pre-flight contract reconciliation:
 ## Handoff
 
 ### 2026-10-12 — G6 pilot preflight, current action
+
+Pilot complete: clean d865f20, 20 actual NF4/QLoRA optimizer steps, 1,089,536
+trainable adapter parameters, 28.625 s training/save, peak reserved 3,493,855,232
+bytes (3.254 GiB). Synthetic loss 0.20414→0.00201. Saved adapter SHA-256
+9628d848cd809e7879e8a703c3319f9aa95b4d597e14b90ecb7eafebca05acfd matches
+the file; changed weights and reload equality checked, bounded response generated.
+GPU returns to zero model memory after process exits. No real-question accuracy
+claim. `results/G6_pilot/summary.json` stores compact evidence only.
+
+The child completed but direct launcher publication failed because script-mode
+sys.path lacked the repo root. Regression test reproduced that exact import error;
+fixed root setup and added `--finalize` to publish completed evidence without
+retraining. Report's quantized tensor numel is now correctly labelled storage
+elements, not logical model parameters; original ignored evidence preserved.
+Full-data preflight: 42 European Football family examples excluded; other 6559
+labels structurally convert. Important data-quality choice (transpile-only vs
+execution-verified additional databases) pending user answer. G6.3+ remain open.
+User answered: use structurally checked converted labels, explicitly execution-
+unverified. Proceed with database-separated train/validation and E9 on existing
+verified evaluation questions. Pilot recovery checkpoint: 944 passed/475 expected
+skips (8.90 s), one existing httpx warning; lint/111-file format/whitespace pass.
 
 Approval update: Kunal approved all presented pilot plans and choices. Training
 environment installed/locked; actual CUDA/NF4 forward/backward passed. Runtime

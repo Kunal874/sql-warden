@@ -2656,6 +2656,30 @@ training, and it does not prove those answers execute correctly in PostgreSQL.
 The first training launches stopped at the RAM check. You closed unused apps;
 we will now retry with the model already downloaded.
 
+### The first real GPU training run passed (2026-10-12)
+
+The small Qwen model completed 20 learning updates. It trained about 1.09 million
+extra weights in about 29 seconds, using at most 3.25 GB of reserved GPU memory.
+We saved those weights, loaded them again and checked they were identical. The
+loaded model then produced an answer. The GPU was released when the program ended.
+
+Training loss fell from about 0.20 to 0.002 on the invented examples. That means
+it learned these examples; it does not prove it answers new database questions
+better. A launcher bug stopped the summary being saved after training. A new
+test caught the script path problem; we fixed it and recovered the completed
+record without training again.
+
+We also spotted a training/test overlap risk: the two European Football datasets
+have related names. We excluded that whole family. The remaining 6,559 labels
+convert to PostgreSQL syntax, but their converted results are not verified yet.
+The important choice is whether to train with that disclosed limitation or first
+spend more time and disk verifying additional databases.
+
+GPU memory reserved means memory PyTorch keeps available for reuse. Leakage
+means training on examples too closely related to the final evaluation, making
+the score look better than it should. Generalization means answering new cases,
+instead of just remembering the training examples. Full training and E9 are next.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

@@ -2433,6 +2433,33 @@ Costs if wrong: archive ETag is not a full-content SHA-256, and source SQLite
 labels still need PostgreSQL conversion/audit. No train/validation split or
 label execution validity is claimed by acquiring these files.
 
+## D-086 — Pilot passes; recover finalization without repeating training (2026-10-12)
+
+The actual 20-step pilot at clean d865f20 completed, changed LoRA weights, saved
+and reloaded the adapter exactly, then generated a nonempty bounded response.
+28.625 s training/save, peak reserved 3.254 GiB, 1,089,536 trainable parameters.
+Loss fell 0.20414→0.00201 on eight invented examples. This proves local GPU
+feasibility, not execution accuracy or generalization. All weights remain ignored.
+
+The parent failed after the completed child because script-mode sys.path omitted
+the repo root. Fix reproduced test-first; `--finalize` validates the existing
+evidence and publishes it without another GPU run. Quantized `.numel()` counts
+packed storage rather than logical parameters, so rename that metadata field;
+the raw original evidence and adapter hash remain intact. Costs if wrong: the
+pilot's short synthetic sequences understate full-schema training memory/time.
+Existing checkpoint/generation-option warnings are recorded in the ignored log;
+their measured run still passed save/reload and finite-loss controls.
+
+## D-087 — PostgreSQL transpile-only labels explicitly accepted (2026-10-12)
+
+Kunal chose "Use structurally checked converted labels, explicitly marked
+execution-unverified" after the pilot. Use official filtered BIRD training inputs,
+database-family-separated training/validation, project leakage checks and a fixed
+base-versus-tuned E9 on verified PostgreSQL evaluation questions. Do not claim
+converted training labels are execution-verified. Costs if wrong: conversion
+noise may improve or worsen scores or teach incorrect PostgreSQL behavior; the
+real comparison must measure it. No tuning on existing held-out outcomes.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

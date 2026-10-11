@@ -17,7 +17,8 @@ huggingface-hub; standard-library JSON instead of a dataset library.
 
 Kunal approved pursuing fine-tuning for resume value and all presented pilot
 choices on 2026-10-12. The separate environment is installed and locked, and an
-actual CUDA/NF4 forward/backward probe passes. No model training has run yet.
+actual CUDA/NF4 forward/backward probe passes. The actual 20-step pilot passed
+at clean d865f20; report finalization recovered through a tested script-path fix.
 Success means logged GPU training and a reloadable adapter, not higher accuracy.
 Resume wording will use measured results; a feasibility run alone is not an
 accuracy result or completion of G6.
@@ -80,24 +81,26 @@ Files: `training/pyproject.toml`, `training/uv.lock`,
 Files: `training/pilot.py`, `tests/test_training_pilot.py`,
 `results/G6_pilot/summary.json` (compact metadata only).
 
-- [ ] Test first: prompt/padding labels are masked; no completion fits means
+- [x] Test first: prompt/padding labels are masked; no completion fits means
   explicit failure; a NaN/inf loss rejects completion; summary contains no SQL.
-- [ ] Write eight invented examples and the response-only collator. Download
+- [x] Write eight invented examples and the response-only collator. Download
   only pinned model/tokenizer files after checking size and remaining budget.
-- [ ] Train under the fixed limits; log trainable parameter count, per-step
+- [x] Train under the fixed limits; log trainable parameter count, per-step
   finite loss, elapsed time, peak GPU memory, seed, code commit and dirty state.
-- [ ] Save adapter under ignored `models/`; prove a trainable weight changed,
+- [x] Save adapter under ignored `models/`; prove a trainable weight changed,
   reload it and generate one bounded synthetic SQL response. A loss decrease
   or syntactically valid SQL is not an execution-accuracy claim.
-- [ ] Unload the training process, export compact evidence, run checks, update
+- [x] Unload the training process, export compact evidence, run checks, update
   progress/decisions/notebook and commit. Mark G6.2 only if actual GPU run passes.
 
 ## Task 3 — concrete full-training proposal after measurement
 
 - [ ] Estimate throughput at a realistic schema length using the successful
   backend, then propose the full dataset and training time/disk cap.
-- [ ] Prefer execution-verified PostgreSQL labels. Transpile-only labels need an
+- [x] Prefer execution-verified PostgreSQL labels. Transpile-only labels need an
   explicit recorded choice, sample audit and unverified-label disclosure.
+  Kunal explicitly chose structurally checked, execution-unverified labels;
+  source/conversion intake audit done. Full prepared-label sample audit remains.
 - [ ] Freeze training/validation by database and check IDs/schema/content
   overlaps against all existing evaluation databases before training.
 - [ ] Propose base-versus-tuned E9 with identical prompt, quantization, context

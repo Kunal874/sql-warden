@@ -219,7 +219,7 @@ def main() -> None:
         "peak_allocated_bytes": peak_allocated,
         "peak_reserved_bytes": peak_reserved,
         "trainable_parameters": trained_count,
-        "total_parameters": total_count,
+        "parameter_storage_elements": total_count,
         "losses": losses,
         "adapter_changed": changed,
         "adapter_reloaded": True,

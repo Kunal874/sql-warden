@@ -90,6 +90,13 @@ def supervise(
             process.kill()
             process.wait()
             raise
+    publish_summary(summary)
+
+
+def publish_summary(summary: Path) -> None:
+    evidence = summary.with_suffix(".evidence.json")
+    if summary.exists():
+        raise FileExistsError("completed summary already exists")
     if not evidence.is_file():
         raise RuntimeError("training evidence is missing")
     report = json.loads(evidence.read_text(encoding="utf-8"))
@@ -106,6 +113,7 @@ def supervise(
         "peak_reserved_bytes",
         "trainable_parameters",
         "total_parameters",
+        "parameter_storage_elements",
         "losses",
         "adapter_changed",
         "adapter_reloaded",
@@ -119,6 +127,9 @@ def supervise(
     }
     if not isinstance(report, dict) or set(report) - allowed:
         raise RuntimeError("unapproved evidence fields")
+    if "total_parameters" in report:
+        # Packed 4-bit tensor numel counts storage elements, not logical parameters.
+        report["parameter_storage_elements"] = report.pop("total_parameters")
     from training.pilot import validate_losses
 
     validate_losses(report.get("losses", []), expected_steps=20)
@@ -136,10 +147,17 @@ def supervise(
 
 def main() -> None:
     import argparse
+    import sys
+
+    sys.path.insert(0, str(ROOT))
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--summary", type=Path, default=ROOT / "results/G6_pilot/summary.json")
+    parser.add_argument("--finalize", action="store_true")
     args = parser.parse_args()
+    if args.finalize:
+        publish_summary(args.summary)
+        return
     check_resources(available_ram(), shutil.disk_usage(ROOT).free, disk_used())
     args.summary.parent.mkdir(parents=True, exist_ok=True)
     env_updates = {

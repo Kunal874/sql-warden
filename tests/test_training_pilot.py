@@ -1,5 +1,6 @@
 import json
 import math
+import os
 import subprocess
 import sys
 
@@ -111,3 +112,36 @@ def test_disk_monitor_stops_child_without_publishing(tmp_path):
             monitor=limit_exceeded,
         )
     assert not summary.exists()
+
+
+def test_direct_script_finalizes_existing_evidence_without_training(tmp_path):
+    from pathlib import Path
+
+    summary = tmp_path / "summary.json"
+    summary.with_suffix(".evidence.json").write_text(
+        json.dumps(
+            {
+                "status": "completed",
+                "device": "cuda",
+                "adapter_changed": True,
+                "adapter_reloaded": True,
+                "losses": [1.0] * 20,
+                "total_parameters": 100,
+            }
+        ),
+        encoding="utf-8",
+    )
+    script = Path(__file__).resolve().parents[1] / "scripts/run_training_pilot.py"
+    env = {key: value for key, value in os.environ.items() if key != "PYTHONPATH"}
+    process = subprocess.run(
+        [sys.executable, str(script), "--finalize", "--summary", str(summary)],
+        cwd=tmp_path,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    assert process.returncode == 0, process.stderr
+    assert json.loads(summary.read_text())["status"] == "completed"
+    report = json.loads(summary.read_text())
+    assert report["parameter_storage_elements"] == 100
+    assert "total_parameters" not in report
