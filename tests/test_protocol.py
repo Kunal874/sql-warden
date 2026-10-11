@@ -123,3 +123,16 @@ def test_bootstrap_accuracy_interval_edge_cases_are_seeded_and_bounded():
     assert first["n"] == 4
     assert first["mean"] == 0.5
     assert 0.0 <= first["low"] <= first["mean"] <= first["high"] <= 1.0
+
+
+def test_clopper_pearson_interval_is_exact_and_handles_boundaries():
+    from sqlwarden.protocol import clopper_pearson
+
+    zero = clopper_pearson(0, 43)
+    assert zero["low"] == 0.0
+    assert abs(zero["high"] - 0.0822) < 0.0005
+    full = clopper_pearson(10, 10)
+    assert full["high"] == 1.0 and abs(full["low"] - 0.6915) < 0.0005
+    middle = clopper_pearson(22, 100)
+    assert abs(middle["low"] - 0.1433) < 0.0005 and abs(middle["high"] - 0.3139) < 0.0005
+    assert clopper_pearson(0, 0) == {"n": 0, "k": 0, "low": None, "high": None}

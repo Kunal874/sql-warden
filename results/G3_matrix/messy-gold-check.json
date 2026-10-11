@@ -1,0 +1,27 @@
+{
+  "excludes": [
+    "sql",
+    "rows",
+    "credentials"
+  ],
+  "failing_question_ids": [],
+  "format_version": 1,
+  "items": 424,
+  "leaked_distinctive_names_by_db": {
+    "california_schools": 0,
+    "card_games": 0,
+    "codebase_community": 0,
+    "debit_card_specializing": 0,
+    "european_football_2": 0,
+    "financial": 0,
+    "formula_1": 0,
+    "student_club": 0,
+    "superhero": 0,
+    "thrombosis_prediction": 0,
+    "toxicology": 0
+  },
+  "outcomes": {
+    "same_rows": 424
+  },
+  "seed": 20261011
+}

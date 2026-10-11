@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import random
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -127,6 +128,30 @@ def bootstrap_accuracy_interval(
         "low": round(estimates[low_index], 6),
         "high": round(estimates[high_index], 6),
     }
+
+
+def clopper_pearson(k: int, n: int, *, alpha: float = 0.05) -> dict[str, float | int | None]:
+    """Exact binomial interval; unlike a bootstrap it stays informative at 0 or n."""
+    if n == 0:
+        return {"n": 0, "k": 0, "low": None, "high": None}
+
+    def tail_at_least(p: float) -> float:
+        return sum(math.comb(n, i) * p**i * (1 - p) ** (n - i) for i in range(k, n + 1))
+
+    def solve(predicate) -> float:
+        low, high = 0.0, 1.0
+        for _ in range(60):
+            middle = (low + high) / 2
+            low, high = (middle, high) if predicate(middle) else (low, middle)
+        return round((low + high) / 2, 6)
+
+    lower = 0.0 if k == 0 else solve(lambda p: tail_at_least(p) < alpha / 2)
+    upper = 1.0 if k == n else solve(lambda p: 1 - tail_at_least(p) + _point(n, k, p) > alpha / 2)
+    return {"n": n, "k": k, "low": lower, "high": upper}
+
+
+def _point(n: int, k: int, p: float) -> float:
+    return math.comb(n, k) * p**k * (1 - p) ** (n - k)
 
 
 def _usable_items(manifest: dict[str, Any]) -> list[dict[str, Any]]:
