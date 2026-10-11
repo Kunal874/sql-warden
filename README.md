@@ -1,168 +1,120 @@
 # SQLWarden
 
-SQLWarden is being built as a read-only text-to-SQL agent with schema retrieval, bounded repair,
-result voting, clarification and abstention. Its portfolio evidence will include
-versioned BIRD Mini-Dev evaluations and tests of database isolation and SQL controls.
+SQLWarden is a read-only text-to-SQL agent that runs on a laptop. It turns a question
+into PostgreSQL, but every generated query passes a SQL guard, runs under a
+one-dataset read-only login with hard limits, and is accepted only when several
+independent candidates agree on the complete result. When they disagree it asks one
+clarifying question or abstains instead of guessing. Every claim below comes from a
+tracked result file or test.
 
-## Current status
+## How a question flows
 
-The foundation and local CLI pass 719 configured tests, including 165
-real PostgreSQL checks (2026-10-04) and 39 deterministic CLI flow checks.
-One bounded local AI/database question returned the expected count of 17,686;
-[compact evidence](docs/CLI_SMOKE.md) records the exact scope and limits.
-Automatic model unload and final review/fix verification are complete. This
-finishes the first thin slice (G0.7a), not the full agent. The local database
-is PostgreSQL 16.15 on 127.0.0.1:55432.
-Local development-slice text-to-SQL evidence is now tracked in
-[EVAL](docs/EVAL.md), [dashboard JSON](results/E0_smoke/dashboard.json) and
-[resume evidence](docs/RESUME.md). On the frozen 100-question development slice,
-Arctic measured 22/100 exact matches and Qwen measured 3/100; this is not an
-official benchmark or public leaderboard score. The first milestone remains one
-real database and local model answering a question through a tested guard and
-bounded executor.
-
-The first BIRD database source and canonical labels are downloaded and pinned.
-[Data provenance](docs/DATA.md) records actual hashes, counts and dialect differences.
-California Schools is imported into its own schema and read-only login. Complete
-typed content matches the native COPY data. The
-[native import plan](docs/superpowers/plans/2026-10-03-bird-native-import.md)
-is verified. The [compact import manifest](docs/california-import-manifest.json)
-records source/content hashes, types, keys, NULL counts and observed checks.
-No downloaded SQL dump has been executed.
-
-The first local Qwen smoke passed six tiny warm requests, including text/JSON
-responses and an output cap; the first cold request timed out. [Model evidence](docs/MODELS.md)
-records the exact artifact, memory and limitations. The separate CLI demo has now
-run one guarded model-generated query, not an accuracy benchmark.
-
-The intended stack is Python 3.12, FastAPI, PostgreSQL 16, sqlglot and the official
-OpenAI Python SDK against native Ollama. React 18, TypeScript and Vite follow after
-the CLI and evaluation pipeline work.
-
-## Safe local CLI (narrow demonstration)
-
-The CLI accepts only a normal-language question for `california_schools`. It
-uses the pinned local Qwen alias with a four-column schools capsule, not the
-full 89-column schema or retrieval. One optional empty preload, one generation,
-then the existing SQL guard and fixed restricted executor; no raw-SQL flag,
-repair/retry, voting, online reference answer, accuracy or confidence score.
-
-```powershell
-# Setup-only, once; no environment file is used to launch this copy helper.
-uv run python -m scripts.prepare_cli_runtime
-# Runtime: never substitute .env.setup, .env.california or synthetic .env.
-uv run --env-file .env.runtime sqlwarden ask --db california_schools 'How many rows are in the schools table?'
+```
+question ─► retrieve 24 relevant columns (BM25 + keys)
+         ─► generate 3 SQL candidates (Arctic-Text2SQL-R1-7B, local Ollama)
+         ─► per candidate: SQL guard ─► EXPLAIN cost check ─► restricted execution
+                           └─ on failure: one repair attempt
+         ─► vote on complete results ─► answer │ ask one clarification │ abstain
 ```
 
-The helper exclusively creates ignored `.env.runtime` by copying only the
-existing restricted password; it refuses an existing file and changes no grants
-or password. Never display/commit this file. Runtime rejects setup/admin/test
-keys and OPENAI_LOG/CUSTOM_HEADERS/ADMIN_KEY/WEBHOOK_SECRET settings. The old
-synthetic `.env` serves earlier development fixtures, not this CLI.
+The loop is a plain Python state machine ([agent.py](src/sqlwarden/agent.py)), not an
+agent framework. The web app streams each step live over Server-Sent Events.
 
-Output is escaped JSON: answered, blocked or failed. Only a complete successful
-result gets SQL/rows; display shows at most 20 rows with a labelled preview.
-Missing usage stays null. Budgets: 90s readiness, 60s generation, 180s enclosing
-flow, separate 5s HTTP close, and existing database limits (1,000 rows, 2MiB,
-5s statement/15s total). Cooperative deadlines/chunk checks are not hard process
-or heap isolation. HTTP close does not prove server cancellation or GPU unload.
-Interactive use retains Ollama's finite keep-alive; unload only this alias when
-finished and check `ollama ps`. No other model/apps/global settings are changed.
-Task 3 ran actual controls before the one approved live question. That question
-passed once; no automatic repeat/retry is authorized by this acceptance record.
-The runtime file exists locally: do not rerun the exclusive copy helper.
+## Results
 
-## Development
+<!-- results:start -->
+Results are generated by `uv run python -m scripts.build_matrix_report` after the
+experiment runs finish.
+<!-- results:end -->
 
-Work from `D:/PROJECTS/SQLWARDEN`. Read the [active build spec](docs/BUILD_SPEC.md)
-and [current handoff](docs/PROGRESS.md) before continuing.
-[Decisions](docs/DECISIONS.md) record confirmed choices.
-For a beginner-friendly account of completed work and AI terms, read the
-[project explanation](explaination%20of%20project/PROJECT_EXPLAINED.md).
+Full method, intervals and per-experiment detail: [EVAL](docs/EVAL.md). These are
+local PostgreSQL-adapted BIRD Mini-Dev numbers with corrected labels and a quantized
+7B model. They are **not** official BIRD leaderboard scores and are not comparable to
+published full-precision SQLite results.
 
-With uv available in your terminal:
+## Security model
+
+Defense in depth, each layer tested on its own ([SECURITY](SECURITY.md)):
+
+| Layer | What it enforces |
+| --- | --- |
+| L3 SQL guard | one statement; SELECT/WITH/set operations only; scope-aware table checks; a reviewed function and cast allowlist (sqlglot AST) |
+| L4 cost gate | `EXPLAIN (FORMAT JSON)` under the same restricted login; never `EXPLAIN ANALYZE` |
+| L5 database identity | one login per dataset with SELECT on its own schema only; read-only default; no superuser, CREATEROLE or BYPASSRLS |
+| L6 limits | statement, lock, pool and total deadlines; row, byte and cell caps; no partial results |
+| L7 row-level security | the tenant demo uses forced RLS chosen by server-side login, not a mutable setting |
+| L8 untrusted text | schema descriptions, sample values and results are marked untrusted; explanations have no execution path |
+
+The attack suite has 43 recorded attacks (40 deterministic SQL, 3 model-mediated) with
+threat-specific success predicates. The guard also accepts 421 of the 424 safe gold
+queries. A blocked attack is evidence for that attack and configuration, not proof
+that nothing else works.
+
+## Run it locally
+
+Requirements: Docker Desktop, [uv](https://docs.astral.sh/uv/), Node 24 (to rebuild the
+web app) and [Ollama](https://ollama.com) with the two pinned model aliases. The full
+runbook, container and hosting notes are in [DEPLOY](docs/DEPLOY.md):
 
 ```powershell
 uv sync --locked
+docker compose --env-file .env.setup up -d --wait
+uv run python scripts/prepare_web_runtime.py
+cd web; npm ci; npm run build; cd ..
+uv run --env-file .env.web uvicorn sqlwarden.runtime:create_runtime_app --factory --port 8000
+```
+
+`.env.setup` is used only by Docker Compose and tests; the runtime refuses to start
+with setup or test credentials. Checks:
+
+```powershell
 uv run pytest
 uv run ruff check .
 uv run ruff format --check .
+uv run --env-file .env.setup --env-file .env.california --env-file .env.datasets pytest
 ```
 
-For a first local database setup:
+## Repository map
 
-```powershell
-uv run python scripts/init_local.py
-docker compose --env-file .env.setup up -d --wait
-uv run --env-file .env.setup pytest
-```
+| Path | Contents |
+| --- | --- |
+| `src/sqlwarden/` | guard, executor, agent loop, voting, prompts, catalog, provider, API |
+| `scripts/` | data import and validation, experiment runner, report builder, smoke checks |
+| `web/` | React pages: Ask, Attack Lab, Benchmark |
+| `docs/` | spec, progress, decisions, data/model provenance, evaluation and deployment |
+| `results/` | compact tracked summaries; raw runs and caches stay local |
 
-The setup script refuses to overwrite existing credentials. On later runs, skip
-that first command. Private .env.setup holds bootstrap credentials for database
-setup/tests; .env contains only runtime credentials. Both are ignored by Git.
-Do not print either file or run a resolved Compose config that displays secrets.
+## Limitations
 
-For a fresh California import, first obtain the exact archive and label files
-under data/raw using the URLs and hashes in [DATA.md](docs/DATA.md). The following
-one-time commands extract/import local files; they do not download them:
+- One local 7B model at 4-bit; accuracy is far below published full-precision results.
+- The model sometimes writes SQLite functions such as `strftime`; the guard refuses
+  them and these count as failures (counted in EVAL's failure taxonomy).
+- When candidates disagree the loop abstains, and abstentions count as wrong in
+  end-to-end EX; the coverage curve in EVAL shows the trade-off.
+- Hosted live inference is not deployed; the public option is a static evidence site
+  plus this local demo ([D-077](docs/DECISIONS.md)).
+- Layer-off attack variants (E5) need a separate approved disposable environment and
+  have not run. Catalog metadata stays visible to readers, as in normal PostgreSQL.
 
-```powershell
-uv run python -m scripts.fetch_data
-uv run python -m scripts.fetch_data --native
-uv run python -m scripts.init_local --bird
-uv run --env-file .env.setup --env-file .env.california python -m scripts.load_bird
-```
+## Data, models and licenses
 
-This checkout has already completed these one-time steps. Do not repeat them:
-existing output, credentials and import targets are intentionally refused.
-Private .env.california contains only the separate restricted dataset credential.
-The setup-only administrator must never launch the runtime or enter model prompts.
+- BIRD Mini-Dev ([bird-bench/mini_dev](https://github.com/bird-bench/mini_dev),
+  labels [birdsql/bird_mini_dev](https://huggingface.co/datasets/birdsql/bird_mini_dev)),
+  CC BY-SA 4.0. Raw data is not included in this repository.
+- Corrected labels and descriptions: Arcwise-Plat from
+  [uiuc-kang-lab/text_to_sql_benchmarks](https://github.com/uiuc-kang-lab/text_to_sql_benchmarks),
+  CC BY-SA 4.0.
+- [Snowflake/Arctic-Text2SQL-R1-7B](https://huggingface.co/Snowflake/Arctic-Text2SQL-R1-7B),
+  Apache-2.0 (paper: arXiv:2505.20315); Qwen2.5-Coder-7B-Instruct, Apache-2.0.
+  Weights are not redistributed.
+- Exact pins, hashes and checks: [DATA](docs/DATA.md) and [MODELS](docs/MODELS.md).
 
-Run the complete current checks, including the real California database:
+## Project records
 
-```powershell
-uv run --env-file .env.setup --env-file .env.california pytest -q
-```
+[Build spec](docs/BUILD_SPEC.md) · [Progress](docs/PROGRESS.md) ·
+[Decisions](docs/DECISIONS.md) · [Evaluation](docs/EVAL.md) ·
+[Security](SECURITY.md) · [Deployment](docs/DEPLOY.md) ·
+[Simple-English notebook](explaination%20of%20project/PROJECT_EXPLAINED.md).
+The original plan, execution brief and plan review are preserved as historical inputs.
 
-Without the dedicated California environment, its checks skip before connecting.
-With both environments supplied, a missing login/schema is a failure, not a skip.
-
-Two PostgreSQL datasets are synthetic permission-test fixtures, not BIRD data;
-California Schools is the first real BIRD import. Each has its own SELECT-only login;
-the app login can write only
-application tables. Direct tests cover writes with the read-only default disabled,
-cross-schema reads, role changes, temporary objects, risky functions and future
-table grants. Catalog metadata remains visible. This is an initial privilege
-boundary, not the completed SQL guard, executor, RLS or attack suite.
-
-Runtime logins cannot connect to the unused postgres/template1 databases;
-template0 remains closed. Unused large-object functions are denied to all runtime
-logins in sqlwarden. Mutating denial
-probes always roll back, even if a privilege regression lets a probe succeed.
-
-The named volume persists across restarts. Bootstrap scripts run only when it is
-empty; changing them does not migrate existing data. Never delete that volume to
-apply changes without an explicit decision. To pause the server without deleting
-data, use `docker compose --env-file .env.setup stop`.
-
-To update function/default-database permissions on a volume created before this
-hardening, keep its credentials and data, then run the setup-only migrations:
-
-```powershell
-docker compose --env-file .env.setup up -d --wait
-docker compose --env-file .env.setup exec -T postgres psql -X -U warden_bootstrap -d sqlwarden -v ON_ERROR_STOP=1 --single-transaction --file /opt/sqlwarden/function_hardening.sql
-docker compose --env-file .env.setup exec -T postgres psql -X -U warden_bootstrap -d sqlwarden -v ON_ERROR_STOP=1 --single-transaction --file /opt/sqlwarden/cluster_hardening.sql
-uv run --env-file .env.setup pytest
-```
-
-Fresh bootstrap includes both idempotent permissions scripts. On this checkout,
-both migrations are already applied and the named volume is preserved.
-
-The original [plan](sqlwarden-plan.md), [execution brief](SQLWARDEN_EXECUTION_PROMPT.md)
-and [plan review](SQLWARDEN_PLAN_REVIEW.md) are preserved. The active spec overrides
-historical instructions, unsupported claims and unsafe architecture in the plan.
-
-Dependencies, selected data and the first Qwen model are local. The tested model
-is currently unloaded; its weights remain installed for reuse.
-Raw artifacts and secrets are excluded from Git. Public release and hosting
-remain gated at G7.
+Author: Kunal.
