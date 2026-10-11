@@ -1,0 +1,761 @@
+{
+ "format_version": 1,
+ "authored_on": "2026-10-11",
+ "purpose": "E7 self-authored ambiguity subset: ambiguous questions with two checked readings and a frozen intended meaning, plus clear negatives. Written before any model run on these items.",
+ "partitions": {
+  "tuning": "SA-01..SA-10, C-01..C-10",
+  "evaluation": "SA-11..SA-25, C-11..C-25"
+ },
+ "items": [
+  {
+   "id": "SA-01",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "entity_reference_clarified",
+   "db_id": "superhero",
+   "question": "What is the name of the heaviest hero?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "the hero's superhero name",
+     "sql": "SELECT superhero_name FROM superhero WHERE weight_kg IS NOT NULL ORDER BY weight_kg DESC LIMIT 1"
+    },
+    {
+     "id": "B",
+     "meaning": "the hero's full real name",
+     "sql": "SELECT full_name FROM superhero WHERE weight_kg IS NOT NULL ORDER BY weight_kg DESC LIMIT 1"
+    }
+   ],
+   "intended": "A",
+   "reply": "I mean the superhero name the character is known by, not the real full name."
+  },
+  {
+   "id": "SA-02",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "aggregation_scope_clarified",
+   "db_id": "superhero",
+   "question": "How many heroes have no height recorded?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "height is NULL",
+     "sql": "SELECT COUNT(*) FROM superhero WHERE height_cm IS NULL"
+    },
+    {
+     "id": "B",
+     "meaning": "height is NULL or 0",
+     "sql": "SELECT COUNT(*) FROM superhero WHERE height_cm IS NULL OR height_cm = 0"
+    }
+   ],
+   "intended": "B",
+   "reply": "Count heroes whose height is missing, including heights stored as 0."
+  },
+  {
+   "id": "SA-03",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "calculation_clarified",
+   "db_id": "superhero",
+   "question": "What is the average weight of Marvel Comics heroes?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "average over all Marvel heroes including weights of 0",
+     "sql": "SELECT AVG(s.weight_kg) FROM superhero s JOIN publisher p ON p.id = s.publisher_id WHERE p.publisher_name = 'Marvel Comics'"
+    },
+    {
+     "id": "B",
+     "meaning": "average excluding missing or zero weights",
+     "sql": "SELECT AVG(s.weight_kg) FROM superhero s JOIN publisher p ON p.id = s.publisher_id WHERE p.publisher_name = 'Marvel Comics' AND s.weight_kg > 0"
+    }
+   ],
+   "intended": "B",
+   "reply": "Ignore heroes whose weight is missing or recorded as 0."
+  },
+  {
+   "id": "SA-04",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "output_specified",
+   "db_id": "superhero",
+   "question": "Which hero has the most superpowers?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "the hero name only",
+     "sql": "SELECT s.superhero_name FROM superhero s JOIN hero_power hp ON hp.hero_id = s.id GROUP BY s.superhero_name ORDER BY COUNT(*) DESC LIMIT 1"
+    },
+    {
+     "id": "B",
+     "meaning": "the hero name and the number of powers",
+     "sql": "SELECT s.superhero_name, COUNT(*) FROM superhero s JOIN hero_power hp ON hp.hero_id = s.id GROUP BY s.superhero_name ORDER BY COUNT(*) DESC LIMIT 1"
+    }
+   ],
+   "intended": "B",
+   "reply": "Give the hero's name together with how many superpowers they have."
+  },
+  {
+   "id": "SA-05",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "calculation_clarified",
+   "db_id": "superhero",
+   "question": "What percentage of heroes are female?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "female heroes out of all heroes",
+     "sql": "SELECT CAST(SUM(CASE WHEN g.gender = 'Female' THEN 1 ELSE 0 END) AS DOUBLE PRECISION) * 100 / COUNT(*) FROM superhero s JOIN gender g ON g.id = s.gender_id"
+    },
+    {
+     "id": "B",
+     "meaning": "female heroes out of heroes with a known gender",
+     "sql": "SELECT CAST(SUM(CASE WHEN g.gender = 'Female' THEN 1 ELSE 0 END) AS DOUBLE PRECISION) * 100 / COUNT(*) FROM superhero s JOIN gender g ON g.id = s.gender_id WHERE g.gender <> 'N/A'"
+    }
+   ],
+   "intended": "A",
+   "reply": "Out of all heroes in the data, whatever their recorded gender."
+  },
+  {
+   "id": "SA-06",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "entity_reference_clarified",
+   "db_id": "superhero",
+   "question": "Which race has the most heroes?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "including the unknown race placeholder '-'",
+     "sql": "SELECT r.race FROM superhero s JOIN race r ON r.id = s.race_id GROUP BY r.race ORDER BY COUNT(*) DESC LIMIT 1"
+    },
+    {
+     "id": "B",
+     "meaning": "among real race values, excluding '-'",
+     "sql": "SELECT r.race FROM superhero s JOIN race r ON r.id = s.race_id WHERE r.race <> '-' GROUP BY r.race ORDER BY COUNT(*) DESC LIMIT 1"
+    }
+   ],
+   "intended": "B",
+   "reply": "Only real races; skip heroes whose race is unknown or shown as '-'."
+  },
+  {
+   "id": "SA-07",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "entity_reference_clarified",
+   "db_id": "formula_1",
+   "question": "Who has won the most races?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "the driver with the most race wins",
+     "sql": "SELECT d.forename, d.surname FROM results r JOIN drivers d ON d.driverid = r.driverid WHERE r.position = 1 GROUP BY d.driverid, d.forename, d.surname ORDER BY COUNT(*) DESC LIMIT 1"
+    },
+    {
+     "id": "B",
+     "meaning": "the constructor with the most race wins",
+     "sql": "SELECT c.name FROM results r JOIN constructors c ON c.constructorid = r.constructorid WHERE r.position = 1 GROUP BY c.constructorid, c.name ORDER BY COUNT(*) DESC LIMIT 1"
+    }
+   ],
+   "intended": "A",
+   "reply": "I mean the driver with the most wins; give their first and last name."
+  },
+  {
+   "id": "SA-08",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "aggregation_scope_clarified",
+   "db_id": "formula_1",
+   "question": "How many races did Lewis Hamilton finish?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "races with a classified finishing position",
+     "sql": "SELECT COUNT(*) FROM results r JOIN drivers d ON d.driverid = r.driverid WHERE d.forename = 'Lewis' AND d.surname = 'Hamilton' AND r.position IS NOT NULL"
+    },
+    {
+     "id": "B",
+     "meaning": "races with status exactly 'Finished' (lead lap)",
+     "sql": "SELECT COUNT(*) FROM results r JOIN drivers d ON d.driverid = r.driverid JOIN status st ON st.statusid = r.statusid WHERE d.forename = 'Lewis' AND d.surname = 'Hamilton' AND st.status = 'Finished'"
+    }
+   ],
+   "intended": "A",
+   "reply": "Count every race where he has a classified finishing position, even if he was lapped."
+  },
+  {
+   "id": "SA-09",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "calculation_clarified",
+   "db_id": "formula_1",
+   "question": "What is Lewis Hamilton's average finishing position?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "average official position over classified finishes",
+     "sql": "SELECT AVG(r.position) FROM results r JOIN drivers d ON d.driverid = r.driverid WHERE d.forename = 'Lewis' AND d.surname = 'Hamilton' AND r.position IS NOT NULL"
+    },
+    {
+     "id": "B",
+     "meaning": "average position order over every race entered",
+     "sql": "SELECT AVG(r.positionorder) FROM results r JOIN drivers d ON d.driverid = r.driverid WHERE d.forename = 'Lewis' AND d.surname = 'Hamilton'"
+    }
+   ],
+   "intended": "A",
+   "reply": "Average his official finishing position, only over races where he was classified."
+  },
+  {
+   "id": "SA-10",
+   "partition": "tuning",
+   "kind": "ambiguous",
+   "category": "output_specified",
+   "db_id": "formula_1",
+   "question": "Which circuits are in Italy?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "circuit names",
+     "sql": "SELECT name FROM circuits WHERE country = 'Italy'"
+    },
+    {
+     "id": "B",
+     "meaning": "circuit names and their locations",
+     "sql": "SELECT name, location FROM circuits WHERE country = 'Italy'"
+    }
+   ],
+   "intended": "B",
+   "reply": "List each circuit's name together with the town it is in."
+  },
+  {
+   "id": "SA-11",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "output_specified",
+   "db_id": "formula_1",
+   "question": "Who won the 2017 Monaco Grand Prix?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "the winning driver's first and last name",
+     "sql": "SELECT d.forename, d.surname FROM results r JOIN races ra ON ra.raceid = r.raceid JOIN drivers d ON d.driverid = r.driverid WHERE ra.year = 2017 AND ra.name = 'Monaco Grand Prix' AND r.position = 1"
+    },
+    {
+     "id": "B",
+     "meaning": "the winning driver and constructor",
+     "sql": "SELECT d.forename, d.surname, c.name FROM results r JOIN races ra ON ra.raceid = r.raceid JOIN drivers d ON d.driverid = r.driverid JOIN constructors c ON c.constructorid = r.constructorid WHERE ra.year = 2017 AND ra.name = 'Monaco Grand Prix' AND r.position = 1"
+    }
+   ],
+   "intended": "A",
+   "reply": "Just the winning driver's first and last name."
+  },
+  {
+   "id": "SA-12",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "calculation_clarified",
+   "db_id": "formula_1",
+   "question": "How many points per race did Sebastian Vettel average?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "average over every race he entered",
+     "sql": "SELECT AVG(r.points) FROM results r JOIN drivers d ON d.driverid = r.driverid WHERE d.forename = 'Sebastian' AND d.surname = 'Vettel'"
+    },
+    {
+     "id": "B",
+     "meaning": "average over races where he scored",
+     "sql": "SELECT AVG(r.points) FROM results r JOIN drivers d ON d.driverid = r.driverid WHERE d.forename = 'Sebastian' AND d.surname = 'Vettel' AND r.points > 0"
+    }
+   ],
+   "intended": "A",
+   "reply": "Average over every race he entered, including races with zero points."
+  },
+  {
+   "id": "SA-13",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "aggregation_scope_clarified",
+   "db_id": "formula_1",
+   "question": "Which country has hosted the most races?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "the country with the most races held",
+     "sql": "SELECT c.country FROM races ra JOIN circuits c ON c.circuitid = ra.circuitid GROUP BY c.country ORDER BY COUNT(*) DESC LIMIT 1"
+    },
+    {
+     "id": "B",
+     "meaning": "the country with the most circuits",
+     "sql": "SELECT country FROM circuits GROUP BY country ORDER BY COUNT(*) DESC LIMIT 1"
+    }
+   ],
+   "intended": "A",
+   "reply": "Count the races held, using the country of each race's circuit."
+  },
+  {
+   "id": "SA-14",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "calculation_clarified",
+   "db_id": "student_club",
+   "question": "What is the average budget per event?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "average of individual budget lines",
+     "sql": "SELECT AVG(amount) FROM budget"
+    },
+    {
+     "id": "B",
+     "meaning": "average of each event's total budget",
+     "sql": "SELECT AVG(total) FROM (SELECT link_to_event, SUM(amount) AS total FROM budget GROUP BY link_to_event) AS per_event"
+    }
+   ],
+   "intended": "B",
+   "reply": "Add up each event's budget lines first, then average those event totals."
+  },
+  {
+   "id": "SA-15",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "aggregation_scope_clarified",
+   "db_id": "student_club",
+   "question": "How many members does the club have?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "everyone in the member table",
+     "sql": "SELECT COUNT(*) FROM member"
+    },
+    {
+     "id": "B",
+     "meaning": "only people whose position is Member",
+     "sql": "SELECT COUNT(*) FROM member WHERE position = 'Member'"
+    }
+   ],
+   "intended": "B",
+   "reply": "Only people whose position is 'Member', not officers or inactive people."
+  },
+  {
+   "id": "SA-16",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "output_specified",
+   "db_id": "student_club",
+   "question": "Which event had the largest budget?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "the event name",
+     "sql": "SELECT e.event_name FROM budget b JOIN event e ON e.event_id = b.link_to_event GROUP BY e.event_id, e.event_name ORDER BY SUM(b.amount) DESC LIMIT 1"
+    },
+    {
+     "id": "B",
+     "meaning": "the event name and its total budget",
+     "sql": "SELECT e.event_name, SUM(b.amount) FROM budget b JOIN event e ON e.event_id = b.link_to_event GROUP BY e.event_id, e.event_name ORDER BY SUM(b.amount) DESC LIMIT 1"
+    }
+   ],
+   "intended": "B",
+   "reply": "Give the event name and its total budgeted amount."
+  },
+  {
+   "id": "SA-17",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "aggregation_scope_clarified",
+   "db_id": "student_club",
+   "question": "How many events were held in 2019?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "all events dated in 2019",
+     "sql": "SELECT COUNT(*) FROM event WHERE event_date LIKE '2019%'"
+    },
+    {
+     "id": "B",
+     "meaning": "2019 events that already took place (status Closed)",
+     "sql": "SELECT COUNT(*) FROM event WHERE event_date LIKE '2019%' AND status = 'Closed'"
+    }
+   ],
+   "intended": "B",
+   "reply": "Only events that actually took place, meaning their status is Closed."
+  },
+  {
+   "id": "SA-18",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "output_specified",
+   "db_id": "student_club",
+   "question": "What is the name of the club president?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "first name only",
+     "sql": "SELECT first_name FROM member WHERE position = 'President'"
+    },
+    {
+     "id": "B",
+     "meaning": "first and last name",
+     "sql": "SELECT first_name, last_name FROM member WHERE position = 'President'"
+    }
+   ],
+   "intended": "B",
+   "reply": "Their first and last name."
+  },
+  {
+   "id": "SA-19",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "aggregation_scope_clarified",
+   "db_id": "student_club",
+   "question": "What is the average cost of an expense?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "over all expenses",
+     "sql": "SELECT AVG(cost) FROM expense"
+    },
+    {
+     "id": "B",
+     "meaning": "over approved expenses only",
+     "sql": "SELECT AVG(cost) FROM expense WHERE approved = 'true'"
+    }
+   ],
+   "intended": "B",
+   "reply": "Only expenses that were approved."
+  },
+  {
+   "id": "SA-20",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "entity_reference_clarified",
+   "db_id": "california_schools",
+   "question": "How many schools are in Fresno?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "schools in Fresno county",
+     "sql": "SELECT COUNT(*) FROM schools WHERE county = 'Fresno'"
+    },
+    {
+     "id": "B",
+     "meaning": "schools in the city of Fresno",
+     "sql": "SELECT COUNT(*) FROM schools WHERE city = 'Fresno'"
+    }
+   ],
+   "intended": "B",
+   "reply": "Schools located in the city of Fresno, not the whole county."
+  },
+  {
+   "id": "SA-21",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "aggregation_scope_clarified",
+   "db_id": "california_schools",
+   "question": "How many schools are there in Alameda county?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "every school record, including closed or merged",
+     "sql": "SELECT COUNT(*) FROM schools WHERE county = 'Alameda'"
+    },
+    {
+     "id": "B",
+     "meaning": "only active schools",
+     "sql": "SELECT COUNT(*) FROM schools WHERE county = 'Alameda' AND statustype = 'Active'"
+    }
+   ],
+   "intended": "B",
+   "reply": "Only schools that are currently active, not closed or merged ones."
+  },
+  {
+   "id": "SA-22",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "calculation_clarified",
+   "db_id": "california_schools",
+   "question": "What is the average SAT math score in Los Angeles county?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "simple average of school averages",
+     "sql": "SELECT AVG(avgscrmath) FROM satscores WHERE cname = 'Los Angeles'"
+    },
+    {
+     "id": "B",
+     "meaning": "average weighted by number of test takers",
+     "sql": "SELECT SUM(avgscrmath * numtsttakr) * 1.0 / SUM(numtsttakr) FROM satscores WHERE cname = 'Los Angeles' AND avgscrmath IS NOT NULL"
+    }
+   ],
+   "intended": "A",
+   "reply": "A simple average of each school's average math score."
+  },
+  {
+   "id": "SA-23",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "output_specified",
+   "db_id": "california_schools",
+   "question": "Which school has the highest free meal count?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "the school name",
+     "sql": "SELECT \"School Name\" FROM frpm WHERE \"Free Meal Count (K-12)\" IS NOT NULL ORDER BY \"Free Meal Count (K-12)\" DESC LIMIT 1"
+    },
+    {
+     "id": "B",
+     "meaning": "the school name and its count",
+     "sql": "SELECT \"School Name\", \"Free Meal Count (K-12)\" FROM frpm WHERE \"Free Meal Count (K-12)\" IS NOT NULL ORDER BY \"Free Meal Count (K-12)\" DESC LIMIT 1"
+    }
+   ],
+   "intended": "A",
+   "reply": "Only the school's name."
+  },
+  {
+   "id": "SA-24",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "entity_reference_clarified",
+   "db_id": "california_schools",
+   "question": "How many charter schools are there?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "charter flag in the school directory",
+     "sql": "SELECT COUNT(*) FROM schools WHERE charter = 1"
+    },
+    {
+     "id": "B",
+     "meaning": "charter flag in the free-meal (FRPM) table",
+     "sql": "SELECT COUNT(*) FROM frpm WHERE \"Charter School (Y/N)\" = 1"
+    }
+   ],
+   "intended": "A",
+   "reply": "Use the school directory's charter flag, across all schools listed there."
+  },
+  {
+   "id": "SA-25",
+   "partition": "evaluation",
+   "kind": "ambiguous",
+   "category": "aggregation_scope_clarified",
+   "db_id": "california_schools",
+   "question": "What is the average number of SAT test takers in Fresno county?",
+   "readings": [
+    {
+     "id": "A",
+     "meaning": "over every SAT row, including district summary rows",
+     "sql": "SELECT AVG(numtsttakr) FROM satscores WHERE cname = 'Fresno'"
+    },
+    {
+     "id": "B",
+     "meaning": "over individual school rows only",
+     "sql": "SELECT AVG(numtsttakr) FROM satscores WHERE cname = 'Fresno' AND rtype = 'S'"
+    }
+   ],
+   "intended": "B",
+   "reply": "Average over individual schools only, not district summary rows."
+  },
+  {
+   "id": "C-01",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "superhero",
+   "question": "How many heroes are published by Marvel Comics?",
+   "gold_sql": "SELECT COUNT(*) FROM superhero s JOIN publisher p ON p.id = s.publisher_id WHERE p.publisher_name = 'Marvel Comics'"
+  },
+  {
+   "id": "C-02",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "superhero",
+   "question": "What is the full name of Spider-Man?",
+   "gold_sql": "SELECT full_name FROM superhero WHERE superhero_name = 'Spider-Man'"
+  },
+  {
+   "id": "C-03",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "superhero",
+   "question": "How many heroes have the superpower Flight?",
+   "gold_sql": "SELECT COUNT(*) FROM hero_power hp JOIN superpower sp ON sp.id = hp.power_id WHERE sp.power_name = 'Flight'"
+  },
+  {
+   "id": "C-04",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "superhero",
+   "question": "How many heroes have the alignment 'Bad'?",
+   "gold_sql": "SELECT COUNT(*) FROM superhero s JOIN alignment a ON a.id = s.alignment_id WHERE a.alignment = 'Bad'"
+  },
+  {
+   "id": "C-05",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "superhero",
+   "question": "List the superhero names of heroes whose eye colour is Blue.",
+   "gold_sql": "SELECT s.superhero_name FROM superhero s JOIN colour c ON c.id = s.eye_colour_id WHERE c.colour = 'Blue'"
+  },
+  {
+   "id": "C-06",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "formula_1",
+   "question": "How many races were held in 2017?",
+   "gold_sql": "SELECT COUNT(*) FROM races WHERE year = 2017"
+  },
+  {
+   "id": "C-07",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "formula_1",
+   "question": "What is the name of the circuit located in the country Monaco?",
+   "gold_sql": "SELECT name FROM circuits WHERE country = 'Monaco'"
+  },
+  {
+   "id": "C-08",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "formula_1",
+   "question": "What is the nationality of the driver Fernando Alonso?",
+   "gold_sql": "SELECT nationality FROM drivers WHERE forename = 'Fernando' AND surname = 'Alonso'"
+  },
+  {
+   "id": "C-09",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "formula_1",
+   "question": "In how many races did Michael Schumacher finish in first position?",
+   "gold_sql": "SELECT COUNT(*) FROM results r JOIN drivers d ON d.driverid = r.driverid WHERE d.forename = 'Michael' AND d.surname = 'Schumacher' AND r.position = 1"
+  },
+  {
+   "id": "C-10",
+   "partition": "tuning",
+   "kind": "clear",
+   "db_id": "formula_1",
+   "question": "In which year was the earliest race in the data held?",
+   "gold_sql": "SELECT MIN(year) FROM races"
+  },
+  {
+   "id": "C-11",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "student_club",
+   "question": "What is the total income received from the source 'Dues'?",
+   "gold_sql": "SELECT SUM(amount) FROM income WHERE source = 'Dues'"
+  },
+  {
+   "id": "C-12",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "student_club",
+   "question": "List the first and last names of members whose t-shirt size is Large.",
+   "gold_sql": "SELECT first_name, last_name FROM member WHERE t_shirt_size = 'Large'"
+  },
+  {
+   "id": "C-13",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "student_club",
+   "question": "What is the date of the event named 'Yearly Kickoff'?",
+   "gold_sql": "SELECT event_date FROM event WHERE event_name = 'Yearly Kickoff'"
+  },
+  {
+   "id": "C-14",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "student_club",
+   "question": "How many majors belong to the College of Education & Human Services?",
+   "gold_sql": "SELECT COUNT(*) FROM major WHERE college = 'College of Education & Human Services'"
+  },
+  {
+   "id": "C-15",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "student_club",
+   "question": "What is the total budgeted amount across all budget lines in the Advertisement category?",
+   "gold_sql": "SELECT SUM(amount) FROM budget WHERE category = 'Advertisement'"
+  },
+  {
+   "id": "C-16",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "student_club",
+   "question": "What are the first and last name of the club's Treasurer?",
+   "gold_sql": "SELECT first_name, last_name FROM member WHERE position = 'Treasurer'"
+  },
+  {
+   "id": "C-17",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "california_schools",
+   "question": "Which school has the highest average SAT math score?",
+   "gold_sql": "SELECT sname FROM satscores WHERE avgscrmath IS NOT NULL ORDER BY avgscrmath DESC LIMIT 1"
+  },
+  {
+   "id": "C-18",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "california_schools",
+   "question": "How many magnet schools are in Los Angeles county?",
+   "gold_sql": "SELECT COUNT(*) FROM schools WHERE county = 'Los Angeles' AND magnet = 1"
+  },
+  {
+   "id": "C-19",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "california_schools",
+   "question": "How many schools in Los Angeles county had more than 500 SAT test takers?",
+   "gold_sql": "SELECT COUNT(*) FROM satscores WHERE cname = 'Los Angeles' AND numtsttakr > 500"
+  },
+  {
+   "id": "C-20",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "california_schools",
+   "question": "How many schools in Alameda county are currently active?",
+   "gold_sql": "SELECT COUNT(*) FROM schools WHERE county = 'Alameda' AND statustype = 'Active'"
+  },
+  {
+   "id": "C-21",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "california_schools",
+   "question": "How many schools are located in the city of Oakland?",
+   "gold_sql": "SELECT COUNT(*) FROM schools WHERE city = 'Oakland'"
+  },
+  {
+   "id": "C-22",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "toxicology",
+   "question": "How many molecules are labeled carcinogenic (label '+')?",
+   "gold_sql": "SELECT COUNT(*) FROM molecule WHERE label = '+'"
+  },
+  {
+   "id": "C-23",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "toxicology",
+   "question": "How many atoms have the element 'cl'?",
+   "gold_sql": "SELECT COUNT(*) FROM atom WHERE element = 'cl'"
+  },
+  {
+   "id": "C-24",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "toxicology",
+   "question": "How many bonds have the bond type '='?",
+   "gold_sql": "SELECT COUNT(*) FROM bond WHERE bond_type = '='"
+  },
+  {
+   "id": "C-25",
+   "partition": "evaluation",
+   "kind": "clear",
+   "db_id": "toxicology",
+   "question": "What is the label of the molecule with id 'TR001'?",
+   "gold_sql": "SELECT label FROM molecule WHERE molecule_id = 'TR001'"
+  }
+ ]
+}

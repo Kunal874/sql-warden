@@ -1,0 +1,610 @@
+{
+  "format_version": 1,
+  "set_sha256": "ee149a94aa1436c24a0c2aff76908d196582e96ca7e851cda700afe38d48006f",
+  "items": 50,
+  "ambiguous": 25,
+  "clear": 25,
+  "problems": [],
+  "checks": [
+    {
+      "id": "SA-01",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-02",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-03",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-04",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-05",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-06",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-07",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-08",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-09",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-10",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        3,
+        3
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-11",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-12",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-13",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-14",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-15",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-16",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-17",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-18",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-19",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-20",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-21",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-22",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-23",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-24",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "SA-25",
+      "kind": "ambiguous",
+      "statuses": [
+        "ok:ok",
+        "ok:ok"
+      ],
+      "row_counts": [
+        1,
+        1
+      ],
+      "readings_differ": true
+    },
+    {
+      "id": "C-01",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-02",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-03",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-04",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-05",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        234
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-06",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-07",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-08",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-09",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-10",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-11",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-12",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        13
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-13",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-14",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-15",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-16",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-17",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-18",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-19",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-20",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-21",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-22",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-23",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-24",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    },
+    {
+      "id": "C-25",
+      "kind": "clear",
+      "statuses": [
+        "ok:ok"
+      ],
+      "row_counts": [
+        1
+      ],
+      "readings_differ": null
+    }
+  ]
+}
