@@ -4,8 +4,9 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group: G4 next. G0, G1 core, G2 and G3 are complete locally; the separate
-G1 interview drill remains. C2 keeps
+Current group (2026-10-11): G4 complete locally; next is running the E1-E8 matrix under
+contract v2 (D-075), then G5 and G7. G0-G3 infrastructure is complete; G3's experiments
+were frozen but not yet run. Interview drills for G1/G4/G5/G7 are scheduled together. C2 keeps
 Arctic as the local full-schema SQL-generation model because it scored 22/100 EX
 on the frozen development slice while Qwen scored 3/100 and hit 86 prompt-budget
 failures under its ctx2048 full-schema contract. The 100-item development slice
@@ -319,22 +320,29 @@ the optional interview drill.
 
 ### G4 — API and web
 
-- [ ] G4.1: API, capabilities, atomic lifecycle, SSE replay, admission/budgets/rate limits and CORS.
+- [x] G4.1: API, capabilities, atomic lifecycle, SSE replay, admission/budgets/rate limits and CORS.
   - [x] Dependency-free local API core: run IDs, bearer capabilities hashed server-side,
     admission/rate/body/origin/db checks, SSE serialization/replay, cancel and restart
-    interruption behavior. FastAPI adapter/routes still require the dependency decision.
+    interruption behavior.
   - [x] D-073 approved FastAPI/uvicorn and the React/Vite stack. FastAPI adapter: 202 ask,
     auth-before-work, capped raw body, live SSE heartbeat/Last-Event-ID, offered-option
     clarification with expiry, run timeout, event/run/bucket caps, shutdown interruption.
-- [ ] G4.2: API lifecycle/races/restart/disconnect/cancellation tests.
+  - [x] D-074 real agent runner with restricted per-dataset logins and live trace events.
+    Hosted Postgres budgets/durable runs are hosted-only and deferred to an approved G7 host.
+- [x] G4.2: API lifecycle/races/restart/disconnect/cancellation tests.
   - [x] Core lifecycle tests for creation, replay, overload, cancel and restart interruption.
-- [ ] G4.3 / C6: confirm existing three-page scope and polish level.
-- [ ] G4.4: Ask, Attack Lab, Benchmark with real artifacts and complete failure/loading states.
-  - [x] Static local Ask, Attack Lab and Benchmark page artifacts with required states and
-    no inline model HTML/script execution.
-- [ ] G4.5: clean local full-stack run and scripted request/clarification/result flow.
-  - [x] Dependency-free local smoke script verifies static pages and a fake answered API flow.
-- [ ] G4 interview drill.
+  - [x] Idempotent start, duplicate clarification, expiry, timeout, event/run caps, reconnect
+    without duplicate work. A real client disconnect ends the stream generator; TestClient
+    buffers responses, so no separate disconnect test exists.
+- [x] G4.3 / C6: confirm existing three-page scope and polish level (D-074).
+- [x] G4.4: Ask, Attack Lab, Benchmark with real artifacts and complete failure/loading states.
+  - [x] React pages read `/api/ask` (fetch SSE, header token), `/api/attacks` and
+    `/api/benchmark`; Benchmark is rebuilt around E1-E8 results when they exist.
+- [x] G4.5: clean local full-stack run and scripted request/clarification/result flow.
+  - [x] Live 2026-10-11: real server + PostgreSQL + Ollama; scripted ask -> clarification
+    (3 options) -> consensus 2/3 answered in 48.6 s; cancel -> cancelled; browser Ask run
+    answered with 3/3 agreement.
+- [ ] G4 interview drill (scheduled with the final drills).
 
 ### G5 — deployment preparation only
 
@@ -2030,6 +2038,23 @@ unfinished runs on shutdown and serves only `web/dist`.
 Verification: new core/adapter tests failed first (8 RED), then 20 passed. Full
 offline suite 841 passed/475 skipped. Ruff lint/format pass on changed files.
 Not yet done in G4: real agent runner, React pages, full-stack smoke.
+
+### 2026-10-11 — G4 complete locally; contract v2 and guard false blocks
+
+First live run exposed that the G1 JSON-document prompts made Arctic write
+placeholder SQL and Qwen echo the input. A 20-item dev probe measured E0 prompt
+3/20, E0+evidence 4/20, paper-structure prompt+evidence 10/20 (11.1 s median).
+D-075 freezes contract v2 (evidence, paper-structure prompts, quoted identifiers,
+final-SQL parsing, 3072-token reasoning cap). D-076 adds nine reviewed pure
+functions: gold false blocks 56 -> 3 of 424, attack outcomes unchanged, 56 real
+PostgreSQL guard checks pass. D-074 wires the real agent into the API (Qwen
+clarifies, a template explains, `.env.web` restricted reader keys only).
+
+Live G4.5: ask -> 3 clarification options -> consensus 2/3 answered (48.6 s);
+cancel works; browser Ask run answered 3/3 with correctly quoted identifiers.
+Checks: offline suite 875 passed/475 skipped; Ruff lint/format clean; web
+typecheck/build pass. Commits b94810e, 3ec7ef0, 6a96776, then the web commit.
+Next: run the E1-E8 matrix under contract v2.
 
 Python checks (project virtual environment):
 

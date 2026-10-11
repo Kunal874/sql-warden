@@ -1,58 +1,84 @@
-"""Scripted local G4 smoke without starting a network server."""
+"""Scripted G4 flow over HTTP: health, static app, ask -> (clarify) -> result, cancel.
+
+Live: `uv run python scripts/smoke_g4_local.py --base http://127.0.0.1:8000`
+(start the runtime first; this script needs no credentials and prints no tokens).
+"""
 
 from __future__ import annotations
 
-import asyncio
-from pathlib import Path
+import argparse
+import json
+import time
 
-from sqlwarden.api import RunService
+import httpx
 
-ROOT = Path(__file__).resolve().parents[1]
-
-
-async def _runner(run):
-    await run.event("validate", "ok")
-    await run.event("terminal", "answered", {"rows": [[1]], "preview_truncated": False})
+DEFAULT_QUESTION = "How many schools are in Alameda county?"
 
 
-async def _clarification_runner(run):
-    await run.event(
-        "clarify",
-        "needs_clarification",
-        {"question": "Which field?", "options": [{"id": "name", "text": "Name"}]},
-    )
+def _events(client: httpx.Client, run_id: str, token: str, last_id: int) -> tuple[list, int]:
+    steps = []
+    headers = {"authorization": "Bearer " + token, "last-event-id": str(last_id)}
+    with client.stream("GET", f"/api/runs/{run_id}/events", headers=headers) as response:
+        for line in response.iter_lines():
+            if line.startswith("id: "):
+                last_id = int(line[4:])
+            elif line.startswith("data: "):
+                steps.append(json.loads(line[6:]).get("step"))
+    return steps, last_id
 
 
-async def _continuation_runner(run):
-    await run.event("terminal", "answered", {"rows": [["School name"]], "preview_truncated": False})
-
-
-async def _flows() -> tuple[str, str]:
-    service = RunService(runner=_runner)
-    created = service.create_run({"db_id": "california_schools", "question": "How many rows?"})
-    result = await service.wait(created["run_id"])
-    clarification_service = RunService(
-        runner=_clarification_runner,
-        continuation_runner=_continuation_runner,
-    )
-    pending = clarification_service.create_run(
-        {"db_id": "california_schools", "question": "Which school?"}
-    )
-    await clarification_service.wait(pending["run_id"])
-    await clarification_service.clarify(
-        pending["run_id"], pending["capability"], {"option_id": "name"}
-    )
-    clarified = await clarification_service.wait(pending["run_id"])
-    return result["status"], clarified["status"]
+def run_smoke(client: httpx.Client, *, db_id: str, question: str, origin: str) -> dict:
+    report: dict = {
+        "health": client.get("/api/health").json().get("status"),
+        "ready": client.get("/api/ready").json(),
+        "index_served": 'id="root"' in client.get("/").text,
+        "source_hidden": client.get("/package.json").status_code == 404,
+    }
+    body = {"db_id": db_id, "question": question}
+    started = time.perf_counter()
+    created = client.post("/api/ask", json=body, headers={"origin": origin})
+    report["ask_status_code"] = created.status_code
+    run = created.json()
+    token = {"authorization": "Bearer " + run["capability"]}
+    steps, last_id = _events(client, run["run_id"], run["capability"], 0)
+    status = client.get(f"/api/runs/{run['run_id']}", headers=token).json()
+    if status["status"] == "needs_clarification":
+        options = status["clarification"].get("options") or []
+        reply = {"option_id": options[0]["id"]} if options else {"text": "the total number"}
+        report["clarification"] = {"options": len(options), "reply": sorted(reply)}
+        sent = client.post(f"/api/runs/{run['run_id']}/clarification", json=reply, headers=token)
+        report["clarification"]["status_code"] = sent.status_code
+        more, last_id = _events(client, run["run_id"], run["capability"], last_id)
+        steps += more
+        status = client.get(f"/api/runs/{run['run_id']}", headers=token).json()
+    result = status.get("result", {})
+    report["run"] = {
+        "status": status["status"],
+        "reason": result.get("reason"),
+        "row_count": result.get("row_count"),
+        "agreement": result.get("agreement"),
+        "steps": steps,
+        "seconds": round(time.perf_counter() - started, 2),
+    }
+    second = client.post("/api/ask", json=body, headers={"origin": origin}).json()
+    cancel_token = {"authorization": "Bearer " + second["capability"]}
+    client.post(f"/api/runs/{second['run_id']}/cancel", headers=cancel_token)
+    report["cancel_status"] = client.get(
+        f"/api/runs/{second['run_id']}", headers=cancel_token
+    ).json()["status"]
+    return report
 
 
 def main() -> int:
-    pages = sorted(path.name for path in (ROOT / "web").glob("*.html"))
-    run_status, clarification_status = asyncio.run(_flows())
-    print("pages=" + ",".join(pages))
-    print("api_run_status=" + run_status)
-    print("api_clarification_status=" + clarification_status)
-    return 0
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--base", default="http://127.0.0.1:8000")
+    parser.add_argument("--db", default="california_schools")
+    parser.add_argument("--question", default=DEFAULT_QUESTION)
+    args = parser.parse_args()
+    with httpx.Client(base_url=args.base, timeout=330, trust_env=False) as client:
+        report = run_smoke(client, db_id=args.db, question=args.question, origin=args.base)
+    print(json.dumps(report, indent=2))
+    return 0 if report["run"]["status"] in {"answered", "abstained", "blocked"} else 1
 
 
 if __name__ == "__main__":

@@ -194,3 +194,23 @@ def test_readiness_reports_unavailable_dependencies():
             503,
             {"status": "not_ready", "reason": "model_unavailable"},
         )
+
+
+def test_reconnecting_streams_never_start_duplicate_work():
+    # TestClient buffers whole responses, so this proves reconnect safety; a real client
+    # disconnect ends the generator through request.is_disconnected().
+    calls = []
+
+    async def counted_waiting_runner(run):
+        calls.append(run.run_id)
+        await waiting_runner(run)
+
+    service = RunService(runner=counted_waiting_runner, run_timeout_seconds=0.3)
+    with _client(service, heartbeat_seconds=0.05, poll_seconds=0.01) as client:
+        created = client.post("/api/ask", json=ASK).json()
+        url = f"/api/runs/{created['run_id']}/events"
+        first = _stream(client, url, _bearer(created))
+        again = _stream(client, url, _bearer(created) | {"last-event-id": "1"})
+    assert '"run_timeout"' in first and '"run_timeout"' in again
+    assert calls == [created["run_id"]]
+    assert len(service.runs) == 1
