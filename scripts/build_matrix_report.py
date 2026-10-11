@@ -17,6 +17,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+from scripts.render_eval_docs import readme_block, render_eval, render_resume, replace_block
 from scripts.run_matrix import RAW, RESULTS
 from sqlwarden.evaluation import _bootstrap_difference_interval, load_jsonl_records
 from sqlwarden.protocol import bootstrap_accuracy_interval, clopper_pearson
@@ -342,7 +343,45 @@ def build() -> dict[str, Any]:
                 )
         result["failure_taxonomy"] = dict(categories.most_common())
         summary["splits"][split] = result
+    summary["calibration_probe"] = probe_summary()
+    summary["security"] = security_summary()
     return summary | {"failure_labels": labels}
+
+
+def probe_summary() -> dict[str, int] | None:
+    """D-075 calibration probe: compact IDs and outcome classes only."""
+    path = RESULTS / "prompt-probe.jsonl"
+    if not path.exists():
+        return None
+    rows = [row for row in load_jsonl_records(path) if "id" in row]
+    return {
+        "n": len(rows),
+        "e0": sum(1 for row in rows if row["e0"]),
+        "e0_with_evidence": sum(1 for row in rows if row["e0_evid"] == "match"),
+        "paper": sum(1 for row in rows if row["paper"] == "match"),
+    }
+
+
+def security_summary() -> dict[str, int]:
+    manifest = json.loads((ROOT / "docs/attack-suite-manifest.json").read_text(encoding="utf-8"))
+    blocks = manifest["false_block_measurement"]
+    return {
+        "attacks": len(manifest["attacks"]),
+        "blocked": sum(1 for attack in manifest["attacks"] if attack["outcome"] == "blocked"),
+        "gold_items": blocks["safe_gold_items"],
+        "gold_accepted": blocks["safe_gold_guard_accepted"],
+    }
+
+
+def write_docs(summary: dict[str, Any]) -> None:
+    e0 = json.loads((ROOT / "results/E0_smoke/dashboard.json").read_text(encoding="utf-8"))
+    readme = ROOT / "README.md"
+    readme.write_text(
+        replace_block(readme.read_text(encoding="utf-8"), readme_block(summary)),
+        encoding="utf-8",
+    )
+    (ROOT / "docs/EVAL.md").write_text(render_eval(summary, e0=e0["models"]), encoding="utf-8")
+    (ROOT / "docs/RESUME.md").write_text(render_resume(summary), encoding="utf-8")
 
 
 def freeze_threshold() -> dict[str, Any]:
@@ -395,6 +434,7 @@ def main() -> int:
         + "\n",
         encoding="utf-8",
     )
+    write_docs(summary)
     print(json.dumps({"splits": sorted(summary["splits"]), "failure_labels": len(labels)}))
     return 0
 

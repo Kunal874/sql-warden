@@ -1,0 +1,21 @@
+{"id": 23, "e0": false, "e0_evid": "blocked:parse_error", "s0": 8.13, "paper": "blocked:unsupported_node", "s1": 10.06, "tok1": 476}
+{"id": 41, "e0": false, "e0_evid": "mismatch", "s0": 1.7, "paper": "mismatch", "s1": 11.14, "tok1": 562}
+{"id": 47, "e0": false, "e0_evid": "blocked:function_not_allowed", "s0": 1.43, "paper": "blocked:function_not_allowed", "s1": 8.8, "tok1": 438}
+{"id": 83, "e0": false, "e0_evid": "exec:undefined_object", "s0": 1.47, "paper": "exec:undefined_object", "s1": 11.07, "tok1": 545}
+{"id": 85, "e0": false, "e0_evid": "exec:undefined_object", "s0": 2.05, "paper": "mismatch", "s1": 10.36, "tok1": 505}
+{"id": 89, "e0": false, "e0_evid": "no_sql", "s0": 1.68, "paper": "mismatch", "s1": 16.64, "tok1": 651}
+{"id": 112, "e0": true, "e0_evid": "match", "s0": 1.45, "paper": "match", "s1": 10.29, "tok1": 514}
+{"id": 117, "e0": false, "e0_evid": "mismatch", "s0": 1.25, "paper": "match", "s1": 13.29, "tok1": 550}
+{"id": 118, "e0": false, "e0_evid": "mismatch", "s0": 1.89, "paper": "mismatch", "s1": 12.05, "tok1": 601}
+{"id": 149, "e0": false, "e0_evid": "mismatch", "s0": 1.46, "paper": "mismatch", "s1": 11.19, "tok1": 554}
+{"id": 194, "e0": false, "e0_evid": "blocked:function_not_allowed", "s0": 2.08, "paper": "blocked:function_not_allowed", "s1": 11.56, "tok1": 572}
+{"id": 195, "e0": true, "e0_evid": "match", "s0": 0.97, "paper": "match", "s1": 6.51, "tok1": 312}
+{"id": 198, "e0": false, "e0_evid": "match", "s0": 1.69, "paper": "match", "s1": 12.98, "tok1": 647}
+{"id": 206, "e0": false, "e0_evid": "mismatch", "s0": 1.05, "paper": "match", "s1": 7.73, "tok1": 383}
+{"id": 220, "e0": true, "e0_evid": "match", "s0": 0.74, "paper": "match", "s1": 10.83, "tok1": 462}
+{"id": 226, "e0": false, "e0_evid": "mismatch", "s0": 2.98, "paper": "match", "s1": 8.43, "tok1": 390}
+{"id": 242, "e0": false, "e0_evid": "blocked:function_not_allowed", "s0": 2.25, "paper": "blocked:function_not_allowed", "s1": 14.66, "tok1": 447}
+{"id": 255, "e0": false, "e0_evid": "mismatch", "s0": 20.01, "paper": "match", "s1": 11.8, "tok1": 587}
+{"id": 260, "e0": false, "e0_evid": "mismatch", "s0": 1.05, "paper": "match", "s1": 9.77, "tok1": 487}
+{"id": 268, "e0": false, "e0_evid": "mismatch", "s0": 1.48, "paper": "match", "s1": 9.72, "tok1": 479}
+{"n": 20, "e0": 3, "e0_evidence": 4, "paper": 10}
