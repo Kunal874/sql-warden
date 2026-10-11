@@ -74,6 +74,21 @@ Current G2 evidence is local and test-backed:
 - Real PostgreSQL integration tests cover restricted readers, direct denials,
   future grants, executor cost gates and forced tenant RLS.
 
+Web runtime (G4/G5, D-073, D-074, D-077):
+
+- The API has no raw-SQL or layer-off endpoint. Each run is reachable only with an
+  unguessable bearer capability, stored server-side as a SHA-256 hash and never put
+  in URLs; the browser reads the event stream with `fetch` and an Authorization
+  header.
+- Request bodies are byte-capped before parsing and must be exactly
+  `{db_id, question}`; wrong origins, unknown datasets and over-limit clients are
+  refused; clarification replies cannot change the dataset, tenant or role.
+- The runtime starts only with `WARDEN_RUNTIME_<DB>_PASSWORD` reader credentials and
+  validated address keys; any setup or test credential refuses startup. The model URL
+  must be a local Ollama address, so inference cannot be redirected to a third party.
+- The container runs as a non-root user with a read-only root filesystem, no Linux
+  capabilities, no-new-privileges and memory/CPU/PID limits, published on 127.0.0.1.
+
 ## Reportable Findings and Severity Context
 
 Report a finding if code reachable from the local runtime can:
@@ -110,7 +125,9 @@ checks are high-impact in this project even if currently local-only.
   internal Python values may still consume resources before a limit fires.
 - Some catalog metadata is normally visible to database users; read-only roles do
   not hide every catalog fact.
-- Some benign corrected-gold SQL is currently false-blocked because its functions
-  are not reviewed yet.
+- 3 of 424 safe corrected-gold queries are still false-blocked (`unsupported_node`).
+  D-076 reviewed and allowed nine pure date/text/rank built-ins that caused the
+  earlier 56 false blocks. The model also writes SQLite-only functions such as
+  `strftime`; the guard refuses them and they count as evaluation failures.
 - Tenant RLS is proven on the small synthetic `tenant_demo`; tenant-aware runtime
   routing is still later work.
