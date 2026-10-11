@@ -156,6 +156,15 @@ def render_eval(summary: dict[str, Any], *, e0: dict[str, Any]) -> str:
         out += ["", f"## E2 — loop ablation, {title.lower()} ({split['ids']} questions)", ""]
         out += condition_table(split) + [""] + comparison_table(split)
         out += phase_section(split)
+        repairs = split.get("repair_outcomes")
+        if repairs and repairs["repaired_candidates"]:
+            out += [
+                "",
+                f"Repair outcomes ({repairs['repaired_candidates']} repaired candidates; "
+                "the repair prompt receives only the sanitized failure category): "
+                + fmt_counts(repairs["outcomes"])
+                + ".",
+            ]
         if split.get("label_rescoring"):
             out += ["", f"## E1/E3 — original versus corrected labels, {title.lower()}", ""]
             out += [

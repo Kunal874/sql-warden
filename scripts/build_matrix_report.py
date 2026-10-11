@@ -156,6 +156,23 @@ def phase_rates(records: dict[int, dict[str, Any]], *, first_only: bool) -> dict
     }
 
 
+def repair_outcomes(records: dict[int, dict[str, Any]]) -> dict[str, Any]:
+    """What the one allowed repair did: same failure class again, or a fix."""
+    outcomes: Counter[str] = Counter()
+    for record in records.values():
+        for candidate in record["candidates"]:
+            attempts = candidate["attempts"]
+            if len(attempts) < 2:
+                continue
+            first, last = attempts[0], attempts[-1]
+            if last["status"] != "ok":
+                key = "same_failure" if last["reason"] == first["reason"] else "other_failure"
+            else:
+                key = "executed_correct" if last["ex_corrected"] == 1 else "executed_wrong"
+            outcomes[f"{first['reason']}->{key}"] += 1
+    return {"repaired_candidates": sum(outcomes.values()), "outcomes": dict(outcomes.most_common())}
+
+
 def label_rescoring(view: dict, records: dict[int, dict[str, Any]], *, ids: list[int]) -> dict:
     """E1/E3: the same predictions scored against original and corrected labels."""
     scored = [qid for qid in ids if view.get(qid, {}).get("ex_original") is not None]
@@ -344,6 +361,8 @@ def build() -> dict[str, Any]:
         if raw["clarify_oracle"]:
             result["clarification"] = clarification_summary(raw["clarify_oracle"])
         result["case_studies"] = case_studies(views, ids)
+        if raw["ret_n3_k1"]:
+            result["repair_outcomes"] = repair_outcomes(raw["ret_n3_k1"])
         if raw["messy_n1"]:
             result["messy_schema"] = {
                 "leaked_names": sum(
