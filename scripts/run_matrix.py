@@ -373,8 +373,10 @@ async def run_condition(condition: str, split: str, *, limit: int | None, resume
             )
         else:
             record = await run_item(item, condition, values, cache, lock)
-        if spec.get("replay") and record["usage"]["live_calls"]:
-            raise EvaluationError("replay made a live call")
+        if spec.get("replay"):
+            # The cache refuses outputs containing secret/gold terms, so a few
+            # questions cannot be replayed; record that instead of hiding it.
+            record["fully_replayed"] = record["usage"]["live_calls"] == 0
         append_jsonl_record(path, record)
         print(
             json.dumps(

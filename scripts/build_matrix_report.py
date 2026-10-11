@@ -228,6 +228,10 @@ def failure_category(record: dict[str, Any], key: str = "n3_k1") -> str | None:
 
 
 def latency(records: list[dict[str, Any]]) -> dict[str, Any]:
+    # Replay runs: time only questions served entirely from the cache.
+    not_replayed = sum(1 for r in records if r.get("fully_replayed") is False)
+    if any("fully_replayed" in r for r in records):
+        records = [r for r in records if r.get("fully_replayed")]
     calls = [c for r in records for c in r.get("calls", []) if c.get("status") == "ok"]
     live = [c for c in calls if not c["cache_hit"]]
     per_role = {}
@@ -247,6 +251,7 @@ def latency(records: list[dict[str, Any]]) -> dict[str, Any]:
     completion = [c.get("completion_tokens") for c in calls]
     return {
         "items": len(records),
+        "not_replayable": not_replayed,
         "calls": len(calls),
         "calls_per_question": round(len(calls) / len(records), 2) if records else None,
         "prompt_tokens_total": None if None in prompt else sum(prompt),
