@@ -2313,6 +2313,35 @@ latency) on the full held-out set while staying inside about a day of laptop GPU
 time. Cost if wrong: E4/E7 effects are measured on 100 development questions only
 and have wide intervals.
 
+## D-080 — E5 layer-off runs one layer at a time (2026-10-11)
+
+Context: Kunal reversed D-079's two deferrals on 2026-10-11: the E5 layer-off
+variants and the self-authored E7 set must run before any push. The written but
+untested harness turned off two layers in two of its five configurations, scored
+`SET ROLE` as success whenever the statement ran, and scored a query that ran past
+the limit and then errored as prevented.
+
+Decision: six configurations: all layers on, then exactly one of L3 SQL guard, L5
+restricted role, L5 read-only transaction or L6 statement timeout off, plus an
+all-off positive control (broad read/write login with file and program rights, no
+superuser). With L6 off, a 6 s harness-only cap still ends runaway queries. Success
+comes from observed state through a separate admin connection: data/canary
+fingerprints, `current_user` after a role switch, elapsed time, and canary text in
+returned rows. Local Docker endpoints only, one-time passwords, and cleanup limited
+to project `sqlwarden_e5_disposable` and its volume.
+
+Result (3b3ad20, `results/G3_matrix/e5-layer-off.json`): all layers on prevented
+29 of 29 attacks (28 by the guard; the four-way cross join passes the guard and the
+timeout stops it). One layer off let two through: `version()` with the guard off,
+and the cross join with the timeout off. Role-off and read-only-off let none through,
+because the guard stops each attack. The positive control succeeded on 28; `CREATE
+EXTENSION dblink` still needs superuser.
+
+Rationale: switching off one layer at a time is how the plan defines defense in
+depth for E5. Cost if wrong: L1, L2, L4, L7 and L8 are not switched off here. The
+real executor's L4 EXPLAIN cost check, which is not modelled, is the layer meant to
+stop the cross join before execution.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
