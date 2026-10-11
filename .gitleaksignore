@@ -1,0 +1,3 @@
+# Reviewed 2026-10-11: docs/DATA.md records the SHA-256 of an ignored evidence file next to
+# the word 'credentials'; gitleaks' generic-api-key rule matches the hash. Not a secret.
+f646d89af772f71018ad007fff6598f9783880af:docs/DATA.md:generic-api-key:15

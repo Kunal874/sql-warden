@@ -18,8 +18,12 @@ ignored local data or credentials skip cleanly. Repeat on the final release comm
   secret values from the ignored `.env*` files (names reported, values never printed)
   and for private keys, AWS/GitHub/OpenAI/Hugging Face/Groq token shapes, hex
   password assignments and credential-bearing Postgres URLs. None found.
-  Limitation: no verified scanner (gitleaks, trufflehog) is installed; installing one
-  needs approval. This targeted search is not equivalent to a full scanner.
+  Verified scanner (Kunal approved the install on 2026-10-11): gitleaks 8.30.1 over the
+  full history (89 commits, all refs, redacted) and over a fresh clone of HEAD found one
+  item each, the same `generic-api-key` match in `docs/DATA.md`: the SHA-256 of an
+  ignored evidence file printed after the word "credentials". It was confirmed to be
+  that file's hash and absent from every credential file, then listed in
+  `.gitleaksignore`; the rescan reports no leaks.
 - Runtime dependency licenses: Python distributions MIT, BSD, Apache-2.0, PSF-2.0 and
   MPL-2.0 (used unmodified); web production packages MIT, ISC and BSD-3-Clause.
 - Data and models: BIRD Mini-Dev and the Arcwise corrections are CC BY-SA 4.0 and are

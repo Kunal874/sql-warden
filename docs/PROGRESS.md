@@ -369,8 +369,9 @@ the optional interview drill.
 - [ ] G7.1: clean local clone/install/runbook verification.
   - [x] Clone of 704a984: locked install, 882 passed/475 skipped; repeat on the release commit.
 - [x] G7.2: full-history author/committer/body and verified secret scan; license checks.
-  - [x] 83 commits all Kunal; targeted full-history secret search clean; no verified
-    scanner installed (limitation recorded in RELEASE); licenses checked.
+  - [x] 83 commits all Kunal; targeted full-history secret search clean; licenses checked.
+  - [x] gitleaks 8.30.1 (approved install): one reviewed false positive (an evidence-file
+    SHA-256 in DATA), recorded in `.gitleaksignore`; rescan clean.
 - [ ] G7.3 / C9: concrete release preview; approve exact repo/visibility, push and hosting actions.
   - [x] Preview prepared in RELEASE; waiting for Kunal's approval.
 - [ ] G7.4: approved remote/push/provision/deploy; actual CI and bounded public smoke/abuse checks.
