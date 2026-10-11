@@ -2427,6 +2427,47 @@ What is still unfinished: the big experiment set (E1-E8) has not run yet. That
 is next. Deployment preparation (G5), the release (G7) and the interview drills
 for G1, G4, G5 and G7 also remain.
 
+### G5 deployment preparation and first release checks (2026-10-11)
+
+G5 means "get ready to publish, but do not publish yet". Nothing was put online.
+
+What changed:
+
+- **Free hosting check.** I read the official pages of five services on
+  2026-10-11. The free web servers are small and fall asleep; Hugging Face now
+  charges for app containers; free databases are 1 GB; a free hosted AI model
+  allows only about 1,000 requests a day and would receive the questions. So the
+  recommendation (D-077) is: publish the Benchmark and Attack Lab pages as a
+  static website on GitHub Pages, and keep the live Ask page as a laptop demo.
+- **Container.** A Dockerfile now packages the website and the Python server.
+  It runs as a normal (non-administrator) user, cannot write to its own files,
+  and can only reach the local database and the local AI model.
+- **CI (automatic checks).** A GitHub workflow will run the tests, lint, the web
+  build and a throw-away database security test on every push. It only gets
+  read permission. It will first run after the approved push.
+- **Public check script.** It tries bad requests on purpose (wrong website, huge
+  body, wrong password token, too many requests) and expects each to be refused.
+- **Release checks.** All 83 saved commits are by you only. A search of every file
+  version ever saved found none of your 34 local passwords and no key patterns.
+  All software licenses are permissive (MIT, BSD, Apache, ISC).
+
+New simple terms:
+
+**Container / Docker image**: a sealed box with the app and everything it needs,
+so it runs the same way on any computer.
+
+**CI (continuous integration)**: a robot that runs your checks automatically each
+time code is pushed.
+
+**Static website**: a site made only of files (no live server code), so it is
+free and safe to host.
+
+**Secret scan**: searching saved history for passwords or keys that should never
+have been committed.
+
+What still needs you: choosing the public repository name, public or private,
+and the code license, before anything is pushed (see docs/RELEASE.md).
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,
