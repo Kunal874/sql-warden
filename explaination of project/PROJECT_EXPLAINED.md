@@ -2535,6 +2535,76 @@ Simple answer: I searched all 601 file versions in the whole history for the exa
 values of all 34 local passwords and for common key formats, and found none. I also
 say clearly that this is a targeted search, not a full commercial secret scanner.
 
+### G3 experiments finished: what the measurements say (2026-10-12)
+
+The experiment plan from G3 has now actually run, on 100 practice ("development")
+questions and 324 held-out test questions. Another Claude session ran the security
+switch-off test (E5) at the same time; the two sessions agreed who did what so they
+did not overwrite each other. Every run recorded the exact code version it used.
+
+Main results, in plain words:
+
+- **Simple was best for accuracy.** Giving the model the whole database description
+  and asking once got 54.3% of held-out questions right. The full agent (pick 24
+  columns, three tries, one repair, vote) got 42.9% right overall.
+- **But the agent is more trustworthy when it does answer.** Using a rule chosen on
+  practice questions only, it answered 61.7% of test questions and was right on 66.5%
+  of those. Saying "I don't know" is better than a confident wrong answer.
+- **The repair step almost never helped.** 56 of 58 repairs repeated the same mistake,
+  because the repair only hears a short error category (for safety), not which word
+  was wrong. That is the clearest thing to improve next.
+- **Wording matters a lot.** The original BIRD wording cost 20 points on the 40 practice
+  questions whose wording had been corrected. Scrambled column names cost 15 points.
+- **Clarifying questions:** it asked on 44% of truly unclear questions and 15% of clear
+  ones. The question options were always well formed, but answers after clarifying
+  were still often wrong.
+- **Security:** with every layer on, 0 of 43 recorded attacks succeeded. Switching one
+  layer off at a time in a throw-away database, 27 of 29 attacks were still stopped;
+  two depended on a single layer (the guard, or the time limit).
+
+Fixes made along the way: a crash when a clear question got a clarifying question,
+replay stopping when a few answers could not be cached, and questions wrongly shown
+as "pending". Each fix has a test, and the affected runs were redone from clean code.
+
+New simple terms:
+
+**Held-out set**: questions kept locked away until the very end, so the final score
+is not tuned to them.
+
+**Ablation**: turning one feature off to see how much it really helps.
+
+**Selective accuracy**: how often the answers are right when the system chooses to
+answer, ignoring the questions it declined.
+
+**Confidence interval**: the range the true score probably lies in; small test sets
+give wide ranges.
+
+**Positive control**: a run with every protection off, to prove the test can detect
+a successful attack at all.
+
+### G7 final interview drill (2026-10-12)
+
+Question 1: Your full agent scored lower than the simple baseline. Why keep it?
+
+Simple answer: because it knows when to stay quiet. End to end it is lower, but
+when it answers it is right about two times in three, and every abstention is counted
+as wrong in the main score, so nothing is hidden. I report both numbers and say which
+setting to use for which goal.
+
+Question 2: How do you know your security claims are not just marketing?
+
+Simple answer: each claim points to a test or a recorded run. 43 attacks have success
+rules that check the database itself, not just error messages. A disposable database
+test switched layers off one at a time, and an "everything off" control proved the
+attacks really work when nothing stops them. I also give the statistical upper bound,
+8.2%, instead of saying "unhackable".
+
+Question 3: What would you do next?
+
+Simple answer: give the repair step safe, specific feedback (which column or function
+was wrong), teach the guard-friendly PostgreSQL date functions in the prompt, and then
+re-run the same frozen evaluation to see whether the loop finally beats the baseline.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,
