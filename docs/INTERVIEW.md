@@ -1,0 +1,76 @@
+# Interview questions (G7.5)
+
+Twelve questions an interviewer is likely to ask, with short answers and the file that
+backs each claim. Numbers come from `results/G3_matrix/summary.json` (commit c412438)
+and the manifests named; re-read those files if anything is rebuilt.
+
+1. **What does SQLWarden do, in one sentence?**
+   It turns a question into read-only PostgreSQL, runs it under a one-dataset login
+   with hard limits, and answers only when independent candidates agree on the result.
+   Evidence: [agent.py](../src/sqlwarden/agent.py), [README](../README.md).
+
+2. **Why not trust the model to write only SELECT queries?**
+   A prompt is a request, not a boundary. The guard parses SQL and refuses anything
+   outside an allowlist; the database login can read only its own schema in a read-only
+   transaction. In the disposable layer-off run, 27 of 29 attacks stayed prevented with
+   any single layer switched off. Evidence: [SECURITY](../SECURITY.md),
+   `results/G3_matrix/e5-layer-off.json`.
+
+3. **Did any attack get through, and what does "0 succeeded" mean?**
+   0 of 43 recorded attacks succeeded with all layers on (exact 95% upper bound 8.2%).
+   That bounds this recorded suite, not future attacks. With one layer off, `version()`
+   relied on the guard alone and a huge cross join on the timeout alone.
+   Evidence: [EVAL](EVAL.md) E5, `docs/attack-suite-manifest.json`.
+
+4. **How accurate is it?**
+   On 324 held-out questions the simplest setting (full schema, one candidate) reached
+   54.3%; the full loop 42.9% end to end. With the agreement threshold chosen on
+   development data, the loop answered 61.7% of questions and was right on 66.5% of
+   those. Local PostgreSQL-adapted subset, not an official BIRD score. Evidence: EVAL.
+
+5. **So the agent features made it worse?**
+   End to end, yes: retrieval cost 8.6 points and voting about 3 more. Their measured
+   value is selective accuracy, not coverage. I reported this instead of tuning on
+   held-out data. Evidence: EVAL E2 paired comparisons, D-078.
+
+6. **Why did repair not help?**
+   56 of 58 repairs on development repeated the same failure class. The repair prompt
+   receives only a sanitized category such as `function_not_allowed`, not which function
+   or column was wrong. Safe, specific feedback is the next experiment.
+   Evidence: EVAL repair outcomes, D-081.
+
+7. **What was the single biggest accuracy lever you found?**
+   The prompt format. The model was trained to reason before a final SQL block; matching
+   that format (and adding BIRD's evidence) moved a 20-question development probe from
+   3 to 10 correct before the evaluation was frozen. Evidence: D-075,
+   `results/G3_matrix/prompt-probe.jsonl`.
+
+8. **How did you avoid fooling yourself in evaluation?**
+   Frozen 100/324 split, development-only tuning, a threshold rule fixed and frozen before
+   any held-out run, every question kept in the denominator, exact and paired bootstrap
+   intervals, and commit plus dirty-flag provenance on every run. Evidence:
+   `docs/e0-protocol.json`, `docs/e8-threshold.json`, D-078, D-081.
+
+9. **How did you handle wrong benchmark labels?**
+   I used the verified corrected label pool (424 of 498 questions) and scored the same
+   predictions against original labels where those were valid. Separate runs with the
+   original wording showed it cost 20 points on the 40 changed development questions.
+   Evidence: D-053, EVAL E1/E3, `docs/ambiguity-audit.json`.
+
+10. **Does it ask clarifying questions well?**
+    Partly. It asked on 44% of genuinely ambiguous development questions versus 15% of
+    clear ones, and the helper's options were always well formed, but answers after
+    clarification were often still wrong. On the self-authored set it asked on 5 of 15
+    ambiguous evaluation questions and wrongly on 3 of 15 clear ones. Evidence: EVAL E7.
+
+11. **How is a running query kept safe and bounded in the web app?**
+    Each run has an unguessable capability stored only as a hash; bodies are size-capped
+    before parsing; overload is refused immediately; events stream with replay and
+    heartbeats; runs time out; shutdown marks them interrupted. Evidence:
+    [api.py](../src/sqlwarden/api.py), [webapp.py](../src/sqlwarden/webapp.py), D-073.
+
+12. **Why is the public demo static?**
+    Free hosting tiers were too small, or would send every question to a third-party
+    model, and managed Postgres would not allow some permission hardening. A static
+    evidence site plus a local demo costs nothing and leaks nothing. Evidence:
+    [DEPLOY](DEPLOY.md), D-077.
