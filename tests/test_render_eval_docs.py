@@ -58,3 +58,22 @@ def test_eval_and_resume_are_generated_from_the_summary_only():
     assert "25.0%" in resume and "held-out" in resume.lower()
     for text in (evaluation, resume):
         assert "SELECT" not in text
+
+
+def test_layer_off_section_names_attacks_that_one_layer_off_lets_through():
+    row = {"attacks": 2, "prevented": 1, "succeeded": 1, "stopped_by": {"L5_database_role": 1}}
+    layer_off = {
+        "project": "sqlwarden_e5_disposable",
+        "configurations": {
+            "all_layers_on": row | {"prevented": 2, "succeeded": 0},
+            "guard_off": row,
+        },
+        "succeeded_with_one_layer_off": {"L-A4-05": ["guard_off"]},
+        "prevented_with_any_one_layer_off": ["L-A1-01"],
+    }
+
+    evaluation = render_eval(SUMMARY | {"layer_off": layer_off}, e0={})
+
+    assert "| guard off | 2 | 1 | 1 | L5 database role 1 |" in evaluation
+    assert "1 of 2 attacks stayed prevented with any single layer off" in evaluation
+    assert "L-A4-05 (guard_off)" in evaluation

@@ -371,6 +371,7 @@ def build() -> dict[str, Any]:
         summary["splits"][split] = result
     summary["calibration_probe"] = probe_summary()
     summary["security"] = security_summary()
+    summary["layer_off"] = layer_off_summary()
     summary["e7_self_authored"] = self_authored_summary()
     return summary | {"failure_labels": labels}
 
@@ -416,6 +417,15 @@ def self_authored_summary() -> dict[str, Any] | None:
 
     rows = load_jsonl_records(RAW / "e7" / "self_authored.jsonl")
     return summarize(rows) if rows else None
+
+
+def layer_off_summary() -> dict[str, Any] | None:
+    """E5 from scripts/run_e5_layer_off.py, without the per-attack rows."""
+    path = RESULTS / "e5-layer-off.json"
+    if not path.exists():
+        return None
+    e5 = json.loads(path.read_text(encoding="utf-8"))
+    return {key: value for key, value in e5.items() if key != "results"}
 
 
 def probe_summary() -> dict[str, int] | None:

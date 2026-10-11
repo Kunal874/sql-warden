@@ -1,0 +1,51 @@
+# E5 layer-off experiments only: disposable, synthetic, internal network, no host mounts.
+# Run through scripts/run_e5_layer_off.py, which generates one-time passwords, refuses
+# non-local Docker targets and removes only this project's named volume afterwards.
+name: sqlwarden_e5_disposable
+
+services:
+  db:
+    image: postgres:16@sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54
+    environment:
+      POSTGRES_DB: e5
+      POSTGRES_USER: e5_admin
+      POSTGRES_PASSWORD: ${E5_ADMIN_PASSWORD:?generated per run by scripts/run_e5_layer_off.py}
+    volumes:
+      - pg16_data:/var/lib/postgresql/data
+    networks: [e5net]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U e5_admin -d e5"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    shm_size: 64mb
+    restart: "no"
+
+  harness:
+    image: sqlwarden-app:local
+    profiles: ["harness"]
+    entrypoint: ["/app/.venv/bin/python", "-"]
+    environment:
+      E5_ADMIN_PASSWORD: ${E5_ADMIN_PASSWORD:?generated per run}
+      E5_READER_PASSWORD: ${E5_READER_PASSWORD:?generated per run}
+      E5_BROAD_PASSWORD: ${E5_BROAD_PASSWORD:?generated per run}
+    networks: [e5net]
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 64
+    restart: "no"
+
+volumes:
+  pg16_data:
+    name: sqlwarden_e5_disposable_pg16_data
+
+networks:
+  e5net:
+    internal: true

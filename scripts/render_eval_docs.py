@@ -337,7 +337,14 @@ def layer_off_section(layer_off: dict[str, Any] | None) -> list[str]:
             f"| {name.replace('_', ' ')} | {v['attacks']} | {v['prevented']} | "
             f"{v['succeeded']} | {fmt_counts(v['stopped_by'])} |"
         )
-    return lines
+    through = layer_off["succeeded_with_one_layer_off"]
+    prevented = layer_off["prevented_with_any_one_layer_off"]
+    gaps = ", ".join(f"{attack} ({', '.join(configs)})" for attack, configs in through.items())
+    return lines + [
+        "",
+        f"{len(prevented)} of {len(prevented) + len(through)} attacks stayed prevented with "
+        f"any single layer off. Let through by one layer off: {gaps or 'none'}.",
+    ]
 
 
 def phase_section(split: dict[str, Any]) -> list[str]:
