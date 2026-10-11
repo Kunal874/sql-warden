@@ -323,6 +323,9 @@ the optional interview drill.
   - [x] Dependency-free local API core: run IDs, bearer capabilities hashed server-side,
     admission/rate/body/origin/db checks, SSE serialization/replay, cancel and restart
     interruption behavior. FastAPI adapter/routes still require the dependency decision.
+  - [x] D-073 approved FastAPI/uvicorn and the React/Vite stack. FastAPI adapter: 202 ask,
+    auth-before-work, capped raw body, live SSE heartbeat/Last-Event-ID, offered-option
+    clarification with expiry, run timeout, event/run/bucket caps, shutdown interruption.
 - [ ] G4.2: API lifecycle/races/restart/disconnect/cancellation tests.
   - [x] Core lifecycle tests for creation, replay, overload, cancel and restart interruption.
 - [ ] G4.3 / C6: confirm existing three-page scope and polish level.
@@ -2010,6 +2013,23 @@ frontend build and browser-level scripted flow still require the direct dependen
 decision required by AGENTS.md. Verification: focused G4 core/static tests passed
 6. Full offline `uv run pytest -q --tb=line` passed 824/475 skipped. `uv run ruff
 check .`, `uv run ruff format --check .` and `git diff --check` passed.
+
+### 2026-10-11 — G4 FastAPI adapter and dependency approval
+
+Session start review found the uncommitted FastAPI/React work had no decision
+record and eight adapter gaps. Kunal approved all remaining steps; D-073 records
+the dependency approval and adapter contract. `uvicorn[standard]` became plain
+`uvicorn` (six fewer transitive packages). `sqlwarden.api` now starts runs in the
+background, binds clarification to offered options with a 600 s expiry, enforces
+a 300 s run timeout, 256 events per run, 500-run/1 h retention and a capped
+rate-limit table. `sqlwarden.webapp` serves `POST /api/ask` (202), checks bearer
+capabilities before work, caps the raw body before parsing, streams SSE with
+heartbeats and `Last-Event-ID`, returns 503 + Retry-After on overload, interrupts
+unfinished runs on shutdown and serves only `web/dist`.
+
+Verification: new core/adapter tests failed first (8 RED), then 20 passed. Full
+offline suite 841 passed/475 skipped. Ruff lint/format pass on changed files.
+Not yet done in G4: real agent runner, React pages, full-stack smoke.
 
 Python checks (project virtual environment):
 

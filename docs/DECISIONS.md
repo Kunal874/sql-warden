@@ -2123,6 +2123,47 @@ offline tests passed 824/475 skipped. Ruff lint, format and diff whitespace
 passed. No new dependency, model call, database execution, hosted action, remote
 or push occurred.
 
+## D-073 — G4 web dependencies approved; FastAPI adapter contract (2026-10-11)
+
+Context: D-072 held the FastAPI/Vite install for an explicit approval. A working
+tree from the previous session already added them without a recorded decision.
+On 2026-10-11 Kunal approved all remaining steps ("ok i approve all the steps").
+
+Decision: approve the direct dependencies already named by BUILD_SPEC section 2:
+Python `fastapi>=0.143,<1` and plain `uvicorn>=0.54,<1` (the `[standard]` extra was
+dropped; it added uvloop/httptools/watchfiles/websockets/pyyaml/python-dotenv that
+the local server does not need); web `react`/`react-dom` 18, `recharts` 3,
+`typescript` 5, `vite` 8 and React 18 type packages, locked in
+`web/package-lock.json`. Node 24.18 satisfies Vite 8's Node requirement.
+
+Adapter contract: `POST /api/ask` returns 202 with `run_id` and a capability and
+starts the run in the background. Every run route checks the bearer capability
+before any work; unknown runs and wrong tokens are both 401. Request bodies are
+read with a byte cap before JSON parsing and must be exactly `{db_id, question}`.
+A wrong `Origin` is refused; a missing `Origin` is treated as a non-browser
+client because browsers always send it on POST. Client IP comes from the direct
+socket only; forwarded headers are not trusted because no proxy is configured.
+Overload is 503 with `Retry-After`; rate limiting is 429 and the bucket table is
+capped (fail closed when full). SSE polls in memory, sends a heartbeat comment,
+honours `Last-Event-ID`, and ends on a terminal or `needs_clarification` event so
+the client reconnects after replying. Clarification accepts one offered option ID
+or 200-character free text, expires after 600 s, and refuses db/tenant/role keys.
+Runs have a 300 s total timeout, 256 events, and retention of 500 runs or 1 hour.
+The built frontend is served from `web/dist` only, never the source folder.
+
+Run state stays in process memory for the single-process local demo. Shutdown
+marks unfinished runs interrupted; a crash loses them and the client treats an
+unknown run as interrupted and offers an explicit retry. Durable run state and
+Postgres-backed budgets belong to an approved hosted configuration (G5/G7).
+
+Rationale: these are the agreed stack packages; the adapter fixes the review
+findings from 2026-10-11 (source folder served, status awaited before auth,
+unbounded body read, replay-only events, unbounded clarification options).
+Cost if wrong: in-memory state cannot survive a process crash, and a missing
+Origin header is accepted from non-browser clients.
+
+Verification: new core and adapter tests failed first, then passed 20.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
