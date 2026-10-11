@@ -23,7 +23,7 @@ def test_security_policy_records_g2_evidence_and_limitations():
     for limitation in (
         "not a production SaaS",
         "does not prove universal prompt-injection resistance",
-        "Layer-off E5 experiments have not been run",
+        "Layer-off E5 covers only the SQL guard, database role, read-only",
         "Some catalog metadata is normally visible",
         "No official benchmark score",
     ):

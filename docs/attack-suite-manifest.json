@@ -528,7 +528,8 @@
     "host_directory_mounts": "forbidden",
     "hosted_targets": "rejected",
     "network": "disposable_internal_only",
-    "status": "not_run_in_this_slice",
+    "status": "run_disposable_local",
+    "evidence": "results/G3_matrix/e5-layer-off.json",
     "target": "local_disposable_only",
     "volume": "sqlwarden_e5_disposable_pg16_data"
   },

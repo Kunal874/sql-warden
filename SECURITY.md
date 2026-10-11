@@ -112,8 +112,12 @@ checks are high-impact in this project even if currently local-only.
 
 - This is not a production SaaS and has no approved hosted deployment yet.
 - No official benchmark score is claimed from the G2 security work.
-- Layer-off E5 experiments have not been run; only the disposable-only policy is
-  recorded.
+- Layer-off E5 covers only the SQL guard, database role, read-only
+  transaction and statement timeout (L3, L5, L6), on a synthetic disposable database
+  (`results/G3_matrix/e5-layer-off.json`). With every layer on, all 29 attacks were
+  prevented. With one layer off, two got through: `version()` with the guard off, and
+  a four-way cross join with the timeout off (the harness does not model the L4
+  EXPLAIN cost check). L1, L2, L4, L7 and L8 were not switched off.
 - The attack manifest references test fixtures instead of duplicating raw payload
   SQL. Reviewers should inspect the named tests for exact inputs.
 - The current evidence does not prove universal prompt-injection resistance.

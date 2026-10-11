@@ -144,7 +144,8 @@ def build_manifest() -> dict[str, Any]:
             "safe_gold_blocked_reason_counts": guard_audit["blocked_reason_counts"],
         },
         "e5_layer_off_policy": {
-            "status": "not_run_in_this_slice",
+            "status": "run_disposable_local",
+            "evidence": "results/G3_matrix/e5-layer-off.json",
             "target": "local_disposable_only",
             "hosted_targets": "rejected",
             "docker_project": "sqlwarden_e5_disposable",

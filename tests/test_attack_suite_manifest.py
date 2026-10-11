@@ -44,7 +44,8 @@ def test_e5_layer_off_policy_is_disposable_local_only():
     policy = audit_attack_suite.build_manifest()["e5_layer_off_policy"]
 
     assert policy == {
-        "status": "not_run_in_this_slice",
+        "status": "run_disposable_local",
+        "evidence": "results/G3_matrix/e5-layer-off.json",
         "target": "local_disposable_only",
         "hosted_targets": "rejected",
         "docker_project": "sqlwarden_e5_disposable",

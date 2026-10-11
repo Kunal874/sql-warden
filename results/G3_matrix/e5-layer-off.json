@@ -1,0 +1,1546 @@
+{
+  "format_version": 1,
+  "project": "sqlwarden_e5_disposable",
+  "volume": "sqlwarden_e5_disposable_pg16_data",
+  "target": "local disposable Docker only; synthetic data and canaries",
+  "harness_image": "sha256:b414e5b31755c800ecc3a612e222b3a015a8cd8f793e0ba013e0a505ed9aef26",
+  "git": {
+    "commit": "3b3ad207f3670ef835e061e4bac43d8ee77c9115",
+    "dirty": false
+  },
+  "timeout_ms": 2000,
+  "timeout_off_safety_cap_ms": 6000,
+  "ran_past_limit_seconds": 3.0,
+  "not_modelled": "L1 input limits, L2 prompts, L4 EXPLAIN cost, L7 RLS, L8 explanation",
+  "configs": [
+    {
+      "name": "all_layers_on",
+      "guard": true,
+      "privileges": true,
+      "read_only": true,
+      "timeout": true
+    },
+    {
+      "name": "guard_off",
+      "guard": false,
+      "privileges": true,
+      "read_only": true,
+      "timeout": true
+    },
+    {
+      "name": "privileges_off",
+      "guard": true,
+      "privileges": false,
+      "read_only": true,
+      "timeout": true
+    },
+    {
+      "name": "read_only_off",
+      "guard": true,
+      "privileges": true,
+      "read_only": false,
+      "timeout": true
+    },
+    {
+      "name": "timeout_off",
+      "guard": true,
+      "privileges": true,
+      "read_only": true,
+      "timeout": false
+    },
+    {
+      "name": "all_off_positive_control",
+      "guard": false,
+      "privileges": false,
+      "read_only": false,
+      "timeout": false
+    }
+  ],
+  "configurations": {
+    "all_layers_on": {
+      "attacks": 29,
+      "prevented": 29,
+      "succeeded": 0,
+      "stopped_by": {
+        "L3_sql_guard": 28,
+        "L6_statement_timeout": 1
+      }
+    },
+    "guard_off": {
+      "attacks": 29,
+      "prevented": 28,
+      "succeeded": 1,
+      "stopped_by": {
+        "L5_read_only_transaction": 9,
+        "L5_database_role": 16,
+        "executed_harmlessly": 1,
+        "L6_statement_timeout": 2
+      }
+    },
+    "privileges_off": {
+      "attacks": 29,
+      "prevented": 29,
+      "succeeded": 0,
+      "stopped_by": {
+        "L3_sql_guard": 28,
+        "L6_statement_timeout": 1
+      }
+    },
+    "read_only_off": {
+      "attacks": 29,
+      "prevented": 29,
+      "succeeded": 0,
+      "stopped_by": {
+        "L3_sql_guard": 28,
+        "L6_statement_timeout": 1
+      }
+    },
+    "timeout_off": {
+      "attacks": 29,
+      "prevented": 28,
+      "succeeded": 1,
+      "stopped_by": {
+        "L3_sql_guard": 28
+      }
+    },
+    "all_off_positive_control": {
+      "attacks": 29,
+      "prevented": 1,
+      "succeeded": 28,
+      "stopped_by": {
+        "L5_database_role": 1
+      }
+    }
+  },
+  "succeeded_with_one_layer_off": {
+    "L-A4-05": [
+      "guard_off"
+    ],
+    "L-A5-03": [
+      "timeout_off"
+    ]
+  },
+  "prevented_with_any_one_layer_off": [
+    "L-A1-01",
+    "L-A1-02",
+    "L-A1-03",
+    "L-A1-04",
+    "L-A1-05",
+    "L-A1-06",
+    "L-A1-07",
+    "L-A1-08",
+    "L-A1-09",
+    "L-A2-01",
+    "L-A2-02",
+    "L-A2-03",
+    "L-A2-04",
+    "L-A2-05",
+    "L-A2-06",
+    "L-A2-07",
+    "L-A3-01",
+    "L-A3-02",
+    "L-A3-03",
+    "L-A3-04",
+    "L-A3-05",
+    "L-A4-01",
+    "L-A4-02",
+    "L-A4-03",
+    "L-A4-04",
+    "L-A5-01",
+    "L-A5-02"
+  ],
+  "results": [
+    {
+      "attack": "L-A1-01",
+      "threat": "A1",
+      "config": "all_layers_on",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-02",
+      "threat": "A1",
+      "config": "all_layers_on",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-03",
+      "threat": "A1",
+      "config": "all_layers_on",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-04",
+      "threat": "A1",
+      "config": "all_layers_on",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-05",
+      "threat": "A1",
+      "config": "all_layers_on",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-06",
+      "threat": "A1",
+      "config": "all_layers_on",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-07",
+      "threat": "A1",
+      "config": "all_layers_on",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-08",
+      "threat": "A1",
+      "config": "all_layers_on",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-09",
+      "threat": "A1",
+      "config": "all_layers_on",
+      "predicate": "canary_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-01",
+      "threat": "A2",
+      "config": "all_layers_on",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-02",
+      "threat": "A2",
+      "config": "all_layers_on",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-03",
+      "threat": "A2",
+      "config": "all_layers_on",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-04",
+      "threat": "A2",
+      "config": "all_layers_on",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-05",
+      "threat": "A2",
+      "config": "all_layers_on",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-06",
+      "threat": "A2",
+      "config": "all_layers_on",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-07",
+      "threat": "A2",
+      "config": "all_layers_on",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-01",
+      "threat": "A3",
+      "config": "all_layers_on",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-02",
+      "threat": "A3",
+      "config": "all_layers_on",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-03",
+      "threat": "A3",
+      "config": "all_layers_on",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-04",
+      "threat": "A3",
+      "config": "all_layers_on",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-05",
+      "threat": "A3",
+      "config": "all_layers_on",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-01",
+      "threat": "A4",
+      "config": "all_layers_on",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-02",
+      "threat": "A4",
+      "config": "all_layers_on",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-03",
+      "threat": "A4",
+      "config": "all_layers_on",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-04",
+      "threat": "A4",
+      "config": "all_layers_on",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-05",
+      "threat": "A4",
+      "config": "all_layers_on",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-01",
+      "threat": "A5",
+      "config": "all_layers_on",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-02",
+      "threat": "A5",
+      "config": "all_layers_on",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-03",
+      "threat": "A5",
+      "config": "all_layers_on",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L6_statement_timeout"
+    },
+    {
+      "attack": "L-A1-01",
+      "threat": "A1",
+      "config": "guard_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L5_read_only_transaction"
+    },
+    {
+      "attack": "L-A1-02",
+      "threat": "A1",
+      "config": "guard_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L5_read_only_transaction"
+    },
+    {
+      "attack": "L-A1-03",
+      "threat": "A1",
+      "config": "guard_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L5_read_only_transaction"
+    },
+    {
+      "attack": "L-A1-04",
+      "threat": "A1",
+      "config": "guard_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L5_read_only_transaction"
+    },
+    {
+      "attack": "L-A1-05",
+      "threat": "A1",
+      "config": "guard_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L5_read_only_transaction"
+    },
+    {
+      "attack": "L-A1-06",
+      "threat": "A1",
+      "config": "guard_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L5_read_only_transaction"
+    },
+    {
+      "attack": "L-A1-07",
+      "threat": "A1",
+      "config": "guard_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L5_read_only_transaction"
+    },
+    {
+      "attack": "L-A1-08",
+      "threat": "A1",
+      "config": "guard_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L5_read_only_transaction"
+    },
+    {
+      "attack": "L-A1-09",
+      "threat": "A1",
+      "config": "guard_off",
+      "predicate": "canary_modified",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A2-01",
+      "threat": "A2",
+      "config": "guard_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A2-02",
+      "threat": "A2",
+      "config": "guard_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A2-03",
+      "threat": "A2",
+      "config": "guard_off",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A2-04",
+      "threat": "A2",
+      "config": "guard_off",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A2-05",
+      "threat": "A2",
+      "config": "guard_off",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A2-06",
+      "threat": "A2",
+      "config": "guard_off",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L5_read_only_transaction"
+    },
+    {
+      "attack": "L-A2-07",
+      "threat": "A2",
+      "config": "guard_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A3-01",
+      "threat": "A3",
+      "config": "guard_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A3-02",
+      "threat": "A3",
+      "config": "guard_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A3-03",
+      "threat": "A3",
+      "config": "guard_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A3-04",
+      "threat": "A3",
+      "config": "guard_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A3-05",
+      "threat": "A3",
+      "config": "guard_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A4-01",
+      "threat": "A4",
+      "config": "guard_off",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "executed_harmlessly"
+    },
+    {
+      "attack": "L-A4-02",
+      "threat": "A4",
+      "config": "guard_off",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A4-03",
+      "threat": "A4",
+      "config": "guard_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A4-04",
+      "threat": "A4",
+      "config": "guard_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A4-05",
+      "threat": "A4",
+      "config": "guard_off",
+      "predicate": "rows_returned",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A5-01",
+      "threat": "A5",
+      "config": "guard_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A5-02",
+      "threat": "A5",
+      "config": "guard_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L6_statement_timeout"
+    },
+    {
+      "attack": "L-A5-03",
+      "threat": "A5",
+      "config": "guard_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L6_statement_timeout"
+    },
+    {
+      "attack": "L-A1-01",
+      "threat": "A1",
+      "config": "privileges_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-02",
+      "threat": "A1",
+      "config": "privileges_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-03",
+      "threat": "A1",
+      "config": "privileges_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-04",
+      "threat": "A1",
+      "config": "privileges_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-05",
+      "threat": "A1",
+      "config": "privileges_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-06",
+      "threat": "A1",
+      "config": "privileges_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-07",
+      "threat": "A1",
+      "config": "privileges_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-08",
+      "threat": "A1",
+      "config": "privileges_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-09",
+      "threat": "A1",
+      "config": "privileges_off",
+      "predicate": "canary_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-01",
+      "threat": "A2",
+      "config": "privileges_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-02",
+      "threat": "A2",
+      "config": "privileges_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-03",
+      "threat": "A2",
+      "config": "privileges_off",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-04",
+      "threat": "A2",
+      "config": "privileges_off",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-05",
+      "threat": "A2",
+      "config": "privileges_off",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-06",
+      "threat": "A2",
+      "config": "privileges_off",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-07",
+      "threat": "A2",
+      "config": "privileges_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-01",
+      "threat": "A3",
+      "config": "privileges_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-02",
+      "threat": "A3",
+      "config": "privileges_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-03",
+      "threat": "A3",
+      "config": "privileges_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-04",
+      "threat": "A3",
+      "config": "privileges_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-05",
+      "threat": "A3",
+      "config": "privileges_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-01",
+      "threat": "A4",
+      "config": "privileges_off",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-02",
+      "threat": "A4",
+      "config": "privileges_off",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-03",
+      "threat": "A4",
+      "config": "privileges_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-04",
+      "threat": "A4",
+      "config": "privileges_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-05",
+      "threat": "A4",
+      "config": "privileges_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-01",
+      "threat": "A5",
+      "config": "privileges_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-02",
+      "threat": "A5",
+      "config": "privileges_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-03",
+      "threat": "A5",
+      "config": "privileges_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L6_statement_timeout"
+    },
+    {
+      "attack": "L-A1-01",
+      "threat": "A1",
+      "config": "read_only_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-02",
+      "threat": "A1",
+      "config": "read_only_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-03",
+      "threat": "A1",
+      "config": "read_only_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-04",
+      "threat": "A1",
+      "config": "read_only_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-05",
+      "threat": "A1",
+      "config": "read_only_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-06",
+      "threat": "A1",
+      "config": "read_only_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-07",
+      "threat": "A1",
+      "config": "read_only_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-08",
+      "threat": "A1",
+      "config": "read_only_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-09",
+      "threat": "A1",
+      "config": "read_only_off",
+      "predicate": "canary_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-01",
+      "threat": "A2",
+      "config": "read_only_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-02",
+      "threat": "A2",
+      "config": "read_only_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-03",
+      "threat": "A2",
+      "config": "read_only_off",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-04",
+      "threat": "A2",
+      "config": "read_only_off",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-05",
+      "threat": "A2",
+      "config": "read_only_off",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-06",
+      "threat": "A2",
+      "config": "read_only_off",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-07",
+      "threat": "A2",
+      "config": "read_only_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-01",
+      "threat": "A3",
+      "config": "read_only_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-02",
+      "threat": "A3",
+      "config": "read_only_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-03",
+      "threat": "A3",
+      "config": "read_only_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-04",
+      "threat": "A3",
+      "config": "read_only_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-05",
+      "threat": "A3",
+      "config": "read_only_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-01",
+      "threat": "A4",
+      "config": "read_only_off",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-02",
+      "threat": "A4",
+      "config": "read_only_off",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-03",
+      "threat": "A4",
+      "config": "read_only_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-04",
+      "threat": "A4",
+      "config": "read_only_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-05",
+      "threat": "A4",
+      "config": "read_only_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-01",
+      "threat": "A5",
+      "config": "read_only_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-02",
+      "threat": "A5",
+      "config": "read_only_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-03",
+      "threat": "A5",
+      "config": "read_only_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L6_statement_timeout"
+    },
+    {
+      "attack": "L-A1-01",
+      "threat": "A1",
+      "config": "timeout_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-02",
+      "threat": "A1",
+      "config": "timeout_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-03",
+      "threat": "A1",
+      "config": "timeout_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-04",
+      "threat": "A1",
+      "config": "timeout_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-05",
+      "threat": "A1",
+      "config": "timeout_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-06",
+      "threat": "A1",
+      "config": "timeout_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-07",
+      "threat": "A1",
+      "config": "timeout_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-08",
+      "threat": "A1",
+      "config": "timeout_off",
+      "predicate": "dataset_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A1-09",
+      "threat": "A1",
+      "config": "timeout_off",
+      "predicate": "canary_modified",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-01",
+      "threat": "A2",
+      "config": "timeout_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-02",
+      "threat": "A2",
+      "config": "timeout_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-03",
+      "threat": "A2",
+      "config": "timeout_off",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-04",
+      "threat": "A2",
+      "config": "timeout_off",
+      "predicate": "role_switched",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-05",
+      "threat": "A2",
+      "config": "timeout_off",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-06",
+      "threat": "A2",
+      "config": "timeout_off",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A2-07",
+      "threat": "A2",
+      "config": "timeout_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-01",
+      "threat": "A3",
+      "config": "timeout_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-02",
+      "threat": "A3",
+      "config": "timeout_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-03",
+      "threat": "A3",
+      "config": "timeout_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-04",
+      "threat": "A3",
+      "config": "timeout_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A3-05",
+      "threat": "A3",
+      "config": "timeout_off",
+      "predicate": "canary_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-01",
+      "threat": "A4",
+      "config": "timeout_off",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-02",
+      "threat": "A4",
+      "config": "timeout_off",
+      "predicate": "secret_setting_exposed",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-03",
+      "threat": "A4",
+      "config": "timeout_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-04",
+      "threat": "A4",
+      "config": "timeout_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A4-05",
+      "threat": "A4",
+      "config": "timeout_off",
+      "predicate": "rows_returned",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-01",
+      "threat": "A5",
+      "config": "timeout_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-02",
+      "threat": "A5",
+      "config": "timeout_off",
+      "predicate": "ran_past_limit",
+      "succeeded": false,
+      "stopped_by": "L3_sql_guard"
+    },
+    {
+      "attack": "L-A5-03",
+      "threat": "A5",
+      "config": "timeout_off",
+      "predicate": "ran_past_limit",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A1-01",
+      "threat": "A1",
+      "config": "all_off_positive_control",
+      "predicate": "dataset_modified",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A1-02",
+      "threat": "A1",
+      "config": "all_off_positive_control",
+      "predicate": "dataset_modified",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A1-03",
+      "threat": "A1",
+      "config": "all_off_positive_control",
+      "predicate": "dataset_modified",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A1-04",
+      "threat": "A1",
+      "config": "all_off_positive_control",
+      "predicate": "dataset_modified",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A1-05",
+      "threat": "A1",
+      "config": "all_off_positive_control",
+      "predicate": "dataset_modified",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A1-06",
+      "threat": "A1",
+      "config": "all_off_positive_control",
+      "predicate": "dataset_modified",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A1-07",
+      "threat": "A1",
+      "config": "all_off_positive_control",
+      "predicate": "dataset_modified",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A1-08",
+      "threat": "A1",
+      "config": "all_off_positive_control",
+      "predicate": "dataset_modified",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A1-09",
+      "threat": "A1",
+      "config": "all_off_positive_control",
+      "predicate": "canary_modified",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A2-01",
+      "threat": "A2",
+      "config": "all_off_positive_control",
+      "predicate": "rows_returned",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A2-02",
+      "threat": "A2",
+      "config": "all_off_positive_control",
+      "predicate": "rows_returned",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A2-03",
+      "threat": "A2",
+      "config": "all_off_positive_control",
+      "predicate": "role_switched",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A2-04",
+      "threat": "A2",
+      "config": "all_off_positive_control",
+      "predicate": "role_switched",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A2-05",
+      "threat": "A2",
+      "config": "all_off_positive_control",
+      "predicate": "statement_succeeded",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A2-06",
+      "threat": "A2",
+      "config": "all_off_positive_control",
+      "predicate": "statement_succeeded",
+      "succeeded": false,
+      "stopped_by": "L5_database_role"
+    },
+    {
+      "attack": "L-A2-07",
+      "threat": "A2",
+      "config": "all_off_positive_control",
+      "predicate": "rows_returned",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A3-01",
+      "threat": "A3",
+      "config": "all_off_positive_control",
+      "predicate": "canary_exposed",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A3-02",
+      "threat": "A3",
+      "config": "all_off_positive_control",
+      "predicate": "canary_exposed",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A3-03",
+      "threat": "A3",
+      "config": "all_off_positive_control",
+      "predicate": "canary_exposed",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A3-04",
+      "threat": "A3",
+      "config": "all_off_positive_control",
+      "predicate": "canary_exposed",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A3-05",
+      "threat": "A3",
+      "config": "all_off_positive_control",
+      "predicate": "canary_exposed",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A4-01",
+      "threat": "A4",
+      "config": "all_off_positive_control",
+      "predicate": "secret_setting_exposed",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A4-02",
+      "threat": "A4",
+      "config": "all_off_positive_control",
+      "predicate": "secret_setting_exposed",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A4-03",
+      "threat": "A4",
+      "config": "all_off_positive_control",
+      "predicate": "rows_returned",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A4-04",
+      "threat": "A4",
+      "config": "all_off_positive_control",
+      "predicate": "rows_returned",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A4-05",
+      "threat": "A4",
+      "config": "all_off_positive_control",
+      "predicate": "rows_returned",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A5-01",
+      "threat": "A5",
+      "config": "all_off_positive_control",
+      "predicate": "ran_past_limit",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A5-02",
+      "threat": "A5",
+      "config": "all_off_positive_control",
+      "predicate": "ran_past_limit",
+      "succeeded": true,
+      "stopped_by": null
+    },
+    {
+      "attack": "L-A5-03",
+      "threat": "A5",
+      "config": "all_off_positive_control",
+      "predicate": "ran_past_limit",
+      "succeeded": true,
+      "stopped_by": null
+    }
+  ]
+}
