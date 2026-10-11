@@ -1,0 +1,1412 @@
+{
+  "format_version": 1,
+  "reviewed_on": "2026-10-11",
+  "method": "word-level diff of original vs corrected question and evidence; one category",
+  "categories": {
+    "ambiguous": {
+      "aggregation_scope_clarified": "which rows or records count (e.g. 'at least one record')",
+      "output_specified": "what to return or in what form (columns, ids, yes/no, order)",
+      "entity_reference_clarified": "which column or entity a term refers to",
+      "calculation_clarified": "how a metric is computed (ratio direction, exact age, sums)"
+    },
+    "not_ambiguous": {
+      "factual_error_fixed": "the question named a wrong value, entity or date",
+      "hint_formula_fixed": "the evidence hint was wrong or incomplete",
+      "dialect_quoting_only": "identifier quoting changed for PostgreSQL",
+      "typo_or_grammar": "spelling or equivalent wording",
+      "whitespace_only": "no word-level difference"
+    }
+  },
+  "counts": {
+    "output_specified": 43,
+    "aggregation_scope_clarified": 43,
+    "hint_formula_fixed": 35,
+    "entity_reference_clarified": 23,
+    "factual_error_fixed": 15,
+    "calculation_clarified": 15,
+    "whitespace_only": 8,
+    "dialect_quoting_only": 5,
+    "typo_or_grammar": 2
+  },
+  "ambiguous_original": 124,
+  "changed_not_ambiguous": 65,
+  "clear_negatives": 235,
+  "items": [
+    {
+      "question_id": 11,
+      "db_id": "california_schools",
+      "category": "dialect_quoting_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 17,
+      "db_id": "california_schools",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 23,
+      "db_id": "california_schools",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 25,
+      "db_id": "california_schools",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 26,
+      "db_id": "california_schools",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 27,
+      "db_id": "california_schools",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 28,
+      "db_id": "california_schools",
+      "category": "dialect_quoting_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 37,
+      "db_id": "california_schools",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 41,
+      "db_id": "california_schools",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 46,
+      "db_id": "california_schools",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 48,
+      "db_id": "california_schools",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 62,
+      "db_id": "california_schools",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 77,
+      "db_id": "california_schools",
+      "category": "dialect_quoting_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 83,
+      "db_id": "california_schools",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 85,
+      "db_id": "california_schools",
+      "category": "dialect_quoting_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 87,
+      "db_id": "california_schools",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 92,
+      "db_id": "financial",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 93,
+      "db_id": "financial",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 94,
+      "db_id": "financial",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 95,
+      "db_id": "financial",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 118,
+      "db_id": "financial",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 128,
+      "db_id": "financial",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 129,
+      "db_id": "financial",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 145,
+      "db_id": "financial",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 159,
+      "db_id": "financial",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 168,
+      "db_id": "financial",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 169,
+      "db_id": "financial",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 189,
+      "db_id": "financial",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 194,
+      "db_id": "financial",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 198,
+      "db_id": "toxicology",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 200,
+      "db_id": "toxicology",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 201,
+      "db_id": "toxicology",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 208,
+      "db_id": "toxicology",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 215,
+      "db_id": "toxicology",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 226,
+      "db_id": "toxicology",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 227,
+      "db_id": "toxicology",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 228,
+      "db_id": "toxicology",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 230,
+      "db_id": "toxicology",
+      "category": "whitespace_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 231,
+      "db_id": "toxicology",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 236,
+      "db_id": "toxicology",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 240,
+      "db_id": "toxicology",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 242,
+      "db_id": "toxicology",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 244,
+      "db_id": "toxicology",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 247,
+      "db_id": "toxicology",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 248,
+      "db_id": "toxicology",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 249,
+      "db_id": "toxicology",
+      "category": "whitespace_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 255,
+      "db_id": "toxicology",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 260,
+      "db_id": "toxicology",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 263,
+      "db_id": "toxicology",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 273,
+      "db_id": "toxicology",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 282,
+      "db_id": "toxicology",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 340,
+      "db_id": "card_games",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 341,
+      "db_id": "card_games",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 344,
+      "db_id": "card_games",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 347,
+      "db_id": "card_games",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 349,
+      "db_id": "card_games",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 356,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 366,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 371,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 377,
+      "db_id": "card_games",
+      "category": "typo_or_grammar",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 397,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 402,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 405,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 408,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 412,
+      "db_id": "card_games",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 424,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 465,
+      "db_id": "card_games",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 469,
+      "db_id": "card_games",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 473,
+      "db_id": "card_games",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 474,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 486,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 487,
+      "db_id": "card_games",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 529,
+      "db_id": "card_games",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 530,
+      "db_id": "card_games",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 549,
+      "db_id": "codebase_community",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 557,
+      "db_id": "codebase_community",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 571,
+      "db_id": "codebase_community",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 581,
+      "db_id": "codebase_community",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 584,
+      "db_id": "codebase_community",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 587,
+      "db_id": "codebase_community",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 595,
+      "db_id": "codebase_community",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 634,
+      "db_id": "codebase_community",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 637,
+      "db_id": "codebase_community",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 672,
+      "db_id": "codebase_community",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 685,
+      "db_id": "codebase_community",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 716,
+      "db_id": "codebase_community",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 724,
+      "db_id": "superhero",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 726,
+      "db_id": "superhero",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 728,
+      "db_id": "superhero",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 743,
+      "db_id": "superhero",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 747,
+      "db_id": "superhero",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 751,
+      "db_id": "superhero",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 766,
+      "db_id": "superhero",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 772,
+      "db_id": "superhero",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 788,
+      "db_id": "superhero",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 801,
+      "db_id": "superhero",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 846,
+      "db_id": "formula_1",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 861,
+      "db_id": "formula_1",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 862,
+      "db_id": "formula_1",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 865,
+      "db_id": "formula_1",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 866,
+      "db_id": "formula_1",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 877,
+      "db_id": "formula_1",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 894,
+      "db_id": "formula_1",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 896,
+      "db_id": "formula_1",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 898,
+      "db_id": "formula_1",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 902,
+      "db_id": "formula_1",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 904,
+      "db_id": "formula_1",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 906,
+      "db_id": "formula_1",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 928,
+      "db_id": "formula_1",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 930,
+      "db_id": "formula_1",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 937,
+      "db_id": "formula_1",
+      "category": "typo_or_grammar",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 940,
+      "db_id": "formula_1",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 944,
+      "db_id": "formula_1",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 950,
+      "db_id": "formula_1",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 959,
+      "db_id": "formula_1",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 962,
+      "db_id": "formula_1",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 967,
+      "db_id": "formula_1",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 971,
+      "db_id": "formula_1",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 989,
+      "db_id": "formula_1",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1002,
+      "db_id": "formula_1",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1003,
+      "db_id": "formula_1",
+      "category": "whitespace_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1011,
+      "db_id": "formula_1",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1014,
+      "db_id": "formula_1",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1029,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1031,
+      "db_id": "european_football_2",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1032,
+      "db_id": "european_football_2",
+      "category": "whitespace_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1035,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1036,
+      "db_id": "european_football_2",
+      "category": "whitespace_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1037,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1058,
+      "db_id": "european_football_2",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1080,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1084,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1088,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1091,
+      "db_id": "european_football_2",
+      "category": "dialect_quoting_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1092,
+      "db_id": "european_football_2",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1116,
+      "db_id": "european_football_2",
+      "category": "whitespace_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1124,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1133,
+      "db_id": "european_football_2",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1134,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1135,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1141,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1144,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1146,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1147,
+      "db_id": "european_football_2",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1148,
+      "db_id": "european_football_2",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1149,
+      "db_id": "thrombosis_prediction",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1152,
+      "db_id": "thrombosis_prediction",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1155,
+      "db_id": "thrombosis_prediction",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1156,
+      "db_id": "thrombosis_prediction",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1162,
+      "db_id": "thrombosis_prediction",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1166,
+      "db_id": "thrombosis_prediction",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1168,
+      "db_id": "thrombosis_prediction",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1175,
+      "db_id": "thrombosis_prediction",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1185,
+      "db_id": "thrombosis_prediction",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1187,
+      "db_id": "thrombosis_prediction",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1189,
+      "db_id": "thrombosis_prediction",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1198,
+      "db_id": "thrombosis_prediction",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1201,
+      "db_id": "thrombosis_prediction",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1205,
+      "db_id": "thrombosis_prediction",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1209,
+      "db_id": "thrombosis_prediction",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1227,
+      "db_id": "thrombosis_prediction",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1232,
+      "db_id": "thrombosis_prediction",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1235,
+      "db_id": "thrombosis_prediction",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1239,
+      "db_id": "thrombosis_prediction",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1241,
+      "db_id": "thrombosis_prediction",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1247,
+      "db_id": "thrombosis_prediction",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1254,
+      "db_id": "thrombosis_prediction",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1255,
+      "db_id": "thrombosis_prediction",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1270,
+      "db_id": "thrombosis_prediction",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1275,
+      "db_id": "thrombosis_prediction",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1331,
+      "db_id": "student_club",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1338,
+      "db_id": "student_club",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1350,
+      "db_id": "student_club",
+      "category": "hint_formula_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1376,
+      "db_id": "student_club",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1387,
+      "db_id": "student_club",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1389,
+      "db_id": "student_club",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1392,
+      "db_id": "student_club",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1399,
+      "db_id": "student_club",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1403,
+      "db_id": "student_club",
+      "category": "calculation_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1405,
+      "db_id": "student_club",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1426,
+      "db_id": "student_club",
+      "category": "entity_reference_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1486,
+      "db_id": "debit_card_specializing",
+      "category": "output_specified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1490,
+      "db_id": "debit_card_specializing",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1500,
+      "db_id": "debit_card_specializing",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1501,
+      "db_id": "debit_card_specializing",
+      "category": "factual_error_fixed",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1505,
+      "db_id": "debit_card_specializing",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1507,
+      "db_id": "debit_card_specializing",
+      "category": "whitespace_only",
+      "ambiguous_original": false
+    },
+    {
+      "question_id": 1525,
+      "db_id": "debit_card_specializing",
+      "category": "aggregation_scope_clarified",
+      "ambiguous_original": true
+    },
+    {
+      "question_id": 1528,
+      "db_id": "debit_card_specializing",
+      "category": "whitespace_only",
+      "ambiguous_original": false
+    }
+  ],
+  "clear_negative_ids": [
+    24,
+    36,
+    40,
+    45,
+    47,
+    50,
+    79,
+    82,
+    89,
+    98,
+    99,
+    100,
+    112,
+    115,
+    116,
+    117,
+    136,
+    137,
+    138,
+    149,
+    173,
+    195,
+    206,
+    207,
+    212,
+    213,
+    218,
+    220,
+    232,
+    234,
+    243,
+    245,
+    253,
+    268,
+    327,
+    345,
+    346,
+    352,
+    358,
+    368,
+    379,
+    383,
+    391,
+    407,
+    409,
+    414,
+    415,
+    416,
+    422,
+    427,
+    440,
+    459,
+    462,
+    466,
+    468,
+    472,
+    477,
+    479,
+    480,
+    483,
+    484,
+    522,
+    528,
+    531,
+    537,
+    539,
+    544,
+    547,
+    555,
+    567,
+    568,
+    572,
+    573,
+    576,
+    578,
+    586,
+    592,
+    598,
+    629,
+    633,
+    640,
+    665,
+    669,
+    671,
+    678,
+    682,
+    687,
+    694,
+    704,
+    705,
+    707,
+    710,
+    717,
+    719,
+    723,
+    730,
+    732,
+    733,
+    736,
+    737,
+    738,
+    739,
+    740,
+    744,
+    745,
+    753,
+    758,
+    760,
+    761,
+    764,
+    765,
+    769,
+    773,
+    775,
+    779,
+    781,
+    782,
+    785,
+    786,
+    790,
+    792,
+    794,
+    796,
+    797,
+    798,
+    800,
+    806,
+    819,
+    822,
+    824,
+    825,
+    829,
+    847,
+    850,
+    859,
+    869,
+    872,
+    875,
+    879,
+    884,
+    897,
+    901,
+    909,
+    912,
+    915,
+    931,
+    933,
+    945,
+    948,
+    951,
+    960,
+    964,
+    972,
+    977,
+    981,
+    990,
+    1001,
+    1025,
+    1028,
+    1030,
+    1040,
+    1042,
+    1044,
+    1048,
+    1057,
+    1076,
+    1078,
+    1079,
+    1096,
+    1098,
+    1102,
+    1103,
+    1105,
+    1107,
+    1110,
+    1113,
+    1114,
+    1122,
+    1130,
+    1136,
+    1139,
+    1145,
+    1150,
+    1153,
+    1157,
+    1164,
+    1169,
+    1192,
+    1208,
+    1220,
+    1231,
+    1238,
+    1251,
+    1252,
+    1256,
+    1265,
+    1267,
+    1281,
+    1302,
+    1312,
+    1317,
+    1322,
+    1323,
+    1334,
+    1344,
+    1346,
+    1351,
+    1352,
+    1356,
+    1357,
+    1359,
+    1362,
+    1368,
+    1371,
+    1375,
+    1394,
+    1398,
+    1411,
+    1422,
+    1427,
+    1432,
+    1435,
+    1457,
+    1464,
+    1471,
+    1472,
+    1479,
+    1480,
+    1484,
+    1493,
+    1506,
+    1509,
+    1514,
+    1515,
+    1521
+  ],
+  "excludes": [
+    "question text",
+    "evidence text",
+    "sql"
+  ]
+}
