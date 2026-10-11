@@ -1,0 +1,28 @@
+{
+  "format_version": 1,
+  "rule": "best dev selective EX with coverage >= 0.5; ties to lower threshold (D-078)",
+  "threshold": "2/3",
+  "dev_curve": [
+    {
+      "threshold": "1/3",
+      "covered": 67,
+      "coverage": 0.67,
+      "selective_ex": 0.626866,
+      "end_to_end_ex": 0.42
+    },
+    {
+      "threshold": "2/3",
+      "covered": 62,
+      "coverage": 0.62,
+      "selective_ex": 0.66129,
+      "end_to_end_ex": 0.41
+    },
+    {
+      "threshold": "1",
+      "covered": 35,
+      "coverage": 0.35,
+      "selective_ex": 0.657143,
+      "end_to_end_ex": 0.23
+    }
+  ]
+}
