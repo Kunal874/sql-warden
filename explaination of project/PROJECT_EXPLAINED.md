@@ -2468,6 +2468,73 @@ have been committed.
 What still needs you: choosing the public repository name, public or private,
 and the code license, before anything is pushed (see docs/RELEASE.md).
 
+### G1 interview drill (2026-10-11)
+
+Question 1: Walk me through what happens to one question inside the agent.
+
+Simple answer: first it finds the 24 most relevant columns with BM25 (a word-match
+score) and adds their keys. Then it asks the model for three SQL candidates. Each
+candidate goes through the SQL guard, a cost check and the restricted database run.
+If a candidate fails, it gets one repair try with the error category. Finally the
+candidates vote on their complete results. If one result wins, that is the answer;
+if they tie or nothing worked, it asks one clarifying question or abstains.
+
+Question 2: Why vote on results instead of on the SQL text?
+
+Simple answer: two different SQL queries can mean the same thing, and two similar
+queries can mean different things. Comparing the actual result tables checks what
+matters. Failed candidates still count in the denominator, so "1 out of 3 worked"
+is never reported as strong agreement.
+
+Question 3: Why a plain Python state machine and not an agent framework?
+
+Simple answer: every step, limit and stopping point is visible in about 250 lines
+and covered by fake-model tests. That made it easy to bound retries, record every
+attempt for the experiments, and stream each step to the web page.
+
+### G4 interview drill (2026-10-11)
+
+Question 1: How does the browser see progress without a second run being started?
+
+Simple answer: `POST /api/ask` creates one run and returns a secret token. The page
+then reads a Server-Sent Events stream with that token in a header. Every event has
+a number; if the connection drops, the page reconnects with the last number and only
+gets newer events. Reconnecting never starts new work (there is a test for it).
+
+Question 2: What stops someone from reading another person's run?
+
+Simple answer: each run has a random 32-byte token. The server keeps only a hash of
+it and compares in constant time. Unknown runs and wrong tokens get the same 401, so
+an attacker cannot even learn whether a run exists.
+
+Question 3: What did testing with the real model teach you that fake tests did not?
+
+Simple answer: the prompt format. With fake models everything passed, but the real
+SQL model wrote placeholder queries for our JSON-shaped prompt. Switching to the
+format from its paper took a 20-question probe from 3 to 10 correct. Fake tests
+check control flow; only real runs check behaviour.
+
+### G5 interview drill (2026-10-11)
+
+Question 1: Why did you not deploy the live demo publicly?
+
+Simple answer: the free tiers I checked on official pages were too small or would
+send every question to a third-party model, and a managed database would not allow
+some of my permission hardening. A static evidence site plus a local demo costs
+nothing, leaks nothing and still shows the measured results.
+
+Question 2: What makes the container safer than just running the code?
+
+Simple answer: it runs as a normal user, its files are read-only, it has no Linux
+capabilities, it has memory/CPU/process limits, it listens only on 127.0.0.1, and it
+refuses to start if any setup password or a non-local model address is present.
+
+Question 3: How do you know no secret was ever committed?
+
+Simple answer: I searched all 601 file versions in the whole history for the exact
+values of all 34 local passwords and for common key formats, and found none. I also
+say clearly that this is a targeted search, not a full commercial secret scanner.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

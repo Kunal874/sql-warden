@@ -292,7 +292,7 @@ the optional interview drill.
 - [x] G1.7: bounded clarification and labelled simulated/oracle assistance.
 - [x] G1.8: fake-LLM limits, errors, malformed output, ties and abstention tests.
 - [x] G1.9: extend the early CLI with loop settings and trace summary.
-- [ ] G1 interview drill.
+- [x] G1 interview drill (notebook, 2026-10-11).
 
 ### G2 — guardrails and sandbox
 
@@ -342,7 +342,7 @@ the optional interview drill.
   - [x] Live 2026-10-11: real server + PostgreSQL + Ollama; scripted ask -> clarification
     (3 options) -> consensus 2/3 answered in 48.6 s; cancel -> cancelled; browser Ask run
     answered with 3/3 agreement.
-- [ ] G4 interview drill (scheduled with the final drills).
+- [x] G4 interview drill (notebook, 2026-10-11).
 
 ### G5 — deployment preparation only
 
@@ -350,7 +350,9 @@ the optional interview drill.
   - [x] Official pages checked 2026-10-11 (DEPLOY); D-077 recommends static Pages + laptop demo.
 - [ ] G5.2: non-root multistage image, health/readiness, pinned locks and local runbook.
   - [x] Dockerfile, .dockerignore, read-only app compose file, validated address keys, runbook.
-  - [ ] Build and run the image against the local database/Ollama (after the GPU experiments).
+  - [x] Built (406 MB) and run: healthy, ready via compose network and host Ollama, UID 10001,
+    read-only root, no capabilities, only runtime keys; refuses setup keys and remote model URLs.
+  - [ ] Live ask flow through the container (after the GPU experiments).
 - [x] G5.3: prepare hosted dataset/role scripts; actual provisioning deferred to approved G7.
   - [x] Prepared as documented prerequisites (SQL-created roles on Neon, no superuser
     hardening, subset sizing, TLS); no hosted-specific script while D-077 recommends static.
@@ -360,7 +362,7 @@ the optional interview drill.
   - [x] Pinned action SHAs, read-only token, separate compose project; not run on GitHub yet.
 - [ ] G5.7: complete README with actual results, citations, licenses and limitations.
   - [x] Rewritten README; results block is generated after the E1-E8 runs finish.
-- [ ] G5 interview drill (scheduled with the final drills).
+- [x] G5 interview drill (notebook, 2026-10-11).
 
 ### G7 — release
 
