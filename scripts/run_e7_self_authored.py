@@ -41,6 +41,12 @@ def pseudo_item(index: int, item: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def simulated_reply(item: dict[str, Any]) -> str:
+    """Ambiguous items: the frozen intended meaning. Clear items (a false ask): the user
+    restates the question as asked. Neither ever looks at candidate SQL or results."""
+    return item.get("reply") or f"I mean exactly what I asked: {item['question']}"
+
+
 def matched_reading(selected_sha: str | None, reading_shas: dict[str, str | None]) -> str | None:
     if selected_sha is None:
         return None
@@ -93,7 +99,7 @@ async def run() -> int:
         }
         final = first
         if record["asked"]:
-            question = f"{item['question']}\nClarification: {item['reply']}"
+            question = f"{item['question']}\nClarification: {simulated_reply(item)}"
             final = await run_item(pseudo, "self_authored", values, cache, lock, question=question)
             record |= {"resume_seconds": final["seconds"], "resume_usage": final["usage"]}
         record |= {

@@ -45,3 +45,14 @@ def test_summary_separates_false_asks_and_clarification_outcomes():
     assert ambiguous["first_reading"] == {"A": 1, "None": 1}
     assert (clear["asked"], clear["asked_then_wrong"], clear["correct_final"]) == (1, 1, 1)
     assert clear["helper_median_seconds"] == 4.0
+
+
+def test_simulated_reply_uses_the_frozen_meaning_or_restates_a_clear_question():
+    from scripts.run_e7_self_authored import simulated_reply
+
+    assert simulated_reply({"kind": "ambiguous", "question": "Q?", "reply": "I mean A."}) == (
+        "I mean A."
+    )
+    assert simulated_reply({"kind": "clear", "question": "How many rows?"}) == (
+        "I mean exactly what I asked: How many rows?"
+    )
