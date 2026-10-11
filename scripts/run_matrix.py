@@ -74,6 +74,7 @@ CONDITIONS: dict[str, dict[str, Any]] = {
     "messy_n1": {"config": BASE, "input": "corrected", "messy": True},
     "ret_n3_k1_replay": {"config": VOTED, "input": "corrected", "replay": True},
     "clarify_oracle": {"config": VOTED, "input": "original", "base": "orig_n3_k1"},
+    "self_authored": {"config": VOTED, "input": "corrected"},
 }
 
 
@@ -282,6 +283,7 @@ async def run_item(
         },
         "clarification": result.clarification,
         "final_ex_corrected": ex(selected, gold_c),
+        "selected_result_sha256": result_sha(selected) if selected else None,
         "final_ex_original": ex(selected, gold_o),
         "gold_corrected_valid": gold_c is not None,
         "gold_original_valid": gold_o is not None,

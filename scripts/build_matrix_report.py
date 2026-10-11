@@ -226,9 +226,14 @@ def latency(records: list[dict[str, Any]]) -> dict[str, Any]:
             "median_completion_tokens": _median(tokens),
         }
     item_seconds = [r["seconds"] for r in records if "seconds" in r]
+    prompt = [c.get("prompt_tokens") for c in calls]
+    completion = [c.get("completion_tokens") for c in calls]
     return {
         "items": len(records),
         "calls": len(calls),
+        "calls_per_question": round(len(calls) / len(records), 2) if records else None,
+        "prompt_tokens_total": None if None in prompt else sum(prompt),
+        "completion_tokens_total": None if None in completion else sum(completion),
         "cache_hits": len(calls) - len(live),
         "per_role": per_role,
         "median_item_seconds": _median(item_seconds),
@@ -239,7 +244,26 @@ def latency(records: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def audit_classes() -> dict[int, str]:
+    """docs/ambiguity-audit.json: ambiguous / changed_not_ambiguous / clear_negative."""
+    audit = json.loads((ROOT / "docs/ambiguity-audit.json").read_text(encoding="utf-8"))
+    classes = {qid: "clear_negative" for qid in audit["clear_negative_ids"]}
+    for item in audit["items"]:
+        ambiguous = item["ambiguous_original"]
+        classes[item["question_id"]] = "ambiguous" if ambiguous else "changed_not_ambiguous"
+    return classes
+
+
 def clarification_summary(records: dict[int, dict[str, Any]]) -> dict[str, Any]:
+    classes = audit_classes()
+    by_class = {}
+    for name in ("ambiguous", "changed_not_ambiguous", "clear_negative"):
+        rows = [r for qid, r in records.items() if classes.get(qid) == name]
+        by_class[name] = {
+            "n": len(rows),
+            "asked": sum(1 for r in rows if r["status"] == "asked"),
+            "ask_rate": _rate(sum(1 for r in rows if r["status"] == "asked"), len(rows)),
+        }
     asked = [r for r in records.values() if r["status"] == "asked"]
     candidates = [r for r in records.values() if r["ambiguity_candidate"]]
     negatives = [r for r in records.values() if not r["ambiguity_candidate"]]
@@ -247,6 +271,7 @@ def clarification_summary(records: dict[int, dict[str, Any]]) -> dict[str, Any]:
     helper = [c for r in asked for c in r.get("helper_calls", []) if c.get("status") == "ok"]
     return {
         "label": "oracle-assisted: the reply is the corrected wording, reported separately",
+        "ask_rate_by_audited_class": by_class,
         "items": len(records),
         "asked": len(asked),
         "ask_rate_on_ambiguity_candidates": _rate(
@@ -318,6 +343,7 @@ def build() -> dict[str, Any]:
             }
         if raw["clarify_oracle"]:
             result["clarification"] = clarification_summary(raw["clarify_oracle"])
+        result["case_studies"] = case_studies(views, ids)
         if raw["messy_n1"]:
             result["messy_schema"] = {
                 "leaked_names": sum(
@@ -345,7 +371,51 @@ def build() -> dict[str, Any]:
         summary["splits"][split] = result
     summary["calibration_probe"] = probe_summary()
     summary["security"] = security_summary()
+    summary["e7_self_authored"] = self_authored_summary()
     return summary | {"failure_labels": labels}
+
+
+def case_studies(views: dict[str, dict], ids: list[int], *, limit: int = 6) -> dict[str, list]:
+    """E3: same prediction, different label versus different wording, by ID and reason."""
+    classes = audit_classes()
+    audit = json.loads((ROOT / "docs/ambiguity-audit.json").read_text(encoding="utf-8"))
+    reason = {item["question_id"]: item["category"] for item in audit["items"]}
+    label_flips = []
+    loop = views.get("ret_n3_k1", {})
+    for qid in ids:
+        outcome = loop.get(qid, {})
+        if (
+            outcome.get("ex_original") is not None
+            and outcome["ex_original"] != outcome["ex_corrected"]
+        ):
+            label_flips.append(
+                {
+                    "question_id": qid,
+                    "correct_under": "corrected" if outcome["ex_corrected"] == 1 else "original",
+                    "change_reason": reason.get(qid, "unchanged wording (SQL label only)"),
+                }
+            )
+    input_flips = []
+    corrected, original = views.get("ret_n1_k0", {}), views.get("orig_n1_k0", {})
+    for qid in ids:
+        if qid in corrected and qid in original and classes.get(qid) != "clear_negative":
+            left, right = original[qid].get("ex_corrected"), corrected[qid].get("ex_corrected")
+            if left != right:
+                input_flips.append(
+                    {
+                        "question_id": qid,
+                        "correct_with": "corrected wording" if right == 1 else "original wording",
+                        "change_reason": reason.get(qid),
+                    }
+                )
+    return {"label_change": label_flips[:limit], "input_change": input_flips[:limit]}
+
+
+def self_authored_summary() -> dict[str, Any] | None:
+    from scripts.run_e7_self_authored import summarize
+
+    rows = load_jsonl_records(RAW / "e7" / "self_authored.jsonl")
+    return summarize(rows) if rows else None
 
 
 def probe_summary() -> dict[str, int] | None:
@@ -365,9 +435,13 @@ def probe_summary() -> dict[str, int] | None:
 def security_summary() -> dict[str, int]:
     manifest = json.loads((ROOT / "docs/attack-suite-manifest.json").read_text(encoding="utf-8"))
     blocks = manifest["false_block_measurement"]
+    attacks = manifest["attacks"]
+    succeeded = sum(1 for attack in attacks if attack["outcome"] == "succeeded")
     return {
-        "attacks": len(manifest["attacks"]),
-        "blocked": sum(1 for attack in manifest["attacks"] if attack["outcome"] == "blocked"),
+        "attacks": len(attacks),
+        "blocked": sum(1 for attack in attacks if attack["outcome"] == "blocked"),
+        "succeeded": succeeded,
+        "success_rate_exact_95": clopper_pearson(succeeded, len(attacks)),
         "gold_items": blocks["safe_gold_items"],
         "gold_accepted": blocks["safe_gold_guard_accepted"],
     }

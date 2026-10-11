@@ -211,7 +211,38 @@ def render_eval(summary: dict[str, Any], *, e0: dict[str, Any]) -> str:
                 f"with median swap {c['helper_median_swap_seconds']} s. After the oracle reply: "
                 f"{c['answered_after_oracle']} answered, {c['correct_after_oracle']} correct of "
                 f"{c['oracle_replies']}.",
-                "The self-authored ambiguity subset was not built (scope decision D-079).",
+                "",
+                "Ask rate by audited reason (`docs/ambiguity-audit.json`):",
+                "",
+                "| Audited class | Questions | Asked | Ask rate |",
+                "| --- | --- | --- | --- |",
+                *[
+                    f"| {name.replace('_', ' ')} | {v['n']} | {v['asked']} | {pct(v['ask_rate'])} |"
+                    for name, v in c.get("ask_rate_by_audited_class", {}).items()
+                ],
+            ]
+        cases = split.get("case_studies") or {}
+        if cases.get("label_change") or cases.get("input_change"):
+            out += [
+                "",
+                f"## E3 — case studies, {title.lower()}",
+                "",
+                "Label change: the same full-loop answer is scored against both label sets.",
+                "Input change: the single-candidate answer for original versus corrected",
+                "wording. Reasons come from the audit; question text is not reproduced.",
+                "",
+                "| Question ID | Kind | Correct under / with | Audited reason |",
+                "| --- | --- | --- | --- |",
+                *[
+                    f"| {c['question_id']} | label change | {c['correct_under']} labels | "
+                    f"{c['change_reason'].replace('_', ' ')} |"
+                    for c in cases.get("label_change", [])
+                ],
+                *[
+                    f"| {c['question_id']} | input change | {c['correct_with']} | "
+                    f"{(c['change_reason'] or '').replace('_', ' ')} |"
+                    for c in cases.get("input_change", [])
+                ],
             ]
         if split.get("accuracy_coverage"):
             coverage = split["accuracy_coverage"]
@@ -238,20 +269,75 @@ def render_eval(summary: dict[str, Any], *, e0: dict[str, Any]) -> str:
             + fmt_counts(split.get("failure_taxonomy", {}))
             + ". Labels: `results/G3_matrix/failure-labels.json`.",
         ]
+    out += self_authored_section(summary.get("e7_self_authored"))
+    security = summary.get("security") or {}
     out += [
         "",
         "## E5 — attacks",
         "",
-        "All-layers-on attack evidence is in [SECURITY](../SECURITY.md) and",
-        "`docs/attack-suite-manifest.json`. Layer-off variants need a separately approved",
-        "disposable environment and have not run.",
-        "",
-        "## E9 — fine-tuning",
-        "",
-        "Optional (G6) and not run.",
-        "",
+        "All-layers-on evidence: [SECURITY](../SECURITY.md) and `docs/attack-suite-manifest.json`.",
     ]
+    if security:
+        bound = security["success_rate_exact_95"]
+        out.append(
+            f"{security['succeeded']} of {security['attacks']} recorded attacks succeeded "
+            f"(exact 95% interval {pct(bound['low'])}–{pct(bound['high'])}); this bounds the "
+            "recorded suite only, not future attacks."
+        )
+    out += layer_off_section(summary.get("layer_off"))
+    out += ["", "## E9 — fine-tuning", "", "Optional (G6) and not run.", ""]
     return "\n".join(out)
+
+
+def self_authored_section(e7: dict[str, Any] | None) -> list[str]:
+    if not e7:
+        return []
+    lines = [
+        "",
+        "## E7 — self-authored ambiguity set (simulated user, not oracle)",
+        "",
+        "Frozen before evaluation (`docs/e7-self-authored.json`, check file records its",
+        "SHA-256). The simulated reply is the frozen intended meaning; it never sees",
+        "candidate SQL or results. Evaluation partition is primary; tuning is shown too.",
+        "",
+        "| Partition / kind | n | Asked | Correct without asking | Correct final | "
+        "Asked then correct | Asked then wrong |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for name, v in e7.items():
+        lines.append(
+            f"| {name.replace('_', ' ')} | {v['n']} | {v['asked']} | "
+            f"{v['correct_without_asking']} | {v['correct_final']} | "
+            f"{v['asked_then_correct']} | {v['asked_then_wrong']} |"
+        )
+    readings = [
+        f"{name.replace('_', ' ')}: first answer matched {fmt_counts(v['first_reading'])}"
+        for name, v in e7.items()
+        if "first_reading" in v
+    ]
+    if readings:
+        lines += ["", "Reading chosen before any clarification (A/B/neither/None=no answer): "]
+        lines += [f"- {line}" for line in readings]
+    return lines
+
+
+def layer_off_section(layer_off: dict[str, Any] | None) -> list[str]:
+    if not layer_off:
+        return ["Layer-off variants: not run."]
+    lines = [
+        "",
+        "Layer-off variants in the disposable environment "
+        f"(`{layer_off['project']}`, synthetic canaries, no real credentials):",
+        "",
+        "| Configuration | Attacks | Prevented | Canary exposed or changed | Stopped by |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for name, v in layer_off["configurations"].items():
+        lines.append(
+            f"| {name.replace('_', ' ')} | {v['attacks']} | {v['prevented']} | "
+            f"{v['succeeded']} | {fmt_counts(v['stopped_by'])} |"
+        )
+    return lines
 
 
 def phase_section(split: dict[str, Any]) -> list[str]:
@@ -281,7 +367,9 @@ def latency_section(split: dict[str, Any], title: str) -> list[str]:
         if not value.get("items") or "median_item_seconds" not in value:
             continue
         rows.append(
-            f"| {run} | {value['items']} | {value.get('median_item_seconds')} s | "
+            f"| {run} | {value['items']} | {value.get('calls_per_question', '—')} | "
+            f"{value.get('completion_tokens_total', '—')} | "
+            f"{value.get('median_item_seconds')} s | "
             f"{value.get('p95_item_seconds')} s | {generate.get('median_seconds', '—')} s | "
             f"{generate.get('median_completion_tokens', '—')} | {value.get('cache_hits')} | "
             f"{gb(value.get('peak_vram_bytes'))} |"
@@ -290,13 +378,14 @@ def latency_section(split: dict[str, Any], title: str) -> list[str]:
         return []
     return [
         "",
-        f"## E6 — latency and cost, {title.lower()}",
+        f"## E6 — latency and cost (E2 inference cost), {title.lower()}",
         "",
         "Fresh local calls only; cache hits are exact replays and are not live latency.",
+        "Measured on a shared laptop while other local work ran, so treat as indicative.",
         "",
-        "| Run | Questions | Median per question | p95 | Median per call | Output tokens | "
-        "Cache hits | Peak VRAM |",
-        "| --- | --- | --- | --- | --- | --- | --- | --- |",
+        "| Run | Questions | Model calls per question | Output tokens total | Median per question "
+        "| p95 | Median per call | Output tokens per call | Cache hits | Peak VRAM |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         *rows,
     ]
 
