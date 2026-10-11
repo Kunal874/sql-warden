@@ -16,6 +16,7 @@ class CandidateResult:
     sql: str | None = None
     result: QueryResult | None = None
     repairs: int = 0
+    attempts: tuple[tuple[str, QueryResult], ...] = ()
 
 
 @dataclass(frozen=True, slots=True)

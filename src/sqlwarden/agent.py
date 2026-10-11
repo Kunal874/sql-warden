@@ -37,6 +37,7 @@ class AgentConfig:
     clarify_on_abstain: bool = True
     explain: bool = True
     total_timeout_seconds: int = 120
+    full_schema: bool = False
 
     def __post_init__(self) -> None:
         if not 1 <= self.candidates <= 5:
@@ -111,9 +112,14 @@ async def run_agent(
 
 async def _run(question, catalog, provider, executor, policy, config, model, trace):
     trace.add("validate", "ok")
-    scope = catalog.retrieve(question, top_k=config.retrieve_columns)
+    if config.full_schema:
+        scope = catalog.scope_all()
+        reason = f"full_schema_{scope.column_count}_columns"
+    else:
+        scope = catalog.retrieve(question, top_k=config.retrieve_columns)
+        reason = f"{scope.column_count}_columns"
     schema_text = catalog.serialize(scope)
-    trace.add("retrieve", "ok", f"{scope.column_count}_columns")
+    trace.add("retrieve", "ok", reason)
     candidates = []
     for index in range(config.candidates):
         candidate = await _candidate(
@@ -182,6 +188,7 @@ async def _candidate(
         trace.add("generate", "failed", reason)
         return CandidateResult(index, "failed", reason)
     outcome = await _execute(sql, executor, policy)
+    attempts = [(sql, outcome)]
     repairs = 0
     while outcome.status != "ok" and repairs < config.max_repairs:
         repairs += 1
@@ -192,15 +199,20 @@ async def _candidate(
             {"role": "repair", "candidate_index": index},
         )
         if repaired is None:
-            return CandidateResult(index, "failed", repair_reason, sql, repairs=repairs)
+            return CandidateResult(
+                index, "failed", repair_reason, sql, repairs=repairs, attempts=tuple(attempts)
+            )
         sql = repaired
         outcome = await _execute(sql, executor, policy)
+        attempts.append((sql, outcome))
     if outcome.status == "ok":
         trace.add("candidate", "ok", str(index))
-        return CandidateResult(index, "ok", "ok", sql, outcome, repairs)
+        return CandidateResult(index, "ok", "ok", sql, outcome, repairs, tuple(attempts))
     status = "blocked" if outcome.status == "blocked" else "failed"
     trace.add("candidate", status, outcome.reason)
-    return CandidateResult(index, status, outcome.reason, sql, repairs=repairs)
+    return CandidateResult(
+        index, status, outcome.reason, sql, repairs=repairs, attempts=tuple(attempts)
+    )
 
 
 async def _sql_from_provider(provider, messages, model_config) -> tuple[str | None, str]:

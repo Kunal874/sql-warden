@@ -439,3 +439,26 @@ async def test_agent_keeps_model_timeout_and_unavailable_reasons_distinct():
         "model_timeout",
         "model_unavailable",
     ]
+
+
+@pytest.mark.asyncio
+async def test_candidates_keep_every_attempt_and_full_schema_skips_retrieval():
+    provider = FakeProvider(['{"sql":"SELECT syntax"}', '{"sql":"SELECT school FROM schools"}'])
+    executor = FakeExecutor([QueryResult("ok", "ok", ("school",), (("A",),))])
+
+    result = await run_agent(
+        "zzz unrelated words",
+        catalog=_catalog(),
+        provider=provider,
+        executor=executor,
+        policy=CALIFORNIA_POLICY,
+        config=AgentConfig(
+            candidates=1, max_repairs=1, full_schema=True, clarify_on_abstain=False, explain=False
+        ),
+    )
+
+    attempts = result.candidates[0].attempts
+    assert [sql for sql, _ in attempts] == ["SELECT syntax", "SELECT school FROM schools"]
+    assert [outcome.status for _, outcome in attempts] == ["failed", "ok"]
+    assert "schools.cdscode" in provider.messages[0][1]["content"]
+    assert any(event.reason == "full_schema_2_columns" for event in result.trace)
