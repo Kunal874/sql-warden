@@ -2680,6 +2680,25 @@ means training on examples too closely related to the final evaluation, making
 the score look better than it should. Generalization means answering new cases,
 instead of just remembering the training examples. Full training and E9 are next.
 
+### The real training and validation sets are frozen (2026-10-12)
+
+You chose converted SQL answers with a clear warning that we have not executed
+them on the training databases. We screened them against known tables/columns,
+the SQL guard and prompt checks. We kept 5,822 records and separated databases
+before choosing examples. The final sample has 2,000 training examples from 57
+databases and 128 validation examples from six different databases.
+
+Examples longer than 2,048 tokens are excluded instead of cutting off the answer.
+We excluded both European Football and Codebase evaluation families. Related movie
+versions stay together. Eight complex conversion pairs were inspected within a
+50-record sample; conversions remain unverified for actual answer results.
+
+Validation means checking examples the model was not trained on. A checkpoint is
+a saved point during learning. We will select the checkpoint with the lowest
+validation loss, not whichever looks best on final evaluation questions. Balanced
+sampling means giving each database a turn so one large database does not take
+all the places. Full training will make 500 learning updates next.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

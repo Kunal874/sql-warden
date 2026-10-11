@@ -2460,6 +2460,26 @@ converted training labels are execution-verified. Costs if wrong: conversion
 noise may improve or worsen scores or teach incorrect PostgreSQL behavior; the
 real comparison must measure it. No tuning on existing held-out outcomes.
 
+## D-088 — Full training data/recipe freeze (2026-10-12)
+
+Execute the full-training plan without routine review questions, as Kunal requested.
+Keep numeric-suffix variants together; conservatively treat Codebase variants as
+one family and movie/movies variants as one family. Exclude families used by
+evaluation, exact shared source-table schemas and normalized question/SQL duplicates.
+Costs if wrong: conservative exclusions may remove useful independent examples;
+schema/text checks do not establish full database-content separation.
+
+5822 usable structural records, 5521 train/301 validation before token limits.
+Freeze 2000 training examples across57 databases and128 validation across6 separate
+databases,2048 tokens,seed42. One500-step pass, same pilot rank8 q/v LoRA settings;
+save/validate every100steps and pick lowest validation loss (earlier tie), never EX.
+Use a2-step length probe before the full run, then a2-hour full cap; preserve the
+12GiB training footprint/20GiB disk reserve. Actual model training remains local.
+The50-record structural sample and8 complex source/converted pairs expose SQLGlot's
+NULLIF denominator rewrite,quoted case restoration and IIF→CASE. No source-result
+equivalence claim. Costs if wrong: short-schema subset selection can bias learning
+and empty reasoning targets may differ from Arctic's reasoning style.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

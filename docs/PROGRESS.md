@@ -362,7 +362,9 @@ the optional interview drill.
 
 - [ ] G6.1 / C8: explicit go/no-go, training deps/environment/model/dialect/time/disk choices.
 - [x] G6.2: tiny GPU training feasibility run (20 steps, clean d865f20, saved/reloaded adapter).
-- [ ] G6.3: frozen data, database-based validation split and project leakage checks.
+- [x] G6.3: frozen data, database-based validation split and project leakage checks.
+  - [x] 2000 training/128 validation records, 57/6 separate databases, 2048-token cap;
+    structurally checked but execution-unverified, explicitly approved (D-087).
 - [ ] G6.4: logged training, checkpoints and memory.
 - [ ] G6.5: merge/conversion/GGUF feasibility, local serving and comparable E9.
 - [ ] G6.6: evidence-driven EVAL/README update; applicable G7 checks before publishing updates.
@@ -1409,6 +1411,19 @@ Pre-flight contract reconciliation:
 ## Handoff
 
 ### 2026-10-12 — G6 pilot preflight, current action
+
+Current action after c41e29a: data freeze complete; implement the full training
+recipe in `docs/superpowers/plans/2026-10-12-g6-full-training.md`. 5822 of 6601
+source examples pass structural/prompt checks; 121 family-overlap rows,51
+conversion/guard refusals,604 prompt refusals,3 duplicates excluded. Train/validation
+5521/301 before token limits;361 training examples too long. Frozen balanced sample
+2000 from57 DBs and128 from6 separate validation DBs. Source/label/token manifests
+hold counts/hashes only. 50 seeded sample records screened; eight complex pairs
+reviewed (quoting/casts/IIF→CASE/division with NULLIF); results remain unverified.
+First prepared version preserved ignored before the conservative family fix.
+Data checkpoint: 955 passed/475 expected skips (10.39 s), one existing httpx
+warning; lint, 115-file format and whitespace checks pass. No new GPU run in
+this data-freeze step; the completed pilot remains the hardware evidence.
 
 Pilot complete: clean d865f20, 20 actual NF4/QLoRA optimizer steps, 1,089,536
 trainable adapter parameters, 28.625 s training/save, peak reserved 3,493,855,232
