@@ -11,6 +11,14 @@ subset, not official BIRD): full-schema single candidate 54.3%, full loop 42.9% 
 end, 66.5% accurate on the 61.7% it answers at the frozen 2/3 threshold.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
+2026-10-12 G6 continuation: Kunal now requests fine-tuning for resume value.
+Read-only preflight and a concrete native-Windows 1.5B QLoRA pilot plan are complete
+in `docs/superpowers/plans/2026-10-12-g6-training-pilot.md`. GPU free 7956 MiB,
+D: free ~35.2 GiB; available system RAM ~1.05 GiB is below the proposed 4 GiB
+loading floor. No packages installed, weights downloaded or GPU training run.
+C8 package/model/resource choices await the explicit answer required by section 10.
+G6.1/G6.2 stay unchecked. No new push is authorized by this continuation.
+
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
 Both correction-intake tasks and the sole final review are complete: Task 1
 64f51e4, Task 2 676428f, one Important streaming deadline gap fixed test-first.
@@ -1399,6 +1407,22 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-12 — G6 pilot preflight, current action
+
+Resume the sequential training pilot plan after the C8 response. Proposed:
+native Windows/Python 3.12, isolated training environment, torch/transformers/
+peft/accelerate/bitsandbytes/huggingface-hub, pinned Qwen Coder 1.5B, 20 synthetic
+steps, 45-minute training cap, 12 GiB total additional disk and 20 GiB disk reserve.
+Check available RAM again before loading; do not kill unrelated applications.
+The environment/library proposal is pending, not approved by the generic G6 request.
+Earlier Handoff sections below are historical and do not supersede this entry.
+
+Read-only release reconciliation: clean HEAD 2b10679 matched remote main;
+GitHub CI 38177427078 succeeded (Python 925 passed/472 skipped, boundary checks
+51 passed/2 skipped, web typecheck/build, lint/format). All 112 current commits
+use Kunal as author and committer. These checks preceded the new pilot documents;
+no AI/database tests were rerun for this documentation-only preflight.
 
 ### 2026-10-09 — G2 interview drill and completion
 

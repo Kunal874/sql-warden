@@ -2385,6 +2385,23 @@ site waits until the repository is made public.
 Rationale: private keeps the work unpublished while CI runs. Cost if wrong: no public
 demo page until visibility changes.
 
+## D-083 — G6 requested; bounded training pilot proposed (2026-10-12)
+
+Kunal requests fine-tuning for resume value. This authorizes pursuing G6; the
+specific new libraries/environment/model/budgets still require C8's answer.
+Options: native Windows QLoRA pilot; install Ubuntu and use WSL; defer training.
+Recommend native Windows first because official bitsandbytes CUDA wheels support
+it and Ubuntu is absent. Proposed model is pinned Qwen2.5-Coder 1.5B Instruct;
+use an isolated uv environment and 20 steps on invented SQL examples. Proposed
+packages and resource caps are in the 2026-10-12 G6 pilot plan. Approval pending.
+
+Measured preflight: GPU 7956 MiB free, D: ~35.2 GiB free, system RAM ~1.05 GiB
+free. Do not load training below 4 GiB available RAM. No installation/download/
+training or benchmark change occurred. Full data/dialect/conversion decisions
+follow the feasibility result. Costs if wrong: Windows package compatibility may
+fail, and the pilot may not extrapolate to long database schemas. A successful
+pilot supports a feasibility claim only; accuracy requires comparable E9 runs.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

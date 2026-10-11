@@ -1,6 +1,6 @@
 # SQLWarden explained in simple English
 
-Last updated: 2026-10-10.
+Last updated: 2026-10-12.
 
 This is your learning notebook for the project. It will be updated after every
 completed subtask and group. It explains what was built, why it matters, how it
@@ -2604,6 +2604,29 @@ Question 3: What would you do next?
 Simple answer: give the repair step safe, specific feedback (which column or function
 was wrong), teach the guard-friendly PostgreSQL date functions in the prompt, and then
 re-run the same frozen evaluation to see whether the loop finally beats the baseline.
+
+### G6 starts with a small training check (2026-10-12)
+
+You asked to add fine-tuning for your resume. We checked the laptop and saved a
+small experiment plan. Nothing has trained yet, and no new library or model has
+been installed in this step. The GPU has almost all its memory free, but normal
+computer RAM has only about 1 GB free. Training will wait for at least 4 GB free.
+
+The proposed first experiment teaches a small Qwen model using eight invented
+SQL examples, for just 20 training steps. It checks whether GPU training works,
+whether the learned file saves and loads again, and how much memory/time it uses.
+It does not prove the model answers real database questions better.
+
+Fine-tuning means teaching an existing AI model more examples. QLoRA keeps the
+large original model compressed and teaches small extra weights. An adapter is
+the file holding those extra learned weights. A training step is one update to
+them. Loss is a number measuring how far the training prediction is from the
+example; lower training loss alone does not mean better answers on new questions.
+
+Next: approve the exact new training tools and limits required by C8, test the
+small run, then prepare separate training/validation databases. Compare the base
+model and trained model fairly. Only numbers we actually measure go on the resume.
+The existing release and its evaluation results stay available.
 
 ## 7. How this notebook will be kept up to date
 
