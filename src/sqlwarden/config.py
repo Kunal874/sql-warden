@@ -1,6 +1,31 @@
 """Validated execution limits for the early safe slice."""
 
+import os
+import re
+from collections.abc import Mapping
 from dataclasses import dataclass, fields
+
+# Inference stays on the laptop until a hosted model is approved (D-077).
+LOCAL_MODEL_URLS = frozenset(
+    {"http://127.0.0.1:11434", "http://localhost:11434", "http://host.docker.internal:11434"}
+)
+HOST_NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9.-]{0,252}")
+
+
+def database_address(env: Mapping[str, str] = os.environ) -> tuple[str, int]:
+    """Where restricted logins connect: the laptop port, or the compose service name."""
+    host = env.get("WARDEN_DB_HOST", "127.0.0.1")
+    port = env.get("WARDEN_DB_PORT", "55432")
+    if not HOST_NAME.fullmatch(host) or not port.isdigit() or not 0 < int(port) < 65536:
+        raise ValueError("database address refused")
+    return host, int(port)
+
+
+def model_url(env: Mapping[str, str] = os.environ) -> str:
+    url = env.get("WARDEN_OLLAMA_URL", "http://127.0.0.1:11434")
+    if url not in LOCAL_MODEL_URLS:
+        raise ValueError("model url refused")
+    return url
 
 
 @dataclass(frozen=True, slots=True)

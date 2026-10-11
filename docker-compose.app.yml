@@ -1,0 +1,32 @@
+# Runtime container. Joins the database network; needs no setup credentials:
+#   docker compose -f docker-compose.app.yml up -d --build --wait
+# Start PostgreSQL first with the main compose file. Ollama stays native on the host.
+name: sqlwarden-app
+
+services:
+  app:
+    build: .
+    image: sqlwarden-app:local
+    env_file: .env.web
+    environment:
+      WARDEN_DB_HOST: postgres
+      WARDEN_DB_PORT: "5432"
+      WARDEN_OLLAMA_URL: http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:8000:8000"
+    networks: [db]
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 1g
+    cpus: 2.0
+    pids_limit: 128
+    restart: "no"
+
+networks:
+  db:
+    name: sqlwarden_default
+    external: true

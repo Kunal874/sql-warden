@@ -69,14 +69,56 @@ def run_smoke(client: httpx.Client, *, db_id: str, question: str, origin: str) -
     return report
 
 
+def run_abuse_checks(client: httpx.Client, *, db_id: str, origin: str, burst: int = 21) -> dict:
+    """Bounded refusals. The burst admits at most max_active runs and cancels them."""
+    body = {"db_id": db_id, "question": "How many rows?"}
+    report = {
+        "bad_origin": client.post(
+            "/api/ask", json=body, headers={"origin": "https://evil.example"}
+        ).status_code,
+        "oversize_body": client.post(
+            "/api/ask",
+            content=b'{"db_id":"x","question":"' + b"a" * 8192 + b'"}',
+            headers={"content-type": "application/json"},
+        ).status_code,
+        "unknown_db": client.post("/api/ask", json=body | {"db_id": "app"}).status_code,
+        "not_json": client.post("/api/ask", content=b"{", headers={"origin": origin}).status_code,
+        "missing_token": client.get("/api/runs/unknown").status_code,
+        "wrong_token": client.get(
+            "/api/runs/unknown", headers={"authorization": "Bearer wrong"}
+        ).status_code,
+    }
+    codes: dict[str, int] = {}
+    admitted = []
+    for _ in range(burst):
+        response = client.post("/api/ask", json=body, headers={"origin": origin})
+        codes[str(response.status_code)] = codes.get(str(response.status_code), 0) + 1
+        if response.status_code == 202:
+            admitted.append(response.json())
+    cancelled = [
+        client.post(
+            f"/api/runs/{run['run_id']}/cancel",
+            headers={"authorization": "Bearer " + run["capability"]},
+        ).json()["status"]
+        for run in admitted
+    ]
+    return report | {
+        "burst_codes": codes,
+        "admitted_cancelled": all(status == "cancelled" for status in cancelled),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", default="http://127.0.0.1:8000")
     parser.add_argument("--db", default="california_schools")
     parser.add_argument("--question", default=DEFAULT_QUESTION)
+    parser.add_argument("--abuse", action="store_true", help="also run bounded refusal checks")
     args = parser.parse_args()
     with httpx.Client(base_url=args.base, timeout=330, trust_env=False) as client:
         report = run_smoke(client, db_id=args.db, question=args.question, origin=args.base)
+        if args.abuse:
+            report["abuse"] = run_abuse_checks(client, db_id=args.db, origin=args.base)
     print(json.dumps(report, indent=2))
     return 0 if report["run"]["status"] in {"answered", "abstained", "blocked"} else 1
 

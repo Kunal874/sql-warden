@@ -2245,6 +2245,31 @@ touch files, the network, the session or other schemas. Cost if wrong: a future
 overload of one of these names could behave differently; the inventory test pins
 the exact signatures.
 
+## D-077 — C7: static pages plus laptop demo; container and CI prepared (2026-10-11)
+
+Context: G5 must verify free hosting from official sources and prepare packaging
+without provisioning anything. Checked 2026-10-11 (sources in [DEPLOY](DEPLOY.md)):
+Render Free (512 MB, sleeps after 15 min, ephemeral), Hugging Face (Docker Spaces
+now need a paid plan), Neon Free (1 GB/project; Console-made roles get BYPASSRLS),
+Render Postgres Free (expires after 30 days), Groq Free (about 1K requests/day per
+model), GitHub Pages (free static, 1 GB).
+
+Options: (a) static Benchmark/Attack Lab on GitHub Pages plus the local demo;
+(b) Render + Neon + Groq live Ask; (c) no public demo.
+
+Decision: recommend (a) for G7. Option (b) needs three accounts only Kunal can
+create, a separate hosted-model check, TLS database connections, Postgres budgets and
+durable runs, and accepts that managed Postgres forbids the function-hardening
+revokes; it stays documented as an approval-gated follow-up. Packaging: multi-stage
+non-root image, read-only app compose file with its own project name and no setup
+credentials, runtime address keys validated (model URL limited to local Ollama
+addresses, so inference stays local), and a read-only CI workflow with pinned action
+SHAs whose disposable database job uses a separate compose project.
+
+Rationale: (a) costs INR 0, sends no question text to a third party and shows the
+measured evidence. Cost if wrong: visitors cannot try live questions without
+running the laptop demo.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

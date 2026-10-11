@@ -756,3 +756,15 @@ async def test_external_cancellation_is_not_a_successful_result():
     with pytest.raises(asyncio.CancelledError):
         await task
     assert pool.conn.terminated and not pool.leased
+
+
+async def test_opener_uses_the_configured_container_database_address(monkeypatch):
+    from sqlwarden.executor import open_dataset_executor
+
+    pool = FakePool()
+    install_pool(monkeypatch, pool)
+    monkeypatch.setenv("WARDEN_DB_HOST", "postgres")
+    monkeypatch.setenv("WARDEN_DB_PORT", "5432")
+    async with open_dataset_executor("california_schools", "credential-canary") as executor:
+        assert (await executor.execute("SELECT 1")).status == "ok"
+    assert (pool.options["host"], pool.options["port"]) == ("postgres", 5432)

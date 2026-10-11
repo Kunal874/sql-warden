@@ -11,7 +11,7 @@ from typing import Literal
 
 import asyncpg
 
-from sqlwarden.config import QueryLimits
+from sqlwarden.config import QueryLimits, database_address
 from sqlwarden.guard import CALIFORNIA_POLICY, DATASET_POLICIES, DatasetPolicy, guard_sql
 
 Cell = str | int | float | bool | Decimal | date | None
@@ -281,11 +281,12 @@ async def open_dataset_executor(db_id: str, password: str, limits: QueryLimits =
         raise ValueError("Unknown dataset id") from None
     if type(password) is not str or not password or "\x00" in password:
         raise ValueError("Invalid restricted-reader credential") from None
+    host, port = database_address()
     try:
         async with asyncio.timeout(limits.pool_timeout_ms / 1000):
             pool = await asyncpg.create_pool(
-                host="127.0.0.1",
-                port=55432,
+                host=host,
+                port=port,
                 database="sqlwarden",
                 user="warden_sandbox_" + policy.schema,
                 password=password,

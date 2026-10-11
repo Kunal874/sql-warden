@@ -3,7 +3,7 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from scripts.smoke_g4_local import run_smoke
+from scripts.smoke_g4_local import run_abuse_checks, run_smoke
 from sqlwarden.api import RunService
 from sqlwarden.webapp import create_app
 
@@ -76,3 +76,28 @@ def test_smoke_flow_covers_ask_clarification_result_and_cancel(tmp_path):
     assert report["run"]["status"] == "answered"
     assert report["run"]["steps"][-1] == "terminal"
     assert report["cancel_status"] == "cancelled"
+
+
+async def _wait_forever(run):
+    import asyncio
+
+    await asyncio.Event().wait()
+
+
+def test_bounded_abuse_checks_fail_closed_and_cancel_admitted_runs():
+    service = RunService(runner=_wait_forever, rate_limit_per_ip=5)
+    with TestClient(create_app(service, web_root=None)) as client:
+        report = run_abuse_checks(
+            client, db_id="california_schools", origin="http://localhost:5173", burst=6
+        )
+
+    assert report == {
+        "bad_origin": 403,
+        "oversize_body": 413,
+        "unknown_db": 400,
+        "not_json": 400,
+        "missing_token": 401,
+        "wrong_token": 401,
+        "burst_codes": {"202": 2, "503": 3, "429": 1},
+        "admitted_cancelled": True,
+    }

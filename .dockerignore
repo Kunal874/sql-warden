@@ -1,0 +1,18 @@
+# Build context: only what the Dockerfile copies. Secrets, raw data and caches never enter.
+**
+!pyproject.toml
+!uv.lock
+!README.md
+!src/**
+!web/package.json
+!web/package-lock.json
+!web/index.html
+!web/tsconfig.json
+!web/vite.config.ts
+!web/src/**
+!docs/source-audit-manifest.json
+!docs/attack-suite-manifest.json
+!results/E0_smoke/dashboard.json
+!results/G3_matrix/summary.json
+!data/description-corrections/arcwise-fe766045/**
+**/__pycache__

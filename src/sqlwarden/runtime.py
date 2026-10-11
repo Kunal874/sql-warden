@@ -22,11 +22,10 @@ from fastapi import FastAPI
 from sqlwarden.agent import AgentConfig, AgentEvent, AgentResult, run_agent
 from sqlwarden.api import RunRecord, RunService
 from sqlwarden.catalog import AUDIT_SHA, load_catalog
-from sqlwarden.config import QueryLimits
+from sqlwarden.config import QueryLimits, database_address, model_url
 from sqlwarden.executor import ExecutorLifecycleError, open_dataset_executor
 from sqlwarden.guard import DATASET_POLICIES
 from sqlwarden.ollama import ARCTIC, OllamaAgentProvider
-from sqlwarden.provider import LOCAL_BASE_URL
 from sqlwarden.webapp import create_app
 
 PREVIEW_ROWS = 50
@@ -40,12 +39,13 @@ LOCAL_ORIGINS = {
 FORBIDDEN_ENV = frozenset(
     {"ADMIN_DATABASE_URL", "APP_DATABASE_URL", "SANDBOX_DATABASE_URL", "PGPASSWORD"}
 )
+ADDRESS_KEYS = frozenset({"WARDEN_DB_HOST", "WARDEN_DB_PORT", "WARDEN_OLLAMA_URL"})
 
 
 def runtime_passwords(values: Mapping[str, str]) -> dict[str, str]:
     """Only restricted per-dataset reader credentials; any setup/test key refuses startup."""
     expected = {f"WARDEN_RUNTIME_{db_id.upper()}_PASSWORD": db_id for db_id in DATASET_POLICIES}
-    warden = {key for key in values if key.startswith("WARDEN_")}
+    warden = {key for key in values if key.startswith("WARDEN_")} - ADDRESS_KEYS
     passwords = {
         expected[key]: values[key]
         for key in warden
@@ -53,6 +53,8 @@ def runtime_passwords(values: Mapping[str, str]) -> dict[str, str]:
     }
     if not passwords or len(passwords) != len(warden) or FORBIDDEN_ENV.intersection(values):
         raise ValueError("runtime_configuration")
+    database_address(values)
+    model_url(values)
     return passwords
 
 
@@ -96,7 +98,7 @@ class AgentRuntime:
 
     async def readiness(self) -> str | None:
         try:
-            async with httpx.AsyncClient(base_url=LOCAL_BASE_URL, timeout=3, trust_env=False) as c:
+            async with httpx.AsyncClient(base_url=model_url(), timeout=3, trust_env=False) as c:
                 tags = (await c.get("/api/tags")).json().get("models", [])
         except (httpx.HTTPError, ValueError):
             return "model_unavailable"
@@ -104,7 +106,7 @@ class AgentRuntime:
         if not any(pinned.items() <= tag.items() for tag in tags):
             return "model_unavailable"
         try:
-            _, writer = await asyncio.wait_for(asyncio.open_connection("127.0.0.1", 55432), 2)
+            _, writer = await asyncio.wait_for(asyncio.open_connection(*database_address()), 2)
             writer.close()
         except (OSError, TimeoutError):
             return "database_unavailable"

@@ -13,8 +13,8 @@ from typing import Any
 import httpx
 
 from sqlwarden.cache import CacheKey, JsonDiskCache
+from sqlwarden.config import model_url
 from sqlwarden.evaluation import EvaluationError, _conservative_token_estimate
-from sqlwarden.provider import LOCAL_BASE_URL
 
 SAMPLE_TEMPERATURE = 0.7
 BASE_SEED = 42
@@ -147,7 +147,7 @@ class OllamaAgentProvider:
 
     def _client(self) -> httpx.AsyncClient:
         return httpx.AsyncClient(
-            base_url=LOCAL_BASE_URL,
+            base_url=model_url(),
             transport=self.transport,
             timeout=httpx.Timeout(self.timeout_seconds, connect=3, pool=3),
             trust_env=False,

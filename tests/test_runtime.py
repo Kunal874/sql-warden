@@ -98,6 +98,14 @@ def test_runtime_passwords_accept_only_restricted_runtime_keys():
             "PATH": "x",
         }
     ) == {"california_schools": GOOD, "toxicology": "b" * 48}
+    assert runtime_passwords(
+        {
+            "WARDEN_RUNTIME_CALIFORNIA_SCHOOLS_PASSWORD": GOOD,
+            "WARDEN_DB_HOST": "postgres",
+            "WARDEN_DB_PORT": "5432",
+            "WARDEN_OLLAMA_URL": "http://host.docker.internal:11434",
+        }
+    ) == {"california_schools": GOOD}
     refused = [
         {},
         {"WARDEN_RUNTIME_CALIFORNIA_SCHOOLS_PASSWORD": "short"},
