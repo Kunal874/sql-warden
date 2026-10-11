@@ -78,6 +78,10 @@ demonstration, corrected E0 run, C2 model choice and G1 core implementation are
 complete locally. G2.1 through G2.9 are complete locally. G3.1 is now complete
 locally. G3 is now complete locally; website and release still remain.
 
+Update 2026-10-11: G4 (the local website) is complete and works with the real
+model and database. G3's experiment *plan* was frozen earlier, but most of the
+experiments themselves (E1-E8) had not been run; running them is the next step.
+
 You approved the answer-checker plan. Its small comparison function passes
 60 unit checks and 17 real database checks. Its independent review found no
 actionable issues and repeated all 60 unit checks successfully.
@@ -2348,6 +2352,80 @@ progress updates to a browser.
 
 What remains for full G4: the real FastAPI adapter/routes and React/Vite frontend
 need direct dependencies. Project rules say I must ask before adding those.
+
+### G4 complete: the real website works on this laptop (2026-10-11)
+
+You approved the web packages (FastAPI, uvicorn, React, Vite, Recharts). G4 is
+now finished locally. You can type a question in a browser page and watch the
+real agent answer it, using the real model and the real database.
+
+What changed:
+
+- The web server (FastAPI) now runs the real agent instead of a fake one. Each
+  question uses only that one dataset's read-only database login.
+- The page shows each step live as it happens (retrieve, three candidates, vote).
+- If the three SQL candidates disagree, a second small model (Qwen) writes a
+  short "what did you mean?" question with options. You may reply once.
+- Explanations are a simple fact sentence ("Returned 1 row ... 3 of 3 agreed"),
+  not AI-written text. That is safer and faster.
+- Three React pages: Ask, Attack Lab (which layer stopped each attack) and
+  Benchmark (results from tracked files only).
+
+Two important discoveries while testing for real:
+
+1. **The prompt format mattered a lot.** The old agent prompts wrapped the
+   question inside a JSON document. The SQL model then wrote nonsense like
+   `SELECT '1'`. The research paper for this model (Arctic-Text2SQL-R1) shows
+   the format it was trained with: "think step by step, then give the SQL in a
+   code block", plus BIRD's hint text ("evidence"). On 20 practice questions the
+   old style got 3 right; the paper-style prompt with hints got 10 right. It is
+   slower (about 11 seconds per try instead of 2). This is recorded as D-075.
+2. **The safety guard was blocking good queries.** 56 of the 424 correct answer
+   queries were blocked because they used normal date/text functions such as
+   `to_char` and `substring`. We reviewed those nine functions, proved on the
+   real database that they are plain built-in functions with no side effects,
+   and allowed them. Now only 3 of 424 are blocked. All 43 attack tests still
+   give exactly the same result. This is D-076.
+
+Also: column names such as `Academic Year` must be written with double quotes
+in PostgreSQL. The schema text given to the model now shows the quotes, so the
+model copies them correctly.
+
+Checks that actually ran: 875 offline tests passed (475 database-only tests were
+skipped in that run); 56 real database guard checks passed; the web page code
+type-checks and builds. A real scripted run asked a question, got a
+clarification with 3 options, replied, and got an answer in 48.6 seconds. Cancel
+worked. A real browser run answered a Fresno school question with 3 of 3
+candidates agreeing.
+
+New simple terms:
+
+**FastAPI / uvicorn**: the Python web framework and the small program that
+serves it on `http://127.0.0.1:8000`.
+
+**React / Vite**: React builds the page from small components; Vite turns the
+source files into the final website files in `web/dist`.
+
+**Heartbeat**: a tiny "still here" message sent while a long answer is running,
+so the browser connection does not look dead.
+
+**Last-Event-ID**: the number of the last update the browser saw. When it
+reconnects, the server sends only the newer updates.
+
+**Evidence (in BIRD)**: a short human-written hint that comes with each
+question, for example how a rate is calculated. It is input, not the answer.
+
+**Reasoning model**: a model trained to think in steps before giving its final
+answer. It is more accurate but slower.
+
+**False block**: when a safety check stops a query that was actually safe.
+
+**Model swap**: unloading one model from the GPU and loading another, because
+this laptop's 8 GB GPU fits only one at a time.
+
+What is still unfinished: the big experiment set (E1-E8) has not run yet. That
+is next. Deployment preparation (G5), the release (G7) and the interview drills
+for G1, G4, G5 and G7 also remain.
 
 ## 7. How this notebook will be kept up to date
 
