@@ -2070,6 +2070,40 @@ Checks: offline suite 875 passed/475 skipped; Ruff lint/format clean; web
 typecheck/build pass. Commits b94810e, 3ec7ef0, 6a96776, then the web commit.
 Next: run the E1-E8 matrix under contract v2.
 
+### 2026-10-11 — HANDOFF (usage limit): G3 gap closure in progress, release blocked
+
+Kunal: repo https://github.com/Kunal874/sql-warden exists (private/unseen anonymously);
+do NOT push until every G3 gap below is closed (his instruction). License and
+visibility still need his answer.
+
+Done this session (all committed, Kunal-only): G4 complete; contract v2 (D-075);
+guard false blocks 56->3 (D-076); G5 prep (D-077); D-078 threshold rule; E8 threshold
+frozen at 2/3 from dev (d8cd4cb); E4 messy gold check 424/424; E7 ambiguity audit
+(124 ambiguous / 65 fixes / 235 negatives); E7 self-authored set frozen (53f6407,
+sha ee149a94...); gitleaks clean (one reviewed false positive); G1/G4/G5 drills.
+D-079's deferrals are reversed: E5 layer-off and the self-authored E7 set must run.
+
+Running in background (task bolbofz2e, started ~17:45): dev conditions full_n1,
+orig_n3_k1, messy_n1, clarify_oracle, then `python -m scripts.run_e7_self_authored`.
+Each step waits for a clean tracked tree. Dev ret_n3_k1 finished (clean, 704a984).
+Discarded: one full_n1 start with dirty=True, moved to results/G3_matrix/raw/discarded/.
+
+Next, in order:
+1. Finish E5 layer-off: untracked `docker-compose.e5.yml` and `scripts/e5_harness.py`
+   are written but untested; still need `scripts/run_e5_layer_off.py` (one-time
+   passwords via env, refuse non-local docker context, `docker compose -f
+   docker-compose.e5.yml up -d --wait db`, pipe harness to `run --rm -T harness`,
+   then `down --volumes` for project sqlwarden_e5_disposable only), tests, a
+   summary in results/G3_matrix/e5-layer-off.json, and summary["layer_off"] in
+   build_matrix_report (render_eval_docs already renders it).
+2. After the dev chain: held-out runs with `--split held_out` for ret_n3_k1 then
+   full_n1 (~5 h), then ret_n3_k1_replay on dev (E6).
+3. Correct docs/evaluation-matrix.json (status, evidence modes, actual GPU time).
+4. `python -m scripts.build_matrix_report` (writes summary, README block, EVAL,
+   RESUME), Benchmark page check, live ask through the container, PROGRESS/notebook,
+   G7.1 clean clone on the final commit, G7.5 12 interview questions, G7 drill.
+5. Ask Kunal for license + visibility, then add remote and push (G7.3/G7.4).
+
 Python checks (project virtual environment):
 
 `uv run pytest -q --tb=line`
