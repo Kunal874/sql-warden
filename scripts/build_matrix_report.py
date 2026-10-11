@@ -482,9 +482,12 @@ def write_docs(summary: dict[str, Any]) -> None:
     readme.write_text(
         replace_block(readme.read_text(encoding="utf-8"), readme_block(summary)),
         encoding="utf-8",
+        newline="\n",
     )
-    (ROOT / "docs/EVAL.md").write_text(render_eval(summary, e0=e0["models"]), encoding="utf-8")
-    (ROOT / "docs/RESUME.md").write_text(render_resume(summary), encoding="utf-8")
+    (ROOT / "docs/EVAL.md").write_text(
+        render_eval(summary, e0=e0["models"]), encoding="utf-8", newline="\n"
+    )
+    (ROOT / "docs/RESUME.md").write_text(render_resume(summary), encoding="utf-8", newline="\n")
 
 
 def freeze_threshold() -> dict[str, Any]:
@@ -503,7 +506,7 @@ def freeze_threshold() -> dict[str, Any]:
         "threshold": select_threshold(curve),
         "dev_curve": curve,
     }
-    THRESHOLD.write_text(json.dumps(frozen, indent=2) + "\n", encoding="utf-8")
+    THRESHOLD.write_text(json.dumps(frozen, indent=2) + "\n", encoding="utf-8", newline="\n")
     return frozen
 
 
@@ -531,11 +534,14 @@ def main() -> int:
         return 0
     summary = build()
     labels = summary.pop("failure_labels")
-    SUMMARY.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    SUMMARY.write_text(
+        json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
+    )
     FAILURES.write_text(
         json.dumps({"format_version": 1, "labels": labels[:50], "total": len(labels)}, indent=2)
         + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     write_docs(summary)
     print(json.dumps({"splits": sorted(summary["splits"]), "failure_labels": len(labels)}))
