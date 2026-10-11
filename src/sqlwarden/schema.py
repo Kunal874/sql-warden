@@ -11,6 +11,20 @@ from typing import Any
 MAX_SAMPLE_VALUES = 3
 MAX_SAMPLE_BYTES = 160
 TOKEN_RE = re.compile(r"[A-Za-z0-9_]+")
+BARE_IDENTIFIER = re.compile(r"[a-z_][a-z0-9_]*")
+# PostgreSQL reserved key words (docs appendix C) that must be quoted as identifiers.
+_RESERVED_WORDS = (
+    "all analyse analyze and any array as asc asymmetric authorization binary both case cast "
+    "check collate collation column concurrently constraint create cross current_catalog "
+    "current_date current_role current_schema current_time current_timestamp current_user "
+    "default deferrable desc distinct do else end except false fetch for foreign freeze from "
+    "full grant group having ilike in initially inner intersect into is isnull join lateral "
+    "leading left like limit localtime localtimestamp natural not notnull null offset on only "
+    "or order outer overlaps placing primary references returning right select session_user "
+    "similar some symmetric system_user table tablesample then to trailing true union unique "
+    "user using variadic verbose when where window with"
+)
+RESERVED = frozenset(_RESERVED_WORDS.split())
 
 
 class SchemaError(ValueError):
@@ -195,24 +209,32 @@ class SchemaCatalog:
             raise SchemaError("schema scope invalid")
         lines = [f"database {scope.db_id}"]
         for table in scope.tables:
+            name = quote_identifier(table.name)
             suffix = f" -- {table.description}" if table.description else ""
-            lines.append(f"table {table.name}{suffix}")
+            lines.append(f"table {name}{suffix}")
             for column in table.columns:
+                column_name = f"{name}.{quote_identifier(column.name)}"
                 column_suffix = f" -- {column.description}" if column.description else ""
-                lines.append(f"column {table.name}.{column.name} {column.type}{column_suffix}")
+                lines.append(f"column {column_name} {column.type}{column_suffix}")
                 if column.samples:
-                    lines.append(
-                        f"untrusted samples {table.name}.{column.name}: "
-                        + ", ".join(column.samples)
-                    )
+                    lines.append(f"untrusted samples {column_name}: " + ", ".join(column.samples))
             if table.primary_key:
-                lines.append(f"primary key {table.name}({', '.join(table.primary_key)})")
+                keys = ", ".join(quote_identifier(key) for key in table.primary_key)
+                lines.append(f"primary key {name}({keys})")
             for columns, reference in table.foreign_keys:
-                lines.append(f"foreign key {table.name}({', '.join(columns)}) -> {reference}")
+                keys = ", ".join(quote_identifier(key) for key in columns)
+                lines.append(f"foreign key {name}({keys}) -> {reference}")
         rendered = "\n".join(lines)
         if len(rendered.encode("utf-8")) > max_bytes:
             raise SchemaError("schema budget exceeded")
         return rendered
+
+
+def quote_identifier(name: str) -> str:
+    """Render a name the way PostgreSQL must read it: bare only if folding cannot change it."""
+    if BARE_IDENTIFIER.fullmatch(name) and name not in RESERVED:
+        return name
+    return '"' + name.replace('"', '""') + '"'
 
 
 def _tokens(value: str) -> list[str]:

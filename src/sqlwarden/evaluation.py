@@ -100,6 +100,17 @@ def extract_sql(content: str) -> str:
     return text
 
 
+def extract_final_sql(content: str) -> str:
+    """The last ```sql block of a reasoned answer, else the strict E0 formats."""
+    if not isinstance(content, str):
+        raise EvaluationError("model output invalid")
+    blocks = re.findall(r"```sql\s*(.*?)```", content, flags=re.S | re.I)
+    if blocks:
+        text = re.sub(r"^\s*--.*$", "", blocks[-1], flags=re.M).strip()
+        return extract_sql(text.removesuffix(";").strip())
+    return extract_sql(content)
+
+
 async def generate_item(provider, item: dict[str, Any], *, model_config: dict[str, str]) -> dict:
     messages = build_prompt(item["question"], item["schema_text"], model=model_config["name"])
     provenance = _provenance(item, model_config, messages)

@@ -69,3 +69,33 @@ def test_catalog_refuses_bad_inputs_without_partial_schema():
         SchemaCatalog.from_mapping(
             "db", {"tables": {"bad": {"columns": [{"name": "", "type": "TEXT"}]}}}
         )
+
+
+def test_serialized_identifiers_are_written_as_postgresql_requires():
+    catalog = SchemaCatalog.from_mapping(
+        "db",
+        {
+            "tables": {
+                "Order Lines": {
+                    "description": "",
+                    "primary_key": ["id"],
+                    "foreign_keys": [{"columns": ["user"], "references": "users.id"}],
+                    "columns": [
+                        {"name": "id", "type": "BIGINT"},
+                        {"name": "Academic Year", "type": "TEXT"},
+                        {"name": "user", "type": "TEXT"},
+                        {"name": 'odd"name', "type": "TEXT"},
+                    ],
+                }
+            }
+        },
+    )
+
+    rendered = SchemaCatalog.serialize(catalog.scope_all())
+
+    assert 'table "Order Lines"' in rendered
+    assert 'column "Order Lines".id BIGINT' in rendered
+    assert 'column "Order Lines"."Academic Year" TEXT' in rendered
+    assert 'column "Order Lines"."user" TEXT' in rendered
+    assert 'column "Order Lines"."odd""name" TEXT' in rendered
+    assert 'foreign key "Order Lines"("user") -> users.id' in rendered

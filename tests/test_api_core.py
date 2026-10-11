@@ -186,6 +186,7 @@ def test_sse_encoding_is_header_token_friendly_and_replayable():
 
     assert "id: 2" in text
     assert "event: progress" in text
+    assert '"step": "validate"' in text
     assert created["capability"] not in text
 
 

@@ -5,10 +5,13 @@ from __future__ import annotations
 import asyncio
 import html
 import json
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from sqlwarden.evaluation import EvaluationError, extract_sql
+import httpx
+
+from sqlwarden.evaluation import EvaluationError, extract_final_sql
 from sqlwarden.executor import QueryResult
 from sqlwarden.guard import DatasetPolicy, guard_sql
 from sqlwarden.prompts import (
@@ -19,6 +22,11 @@ from sqlwarden.prompts import (
 )
 from sqlwarden.schema import SchemaCatalog
 from sqlwarden.voting import CandidateResult, VoteResult, vote
+
+# Infrastructure failures are not ambiguity: never answer them with a clarification.
+OUTAGE_REASONS = frozenset(
+    {"model_unavailable", "model_configuration", "model_timeout", "prompt_budget"}
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -50,7 +58,7 @@ class AgentEvent:
 
 @dataclass(frozen=True, slots=True)
 class AgentResult:
-    status: Literal["answered", "needs_clarification", "abstained", "failed"]
+    status: Literal["answered", "needs_clarification", "abstained", "blocked", "failed"]
     reason: str
     trace: tuple[AgentEvent, ...]
     vote: VoteResult | None = None
@@ -65,9 +73,13 @@ class AgentResult:
 @dataclass
 class _Trace:
     events: list[AgentEvent] = field(default_factory=list)
+    listener: Callable[[AgentEvent], None] | None = None
 
     def add(self, step: str, status: str, reason: str = "") -> None:
-        self.events.append(AgentEvent(step, status, reason))
+        event = AgentEvent(step, status, reason)
+        self.events.append(event)
+        if self.listener:
+            self.listener(event)
 
 
 async def run_agent(
@@ -79,9 +91,11 @@ async def run_agent(
     policy: DatasetPolicy,
     config: AgentConfig | None = None,
     model: str = "local",
+    on_event: Callable[[AgentEvent], None] | None = None,
 ) -> AgentResult:
+    """Run the loop; `on_event` sees each trace event as it happens."""
     config = config or AgentConfig()
-    trace = _Trace()
+    trace = _Trace(listener=on_event)
     try:
         async with asyncio.timeout(config.total_timeout_seconds):
             return await _run(question, catalog, provider, executor, policy, config, model, trace)
@@ -127,6 +141,18 @@ async def _run(question, catalog, provider, executor, policy, config, model, tra
             explanation,
             candidates=tuple(candidates),
         )
+    outage = [candidate for candidate in candidates if candidate.reason in OUTAGE_REASONS]
+    if len(outage) == len(candidates):
+        trace.add("terminal", "failed", outage[0].reason)
+        return AgentResult(
+            "failed", outage[0].reason, tuple(trace.events), voted, candidates=tuple(candidates)
+        )
+    blocked = [candidate for candidate in candidates if candidate.status == "blocked"]
+    if blocked and len(blocked) == len(candidates):
+        trace.add("terminal", "blocked", blocked[0].reason)
+        return AgentResult(
+            "blocked", blocked[0].reason, tuple(trace.events), voted, candidates=tuple(candidates)
+        )
     if config.clarify_on_abstain:
         clarification = await _clarify(question, schema_text, provider, trace)
         trace.add("terminal", "needs_clarification", voted.reason)
@@ -150,6 +176,7 @@ async def _candidate(
     sql, reason = await _sql_from_provider(
         provider,
         build_generation_prompt(question, schema_text, candidate_index=index, model=model),
+        {"role": "generate", "candidate_index": index},
     )
     if sql is None:
         trace.add("generate", "failed", reason)
@@ -162,6 +189,7 @@ async def _candidate(
         repaired, repair_reason = await _sql_from_provider(
             provider,
             build_repair_prompt(question, schema_text, sql=sql, reason=outcome.reason, model=model),
+            {"role": "repair", "candidate_index": index},
         )
         if repaired is None:
             return CandidateResult(index, "failed", repair_reason, sql, repairs=repairs)
@@ -175,13 +203,17 @@ async def _candidate(
     return CandidateResult(index, status, outcome.reason, sql, repairs=repairs)
 
 
-async def _sql_from_provider(provider, messages) -> tuple[str | None, str]:
+async def _sql_from_provider(provider, messages, model_config) -> tuple[str | None, str]:
     try:
-        response = await provider.complete(messages, model_config={})
-        return extract_sql(response["content"]), "ok"
+        response = await provider.complete(messages, model_config=model_config)
+        return extract_final_sql(response["content"]), "ok"
     except EvaluationError as error:
         return None, str(error)
-    except (KeyError, TypeError, ValueError, TimeoutError):
+    except (TimeoutError, httpx.TimeoutException):
+        return None, "model_timeout"
+    except httpx.HTTPError:
+        return None, "model_unavailable"
+    except (KeyError, TypeError, ValueError):
         return None, "model_response_invalid"
 
 
@@ -195,7 +227,7 @@ async def _execute(sql: str, executor, policy: DatasetPolicy) -> QueryResult:
 async def _clarify(question: str, schema_text: str, provider, trace) -> dict[str, Any]:
     try:
         response = await provider.complete(
-            build_clarification_prompt(question, schema_text), model_config={}
+            build_clarification_prompt(question, schema_text), model_config={"role": "clarify"}
         )
         data = json.loads(response["content"])
         options = _clarification_options(data.get("options") if type(data) is dict else None)
@@ -206,7 +238,7 @@ async def _clarify(question: str, schema_text: str, provider, trace) -> dict[str
                 raise ValueError
             trace.add("clarify", "ok")
             return document
-    except (json.JSONDecodeError, KeyError, TypeError, ValueError):
+    except (json.JSONDecodeError, KeyError, TypeError, ValueError, TimeoutError, httpx.HTTPError):
         pass
     trace.add("clarify", "failed", "clarification_unavailable")
     return {"question": "Please clarify the exact result you want.", "options": []}
@@ -245,13 +277,13 @@ async def _explain(question: str, sql: str, result: QueryResult, provider, trace
                 row_count=len(result.rows),
                 rows=result.rows,
             ),
-            model_config={},
+            model_config={"role": "explain"},
         )
         data = json.loads(response["content"])
         if type(data) is dict and type(data.get("answer")) is str and data["answer"].strip():
             trace.add("explain", "ok")
             return html.escape(data["answer"].strip()[:1000], quote=False)
-    except (json.JSONDecodeError, KeyError, TypeError, ValueError):
+    except (json.JSONDecodeError, KeyError, TypeError, ValueError, TimeoutError, httpx.HTTPError):
         pass
     trace.add("explain", "failed", "explanation_unavailable")
     return None

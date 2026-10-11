@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-import csv
 import hashlib
 import json
 import os
@@ -28,6 +27,7 @@ from scripts.validate_gold import (
     postgres_options,
     transpile_corrected,
 )
+from sqlwarden.catalog import schema_mapping
 from sqlwarden.evaluation import (
     EvaluationError,
     append_jsonl_record,
@@ -154,53 +154,7 @@ def load_json(path: Path):
 
 
 def load_schema(db_id: str, audit: dict) -> dict:
-    descriptions = _load_descriptions(db_id)
-    tables = {}
-    for table_name, table in audit["databases"][db_id]["tables"].items():
-        tables[table_name] = {
-            "description": "",
-            "primary_key": table.get("primary_key", []),
-            "foreign_keys": [
-                {
-                    "columns": [foreign_key["column"].casefold()],
-                    "references": f"{foreign_key['parent_table'].casefold()}."
-                    f"{(foreign_key.get('parent_column') or '').casefold()}",
-                }
-                for foreign_key in table.get("foreign_keys", [])
-                if foreign_key.get("column") and foreign_key.get("parent_table")
-            ],
-            "columns": [
-                {
-                    "name": column["name"],
-                    "type": column["native_type"],
-                    "description": descriptions.get(table_name, {}).get(column["source_name"], ""),
-                }
-                for column in table["columns"]
-            ],
-        }
-    return {"tables": tables}
-
-
-def _load_descriptions(db_id: str) -> dict[str, dict[str, str]]:
-    result: dict[str, dict[str, str]] = {}
-    folder = DESCRIPTIONS / db_id
-    for path in folder.glob("*.csv"):
-        result[path.stem] = read_description_csv(path)
-    return result
-
-
-def read_description_csv(path: Path) -> dict[str, str]:
-    for encoding in ("utf-8-sig", "cp1252"):
-        try:
-            with path.open("r", encoding=encoding, newline="") as stream:
-                return {
-                    row["original_column_name"]: row.get("column_description", "")
-                    for row in csv.DictReader(stream)
-                    if row.get("original_column_name")
-                }
-        except UnicodeDecodeError:
-            continue
-    raise EvaluationError("description encoding refused")
+    return schema_mapping(db_id, audit, descriptions_root=DESCRIPTIONS)
 
 
 def build_items(limit: int | None = None) -> list[dict[str, Any]]:

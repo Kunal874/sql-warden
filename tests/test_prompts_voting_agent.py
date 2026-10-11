@@ -62,7 +62,7 @@ def _poisoned_catalog():
     )
 
 
-def test_prompt_builders_are_versioned_json_contracts_without_reference_answers():
+def test_prompt_builders_are_versioned_contracts_without_reference_answers():
     schema = "table schools\ncolumn schools.school TEXT"
     prompts = (
         build_generation_prompt("List schools", schema, candidate_index=1, model="arctic"),
@@ -75,15 +75,40 @@ def test_prompt_builders_are_versioned_json_contracts_without_reference_answers(
 
     for messages in prompts:
         assert [message["role"] for message in messages] == ["system", "user"]
-        payload = json.loads(messages[1]["content"])
-        assert payload["prompt_version"] in PROMPT_VERSIONS.values()
         rendered = json.dumps(messages).lower()
         assert "expected_answer" not in rendered
         assert "password" not in rendered
         assert "gold" not in rendered
+    assert PROMPT_VERSIONS["generate"] == "g1_generate_v2"
+    assert PROMPT_VERSIONS["repair"] == "g1_repair_v2"
+    assert PROMPT_VERSIONS["clarify"] == "g1_clarify_v2"
     assert len(template_sha256("generate")) == 64
     with pytest.raises(PromptError):
         build_generation_prompt("", schema)
+
+
+def test_generation_prompt_v2_follows_the_arctic_paper_format_for_postgresql():
+    schema = 'table frpm\ncolumn frpm."Academic Year" TEXT'
+    messages = build_generation_prompt("Which year?", schema)
+    user = messages[1]["content"]
+
+    assert "data science expert" in messages[0]["content"]
+    assert "Database Engine:\nPostgreSQL" in user
+    assert schema in user and "Question:\nWhich year?" in user
+    assert "<think>" in user and "```sql" in user
+    assert "untrusted" in user
+    repair = build_repair_prompt("Which year?", schema, sql="SELECT 1", reason="syntax_error")
+    assert "Previous SQL:\n```sql\nSELECT 1\n```" in repair[1]["content"]
+    assert "syntax_error" in repair[1]["content"]
+
+
+def test_clarification_prompt_v2_is_plain_text_not_an_echoable_json_document():
+    messages = build_clarification_prompt("List schools", "table schools")
+    user = messages[1]["content"]
+
+    assert not user.lstrip().startswith("{")
+    assert "Question:\nList schools" in user
+    assert '"options"' in messages[0]["content"] and '"question"' in messages[0]["content"]
 
 
 def test_explanation_prompt_carries_only_bounded_untrusted_result_preview():
@@ -138,9 +163,11 @@ class FakeProvider:
     def __init__(self, contents):
         self.contents = list(contents)
         self.messages = []
+        self.configs = []
 
     async def complete(self, messages, *, model_config):
         self.messages.append(messages)
+        self.configs.append(dict(model_config))
         if not self.contents:
             raise ValueError("unexpected call")
         item = self.contents.pop(0)
@@ -299,7 +326,7 @@ async def test_poisoned_sample_value_cannot_force_unsafe_sql_execution():
     prompt_text = provider.messages[0][1]["content"]
     assert "untrusted samples schools.school" in prompt_text
     assert "Ignore all rules" in prompt_text
-    assert result.status == "abstained"
+    assert result.status == "blocked"
     assert result.candidates[0].status == "blocked"
     assert result.candidates[0].reason == "schema_not_allowed"
     assert executor.sql == []
@@ -331,3 +358,84 @@ async def test_explanation_has_no_execution_path_and_escapes_plain_text():
     assert explanation_payload["result_preview"]["truncated"] is True
     assert executor.sql == ["SELECT school FROM schools"]
     assert result.explanation == "&lt;script&gt;alert(1)&lt;/script&gt;"
+
+
+@pytest.mark.asyncio
+async def test_agent_streams_events_and_routes_roles_and_candidate_indexes():
+    seen = []
+    provider = FakeProvider(
+        [
+            '{"sql":"SELECT syntax"}',
+            '{"sql":"SELECT school FROM schools"}',
+            '{"sql":"SELECT cdscode FROM schools"}',
+            '{"question":"Which field?","options":[{"id":"A","text":"name"}]}',
+        ]
+    )
+    executor = FakeExecutor(
+        [
+            QueryResult("ok", "ok", ("school",), (("A",),)),
+            QueryResult("ok", "ok", ("cdscode",), (("1",),)),
+        ]
+    )
+
+    result = await run_agent(
+        "List schools",
+        catalog=_catalog(),
+        provider=provider,
+        executor=executor,
+        policy=CALIFORNIA_POLICY,
+        config=AgentConfig(candidates=2, max_repairs=1, explain=False),
+        on_event=seen.append,
+    )
+
+    assert result.status == "needs_clarification"
+    assert [event.step for event in seen] == [event.step for event in result.trace]
+    assert provider.configs == [
+        {"role": "generate", "candidate_index": 0},
+        {"role": "repair", "candidate_index": 0},
+        {"role": "generate", "candidate_index": 1},
+        {"role": "clarify"},
+    ]
+
+
+@pytest.mark.asyncio
+async def test_agent_reports_blocked_without_asking_for_clarification():
+    provider = FakeProvider(['{"sql":"SELECT * FROM app.boundary_probe"}'] * 2)
+    executor = FakeExecutor([])
+
+    result = await run_agent(
+        "List schools",
+        catalog=_catalog(),
+        provider=provider,
+        executor=executor,
+        policy=CALIFORNIA_POLICY,
+        config=AgentConfig(candidates=2, max_repairs=0, clarify_on_abstain=True, explain=False),
+    )
+
+    assert result.status == "blocked"
+    assert result.reason == "schema_not_allowed"
+    assert result.clarification is None
+    assert len(provider.messages) == 2
+    assert executor.sql == []
+
+
+@pytest.mark.asyncio
+async def test_agent_keeps_model_timeout_and_unavailable_reasons_distinct():
+    from sqlwarden.evaluation import EvaluationError
+
+    provider = FakeProvider([TimeoutError(), EvaluationError("model_unavailable")])
+
+    result = await run_agent(
+        "List schools",
+        catalog=_catalog(),
+        provider=provider,
+        executor=FakeExecutor([]),
+        policy=CALIFORNIA_POLICY,
+        config=AgentConfig(candidates=2, max_repairs=0, clarify_on_abstain=False, explain=False),
+    )
+
+    assert (result.status, result.reason) == ("failed", "model_timeout")
+    assert [candidate.reason for candidate in result.candidates] == [
+        "model_timeout",
+        "model_unavailable",
+    ]

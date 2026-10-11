@@ -51,6 +51,10 @@ class RunRecord:
     async def event(
         self, event_type: str, status: str, payload: dict[str, Any] | None = None
     ) -> None:
+        self.emit(event_type, status, payload)
+
+    def emit(self, event_type: str, status: str, payload: dict[str, Any] | None = None) -> None:
+        """Synchronous form for callbacks that cannot await."""
         if self.status in TERMINAL:
             return
         if len(self.events) >= MAX_EVENTS_PER_RUN:
@@ -277,7 +281,7 @@ class RunService:
 def encode_sse(events: list[dict[str, Any]]) -> str:
     return "".join(
         f"id: {event['id']}\nevent: {event['type']}\ndata: "
-        f"{json.dumps(event['payload'], sort_keys=True, ensure_ascii=True)}\n\n"
+        f"{json.dumps(event['payload'] | {'step': event['step']}, sort_keys=True)}\n\n"
         for event in events
     )
 

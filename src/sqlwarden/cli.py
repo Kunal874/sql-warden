@@ -11,30 +11,13 @@ from datetime import date
 from decimal import Decimal
 
 from sqlwarden.agent import AgentConfig, run_agent
+from sqlwarden.catalog import AUDIT_SHA, load_catalog
 from sqlwarden.executor import ExecutorLifecycleError, open_california_executor
 from sqlwarden.guard import CALIFORNIA_POLICY, guard_sql
 from sqlwarden.llm import ALIAS, DIGEST, PRIVATE_SDK_KEYS, PROMPT_VERSION, LocalQwen
-from sqlwarden.schema import SchemaCatalog
+from sqlwarden.ollama import ARCTIC, OllamaAgentProvider
 
 RUNTIME_KEY = "WARDEN_RUNTIME_CALIFORNIA_PASSWORD"
-CALIFORNIA_SCHEMA = SchemaCatalog.from_mapping(
-    "california_schools",
-    {
-        "tables": {
-            "schools": {
-                "description": "California school directory",
-                "primary_key": ["cdscode"],
-                "foreign_keys": [],
-                "columns": [
-                    {"name": "cdscode", "type": "TEXT", "description": "school identifier"},
-                    {"name": "county", "type": "TEXT", "description": "county name"},
-                    {"name": "school", "type": "TEXT", "description": "school name"},
-                    {"name": "city", "type": "TEXT", "description": "school city"},
-                ],
-            }
-        }
-    },
-)
 
 
 def validate_question(question: str) -> str | None:
@@ -150,12 +133,12 @@ async def ask_loop(question: str, password: str, provider, config: AgentConfig) 
         async with open_california_executor(password) as executor:
             result = await run_agent(
                 question,
-                catalog=CALIFORNIA_SCHEMA,
+                catalog=load_catalog("california_schools"),
                 provider=provider,
                 executor=executor,
                 policy=CALIFORNIA_POLICY,
                 config=config,
-                model=ALIAS,
+                model=ARCTIC.name,
             )
     except ExecutorLifecycleError:
         return {"status": "failed", "reason": "connection_error", "trace": ["validate", "failed"]}
@@ -231,11 +214,12 @@ def main() -> None:
             explain=False,
         )
         password = runtime_password(os.environ)
-        provider = LocalQwen()
         if args.loop:
+            catalog = load_catalog("california_schools")
+            provider = OllamaAgentProvider(fingerprints=(catalog.fingerprint(), AUDIT_SHA))
             answer = asyncio.run(ask_loop(args.question, password, provider, config))
         else:
-            answer = asyncio.run(ask_once(args.question, password, provider))
+            answer = asyncio.run(ask_once(args.question, password, LocalQwen()))
     except ValueError:
         answer = {"status": "failed", "reason": "runtime_or_input_configuration"}
     except KeyboardInterrupt:

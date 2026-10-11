@@ -5,6 +5,7 @@ import pytest
 
 from scripts import run_e0
 from sqlwarden import evaluation
+from sqlwarden.catalog import read_description_csv
 
 
 def test_schema_serialization_is_complete_and_bounded():
@@ -501,6 +502,18 @@ def test_description_csv_reader_handles_known_windows_encoding(tmp_path):
         b"Budget_ID,Budget_ID,approved \x95 bullet,text,\r\n"
     )
 
-    descriptions = run_e0.read_description_csv(path)
+    descriptions = read_description_csv(path)
 
     assert descriptions == {"Budget_ID": "approved • bullet"}
+
+
+def test_final_sql_is_taken_from_the_last_sql_block_of_a_reasoned_answer():
+    content = (
+        "<think>try ```sql\nSELECT 1\n``` first</think>\n<answer>done\n"
+        "```sql\n-- final\nSELECT school\nFROM schools;\n```\n</answer>"
+    )
+    assert evaluation.extract_final_sql(content) == "SELECT school\nFROM schools"
+    assert evaluation.extract_final_sql('{"sql":"SELECT 2"}') == "SELECT 2"
+    for bad in ("<think>no sql</think>", "```sql\nSELECT 1; DROP TABLE x\n```", ""):
+        with pytest.raises(evaluation.EvaluationError):
+            evaluation.extract_final_sql(bad)

@@ -143,7 +143,7 @@ async def test_cancellation_propagates_and_does_not_continue_to_database(monkeyp
 async def test_loop_mode_uses_bounded_settings_and_trace(monkeypatch):
     class Provider:
         async def complete(self, messages, *, model_config):
-            assert "g1_generate_v1" in messages[-1]["content"]
+            assert "Database Engine:" in messages[-1]["content"]
             return {"content": '{"sql":"SELECT school FROM schools"}'}
 
     class Executor:
