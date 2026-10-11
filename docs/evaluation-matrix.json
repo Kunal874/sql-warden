@@ -1,53 +1,187 @@
 {
-  "deferred": {
-    "E5": "security attack evidence already covered in G2; layer-off stays approval-gated",
-    "E9": "optional fine-tuning, not part of the local portfolio minimum"
-  },
   "experiments": [
     {
-      "evidence_mode": "separate_rerun",
+      "evidence_mode": "rescore + dev rerun",
       "id": "E1",
-      "name": "corrected/original label baselines",
-      "status": "planned"
+      "name": "corrected vs original labels; original-wording rerun on dev only",
+      "runs": [
+        {
+          "expected": 100,
+          "hours": 1.08,
+          "items": 100,
+          "run": "dev/ret_n3_k1"
+        },
+        {
+          "expected": 324,
+          "hours": 0.0,
+          "items": 0,
+          "run": "held_out/ret_n3_k1"
+        },
+        {
+          "expected": 324,
+          "hours": 0.0,
+          "items": 0,
+          "run": "held_out/full_n1"
+        },
+        {
+          "expected": 100,
+          "hours": 0.65,
+          "items": 100,
+          "run": "dev/orig_n3_k1"
+        }
+      ],
+      "status": "pending"
     },
     {
       "evidence_mode": "rescore",
       "id": "E2",
-      "name": "same-input full schema/retrieval/repair/voting effects",
-      "status": "planned"
+      "name": "same-input full schema, retrieval, repair and voting effects",
+      "runs": [
+        {
+          "expected": 100,
+          "hours": 1.08,
+          "items": 100,
+          "run": "dev/ret_n3_k1"
+        },
+        {
+          "expected": 100,
+          "hours": 0.27,
+          "items": 100,
+          "run": "dev/full_n1"
+        },
+        {
+          "expected": 324,
+          "hours": 0.0,
+          "items": 0,
+          "run": "held_out/ret_n3_k1"
+        },
+        {
+          "expected": 324,
+          "hours": 0.0,
+          "items": 0,
+          "run": "held_out/full_n1"
+        }
+      ],
+      "status": "pending"
     },
     {
       "evidence_mode": "rescore",
       "id": "E3",
-      "name": "matched rescoring and annotation-change case studies",
-      "status": "planned"
+      "name": "matched re-scoring and annotation-change case studies",
+      "runs": [
+        {
+          "expected": 100,
+          "hours": 1.08,
+          "items": 100,
+          "run": "dev/ret_n3_k1"
+        },
+        {
+          "expected": 100,
+          "hours": 0.65,
+          "items": 100,
+          "run": "dev/orig_n3_k1"
+        },
+        {
+          "expected": 324,
+          "hours": 0.0,
+          "items": 0,
+          "run": "held_out/ret_n3_k1"
+        }
+      ],
+      "status": "pending"
     },
     {
       "evidence_mode": "separate_rerun",
       "id": "E4",
-      "name": "seeded messy-schema transformation",
-      "status": "planned"
+      "name": "seeded messy-schema transformation (dev only)",
+      "runs": [
+        {
+          "expected": 100,
+          "hours": 0.47,
+          "items": 100,
+          "run": "dev/messy_n1"
+        }
+      ],
+      "status": "complete"
+    },
+    {
+      "evidence": "results/G3_matrix/e5-layer-off.json",
+      "evidence_mode": "disposable_layer_off",
+      "id": "E5",
+      "name": "layer-off attacks in the disposable Docker project",
+      "status": "complete"
     },
     {
       "evidence_mode": "separate_rerun",
       "id": "E6",
-      "name": "fresh/cached latency, tokens, helper overhead and VRAM",
-      "status": "planned"
-    },
-    {
-      "evidence_mode": "rescore",
-      "id": "E7",
-      "name": "ambiguity, negatives and simulated/oracle assistance labels",
-      "status": "planned"
+      "name": "fresh and cached latency, tokens, helper overhead and VRAM",
+      "runs": [
+        {
+          "expected": 100,
+          "hours": 1.08,
+          "items": 100,
+          "run": "dev/ret_n3_k1"
+        },
+        {
+          "expected": 100,
+          "hours": 0.0,
+          "items": 0,
+          "run": "dev/ret_n3_k1_replay"
+        }
+      ],
+      "status": "pending"
     },
     {
       "evidence_mode": "separate_rerun",
+      "id": "E7",
+      "name": "oracle-assisted clarification (dev) and the self-authored set",
+      "runs": [
+        {
+          "expected": 100,
+          "hours": 0.24,
+          "items": 100,
+          "run": "dev/clarify_oracle"
+        },
+        {
+          "expected": 50,
+          "hours": 0.05,
+          "items": 40,
+          "run": "e7/self_authored"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "evidence_mode": "rescore",
       "id": "E8",
-      "name": "held-out accuracy-coverage curve",
-      "status": "planned"
+      "name": "held-out accuracy-coverage at the dev-frozen threshold",
+      "runs": [
+        {
+          "expected": 324,
+          "hours": 0.0,
+          "items": 0,
+          "run": "held_out/ret_n3_k1"
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "evidence_mode": null,
+      "id": "E9",
+      "name": "optional fine-tuning (G6)",
+      "status": "not_run"
     }
   ],
   "format_version": 1,
+  "measured_run_hours": {
+    "dev/clarify_oracle": 0.24,
+    "dev/full_n1": 0.27,
+    "dev/messy_n1": 0.47,
+    "dev/orig_n3_k1": 0.65,
+    "dev/ret_n3_k1": 1.08,
+    "e7/self_authored": 0.05,
+    "total": 2.76
+  },
   "protocol": {
     "base": "docs/e0-protocol.json",
     "dev_count": 100,
