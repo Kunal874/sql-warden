@@ -2270,6 +2270,49 @@ Rationale: (a) costs INR 0, sends no question text to a third party and shows th
 measured evidence. Cost if wrong: visitors cannot try live questions without
 running the laptop demo.
 
+## D-078 — E8 threshold rule fixed before any held-out run (2026-10-11)
+
+Context: E8 needs a development-selected default agreement threshold; BUILD_SPEC
+forbids tuning on held-out outcomes.
+
+Decision: with three candidates the agreement score takes 1/3, 2/3 or 1. On the
+complete 100-question development run of the full loop, choose the threshold with
+the highest accuracy-when-answering among thresholds whose coverage is at least
+50%; ties go to the lower threshold; if none reaches 50%, use 1/3 (answer whenever
+the vote answers). `scripts/build_matrix_report.py --freeze-threshold` writes
+`docs/e8-threshold.json` once and refuses if any held-out record exists. The rule
+was written and tested (`tests/test_matrix_report.py`) while the development run was
+still in progress.
+
+Rationale: a fixed rule with a coverage floor stops the threshold from trading away
+almost all answers for a high but tiny-sample precision. Cost if wrong: another
+rule could suit a different product need; the full curve is reported either way.
+
+## D-079 — E1/E3/E7 scope for this local release (2026-10-11)
+
+Context: BUILD_SPEC requires any smaller experiment scope to be recorded. GPU time
+is about 11 s per generation call, so every held-out configuration costs hours.
+
+Decision:
+
+- Held-out runs: the full loop (retrieval, three candidates, one repair) and the
+  full-schema single-candidate baseline. Single-candidate, repair-only and
+  no-repair voting results are re-scored from the same recorded attempts (same
+  inputs), not separate generations.
+- E1/E3 label re-scoring uses every run; the separate original-wording run
+  (an input change) is development-only.
+- E4 messy names and E7 clarification are development-only.
+- E7 uses the C1 literal text-difference candidates and clear negatives. The
+  simulated reply is the corrected wording, so the result is labelled
+  oracle-assisted. The roughly 50 self-authored ambiguity examples were not built;
+  that subset and a non-oracle simulated user remain future work.
+- E5 layer-off variants and E9 fine-tuning are not run in this release.
+
+Rationale: keeps the primary claims (held-out loop versus baseline, threshold,
+latency) on the full held-out set while staying inside about a day of laptop GPU
+time. Cost if wrong: E4/E7 effects are measured on 100 development questions only
+and have wide intervals.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
