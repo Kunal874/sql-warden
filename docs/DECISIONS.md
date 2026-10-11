@@ -2371,6 +2371,20 @@ Rationale: every question stays in its denominator and every reported number tra
 to clean-provenance records. Cost if wrong: replay latency excludes one question;
 two fallback-derived outcomes could differ from a full re-execution.
 
+## D-082 — Release: private repository, MIT code license, no Pages yet (2026-10-12)
+
+Context: G7.3 needed the repository, visibility, license and hosting choices.
+
+Decision: Kunal chose https://github.com/Kunal874/sql-warden as a private repository
+and delegated the license; the code is MIT (simple, permissive, compatible with all
+dependencies). Data (CC BY-SA 4.0) and model (Apache-2.0) terms stay separate and are
+not covered by the MIT file. `feat/foundation` is pushed as `main`. GitHub Pages is not
+published: free accounts cannot serve Pages from a private repository, so the static
+site waits until the repository is made public.
+
+Rationale: private keeps the work unpublished while CI runs. Cost if wrong: no public
+demo page until visibility changes.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

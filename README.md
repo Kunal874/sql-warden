@@ -151,4 +151,6 @@ uv run --env-file .env.setup --env-file .env.california --env-file .env.datasets
 [Simple-English notebook](explaination%20of%20project/PROJECT_EXPLAINED.md).
 The original plan, execution brief and plan review are preserved as historical inputs.
 
+Code license: [MIT](LICENSE). Data and model licenses above are separate.
+
 Author: Kunal.
