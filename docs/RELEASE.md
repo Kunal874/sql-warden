@@ -46,3 +46,12 @@ After approval: create the repository, add the remote, push, confirm CI on GitHu
 build `npm run build:static` plus `python -m scripts.export_static_site`, publish
 `web/dist-static`, then run `scripts/smoke_g4_local.py` against the local demo and
 check the public pages.
+
+## G7.3/G7.4 — outcome (2026-10-12)
+
+Kunal chose a private repository and delegated the license (MIT, D-082). Before the
+push: 111 commits all Kunal, no trailers, gitleaks clean, remote confirmed empty.
+`feat/foundation` was pushed as `main` (e014fa8). GitHub CI run 38177351055 passed all
+three jobs. Pages is not published while the repository is private; to publish later,
+make the repository public, build `npm run build:static`, run
+`python -m scripts.export_static_site` and deploy `web/dist-static`.

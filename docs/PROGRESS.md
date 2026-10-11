@@ -6,8 +6,7 @@ amends their order and checks.
 
 Current group (2026-10-12): G0-G5 complete locally and G3's E1-E8 matrix has run
 (dev and held-out, clean provenance). G7.1/G7.2/G7.5 and the G7 drill are done; G7.3
-waits for Kunal's license and visibility choice, then G7.4 push to
-https://github.com/Kunal874/sql-warden. G6 is optional. Headline (held-out, local
+and G7.4 are done: private repo https://github.com/Kunal874/sql-warden, MIT, CI green. G6 is optional. Headline (held-out, local
 subset, not official BIRD): full-schema single candidate 54.3%, full loop 42.9% end to
 end, 66.5% accurate on the 61.7% it answers at the frozen 2/3 threshold.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
@@ -342,9 +341,12 @@ the optional interview drill.
   - [x] 83 commits all Kunal; targeted full-history secret search clean; licenses checked.
   - [x] gitleaks 8.30.1 (approved install): one reviewed false positive (an evidence-file
     SHA-256 in DATA), recorded in `.gitleaksignore`; rescan clean.
-- [ ] G7.3 / C9: concrete release preview; approve exact repo/visibility, push and hosting actions.
+- [x] G7.3 / C9: concrete release preview; approve exact repo/visibility, push and hosting actions.
+  - [x] D-082: private Kunal874/sql-warden, MIT code license, no Pages while private.
   - [x] Preview prepared in RELEASE; waiting for Kunal's approval.
-- [ ] G7.4: approved remote/push/provision/deploy; actual CI and bounded public smoke/abuse checks.
+- [x] G7.4: approved remote/push/provision/deploy; actual CI and bounded public smoke/abuse checks.
+  - [x] Pushed e014fa8 as main; GitHub CI run 38177351055 passed (python, web, postgres-boundary).
+    No public deployment (private repo), so public smoke checks do not apply yet.
 - [x] G7.5: result-derived resume bullets and 12 evidence-backed interview questions (RESUME, INTERVIEW).
 - [x] G7 final interview drill (notebook, 2026-10-12).
 
