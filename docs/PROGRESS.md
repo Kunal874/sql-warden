@@ -4,43 +4,12 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group (2026-10-11): G4 complete locally; next is running the E1-E8 matrix under
-contract v2 (D-075), then G5 and G7. G0-G3 infrastructure is complete; G3's experiments
-were frozen but not yet run. Interview drills for G1/G4/G5/G7 are scheduled together. C2 keeps
-Arctic as the local full-schema SQL-generation model because it scored 22/100 EX
-on the frozen development slice while Qwen scored 3/100 and hit 86 prompt-budget
-failures under its ctx2048 full-schema contract. The 100-item development slice
-stays frozen; the 324 held-out IDs remain untouched. Qwen remains available for
-the already-tested safe local CLI/helper path, while Arctic is not used as the
-general helper because its model card is SQL-specific. G1.1's first provider/cache
-slice is implemented locally: typed provider request/outcome records, no hidden
-retries, local-only Ollama config, atomic JSON cache keys and secret/gold refusal.
-E0 summary is in `results/E0_smoke/summary.json`, with guard and restricted
-PostgreSQL execution enabled. C1 is closed on the corrected pool: Kunal selected the
-424 exact verified corrected items, corrected descriptions are primary, original
-descriptions remain alternate material, and `gold-validity-manifest.json` freezes
-the compact ID-only evidence. G0.7a's first thin slice is complete: guard, bounded executor,
-pinned comparator and safe local single-candidate CLI. Tasks saved at 227f869,
-f8b8150 and 3e1f72e; sole final read-only review found two Important parsing gaps,
-both fixed in one TDD pass. CLI checkpoint full suite 719/719, zero skips, including 165
-actual PostgreSQL checks; provider 67/CLI 39 checks. No Critical/deferred Minor.
-The sole approved live question matched 17686 in 11.387s, one preload/generation,
-89/18 reported tokens. Runtime-only copy is private/ignored; automatic model
-unload observed after tool-blocked explicit stop. CLI_SMOKE preserves exact
-pre-fix live checkpoint, D-031 all 18 rulings/costs. No inference repeated.
-Progress snapshot: 12 of 12 numbered top-level G0 items complete, excluding the
-optional interview drill. This is checklist coverage, not overall project effort.
-G1 core is implemented and committed locally through G1.9: schema catalog/retrieval,
-C3 BM25 choice, versioned prompts, plain Python state machine, complete-result
-voting, bounded clarification/explanation seams, fake-LLM loop tests and CLI loop
-settings. G2.1-C4 through G2.9 now record the explicit guardrail/cost/grant/RLS/
-untrusted-data/attack/SECURITY evidence, and the G2 interview drill is saved in
-the simple-English notebook. G3 is complete locally: E0 now reports phase,
-coverage, answered-only, boundary and paired metrics; `docs/evaluation-matrix.json`
-freezes E1-E4/E6-E8; `results/E0_smoke/dashboard.json`,
-`results/E0_smoke/failure-labels.json`, `docs/EVAL.md` and `docs/RESUME.md`
-carry compact tracked evidence. The G1 interview drill and G4-G5/G7 remain
-unfinished. No official benchmark score.
+Current group (2026-10-12): G0-G5 complete locally and G3's E1-E8 matrix has run
+(dev and held-out, clean provenance). G7.1/G7.2/G7.5 and the G7 drill are done; G7.3
+waits for Kunal's license and visibility choice, then G7.4 push to
+https://github.com/Kunal874/sql-warden. G6 is optional. Headline (held-out, local
+subset, not official BIRD): full-schema single candidate 54.3%, full loop 42.9% end to
+end, 66.5% accurate on the 61.7% it answers at the frozen 2/3 threshold.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -348,11 +317,11 @@ the optional interview drill.
 
 - [x] G5.1 / C7: verify current free tiers and suitable grants/RLS/resources; hosting recommendation.
   - [x] Official pages checked 2026-10-11 (DEPLOY); D-077 recommends static Pages + laptop demo.
-- [ ] G5.2: non-root multistage image, health/readiness, pinned locks and local runbook.
+- [x] G5.2: non-root multistage image, health/readiness, pinned locks and local runbook.
   - [x] Dockerfile, .dockerignore, read-only app compose file, validated address keys, runbook.
   - [x] Built (406 MB) and run: healthy, ready via compose network and host Ollama, UID 10001,
     read-only root, no capabilities, only runtime keys; refuses setup keys and remote model URLs.
-  - [ ] Live ask flow through the container (after the GPU experiments).
+  - [x] Live ask flow through the container: answered 2/3 consensus in 20.6 s; abuse checks fail closed.
 - [x] G5.3: prepare hosted dataset/role scripts; actual provisioning deferred to approved G7.
   - [x] Prepared as documented prerequisites (SQL-created roles on Neon, no superuser
     hardening, subset sizing, TLS); no hosted-specific script while D-077 recommends static.
@@ -360,13 +329,14 @@ the optional interview drill.
 - [x] G5.5: prepare bounded public checks; execute only after approved G7 deployment.
 - [x] G5.6: minimal-permission CI: lint, Python tests, web typecheck/build, disposable Postgres job.
   - [x] Pinned action SHAs, read-only token, separate compose project; not run on GitHub yet.
-- [ ] G5.7: complete README with actual results, citations, licenses and limitations.
+- [x] G5.7: complete README with actual results, citations, licenses and limitations.
   - [x] Rewritten README; results block is generated after the E1-E8 runs finish.
 - [x] G5 interview drill (notebook, 2026-10-11).
 
 ### G7 — release
 
-- [ ] G7.1: clean local clone/install/runbook verification.
+- [x] G7.1: clean local clone/install/runbook verification.
+  - [x] Clone of 63df97a: locked install, 922 passed/475 skipped, ruff clean, npm ci/typecheck/build pass.
   - [x] Clone of 704a984: locked install, 882 passed/475 skipped; repeat on the release commit.
 - [x] G7.2: full-history author/committer/body and verified secret scan; license checks.
   - [x] 83 commits all Kunal; targeted full-history secret search clean; licenses checked.
@@ -375,8 +345,8 @@ the optional interview drill.
 - [ ] G7.3 / C9: concrete release preview; approve exact repo/visibility, push and hosting actions.
   - [x] Preview prepared in RELEASE; waiting for Kunal's approval.
 - [ ] G7.4: approved remote/push/provision/deploy; actual CI and bounded public smoke/abuse checks.
-- [ ] G7.5: result-derived resume bullets and 12 evidence-backed interview questions.
-- [ ] G7 final interview drill.
+- [x] G7.5: result-derived resume bullets and 12 evidence-backed interview questions (RESUME, INTERVIEW).
+- [x] G7 final interview drill (notebook, 2026-10-12).
 
 ### G6 — optional follow-on (not a release blocker)
 
@@ -2103,6 +2073,25 @@ Next, in order:
    RESUME), Benchmark page check, live ask through the container, PROGRESS/notebook,
    G7.1 clean clone on the final commit, G7.5 12 interview questions, G7 drill.
 5. Ask Kunal for license + visibility, then add remote and push (G7.3/G7.4).
+
+### 2026-10-12 — G3 matrix complete, G7 local checks done; waiting on release choices
+
+Two sessions split the remaining work (this one: GPU runs and reports; "G3 process
+completion": E5 layer-off, matrix status script, SECURITY, D-080). All runs have clean
+commit/dirty provenance: dev full_n1/orig_n3_k1/messy_n1/clarify_oracle (3bbc710), E7
+self-authored 50 (8efef91), held-out ret_n3_k1 and full_n1 324 each (870ceb3), dev
+replay 100 (4f7f990; 99 fully replayed). Discarded partial runs are kept under
+results/G3_matrix/raw/discarded/ with their reasons in D-081.
+
+Report c412438 (+629c0a9 wording, 2410c68 chart fix): E1-E8 complete, E9 not run.
+Container live check, static Pages build/export and browser checks of all three
+pages passed. INTERVIEW (12 questions) and the G7 drill are written. Clean clone of
+63df97a passes Python and web checks; gitleaks clean (one reviewed false positive).
+
+Next: Kunal chooses the code license (MIT or Apache-2.0) and whether
+Kunal874/sql-warden stays private or goes public; then add a LICENSE file, add the
+remote, inspect the full history once more, push `feat/foundation` as `main`, confirm
+CI on GitHub, and publish `web/dist-static` to Pages only if he approves that too.
 
 Python checks (project virtual environment):
 
