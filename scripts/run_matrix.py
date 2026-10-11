@@ -6,7 +6,7 @@ Raw per-item records (they contain generated SQL) go to ignored
 for offline scoring. Use restricted evaluation credentials only, never `.env.setup`:
 
 uv run --env-file .env.california --env-file .env.datasets \
-    python scripts/run_matrix.py --condition ret_n3_k1 --split dev --resume
+    python -m scripts.run_matrix --condition ret_n3_k1 --split dev --resume
 """
 
 from __future__ import annotations
