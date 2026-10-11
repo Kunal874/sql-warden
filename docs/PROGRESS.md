@@ -1412,6 +1412,16 @@ Pre-flight contract reconciliation:
 
 ### 2026-10-12 — G6 pilot preflight, current action
 
+Current full-training handoff: long-context probe passed at clean6e87f7c:
+2 updates/8 real training examples,2048 tokens,12.484 s training/checkpoint,
+peak reserved7,367,294,976 bytes (6.861 GiB),1,089,536 trainable parameters;
+quantization-aware logical total1,544,803,840. Adapter changed and all saved
+tensors matched after reload; bounded generation passed. Probe checkpoint
+"loss" is training loss, not a validation measurement (validation_samples=0).
+`results/G6_training/probe.json` contains hashes/metadata only. Full500-step
+run is next (~1 hour estimated including validation); keep this branch clean
+while it runs. It has a2-hour cap and same12GiB/20GiB reserve resource limits.
+
 Current action after c41e29a: data freeze complete; implement the full training
 recipe in `docs/superpowers/plans/2026-10-12-g6-full-training.md`. 5822 of 6601
 source examples pass structural/prompt checks; 121 family-overlap rows,51

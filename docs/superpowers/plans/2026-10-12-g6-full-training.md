@@ -54,7 +54,7 @@ using evaluation outcomes must be caught by checks.
 - [x] Extend the tested pilot engine to consume fingerprinted token records and
   the frozen recipe; test step validation, corrupted/masked tokens and checkpoint
   choice independently of GPU packages.
-- [ ] Commit checked code and run the 2-step long-context probe from clean Git.
+- [x] Commit checked code and run the 2-step long-context probe from clean Git.
 - [ ] Run 500 steps from base weights with logged finite losses/validation,
   checkpoint hashes, timing and peak memory; interrupt safely at resource caps.
 - [ ] Reload the chosen adapter, check weights/generation, record compact summary,

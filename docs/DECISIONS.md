@@ -2493,6 +2493,17 @@ labels are still execution-unverified, and validation-loss improvement does not
 guarantee better EX. The supervisor keeps the same12GiB/20GiB reserve limits and
 sets a2-hour cap for the full run.
 
+## D-090 — Full-length GPU feasibility measured (2026-10-12)
+
+Clean6e87f7c length probe passed:2 optimizer updates at2048 tokens,12.484 s
+including adapter saves; peak reserved6.861 GiB, saved/reloaded weights identical.
+Proceed with the frozen500-step run under the2-hour cap. Estimated~1 hour
+including separate validation; actual timing will be recorded. Costs if wrong:
+the8-example probe is small and may understate worst-case GPU pressure.
+Probe checkpoint loss is training loss (no validation run); do not present it
+as validation quality or an accuracy result. Logical model size1,544,803,840
+parameters comes from PEFT's quantization-aware count, including the adapter.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

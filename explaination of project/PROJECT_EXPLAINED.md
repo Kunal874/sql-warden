@@ -2711,6 +2711,17 @@ The first hardware check will run two updates at the real 2,048-token length.
 If memory fits, the full run gets a two-hour limit. This code step has not trained
 the full dataset yet; the earlier 20-step synthetic pilot is still the completed run.
 
+### Real schema-length training fits on the laptop (2026-10-12)
+
+The next GPU test used two learning updates on real examples padded to 2,048
+tokens. It passed save/reload and used about 6.86 GB of GPU memory. Two updates
+took about 12.5 seconds including saves, so the full 500-update run is estimated
+at about an hour including validation. It gets a two-hour cap.
+
+This confirms the memory limit is workable, but it is still only a feasibility
+test. Those two reported losses are training losses, not validation scores.
+Full training, checkpoint selection and the real answer-accuracy comparison remain.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,
