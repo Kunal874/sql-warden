@@ -427,19 +427,35 @@ def render_resume(summary: dict[str, Any]) -> str:
             f"answering {pct(loop['answered']['rate'])} and correct on "
             f"{pct(loop['answered_only_ex']['rate'])} of answered questions."
         )
+    point = _frozen_point(split)
+    if point:
+        lines.append(
+            f"- With an agreement threshold chosen on development data before the {name} run, "
+            f"the agent answered {pct(point['coverage'])} of {name} questions and was correct "
+            f"on {pct(point['selective_ex'])} of the ones it answered."
+        )
     if full:
         lines.append(
-            f"- Compared against a full-schema single-candidate baseline at "
-            f"{pct(full['ex']['rate'])} on the same {name} questions, with paired bootstrap "
-            "intervals for every ablation."
+            f"- Reported honestly that a full-schema single-candidate baseline scored "
+            f"{pct(full['ex']['rate'])} end to end on the same {name} questions, higher than "
+            "the full loop, using paired bootstrap intervals for every ablation."
         )
     security = summary.get("security")
     if security:
         lines.append(
-            f"- Recorded {security['attacks']} attacks with threat-specific success predicates "
-            f"({security['blocked']} blocked); the guard accepts {security['gold_accepted']} of "
-            f"{security['gold_items']} safe gold queries after a reviewed allowlist change "
+            f"- Recorded {security['attacks']} attacks with threat-specific success predicates; "
+            f"{security['succeeded']} succeeded. The guard accepts {security['gold_accepted']} "
+            f"of {security['gold_items']} safe gold queries after a reviewed allowlist change "
             "(56 were blocked before D-076)."
+        )
+    layer_off = summary.get("layer_off")
+    if layer_off:
+        attacks = layer_off["configurations"]["all_layers_on"]["attacks"]
+        kept = len(layer_off["prevented_with_any_one_layer_off"])
+        lines.append(
+            f"- Switched security layers off one at a time in a disposable database: {kept} of "
+            f"{attacks} attacks stayed prevented with any single layer off, showing overlapping "
+            "defenses rather than one point of failure."
         )
     probe = summary.get("calibration_probe")
     if probe:
@@ -449,6 +465,12 @@ def render_resume(summary: dict[str, Any]) -> str:
             f"{probe['paper']}/{probe['n']} before freezing the evaluation contract."
         )
     return "\n".join([*lines, ""])
+
+
+def _frozen_point(split: dict[str, Any]) -> dict[str, Any] | None:
+    coverage = split.get("accuracy_coverage") or {}
+    threshold = coverage.get("frozen_threshold")
+    return next((p for p in coverage.get("curve", []) if p["threshold"] == threshold), None)
 
 
 def fmt_counts(counts: dict[str, int]) -> str:

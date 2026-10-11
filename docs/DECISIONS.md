@@ -2342,6 +2342,35 @@ depth for E5. Cost if wrong: L1, L2, L4, L7 and L8 are not switched off here. Th
 real executor's L4 EXPLAIN cost check, which is not modelled, is the layer meant to
 stop the cross join before execution.
 
+## D-081 — E7/E6 runner rulings and the final matrix report (2026-10-12)
+
+Context: completing the matrix exposed three runner gaps. A clear self-authored
+question received a (false) clarification ask but clear items have no frozen
+reply; the response cache refuses outputs containing secret or gold terms, so a
+few answers cannot be replayed; and the stored re-scoring skipped records where a
+candidate produced no SQL, which reported them as pending.
+
+Decision:
+- A false ask on a clear self-authored question is answered by restating the
+  question as asked; ambiguous items still reply with their frozen intended meaning.
+  Neither reply sees candidate SQL or results. The 33 records from the crashed run
+  were set aside and all 50 items reran from clean commit 8efef91.
+- Replay marks each question `fully_replayed`; E6 times only fully replayed questions
+  and reports the rest (1 of 100 on development). The 10 records of the aborted
+  replay were set aside and the replay reran from clean commit 4f7f990.
+- The report re-derives a missing outcome from per-attempt result fingerprints with
+  the vote rules, counting an SQL-less candidate as failed (5 records). Against stored
+  outcomes the fallback agrees in 1,678 of 1,680 cases; the 2 differences are equal
+  numbers written differently.
+- Findings are reported as measured, including unfavourable ones: on held-out the
+  full-schema single candidate beat the full loop end to end, and 56 of 58 dev
+  repairs repeated the same failure. No prompt or loop setting was changed after
+  seeing held-out results.
+
+Rationale: every question stays in its denominator and every reported number traces
+to clean-provenance records. Cost if wrong: replay latency excludes one question;
+two fallback-derived outcomes could differ from a full re-execution.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

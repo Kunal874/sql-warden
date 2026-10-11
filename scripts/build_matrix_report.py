@@ -57,7 +57,44 @@ def load(split: str, condition: str) -> dict[int, dict[str, Any]]:
 
 
 def view_of(records: dict[int, dict[str, Any]], key: str) -> dict[int, dict[str, Any]]:
-    return {qid: r["derived"][key] for qid, r in records.items() if key in r.get("derived", {})}
+    return {
+        qid: r["derived"][key] if key in r.get("derived", {}) else derive_from_record(r, key)
+        for qid, r in records.items()
+        if key in r.get("derived", {}) or r.get("candidates")
+    }
+
+
+def derive_from_record(record: dict[str, Any], key: str) -> dict[str, Any]:
+    """Fallback when the run stored no re-scored outcome because a candidate produced no
+    SQL: that candidate counts as failed, the rest vote by result fingerprint with the
+    same rules as voting.vote (largest group wins, a tie or no valid result abstains).
+    Fingerprints compare serialized values, so equal numbers written differently (2 vs
+    2.0) count as different; against stored outcomes this differs in 2 of 1,680 cases."""
+    requested = 1 if key.startswith("n1") else len(record["candidates"])
+    groups: dict[str, list[dict[str, Any]]] = {}
+    for candidate in record["candidates"][:requested]:
+        attempts = candidate["attempts"]
+        if not attempts:
+            continue
+        attempt = attempts[-1] if key.endswith("k1") else attempts[0]
+        if attempt["status"] == "ok" and attempt.get("result_sha256"):
+            groups.setdefault(attempt["result_sha256"], []).append(attempt)
+    missing = 0 if record.get("gold_corrected_valid", True) else None
+    abstain = {"status": "abstained", "ex_corrected": missing, "ex_original": None}
+    if not groups:
+        return abstain | {"reason": "no_valid_candidate", "agreement": 0.0}
+    ranked = sorted(groups.values(), key=len, reverse=True)
+    agreement = len(ranked[0]) / requested
+    if len(ranked) > 1 and len(ranked[0]) == len(ranked[1]):
+        return abstain | {"reason": "vote_tie", "agreement": agreement}
+    selected = ranked[0][0]
+    return {
+        "status": "answered",
+        "reason": "single_candidate" if requested == 1 else "consensus",
+        "agreement": agreement,
+        "ex_corrected": selected["ex_corrected"],
+        "ex_original": selected["ex_original"],
+    }
 
 
 def condition_metrics(view: dict[int, dict[str, Any]], *, ids: list[int]) -> dict[str, Any]:

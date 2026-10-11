@@ -13,14 +13,14 @@
         },
         {
           "expected": 324,
-          "hours": 0.0,
-          "items": 0,
+          "hours": 3.82,
+          "items": 324,
           "run": "held_out/ret_n3_k1"
         },
         {
           "expected": 324,
-          "hours": 0.0,
-          "items": 0,
+          "hours": 0.94,
+          "items": 324,
           "run": "held_out/full_n1"
         },
         {
@@ -30,7 +30,7 @@
           "run": "dev/orig_n3_k1"
         }
       ],
-      "status": "pending"
+      "status": "complete"
     },
     {
       "evidence_mode": "rescore",
@@ -51,18 +51,18 @@
         },
         {
           "expected": 324,
-          "hours": 0.0,
-          "items": 0,
+          "hours": 3.82,
+          "items": 324,
           "run": "held_out/ret_n3_k1"
         },
         {
           "expected": 324,
-          "hours": 0.0,
-          "items": 0,
+          "hours": 0.94,
+          "items": 324,
           "run": "held_out/full_n1"
         }
       ],
-      "status": "pending"
+      "status": "complete"
     },
     {
       "evidence_mode": "rescore",
@@ -83,12 +83,12 @@
         },
         {
           "expected": 324,
-          "hours": 0.0,
-          "items": 0,
+          "hours": 3.82,
+          "items": 324,
           "run": "held_out/ret_n3_k1"
         }
       ],
-      "status": "pending"
+      "status": "complete"
     },
     {
       "evidence_mode": "separate_rerun",
@@ -124,12 +124,12 @@
         },
         {
           "expected": 100,
-          "hours": 0.0,
-          "items": 0,
+          "hours": 0.03,
+          "items": 100,
           "run": "dev/ret_n3_k1_replay"
         }
       ],
-      "status": "pending"
+      "status": "complete"
     },
     {
       "evidence_mode": "separate_rerun",
@@ -144,12 +144,12 @@
         },
         {
           "expected": 50,
-          "hours": 0.05,
-          "items": 40,
+          "hours": 0.15,
+          "items": 50,
           "run": "e7/self_authored"
         }
       ],
-      "status": "pending"
+      "status": "complete"
     },
     {
       "evidence_mode": "rescore",
@@ -158,12 +158,12 @@
       "runs": [
         {
           "expected": 324,
-          "hours": 0.0,
-          "items": 0,
+          "hours": 3.82,
+          "items": 324,
           "run": "held_out/ret_n3_k1"
         }
       ],
-      "status": "pending"
+      "status": "complete"
     },
     {
       "evidence_mode": null,
@@ -179,8 +179,11 @@
     "dev/messy_n1": 0.47,
     "dev/orig_n3_k1": 0.65,
     "dev/ret_n3_k1": 1.08,
-    "e7/self_authored": 0.05,
-    "total": 2.76
+    "dev/ret_n3_k1_replay": 0.03,
+    "e7/self_authored": 0.15,
+    "held_out/full_n1": 0.94,
+    "held_out/ret_n3_k1": 3.82,
+    "total": 7.65
   },
   "protocol": {
     "base": "docs/e0-protocol.json",

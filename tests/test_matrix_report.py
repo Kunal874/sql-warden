@@ -53,3 +53,39 @@ def test_paired_difference_counts_discordant_items():
     assert (result["left_only"], result["right_only"], result["both"]) == (1, 0, 1)
     assert result["difference"] == round(1 / 3, 6)
     assert result["ci"]["n"] == 3
+
+
+def test_views_count_a_candidate_without_sql_as_failed_not_pending():
+    from scripts.build_matrix_report import derive_from_record
+
+    def attempt(status, sha=None, ex=0):
+        return {"status": status, "result_sha256": sha, "ex_corrected": ex, "ex_original": None}
+
+    record = {
+        "gold_corrected_valid": True,
+        "candidates": [
+            {"index": 0, "attempts": []},
+            {"index": 1, "attempts": [attempt("ok", "a", 1)]},
+            {"index": 2, "attempts": [attempt("failed"), attempt("ok", "a", 1)]},
+        ],
+    }
+
+    assert derive_from_record(record, "n1_k0")["status"] == "abstained"
+    assert derive_from_record(record, "n1_k0")["ex_corrected"] == 0
+    assert derive_from_record(record, "n3_k0") | {} == {
+        "status": "answered",
+        "reason": "consensus",
+        "agreement": 1 / 3,
+        "ex_corrected": 1,
+        "ex_original": None,
+    }
+    assert derive_from_record(record, "n3_k1")["agreement"] == 2 / 3
+    tie = {
+        "gold_corrected_valid": True,
+        "candidates": [
+            {"index": 0, "attempts": [attempt("ok", "a", 1)]},
+            {"index": 1, "attempts": [attempt("ok", "b", 0)]},
+            {"index": 2, "attempts": []},
+        ],
+    }
+    assert derive_from_record(tie, "n3_k0")["reason"] == "vote_tie"

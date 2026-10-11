@@ -1,0 +1,356 @@
+{
+  "format_version": 1,
+  "labels": [
+    {
+      "question_id": 23,
+      "db_id": "california_schools",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 41,
+      "db_id": "california_schools",
+      "split": "dev",
+      "difficulty": "simple",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 47,
+      "db_id": "california_schools",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 83,
+      "db_id": "california_schools",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 85,
+      "db_id": "california_schools",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 89,
+      "db_id": "financial",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 112,
+      "db_id": "financial",
+      "split": "dev",
+      "difficulty": "simple",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 117,
+      "db_id": "financial",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 118,
+      "db_id": "financial",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 194,
+      "db_id": "financial",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "dialect_or_unreviewed_function"
+    },
+    {
+      "question_id": 198,
+      "db_id": "toxicology",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 226,
+      "db_id": "toxicology",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 255,
+      "db_id": "toxicology",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 260,
+      "db_id": "toxicology",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 268,
+      "db_id": "toxicology",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 349,
+      "db_id": "card_games",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 397,
+      "db_id": "card_games",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "result_too_large"
+    },
+    {
+      "question_id": 407,
+      "db_id": "card_games",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "unknown_identifier"
+    },
+    {
+      "question_id": 415,
+      "db_id": "card_games",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 440,
+      "db_id": "card_games",
+      "split": "dev",
+      "difficulty": "simple",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 466,
+      "db_id": "card_games",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 473,
+      "db_id": "card_games",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 669,
+      "db_id": "codebase_community",
+      "split": "dev",
+      "difficulty": "simple",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 671,
+      "db_id": "codebase_community",
+      "split": "dev",
+      "difficulty": "simple",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 682,
+      "db_id": "codebase_community",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 716,
+      "db_id": "codebase_community",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 736,
+      "db_id": "superhero",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 766,
+      "db_id": "superhero",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 788,
+      "db_id": "superhero",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 794,
+      "db_id": "superhero",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 801,
+      "db_id": "superhero",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 829,
+      "db_id": "superhero",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 866,
+      "db_id": "formula_1",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 872,
+      "db_id": "formula_1",
+      "split": "dev",
+      "difficulty": "simple",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 884,
+      "db_id": "formula_1",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 944,
+      "db_id": "formula_1",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "dialect_or_unreviewed_function"
+    },
+    {
+      "question_id": 960,
+      "db_id": "formula_1",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "unknown_identifier"
+    },
+    {
+      "question_id": 972,
+      "db_id": "formula_1",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "dialect_or_unreviewed_function"
+    },
+    {
+      "question_id": 981,
+      "db_id": "formula_1",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 1029,
+      "db_id": "european_football_2",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "abstained_disagreement"
+    },
+    {
+      "question_id": 1031,
+      "db_id": "european_football_2",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "dialect_or_unreviewed_function"
+    },
+    {
+      "question_id": 1040,
+      "db_id": "european_football_2",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 1107,
+      "db_id": "european_football_2",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 1110,
+      "db_id": "european_football_2",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 1133,
+      "db_id": "european_football_2",
+      "split": "dev",
+      "difficulty": "simple",
+      "category": "dialect_or_unreviewed_function"
+    },
+    {
+      "question_id": 1168,
+      "db_id": "thrombosis_prediction",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "dialect_or_unreviewed_function"
+    },
+    {
+      "question_id": 1175,
+      "db_id": "thrombosis_prediction",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "dialect_or_unreviewed_function"
+    },
+    {
+      "question_id": 1185,
+      "db_id": "thrombosis_prediction",
+      "split": "dev",
+      "difficulty": "challenging",
+      "category": "other:parse_error"
+    },
+    {
+      "question_id": 1187,
+      "db_id": "thrombosis_prediction",
+      "split": "dev",
+      "difficulty": "moderate",
+      "category": "wrong_result"
+    },
+    {
+      "question_id": 1220,
+      "db_id": "thrombosis_prediction",
+      "split": "dev",
+      "difficulty": "simple",
+      "category": "wrong_result"
+    }
+  ],
+  "total": 240
+}
