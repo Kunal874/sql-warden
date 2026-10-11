@@ -2402,6 +2402,24 @@ follow the feasibility result. Costs if wrong: Windows package compatibility may
 fail, and the pilot may not extrapolate to long database schemas. A successful
 pilot supports a feasibility claim only; accuracy requires comparable E9 runs.
 
+## D-084 — C8 pilot approved; isolated native CUDA stack works (2026-10-12)
+
+Kunal explicitly approves all presented plans and asks only important questions.
+Proceed sequentially without further plan reviews. The pilot's native Windows,
+pinned Qwen Coder 1.5B, six direct packages and resource caps are now approved.
+Resolved stack: torch 2.8.0+cu128, transformers 4.57.6, peft 0.18.1,
+accelerate 1.12.0, bitsandbytes 0.50.2, huggingface-hub 0.36.2. Separate
+`training/uv.lock`; runtime lock and dependencies unchanged. Stable older
+transformers/PEFT versions avoid an unnecessary major-version migration.
+
+Actual GPU NF4 forward/backward succeeds on the RTX 4060. The 16-wide probe
+warned that it used a slower kernel; Qwen's real projections are larger.
+Installed environment occupies ~7.19 GiB, leaving ~28.0 GiB on D:. RAM rose
+to ~4.3 GiB available without terminating user apps. Tests first cover resource
+floors, live disk monitoring, timeouts, masked labels and raw-SQL exclusion.
+Full training-data/dialect/merge choices will be concretely recorded after the
+pilot measures feasibility; paid/cloud/publication actions remain unapproved.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

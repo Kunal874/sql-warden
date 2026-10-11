@@ -15,9 +15,9 @@ huggingface-hub; standard-library JSON instead of a dataset library.
 
 ## Status and purpose
 
-Kunal approved pursuing fine-tuning for resume value on 2026-10-12. The specific
-libraries, model and resource limits below await the required C8 answer. No
-training dependency, model download or training run has happened in this task.
+Kunal approved pursuing fine-tuning for resume value and all presented pilot
+choices on 2026-10-12. The separate environment is installed and locked, and an
+actual CUDA/NF4 forward/backward probe passes. No model training has run yet.
 Success means logged GPU training and a reloadable adapter, not higher accuracy.
 Resume wording will use measured results; a feasibility run alone is not an
 accuracy result or completion of G6.
@@ -66,14 +66,14 @@ refusal. A saved adapter must change a trainable weight and reload successfully.
 Files: `training/pyproject.toml`, `training/uv.lock`,
 `scripts/run_training_pilot.py`, `tests/test_training_pilot.py`, `.gitignore`.
 
-- [ ] Obtain C8 approval for the proposed pilot choices and packages.
-- [ ] Test first: resource checks refuse insufficient memory/disk; subprocess
+- [x] Obtain C8 approval for the proposed pilot choices and packages.
+- [x] Test first: resource checks refuse insufficient memory/disk; subprocess
   timeout never writes a completed result; importing the runner needs no torch.
-- [ ] Implement the stdlib supervisor and separate dependency project. Install
+- [x] Implement the stdlib supervisor and separate dependency project. Install
   and lock approved packages without adding them to runtime `pyproject.toml`.
-- [ ] Check CUDA tensor operations and a bitsandbytes 4-bit forward/backward pass.
+- [x] Check CUDA tensor operations and a bitsandbytes 4-bit forward/backward pass.
   Record package versions and GPU identity. Stop on failure rather than use CPU.
-- [ ] Run focused tests, lint and format checks; update memory files and commit.
+- [x] Run focused tests, lint and format checks; update memory files and commit.
 
 ## Task 2 — actual synthetic training and adapter reload (G6.2)
 

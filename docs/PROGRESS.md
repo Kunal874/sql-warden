@@ -1410,12 +1410,22 @@ Pre-flight contract reconciliation:
 
 ### 2026-10-12 — G6 pilot preflight, current action
 
+Approval update: Kunal approved all presented pilot plans and choices. Training
+environment installed/locked; actual CUDA/NF4 forward/backward passed. Runtime
+environment unchanged. 17 training-control tests pass after observed RED runs;
+full no-env checkpoint before the disk-monitor addition: 938 passed/475 skipped,
+one existing Starlette/httpx deprecation warning. After the disk-monitor check,
+fresh full no-env suite: 939 passed/475 skipped (8.88 s). Lint, 109-file format
+and diff whitespace checks passed. RAM now ~4.3 GiB; training env
+~7.19 GiB. Current action: finish checks/commit implementation, then execute the
+bounded 20-step pilot from clean provenance. G6.2 is not complete yet.
+
 Resume the sequential training pilot plan after the C8 response. Proposed:
 native Windows/Python 3.12, isolated training environment, torch/transformers/
 peft/accelerate/bitsandbytes/huggingface-hub, pinned Qwen Coder 1.5B, 20 synthetic
 steps, 45-minute training cap, 12 GiB total additional disk and 20 GiB disk reserve.
 Check available RAM again before loading; do not kill unrelated applications.
-The environment/library proposal is pending, not approved by the generic G6 request.
+The environment/library proposal is now explicitly approved by the follow-up response.
 Earlier Handoff sections below are historical and do not supersede this entry.
 
 Read-only release reconciliation: clean HEAD 2b10679 matched remote main;

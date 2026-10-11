@@ -2628,6 +2628,20 @@ small run, then prepare separate training/validation databases. Compare the base
 model and trained model fairly. Only numbers we actually measure go on the resume.
 The existing release and its evaluation results stay available.
 
+### The training tools work on the GPU (2026-10-12)
+
+You approved the pilot. We installed its tools in a separate Python environment,
+so the working website keeps its original tools. A real small calculation on the
+GPU passed both the prediction and learning directions using 4-bit numbers.
+Seventeen checks cover memory/disk limits, stopping a long run, keeping private
+SQL out of saved summaries, and teaching only the answer part of an example.
+
+Forward pass means making a prediction. Backward pass means calculating how to
+adjust the learned weights. Response-only labels mean the model is rewarded for
+the SQL answer, not for copying the question. A lockfile records exact tool
+versions so we can reproduce the experiment. The 20-step model training is next;
+this successful tool check is not an accuracy improvement yet.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,
