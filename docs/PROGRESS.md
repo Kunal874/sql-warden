@@ -346,20 +346,31 @@ the optional interview drill.
 
 ### G5 — deployment preparation only
 
-- [ ] G5.1 / C7: verify current free tiers and suitable grants/RLS/resources; hosting recommendation.
+- [x] G5.1 / C7: verify current free tiers and suitable grants/RLS/resources; hosting recommendation.
+  - [x] Official pages checked 2026-10-11 (DEPLOY); D-077 recommends static Pages + laptop demo.
 - [ ] G5.2: non-root multistage image, health/readiness, pinned locks and local runbook.
-- [ ] G5.3: prepare hosted dataset/role scripts; actual provisioning deferred to approved G7.
-- [ ] G5.4: prepare deployment instructions; publication deferred to approved G7.
-- [ ] G5.5: prepare bounded public checks; execute only after approved G7 deployment.
-- [ ] G5.6: minimal-permission CI: lint, Python tests, web typecheck/build, disposable Postgres job.
+  - [x] Dockerfile, .dockerignore, read-only app compose file, validated address keys, runbook.
+  - [ ] Build and run the image against the local database/Ollama (after the GPU experiments).
+- [x] G5.3: prepare hosted dataset/role scripts; actual provisioning deferred to approved G7.
+  - [x] Prepared as documented prerequisites (SQL-created roles on Neon, no superuser
+    hardening, subset sizing, TLS); no hosted-specific script while D-077 recommends static.
+- [x] G5.4: prepare deployment instructions; publication deferred to approved G7.
+- [x] G5.5: prepare bounded public checks; execute only after approved G7 deployment.
+- [x] G5.6: minimal-permission CI: lint, Python tests, web typecheck/build, disposable Postgres job.
+  - [x] Pinned action SHAs, read-only token, separate compose project; not run on GitHub yet.
 - [ ] G5.7: complete README with actual results, citations, licenses and limitations.
-- [ ] G5 interview drill.
+  - [x] Rewritten README; results block is generated after the E1-E8 runs finish.
+- [ ] G5 interview drill (scheduled with the final drills).
 
 ### G7 — release
 
 - [ ] G7.1: clean local clone/install/runbook verification.
-- [ ] G7.2: full-history author/committer/body and verified secret scan; license checks.
+  - [x] Clone of 704a984: locked install, 882 passed/475 skipped; repeat on the release commit.
+- [x] G7.2: full-history author/committer/body and verified secret scan; license checks.
+  - [x] 83 commits all Kunal; targeted full-history secret search clean; no verified
+    scanner installed (limitation recorded in RELEASE); licenses checked.
 - [ ] G7.3 / C9: concrete release preview; approve exact repo/visibility, push and hosting actions.
+  - [x] Preview prepared in RELEASE; waiting for Kunal's approval.
 - [ ] G7.4: approved remote/push/provision/deploy; actual CI and bounded public smoke/abuse checks.
 - [ ] G7.5: result-derived resume bullets and 12 evidence-backed interview questions.
 - [ ] G7 final interview drill.
