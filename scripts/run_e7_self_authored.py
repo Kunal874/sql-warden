@@ -14,10 +14,13 @@ import os
 import statistics
 from typing import Any
 
+from scripts.run_e0 import _git_commit, _git_dirty
 from scripts.run_matrix import CACHE, RAW, result_sha, run_item
 from scripts.validate_self_authored import SET, gold_sql, run_sql
 from sqlwarden.cache import JsonDiskCache
 from sqlwarden.evaluation import EvaluationError, append_jsonl_record, load_jsonl_records
+from sqlwarden.ollama import ARCTIC, QWEN
+from sqlwarden.prompts import PROMPT_VERSIONS, template_sha256
 
 OUTPUT = RAW / "e7" / "self_authored.jsonl"
 FROZEN_SHA = "ee149a94aa1436c2"
@@ -49,6 +52,17 @@ async def run() -> int:
         raise EvaluationError("self-authored set changed after freezing")
     values = dict(os.environ)
     data = json.loads(SET.read_text(encoding="utf-8"))
+    manifest_path = OUTPUT.with_name("self_authored.manifest.json")
+    if not manifest_path.exists():
+        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        manifest = {
+            "set_sha256": hashlib.sha256(SET.read_bytes()).hexdigest(),
+            "config": "retrieval 24, 3 candidates, 1 repair, clarify on abstain (Qwen helper)",
+            "models": {model.name: model.digest for model in (ARCTIC, QWEN)},
+            "prompts": {kind: [v, template_sha256(kind)] for kind, v in PROMPT_VERSIONS.items()},
+            "git": {"commit": _git_commit(), "dirty": _git_dirty()},
+        }
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     done = {r["id"] for r in load_jsonl_records(OUTPUT)}
     cache, lock = JsonDiskCache(CACHE), asyncio.Lock()
     for index, item in enumerate(data["items"]):
