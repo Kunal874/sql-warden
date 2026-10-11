@@ -2642,6 +2642,20 @@ the SQL answer, not for copying the question. A lockfile records exact tool
 versions so we can reproduce the experiment. The 20-step model training is next;
 this successful tool check is not an accuracy improvement yet.
 
+### Real training examples are ready to inspect (2026-10-12)
+
+We acquired the BIRD team's 6,601 filtered question/SQL examples and 69 database
+descriptions. The full database download is huge. A range request asks the server
+for only a small part of a file; we needed about 49 KB of the archive to get the
+schema descriptions. Four checks verify that the reader refuses oversized or
+incomplete downloads. Raw training examples stay outside Git.
+
+These answers are written for SQLite. SQLWarden uses PostgreSQL, so we must check
+their conversion before choosing the training set. Acquiring examples is not
+training, and it does not prove those answers execute correctly in PostgreSQL.
+The first training launches stopped at the RAM check. You closed unused apps;
+we will now retry with the model already downloaded.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

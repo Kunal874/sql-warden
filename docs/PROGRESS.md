@@ -1420,6 +1420,18 @@ and diff whitespace checks passed. RAM now ~4.3 GiB; training env
 ~7.19 GiB. Current action: finish checks/commit implementation, then execute the
 bounded 20-step pilot from clean provenance. G6.2 is not complete yet.
 
+Source preparation after 725584d: acquired official filtered training annotations
+(6601 questions) and 69 database schemas. Only 48,532 bytes read from the 8.9 GB
+archive using tested strict range requests; member CRC and pinned length/ETag
+checked, full archive not hashed. Raw source text stays ignored under data/training;
+`docs/training-source-manifest.json` contains provenance/counts/hashes only.
+Four source-reader tests RED→GREEN, 21 source/pilot controls pass. User closed
+unused apps; RAM now ~5.36 GiB. Two prior pilot launches refused RAM loading,
+no optimizer step ran and no completed summary exists. Resume with a fresh clean
+commit and the same supervised pilot, keeping failed attempt logs ignored.
+Fresh source checkpoint: 943 passed/475 expected skips (8.02 s), one existing
+httpx warning; lint, 111-file format and whitespace checks pass.
+
 Resume the sequential training pilot plan after the C8 response. Proposed:
 native Windows/Python 3.12, isolated training environment, torch/transformers/
 peft/accelerate/bitsandbytes/huggingface-hub, pinned Qwen Coder 1.5B, 20 synthetic

@@ -1,0 +1,16 @@
+{
+  "archive_url": "https://bird-bench.oss-cn-beijing.aliyuncs.com/train.zip",
+  "archive_length": 8919543554,
+  "archive_etag": "\"1FBA2891BD215A42CE1004736AB7F47F-400\"",
+  "archive_member": "train/train_tables.json",
+  "archive_bytes_fetched": 48532,
+  "archive_integrity": "pinned length/ETag, extracted member CRC; full archive not hashed",
+  "dataset": "birdsql/bird23-train-filtered",
+  "revision": "4068469807b255fcfc0816bdd520946fe460d256",
+  "license": "CC-BY-SA-4.0",
+  "annotation_count": 6601,
+  "schema_count": 69,
+  "schema_sha256": "85300c745b263db88a5e0cdf083e8b2427d90272e954bc8c5f92aa1dc66c836b",
+  "annotation_sha256": "2ee64aa593e1adc59be7d5b9ce2395372a8ee27fdd94a3fb4d2fe09f3cd34bc8",
+  "labels": "SQLite source; not yet PostgreSQL converted or execution verified"
+}

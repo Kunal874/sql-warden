@@ -2420,6 +2420,19 @@ floors, live disk monitoring, timeouts, masked labels and raw-SQL exclusion.
 Full training-data/dialect/merge choices will be concretely recorded after the
 pilot measures feasibility; paid/cloud/publication actions remain unapproved.
 
+## D-085 — Official filtered BIRD intake through bounded ranges (2026-10-12)
+
+Read-only source preparation is part of the authorized fine-tuning workflow.
+Use the official BIRD team's filtered 6601 SQLite examples at revision
+4068469807b255fcfc0816bdd520946fe460d256 and the official train archive's
+69 schemas. Fetch only train_tables.json through strict 206 Content-Range,
+length/ETag checks, 8 MiB per-request/32 MiB total caps and ZIP member CRC.
+Actual archive reads total 48,532 bytes; raw labels and schemas stay ignored.
+Source member hashes and limitations are in training-source-manifest.json.
+Costs if wrong: archive ETag is not a full-content SHA-256, and source SQLite
+labels still need PostgreSQL conversion/audit. No train/validation split or
+label execution validity is claimed by acquiring these files.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
