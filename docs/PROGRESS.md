@@ -1425,6 +1425,19 @@ Data checkpoint: 955 passed/475 expected skips (10.39 s), one existing httpx
 warning; lint, 115-file format and whitespace checks pass. No new GPU run in
 this data-freeze step; the completed pilot remains the hardware evidence.
 
+Full-engine implementation after af2863b: tested token-file fingerprints, masked
+answer validation, finite validation metrics and earlier-tie checkpoint selection.
+The supervisor now supports `--full --probe` (2 steps/600 s) and `--full`
+(500 steps/7200 s), with the same disk/RAM guards. Training data is included in
+the12 GiB disk accounting. Checkpoint validation is on the separate128-example
+set; no evaluation outcomes enter checkpoint choice. GPU runs not launched yet.
+Fresh engine checks: 961 passed/475 expected skips (9.29 s), one existing httpx
+warning; lint/117-file format/whitespace pass. Training footprint10.21 GiB,
+disk free24.97 GiB, RAM free5.73 GiB before launch.
+Next exact commands from a clean commit:
+`uv run python scripts/run_training_pilot.py --full --probe`
+then `uv run python scripts/run_training_pilot.py --full` if the length probe passes.
+
 Pilot complete: clean d865f20, 20 actual NF4/QLoRA optimizer steps, 1,089,536
 trainable adapter parameters, 28.625 s training/save, peak reserved 3,493,855,232
 bytes (3.254 GiB). Synthetic loss 0.20414→0.00201. Saved adapter SHA-256

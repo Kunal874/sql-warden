@@ -2699,6 +2699,18 @@ validation loss, not whichever looks best on final evaluation questions. Balance
 sampling means giving each database a turn so one large database does not take
 all the places. Full training will make 500 learning updates next.
 
+### The full training runner is ready for hardware checks (2026-10-12)
+
+The new runner reads the frozen 2,000 examples and checks their file fingerprints.
+It refuses examples with no answer labels or labels that do not match the input
+tokens. Every 100 updates it will save an adapter and measure loss on the separate
+validation examples. The final choice uses that validation loss, with earlier
+updates winning a tie. It never looks at final benchmark answers to make that choice.
+
+The first hardware check will run two updates at the real 2,048-token length.
+If memory fits, the full run gets a two-hour limit. This code step has not trained
+the full dataset yet; the earlier 20-step synthetic pilot is still the completed run.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

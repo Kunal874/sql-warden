@@ -145,3 +145,23 @@ def test_direct_script_finalizes_existing_evidence_without_training(tmp_path):
     report = json.loads(summary.read_text())
     assert report["parameter_storage_elements"] == 100
     assert "total_parameters" not in report
+
+
+def test_probe_evidence_checks_its_own_step_contract(tmp_path):
+    from scripts.run_training_pilot import publish_summary
+
+    summary = tmp_path / "probe.json"
+    summary.with_suffix(".evidence.json").write_text(
+        json.dumps(
+            {
+                "status": "completed",
+                "device": "cuda",
+                "adapter_changed": True,
+                "adapter_reloaded": True,
+                "losses": [1.0, 0.8],
+            }
+        ),
+        encoding="utf-8",
+    )
+    publish_summary(summary, expected_steps=2)
+    assert len(json.loads(summary.read_text())["losses"]) == 2

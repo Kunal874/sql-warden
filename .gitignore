@@ -35,6 +35,7 @@ results/**/cache/
 results/**/rows/
 *.log
 results/G6_pilot/*.evidence.json
+results/G6_training/*.evidence.json
 
 # Frontend and editor output
 web/node_modules/

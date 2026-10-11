@@ -51,7 +51,7 @@ using evaluation outcomes must be caught by checks.
 
 ## Task 2 — full QLoRA training (G6.4)
 
-- [ ] Extend the tested pilot engine to consume fingerprinted token records and
+- [x] Extend the tested pilot engine to consume fingerprinted token records and
   the frozen recipe; test step validation, corrupted/masked tokens and checkpoint
   choice independently of GPU packages.
 - [ ] Commit checked code and run the 2-step long-context probe from clean Git.

@@ -2480,6 +2480,19 @@ NULLIF denominator rewrite,quoted case restoration and IIF→CASE. No source-res
 equivalence claim. Costs if wrong: short-schema subset selection can bias learning
 and empty reasoning targets may differ from Arctic's reasoning style.
 
+## D-089 — Full engine validation/checkpoint contract (2026-10-12)
+
+The full worker reads fingerprinted2048-token records, validates response labels,
+and never trains on the separate validation DBs. Five checkpoints at100-step
+intervals carry validation loss and adapter hashes; choose lowest validation
+loss, earlier tie. Use finite-loss checks, gradient clipping, non-reentrant
+checkpointing and verify every adapter tensor after reload. Record logical model
+parameter count using PEFT's quantization-aware method. A2-step length probe
+validates the same input shapes before the500-step pass. Costs if wrong: frozen
+labels are still execution-unverified, and validation-loss improvement does not
+guarantee better EX. The supervisor keeps the same12GiB/20GiB reserve limits and
+sets a2-hour cap for the full run.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -50,7 +50,12 @@ def available_ram() -> int:
 
 
 def disk_used() -> int:
-    directories = [ROOT / "training/.venv", ROOT / "models/g6", ROOT / ".tools/g6"]
+    directories = [
+        ROOT / "training/.venv",
+        ROOT / "models/g6",
+        ROOT / ".tools/g6",
+        ROOT / "data/training",
+    ]
     return sum(
         path.stat().st_size
         for directory in directories
@@ -66,6 +71,7 @@ def supervise(
     *,
     timeout: float = 2700,
     monitor: Callable[[], None] | None = None,
+    expected_steps: int = 20,
 ) -> None:
     evidence = summary.with_suffix(".evidence.json")
     if summary.exists() or evidence.exists():
@@ -90,10 +96,10 @@ def supervise(
             process.kill()
             process.wait()
             raise
-    publish_summary(summary)
+    publish_summary(summary, expected_steps=expected_steps)
 
 
-def publish_summary(summary: Path) -> None:
+def publish_summary(summary: Path, *, expected_steps: int = 20) -> None:
     evidence = summary.with_suffix(".evidence.json")
     if summary.exists():
         raise FileExistsError("completed summary already exists")
@@ -124,6 +130,16 @@ def publish_summary(summary: Path) -> None:
         "cuda_probe",
         "generation_nonempty",
         "generation_sha256",
+        "max_length",
+        "train_samples",
+        "validation_samples",
+        "train_sha256",
+        "validation_sha256",
+        "label_validity",
+        "logical_total_parameters",
+        "validation_loss_before",
+        "checkpoints",
+        "chosen_checkpoint",
     }
     if not isinstance(report, dict) or set(report) - allowed:
         raise RuntimeError("unapproved evidence fields")
@@ -132,7 +148,7 @@ def publish_summary(summary: Path) -> None:
         report["parameter_storage_elements"] = report.pop("total_parameters")
     from training.pilot import validate_losses
 
-    validate_losses(report.get("losses", []), expected_steps=20)
+    validate_losses(report.get("losses", []), expected_steps=expected_steps)
     if not (
         report.get("status") == "completed"
         and report.get("device") == "cuda"
@@ -152,11 +168,24 @@ def main() -> None:
     sys.path.insert(0, str(ROOT))
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--summary", type=Path, default=ROOT / "results/G6_pilot/summary.json")
+    parser.add_argument("--summary", type=Path)
     parser.add_argument("--finalize", action="store_true")
+    parser.add_argument("--full", action="store_true")
+    parser.add_argument("--probe", action="store_true")
     args = parser.parse_args()
+    if args.probe and not args.full:
+        parser.error("--probe requires --full")
+    expected_steps = (2 if args.probe else 500) if args.full else 20
+    if args.summary is None:
+        args.summary = ROOT / (
+            "results/G6_training/probe.json"
+            if args.probe
+            else "results/G6_training/summary.json"
+            if args.full
+            else "results/G6_pilot/summary.json"
+        )
     if args.finalize:
-        publish_summary(args.summary)
+        publish_summary(args.summary, expected_steps=expected_steps)
         return
     check_resources(available_ram(), shutil.disk_usage(ROOT).free, disk_used())
     args.summary.parent.mkdir(parents=True, exist_ok=True)
@@ -167,15 +196,20 @@ def main() -> None:
     }
     os.environ.update(env_updates)
     python = ROOT / "training/.venv/Scripts/python.exe"
+    command = [
+        str(python),
+        str(ROOT / ("training/full.py" if args.full else "training/pilot.py")),
+        "--evidence",
+        str(args.summary.with_suffix(".evidence.json")),
+    ]
+    if args.probe:
+        command.append("--probe")
     supervise(
-        [
-            str(python),
-            str(ROOT / "training/pilot.py"),
-            "--evidence",
-            str(args.summary.with_suffix(".evidence.json")),
-        ],
+        command,
         args.summary,
         monitor=lambda: check_disk(shutil.disk_usage(ROOT).free, disk_used()),
+        expected_steps=expected_steps,
+        timeout=(600 if args.probe else 7200) if args.full else 2700,
     )
 
 
