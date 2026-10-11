@@ -362,7 +362,9 @@ def build() -> dict[str, Any]:
     }
     labels = []
     for split, ids in splits.items():
-        raw = {c: load(split, c) for c in {c for c, _ in VIEWS.values()} | {"clarify_oracle"}}
+        # Fixed order keeps generated tables byte-identical between builds.
+        conditions = sorted({c for c, _ in VIEWS.values()} | {"clarify_oracle"})
+        raw = {c: load(split, c) for c in conditions}
         views = {name: view_of(raw[c], key) for name, (c, key) in VIEWS.items() if raw[c]}
         if not views:
             continue

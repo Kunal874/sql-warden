@@ -46,8 +46,8 @@ First-attempt phase rates per candidate:
 
 | Run | Candidates | SQL extracted | Guard accepted | Executed | Top failure reasons |
 | --- | --- | --- | --- | --- | --- |
-| ret_n3_k1 | 972 | 99.5% | 90.4% | 80.3% | function not allowed 64, undefined object 62, row limit 32, unsupported node 17 |
 | full_n1 | 324 | 100.0% | 92.9% | 86.1% | function not allowed 22, row limit 10, undefined object 8, database error 4 |
+| ret_n3_k1 | 972 | 99.5% | 90.4% | 80.3% | function not allowed 64, undefined object 62, row limit 32, unsupported node 17 |
 
 Repair outcomes (186 repaired candidates; the repair prompt receives only the sanitized failure category): function not allowed->same failure 62, undefined object->same failure 57, row limit->same failure 30, unsupported node->same failure 17, parse error->same failure 4, undefined object->executed wrong 3, database error->same failure 2, cost limit->same failure 2, row limit->executed wrong 2, function not allowed->executed wrong 2, database error->executed wrong 2, undefined object->other failure 1, undefined object->executed correct 1, cost limit->executed wrong 1.
 
@@ -93,8 +93,8 @@ Measured on a shared laptop while other local work ran, so treat as indicative.
 
 | Run | Questions | Model calls per question | Output tokens total | Median per question | p95 | Median per call | Output tokens per call | Cache hits | Peak VRAM |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ret_n3_k1 | 324 | 3.57 | 651519 | 32.117 s | 89.918 s | 9.933 s | 481 | 0 | 5.1 GB |
 | full_n1 | 324 | 1.0 | 166287 | 10.128 s | 14.675 s | 10.192 s | 486.0 | 18 | 5.1 GB |
+| ret_n3_k1 | 324 | 3.57 | 651519 | 32.117 s | 89.918 s | 9.933 s | 481 | 0 | 5.1 GB |
 
 Failure categories for the full loop (held-out): wrong result 82, abstained disagreement 61, dialect or unreviewed function 17, result too large 9, unknown identifier 9, other:unsupported node 4. Labels: `results/G3_matrix/failure-labels.json`.
 
@@ -124,10 +124,10 @@ First-attempt phase rates per candidate:
 
 | Run | Candidates | SQL extracted | Guard accepted | Executed | Top failure reasons |
 | --- | --- | --- | --- | --- | --- |
-| ret_n3_k1 | 300 | 100.0% | 88.7% | 80.7% | function not allowed 30, undefined object 16, row limit 4, database error 4 |
 | full_n1 | 100 | 100.0% | 86.0% | 79.0% | function not allowed 11, undefined object 5, unsupported node 1, row limit 1 |
-| orig_n3_k1 | 300 | 99.7% | 90.0% | 80.0% | undefined object 21, function not allowed 19, parse error 8, database error 5 |
 | messy_n1 | 100 | 100.0% | 89.0% | 68.0% | undefined object 16, function not allowed 11, row limit 3, database error 2 |
+| orig_n3_k1 | 300 | 99.7% | 90.0% | 80.0% | undefined object 21, function not allowed 19, parse error 8, database error 5 |
+| ret_n3_k1 | 300 | 100.0% | 88.7% | 80.7% | function not allowed 30, undefined object 16, row limit 4, database error 4 |
 
 Repair outcomes (58 repaired candidates; the repair prompt receives only the sanitized failure category): function not allowed->same failure 30, undefined object->same failure 15, row limit->same failure 4, parse error->same failure 4, database error->same failure 3, database error->executed wrong 1, undefined object->executed correct 1.
 
@@ -202,11 +202,11 @@ Measured on a shared laptop while other local work ran, so treat as indicative.
 
 | Run | Questions | Model calls per question | Output tokens total | Median per question | p95 | Median per call | Output tokens per call | Cache hits | Peak VRAM |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ret_n3_k1 | 100 | 3.58 | 184073 | 32.948 s | 79.356 s | 10.191 s | 488.5 | 9 | 5.1 GB |
-| full_n1 | 100 | 1.0 | 49025 | 10.929 s | 14.677 s | 11.094 s | 512.5 | 10 | 5.1 GB |
 | clarify_oracle | 100 | 0.0 | 0 | None s | None s | — s | — | 0 | — |
-| orig_n3_k1 | 100 | 3.59 | 200215 | 0.329 s | 83.509 s | 11.45 s | 532.5 | 200 | 5.1 GB |
+| full_n1 | 100 | 1.0 | 49025 | 10.929 s | 14.677 s | 11.094 s | 512.5 | 10 | 5.1 GB |
 | messy_n1 | 100 | 1.0 | 76620 | 13.53 s | 63.879 s | 13.44 s | 619.0 | 0 | 5.1 GB |
+| orig_n3_k1 | 100 | 3.59 | 200215 | 0.329 s | 83.509 s | 11.45 s | 532.5 | 200 | 5.1 GB |
+| ret_n3_k1 | 100 | 3.58 | 184073 | 32.948 s | 79.356 s | 10.191 s | 488.5 | 9 | 5.1 GB |
 
 Failure categories for the full loop (development): wrong result 25, abstained disagreement 20, dialect or unreviewed function 8, unknown identifier 3, result too large 1, other:parse error 1. Labels: `results/G3_matrix/failure-labels.json`.
 

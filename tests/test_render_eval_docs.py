@@ -77,3 +77,28 @@ def test_layer_off_section_names_attacks_that_one_layer_off_lets_through():
     assert "| guard off | 2 | 1 | 1 | L5 database role 1 |" in evaluation
     assert "1 of 2 attacks stayed prevented with any single layer off" in evaluation
     assert "L-A4-05 (guard_off)" in evaluation
+
+
+def test_resume_reports_attack_bound_and_names_single_layer_dependencies():
+    summary = SUMMARY | {
+        "security": {
+            "attacks": 43,
+            "succeeded": 0,
+            "success_rate_exact_95": {"low": 0.0, "high": 0.082211},
+            "gold_accepted": 421,
+            "gold_items": 424,
+        },
+        "layer_off": {
+            "configurations": {"all_layers_on": {"attacks": 29}},
+            "prevented_with_any_one_layer_off": ["X"] * 27,
+            "succeeded_with_one_layer_off": {"L-A4-05": ["guard_off"], "L-A5-03": ["timeout_off"]},
+        },
+    }
+
+    resume = render_resume(summary)
+
+    assert "0 of 43 succeeded (exact 95% upper bound 8.2%; recorded suite only)" in resume
+    assert "27 of 29 attacks stayed prevented with any single layer off" in resume
+    assert "L-A4-05 depended on the SQL guard alone" in resume
+    assert "L-A5-03 depended on the statement timeout alone" in resume
+    assert "overlapping defenses rather than one point of failure" not in resume

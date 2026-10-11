@@ -442,9 +442,11 @@ def render_resume(summary: dict[str, Any]) -> str:
         )
     security = summary.get("security")
     if security:
+        bound = security["success_rate_exact_95"]["high"]
         lines.append(
             f"- Recorded {security['attacks']} attacks with threat-specific success predicates; "
-            f"{security['succeeded']} succeeded. The guard accepts {security['gold_accepted']} "
+            f"{security['succeeded']} of {security['attacks']} succeeded (exact 95% upper bound "
+            f"{pct(bound)}; recorded suite only). The guard accepts {security['gold_accepted']} "
             f"of {security['gold_items']} safe gold queries after a reviewed allowlist change "
             "(56 were blocked before D-076)."
         )
@@ -452,10 +454,15 @@ def render_resume(summary: dict[str, Any]) -> str:
     if layer_off:
         attacks = layer_off["configurations"]["all_layers_on"]["attacks"]
         kept = len(layer_off["prevented_with_any_one_layer_off"])
+        single = "; ".join(
+            f"{attack} depended on {LAYER_NAME.get(config, config)} alone"
+            for attack, configs in layer_off["succeeded_with_one_layer_off"].items()
+            for config in configs
+        )
         lines.append(
             f"- Switched security layers off one at a time in a disposable database: {kept} of "
-            f"{attacks} attacks stayed prevented with any single layer off, showing overlapping "
-            "defenses rather than one point of failure."
+            f"{attacks} attacks stayed prevented with any single layer off"
+            + (f"; {single}." if single else ".")
         )
     probe = summary.get("calibration_probe")
     if probe:
@@ -465,6 +472,14 @@ def render_resume(summary: dict[str, Any]) -> str:
             f"{probe['paper']}/{probe['n']} before freezing the evaluation contract."
         )
     return "\n".join([*lines, ""])
+
+
+LAYER_NAME = {
+    "guard_off": "the SQL guard",
+    "privileges_off": "the restricted database role",
+    "read_only_off": "the read-only transaction",
+    "timeout_off": "the statement timeout",
+}
 
 
 def _frozen_point(split: dict[str, Any]) -> dict[str, Any] | None:
