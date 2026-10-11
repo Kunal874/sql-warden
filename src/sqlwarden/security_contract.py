@@ -20,6 +20,23 @@ REVIEWED_FUNCTIONS = (
     {"sqlglot_class": "RowNumber", "sql_names": ("row_number",), "reason": "window ordinal only"},
     {"sqlglot_class": "Sum", "sql_names": ("sum",), "reason": "aggregate only"},
     {"sqlglot_class": "Upper", "sql_names": ("upper",), "reason": "string case only"},
+    # D-076: pure built-ins needed by 56 falsely blocked gold queries (guard/gold audit).
+    {"sqlglot_class": "TimeToStr", "sql_names": ("to_char",), "reason": "date/number formatting"},
+    {
+        "sqlglot_class": "Substring",
+        "sql_names": ("substring", "substr"),
+        "reason": "string slicing only",
+    },
+    {"sqlglot_class": "StrPosition", "sql_names": ("strpos",), "reason": "substring position"},
+    {"sqlglot_class": "Extract", "sql_names": ("extract",), "reason": "date field only"},
+    {"sqlglot_class": "Date", "sql_names": ("date",), "reason": "timestamp to date only"},
+    {
+        "sqlglot_class": "CurrentTimestamp",
+        "sql_names": ("current_timestamp", "now"),
+        "reason": "stable clock read, no session change",
+    },
+    {"sqlglot_class": "Rank", "sql_names": ("rank",), "reason": "window ordinal only"},
+    {"sqlglot_class": "DenseRank", "sql_names": ("dense_rank",), "reason": "window ordinal only"},
 )
 REVIEWED_CAST_TYPES = (
     {"type": "BIGINT", "reason": "scalar numeric display/conversion"},
@@ -30,6 +47,7 @@ REVIEWED_CAST_TYPES = (
     {"type": "FLOAT", "reason": "scalar numeric display/conversion"},
     {"type": "INT", "reason": "scalar numeric display/conversion"},
     {"type": "TEXT", "reason": "scalar text display/conversion"},
+    {"type": "TIMESTAMP", "reason": "scalar timestamp conversion (D-076)"},
 )
 DEFAULT_QUERY_LIMITS = QueryLimits()
 TENANT_AUTHORIZATION_DESIGN = MappingProxyType(

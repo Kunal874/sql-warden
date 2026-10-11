@@ -21,14 +21,22 @@ def test_reviewed_function_contract_is_exactly_the_runtime_allowlist():
         "Avg",
         "Coalesce",
         "Count",
+        "CurrentTimestamp",
+        "Date",
+        "DenseRank",
+        "Extract",
         "Length",
         "Lower",
         "Max",
         "Min",
         "Nullif",
+        "Rank",
         "Round",
         "RowNumber",
+        "StrPosition",
+        "Substring",
         "Sum",
+        "TimeToStr",
         "Upper",
     }
     assert guard_sql("SELECT lower('ABC')", CALIFORNIA_POLICY).accepted
@@ -40,7 +48,17 @@ def test_reviewed_cast_and_limit_contracts_are_exact_runtime_values():
     reviewed = {item["type"] for item in REVIEWED_CAST_TYPES}
 
     assert reviewed == CAST_TYPES
-    assert reviewed == {"BIGINT", "BOOLEAN", "DATE", "DECIMAL", "DOUBLE", "FLOAT", "INT", "TEXT"}
+    assert reviewed == {
+        "BIGINT",
+        "BOOLEAN",
+        "DATE",
+        "DECIMAL",
+        "DOUBLE",
+        "FLOAT",
+        "INT",
+        "TEXT",
+        "TIMESTAMP",
+    }
     assert QueryLimits() == DEFAULT_QUERY_LIMITS
     assert DEFAULT_QUERY_LIMITS.total_timeout_ms == 15000
     assert DEFAULT_QUERY_LIMITS.max_estimated_cost == 100000

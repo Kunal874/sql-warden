@@ -462,7 +462,11 @@ def test_new_node_subclass_is_not_implicitly_allowed(monkeypatch):
         "SELECT IF(true, 1, 2)",
         "SELECT CAST(1 AS numeric(10, 2))",
         "SELECT CAST(1 AS int[])",
-        "SELECT CAST(1 AS timestamp)",
+        "SELECT CAST(1 AS timestamptz)",
+        "SELECT pg_catalog.to_char(CAST('2020-01-01' AS timestamp), 'YYYY')",
+        "SELECT date_trunc('year', CAST('2020-01-01' AS timestamp))",
+        "SELECT clock_timestamp()",
+        "SELECT EXTRACT(EPOCH_UNREVIEWED FROM CAST('2020-01-01' AS date))",
         "SELECT CAST(1 AS pg_catalog.int8)",
         "SELECT pg_catalog.abs(-1)",
         "SELECT app.lower('x')",
@@ -483,3 +487,23 @@ def test_guard_import_and_usage_need_no_database_or_model_package():
         "for n in sys.modules)"
     )
     subprocess.run([sys.executable, "-c", code], check=True, capture_output=True, text=True)
+
+
+@pytest.mark.parametrize(
+    "sql",
+    [
+        "SELECT to_char(CAST('2020-01-01 10:00' AS timestamp), 'YYYY-MM')",
+        "SELECT substring('abcdef', 2, 3)",
+        "SELECT substr('abcdef', 2, 3)",
+        "SELECT strpos('abcdef', 'cd')",
+        "SELECT EXTRACT(YEAR FROM CAST('2020-01-01' AS date))",
+        "SELECT date(CAST('2020-01-01 10:00' AS timestamp))",
+        "SELECT CURRENT_TIMESTAMP",
+        "SELECT rank() OVER (ORDER BY school) FROM schools",
+        "SELECT dense_rank() OVER (ORDER BY school) FROM schools",
+        "SELECT CAST('2020-01-01 10:00' AS timestamp)",
+    ],
+)
+def test_reviewed_date_text_and_rank_functions_from_gold_audit_are_accepted(sql):
+    decision = guard_sql(sql, CALIFORNIA_POLICY)
+    assert decision.accepted and decision.sql == sql

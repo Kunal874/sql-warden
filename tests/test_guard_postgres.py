@@ -181,6 +181,18 @@ FUNCTION_SIGNATURES = [
     ("lower(text)", "text", "f"),
     ("upper(text)", "text", "f"),
     ("row_number()", "bigint", "w"),
+    ("rank()", "bigint", "w"),
+    ("dense_rank()", "bigint", "w"),
+    ("to_char(timestamp without time zone,text)", "text", "f"),
+    ("to_char(timestamp with time zone,text)", "text", "f"),
+    ("to_char(numeric,text)", "text", "f"),
+    ('"substring"(text,integer,integer)', "text", "f"),
+    ("substr(text,integer,integer)", "text", "f"),
+    ("strpos(text,text)", "integer", "f"),
+    ('"extract"(text,timestamp without time zone)', "numeric", "f"),
+    ('"extract"(text,date)', "numeric", "f"),
+    ("date(timestamp without time zone)", "date", "f"),
+    ("now()", "timestamp with time zone", "f"),
 ]
 OPERATOR_SIGNATURES = [
     "+(bigint,bigint)",

@@ -541,10 +541,10 @@
   ],
   "false_block_measurement": {
     "safe_gold_blocked_reason_counts": {
-      "function_not_allowed": 56
+      "unsupported_node": 3
     },
-    "safe_gold_guard_accepted": 368,
-    "safe_gold_guard_blocked": 56,
+    "safe_gold_guard_accepted": 421,
+    "safe_gold_guard_blocked": 3,
     "safe_gold_items": 424,
     "safe_guard_cases": 46
   },

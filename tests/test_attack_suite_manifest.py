@@ -63,6 +63,6 @@ def test_false_block_measurement_uses_existing_benign_guard_evidence():
 
     assert measurement["safe_guard_cases"] >= 40
     assert measurement["safe_gold_items"] == 424
-    assert measurement["safe_gold_guard_accepted"] == 368
-    assert measurement["safe_gold_guard_blocked"] == 56
-    assert measurement["safe_gold_blocked_reason_counts"] == {"function_not_allowed": 56}
+    assert measurement["safe_gold_guard_accepted"] == 421
+    assert measurement["safe_gold_guard_blocked"] == 3
+    assert measurement["safe_gold_blocked_reason_counts"] == {"unsupported_node": 3}

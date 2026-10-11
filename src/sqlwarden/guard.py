@@ -80,6 +80,7 @@ FUNCTION_NAMES = allowed_function_classes()
 CAST_TYPES = allowed_cast_type_names()
 ALLOWED_NODES = frozenset(getattr(exp, name) for name in STRUCTURAL_NAMES | FUNCTION_NAMES)
 QUERY_ROOTS = frozenset({exp.Select, exp.Union, exp.Intersect, exp.Except})
+EXTRACT_FIELDS = frozenset({"YEAR", "MONTH", "DAY", "HOUR", "MINUTE", "SECOND", "DOW", "QUARTER"})
 
 
 def _valid_name(name: str) -> bool:
@@ -263,7 +264,7 @@ def _check_nodes(tree: exp.Expression) -> str | None:
             )
         ):
             reasons.add("unsupported_node")
-        if kind not in ALLOWED_NODES:
+        if kind not in ALLOWED_NODES and not _extract_field(node):
             reasons.add("unsupported_node")
     return next(
         (
@@ -277,6 +278,16 @@ def _check_nodes(tree: exp.Expression) -> str | None:
             if reason in reasons
         ),
         None,
+    )
+
+
+def _extract_field(node: exp.Expression) -> bool:
+    """`YEAR` in EXTRACT(YEAR FROM x) is a bare Var; allow only that slot and named parts."""
+    return (
+        type(node) is exp.Var
+        and type(node.parent) is exp.Extract
+        and node.parent.this is node
+        and node.name.upper() in EXTRACT_FIELDS
     )
 
 

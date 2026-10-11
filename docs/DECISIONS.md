@@ -2164,6 +2164,87 @@ Origin header is accepted from non-browser clients.
 
 Verification: new core and adapter tests failed first, then passed 20.
 
+## D-074 — Web runtime runs the real agent; Qwen clarifies, a template explains (2026-10-11)
+
+Context: the FastAPI adapter had only a demo runner. G1 left clarification and
+explanation as fake-LLM seams, and the CLI loop still used a 4-column toy schema.
+
+Decision: `sqlwarden.runtime` runs `run_agent` per request with the shared
+`sqlwarden.catalog` (tracked audit manifest plus local corrected descriptions),
+the dataset's own restricted reader login and `OllamaAgentProvider`. Arctic
+generates and repairs; Qwen is the clarification helper, with JSON mode and a
+256-token output cap so it fits its 2048 context. The provider unloads the other
+model before a call (one GPU model at a time) and records swap time, tokens and
+VRAM. The local explanation is a factual template (row count, columns, vote
+count), not a model, because Arctic's card limits it to SQL and a helper swap per
+answer adds seconds without measured value. Every trace event streams live.
+All candidates failing on a model outage ends `failed` with that reason instead of
+asking a clarification; all candidates blocked ends `blocked`. The runtime reads
+only `WARDEN_RUNTIME_<DB>_PASSWORD` keys from ignored `.env.web`, written by the
+setup-only `scripts/prepare_web_runtime.py` from the existing restricted reader
+credentials; any setup/test key refuses startup. The CLI `--loop` mode now uses the
+same real catalog and provider. C6: the three pages (Ask, Attack Lab, Benchmark)
+stay the scope, with plain CSS, light/dark themes, keyboard focus and a narrow-
+screen layout; no further polish pass.
+
+Rationale: the web demo must exercise the same guarded path the evaluation
+measures. Cost if wrong: a template explanation is less fluent than a model, and a
+clarification costs one model swap (measured in E6).
+
+## D-075 — Inference contract v2 for the E1-E8 matrix (2026-10-11)
+
+Context: the first live run showed the G1 JSON-document prompts make Arctic emit
+placeholder SQL such as `SELECT '1' AS result`, and Qwen echo the input structure.
+E0 had used a different plain prompt with JSON-only output and no BIRD evidence;
+no evidence policy was ever recorded.
+
+Measured calibration (dev IDs only, first 20 of the frozen 100, Arctic, temperature
+0): E0 prompt 3/20; E0 prompt with evidence 4/20; the prompt structure from the
+Arctic-Text2SQL-R1 paper (arXiv:2505.20315, Appendix C, engine set to PostgreSQL)
+with evidence 10/20, at a median 11.1 s and 514 output tokens per call versus 1.7 s.
+Three of its ten misses were guard false blocks (fixed by D-076) and one was an
+unquoted mixed-case column.
+
+Decision: freeze contract v2 before any E1-E8 run. Evidence policy: every
+configuration receives the corrected BIRD evidence followed by the question, as
+in the paper; the web Ask page has no evidence. Prompts `g1_*_v2` follow the
+paper's structure in our own wording: reasoning in `<think>`, final query in a
+```sql block, parsed from the last block. Generation is not JSON-constrained and
+has a 3072-token output cap inside Arctic's 8192 context (the largest full schema,
+european_football_2, is about 4.2k estimated tokens). The schema serializer now
+writes identifiers as PostgreSQL must read them (quoted when mixed-case, spaced or
+reserved). Clarification is plain text with a JSON-only answer. E0 stays as the
+historical smoke under its old contract and is not rescored.
+
+Rationale: matching the model's training format is the largest measured lever,
+and evidence is part of the standard BIRD input, not a gold answer. Cost if wrong:
+about seven times more generation time per call; the 20-item probe is small and
+the matrix, not the probe, is the measurement.
+
+## D-076 — Reviewed date, text and rank functions join the guard allowlist (2026-10-11)
+
+Context: the G2 guard/gold audit found 56 of 424 safe gold queries blocked as
+`function_not_allowed`. Counting the function classes in those 56 queries found
+only `to_char`, `CAST AS TIMESTAMP`, `substring`/`substr`, `current_timestamp`/`now`,
+`rank`, `dense_rank`, `extract`, `strpos` and `date`.
+
+Decision: add these to the reviewed contract (and TIMESTAMP to reviewed casts).
+`EXTRACT(field FROM x)` allows a bare field only in that slot and only for YEAR,
+MONTH, DAY, HOUR, MINUTE, SECOND, DOW and QUARTER. Still refused and tested:
+`timestamptz` casts, `pg_catalog.`-qualified calls, `date_trunc`, `clock_timestamp`
+and unreviewed EXTRACT fields.
+
+Evidence: the real PostgreSQL inventory test confirms each added signature is a
+`pg_catalog` built-in in internal/C language, immutable or stable, not security
+definer, and executable by the restricted reader (56 real checks pass). The
+regenerated audit accepts 421 and blocks 3 of 424 gold queries (all
+`unsupported_node`). All 43 attack outcomes are unchanged.
+
+Rationale: these functions read only their arguments (or the clock); they cannot
+touch files, the network, the session or other schemas. Cost if wrong: a future
+overload of one of these names could behave differently; the inventory test pins
+the exact signatures.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
