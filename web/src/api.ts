@@ -73,3 +73,10 @@ function parseFrame(frame: string): RunEvent | null {
     return null;
   }
 }
+
+/** `npm run build:static` makes the GitHub Pages variant that reads exported JSON. */
+export const STATIC = import.meta.env.MODE === "static";
+
+export function dataPath(name: "benchmark" | "attacks"): string {
+  return STATIC ? `data/${name}.json` : `/api/${name}`;
+}

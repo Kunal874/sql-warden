@@ -11,6 +11,9 @@
   --bad: #b3261e;
   --good: #1b7a3d;
   --code-bg: #eef1f6;
+  --series-1: #2a78d6;
+  --grid: #e8ebf0;
+  --hover: rgba(42, 120, 214, 0.08);
   color-scheme: light dark;
 }
 
@@ -28,6 +31,9 @@
     --bad: #ff8a80;
     --good: #7bd88f;
     --code-bg: #0f151c;
+    --series-1: #3987e5;
+    --grid: #26313d;
+    --hover: rgba(57, 135, 229, 0.12);
   }
 }
 
@@ -246,8 +252,39 @@ td.blocked {
 }
 
 .chart {
-  height: 280px;
+  height: 300px;
   margin: 12px 0;
+  font-size: 0.85rem;
+}
+
+.chart.small {
+  height: 240px;
+}
+
+caption {
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding-bottom: 6px;
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 8px 0 4px;
+}
+
+label.radio {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  margin: 0 12px 0 0;
+}
+
+details summary {
+  cursor: pointer;
+  margin: 16px 0 8px;
 }
 
 @media (max-width: 560px) {

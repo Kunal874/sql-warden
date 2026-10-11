@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Payload, request } from "./api";
+import { Payload, dataPath, request } from "./api";
 
 type Attack = {
   id: string;
@@ -25,7 +25,7 @@ export function AttackLab() {
   const [threat, setThreat] = useState("all");
 
   useEffect(() => {
-    request("/api/attacks").then((reply) => setData(reply.ok ? reply.body : null));
+    request(dataPath("attacks")).then((reply) => setData(reply.ok ? reply.body : null));
   }, []);
 
   const attacks = (data?.attacks as Attack[] | undefined) ?? [];

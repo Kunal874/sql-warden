@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Ask } from "./Ask";
+import { STATIC } from "./api";
 import { AttackLab } from "./AttackLab";
 import { Benchmark } from "./Benchmark";
 import "./style.css";
@@ -35,11 +36,24 @@ function App() {
         </nav>
       </header>
       <main>
-        {page === "ask" && <Ask />}
+        {page === "ask" && (STATIC ? <StaticAsk /> : <Ask />)}
         {page === "attacks" && <AttackLab />}
         {page === "benchmark" && <Benchmark />}
       </main>
     </>
+  );
+}
+
+function StaticAsk() {
+  return (
+    <section aria-labelledby="ask-title">
+      <h2 id="ask-title">Ask</h2>
+      <p className="banner">
+        This public page is a static copy of the measured evidence. Live questions run on the
+        local laptop demo (a local model and a restricted local database); see the runbook in
+        docs/DEPLOY.md. Benchmark and Attack Lab here read the same tracked result files.
+      </p>
+    </section>
   );
 }
 

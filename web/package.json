@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "vite build"
+    "build": "vite build",
+    "build:static": "vite build --mode static --outDir dist-static"
   },
   "type": "module",
   "dependencies": {

@@ -39,7 +39,11 @@ def test_vite_react_package_is_locked_to_approved_stack():
     lock = json.loads((ROOT / "web/package-lock.json").read_text(encoding="utf-8"))
 
     assert package["private"] is True
-    assert package["scripts"] == {"typecheck": "tsc --noEmit", "build": "vite build"}
+    assert package["scripts"] == {
+        "typecheck": "tsc --noEmit",
+        "build": "vite build",
+        "build:static": "vite build --mode static --outDir dist-static",
+    }
     assert set(package["dependencies"]) == {"react", "react-dom", "recharts"}
     assert set(package["devDependencies"]) == {
         "@types/react",

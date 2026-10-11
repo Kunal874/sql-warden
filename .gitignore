@@ -38,6 +38,7 @@ results/**/rows/
 # Frontend and editor output
 web/node_modules/
 web/dist/
+web/dist-static/
 .vscode/
 .idea/
 .DS_Store

@@ -128,32 +128,44 @@ def create_app(
 
     @app.get("/api/attacks")
     async def attacks() -> dict[str, Any]:
-        manifest = _load_json(ROOT / "docs/attack-suite-manifest.json")
-        return {
-            "mode": "all_layers_on",
-            "attacks": [
-                {key: item[key] for key in ("id", "threat_id", "observed_layer", "outcome")}
-                | {"predicate": item["success_predicate"], "config": item["seed_configuration"]}
-                for item in manifest["attacks"]
-            ],
-            "false_blocks": manifest["false_block_measurement"],
-            "layer_off": manifest["e5_layer_off_policy"]["status"],
-        }
+        return attacks_payload()
 
     @app.get("/api/benchmark")
     async def benchmark() -> dict[str, Any]:
-        dashboard = _load_json(ROOT / "results/E0_smoke/dashboard.json")
-        return {
-            "status": "ok",
-            "models": dashboard["models"],
-            "paired": dashboard["paired"],
-            "excludes": dashboard["excludes"],
-            "claim": "local_development_slice_not_official_benchmark",
-        }
+        return benchmark_payload()
 
     if web_root is not None and web_root.is_dir():
         app.mount("/", StaticFiles(directory=web_root, html=True), name="web")
     return app
+
+
+def attacks_payload() -> dict[str, Any]:
+    """Sanitized attack evidence; shared by the API and the static site export."""
+    manifest = _load_json(ROOT / "docs/attack-suite-manifest.json")
+    return {
+        "mode": "all_layers_on",
+        "attacks": [
+            {key: item[key] for key in ("id", "threat_id", "observed_layer", "outcome")}
+            | {"predicate": item["success_predicate"], "config": item["seed_configuration"]}
+            for item in manifest["attacks"]
+        ],
+        "false_blocks": manifest["false_block_measurement"],
+        "layer_off": manifest["e5_layer_off_policy"]["status"],
+    }
+
+
+def benchmark_payload() -> dict[str, Any]:
+    """Tracked result summaries only; no SQL, question text or rows."""
+    dashboard = _load_json(ROOT / "results/E0_smoke/dashboard.json")
+    matrix_path = ROOT / "results/G3_matrix/summary.json"
+    return {
+        "status": "ok",
+        "models": dashboard["models"],
+        "paired": dashboard["paired"],
+        "excludes": dashboard["excludes"],
+        "matrix": _load_json(matrix_path) if matrix_path.exists() else None,
+        "claim": "local_development_slice_not_official_benchmark",
+    }
 
 
 async def _json_body(request: Request, limit: int) -> Any:
