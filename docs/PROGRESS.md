@@ -15,8 +15,8 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 G6.2-G6.4 are complete: isolated native CUDA stack, frozen data, and the full
 500-update QLoRA run with validation-selected step 400. Base/tuned E9 driver and
 compact report tooling are checked, but no real E9 run or conversion has occurred.
-G6.1's remaining serving resource choice and G6.5-G6.6 are open. The pending
-12→24 GiB artifact-limit question is consequential; silence is not approval.
+G6.5-G6.6 remain open. Kunal approved24 GiB combined artifacts and pinned
+llama.cpp conversion-only tooling after Ollama rejected native Q4_K_M import.
 No new push is authorized by this continuation.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
@@ -1409,6 +1409,38 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-12 — approved converter installed; real merge next
+
+Resume after7589734. Training remains complete, no retraining. The real synthetic
+Safetensors import probe failed: Ollama0.35.1 does not accept Q4_K_M for that path.
+Kunal explicitly approved pinned llama.cpp plus conversion-only gguf,
+sentencepiece, protobuf and ml_dtypes. Matching b11429/d812350 source and Windows
+CPU quantizer downloaded/hash checked; pins in g6-conversion-tools.json.
+Tiny invented Qwen2 F16 GGUF conversion and Q4_K_M quantization both passed.
+Eight tiny tensors used fallback quantization; full-model serving is still untested.
+Torch/NumPy/runtime dependencies were not upgraded. Training lock is reproducible
+after extracting the pinned source to the recorded ignored path; root lock unchanged.
+
+Kunal also authorized closing Docker/background tasks if needed. Only Docker
+Desktop was gracefully stopped, preserving every volume. Five previously running
+container IDs are recorded in ignored .tools/g6/docker-before-conversion.json.
+Restore Desktop and those containers before database checks/E9, including SQLWarden
+(restart policy no). Other project services are temporarily paused; no system
+process was killed. Available RAM5.08 GiB, free GPU7956 MiB, D24.58 GiB free,
+combined used10.58 GiB. Use one-GPU FP16 merging rather than CPU full-model
+loading; save500MB shards. Cold RAM floor stays4 GiB; live monitor keeps1 GiB
+after expected allocations,20 GiB D reserve and24 GiB combined artifact cap.
+
+24 focused source/budget/publisher/supervisor tests passed; publisher invalid
+evidence tests failed before implementation. Full no-env1010 passed/475 expected
+skips (10.49s); lint/127-file format and locked root sync pass. No new PostgreSQL
+claim; Docker is currently stopped. Checked code must be committed before the
+real merge for clean provenance. Then `uv run python -m scripts.run_g6_merge`
+(redirect to .tools/g6-full-merge.log). Output is one-shot; preserve partial evidence
+on failure and investigate rather than overwrite. Converter intermediates belong
+in baseline.conversion_directory on C: to preserve D reserve. Full merge/import,
+matched dev/held-out E9, final portfolio comparison and final checks remain open.
 
 ### 2026-10-12 — G6 training complete; serving/E9 next
 

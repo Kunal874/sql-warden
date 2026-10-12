@@ -1,0 +1,32 @@
+{
+  "llama_cpp": {
+    "tag": "b11429",
+    "commit": "d81235049384534c167caea52b85a694f6103d14",
+    "source_url": "https://codeload.github.com/ggml-org/llama.cpp/zip/d81235049384534c167caea52b85a694f6103d14",
+    "source_bytes": 39989285,
+    "source_local_sha256": "189091a7ca977fc2d4eb021c2f39a589011cd4bc96360291261569eb85c6dbaf",
+    "binary_url": "https://github.com/ggml-org/llama.cpp/releases/download/b11429/llama-b11429-bin-win-cpu-x64.zip",
+    "binary_bytes": 19398918,
+    "binary_release_sha256": "1283323272b04cd07905816a597a0da810918102de958f4ff6f7bbaa70ed2efe",
+    "quantizer_sha256": "645013b453bd71f82c7849b8ceb57a745aab69fdf30fca022b20afba9cfcf3cf",
+    "license": "MIT; source and license retained with ignored local tooling"
+  },
+  "conversion_only_packages": {
+    "gguf": "0.19.0 (editable from pinned source)",
+    "sentencepiece": "0.2.2",
+    "protobuf": "4.25.9",
+    "ml_dtypes": "0.5.4"
+  },
+  "unchanged_training_packages": {"torch": "2.8.0+cu128", "transformers": "4.57.6", "peft": "0.18.1", "numpy": "2.5.4"},
+  "compatibility_scope": "Qwen2 path only, not all upstream architectures",
+  "tiny_probe": {
+    "hf_to_f16_gguf": "passed",
+    "f16_to_q4_k_m": "passed",
+    "quantizer_seconds": 0.309,
+    "synthetic_model": true,
+    "fallback_tensors": 8,
+    "total_tensors": 15,
+    "limitation": "Hidden size 32 forces fallback quantization; not evidence of full-model K quantization or Ollama serving"
+  },
+  "ollama": {"version": "0.35.1", "safetensors_q4_k_m_probe": "rejected; use pre-quantized GGUF instead"}
+}

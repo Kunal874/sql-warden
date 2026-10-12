@@ -9,10 +9,15 @@ dependencies = [
     "accelerate==1.12.0",
     "bitsandbytes==0.50.2",
     "huggingface-hub>=0.36,<1",
+    "gguf",
+    "sentencepiece>=0.1.98,<0.3",
+    "protobuf>=4.21,<5",
+    "ml-dtypes>=0.5,<0.6",
 ]
 
 [tool.uv.sources]
 torch = { index = "pytorch-cu128" }
+gguf = { path = "../.tools/g6/llama-source/llama.cpp-d81235049384534c167caea52b85a694f6103d14/gguf-py", editable = true }
 
 [[tool.uv.index]]
 name = "pytorch-cu128"

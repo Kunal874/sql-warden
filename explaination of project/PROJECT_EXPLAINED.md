@@ -2840,6 +2840,32 @@ free on D:. We can now proceed with the real merge and local model comparison.
 We will preserve existing models/caches and will not upload or push anything.
 The fine-tuning project is not fully finished yet.
 
+### The model conversion tools are now ready (2026-10-12)
+
+Your installed Ollama could not make Q4_K_M directly from the original model
+format. You approved another local route: llama.cpp makes a GGUF file, then
+compresses it for Ollama. We downloaded a fixed tool version and checked its
+fingerprint. Four conversion-only packages were added; the app and Torch were
+not upgraded. A tiny invented model successfully passed both tool steps.
+
+GGUF is a model file format that Ollama can read. Quantization stores the model
+numbers using fewer bits, saving memory but sometimes changing answers. Q4_K_M
+is the same compression recipe we will use for both models for a fair comparison.
+The tiny test used fallback compression for eight tensors because it was unusually
+small; it does not prove that your real model is converted or running yet.
+
+You permitted pausing Docker to free memory. It was stopped gracefully, without
+deleting any databases; the previously running services were recorded for restart.
+About5.08 GiB RAM and the GPU are free. The next step adds the selected adapter
+to the original model on the GPU, saves it in small pieces, and checks loading
+again. A supervisor watches time and storage limits and stops only its own job
+if necessary. It will not publish success from broken or incomplete evidence.
+
+Checks:24 focused tests passed and the full offline suite passed1010 tests, with
+475 database checks skipped because they were not configured. Lint/format passed.
+Real merging, Ollama serving and answer-accuracy comparison are still unfinished.
+Docker will be restored before database evaluation. Nothing was uploaded or pushed.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

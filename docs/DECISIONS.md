@@ -2619,6 +2619,27 @@ Costs if wrong: native conversion can require intermediate files/memory beyond
 the estimate; fail within the approved cap rather than silently expanding it.
 Training remains complete; continue only serving/conversion/E9 and final evidence.
 
+## D-097 — Approved pinned GGUF tooling and temporary Docker pause (2026-10-12)
+
+Actual Ollama0.35.1 synthetic Safetensors creation rejects Q4_K_M (only newer
+native quantization types accepted); no alias was created. Kunal chooses pinned
+llama.cpp conversion/quantization, adding only gguf/sentencepiece/protobuf/
+ml_dtypes to the isolated training environment. Do not upgrade Torch, NumPy or
+runtime libraries. Tool/source pins and actual tiny Qwen2 API sanity evidence
+are in g6-conversion-tools.json. This is not all-architecture compatibility or
+full-model quantization proof. Keep base/tuned Q4_K_M matching; no benchmark change.
+
+Kunal says RAM is freed and explicitly permits stopping unnecessary Docker tasks.
+Gracefully stop Desktop, preserve volumes, record the five running container IDs,
+and restore the same services before E9/final handoff. Other project services pause
+temporarily; no broad kill/prune. With5.08 GiB free RAM and free8GB GPU, perform
+FP16 safe merge on GPU,500MB save shards, sequential unload/reload, exact saved
+tensors and logits checks. Keep4 GiB cold loading floor and1 GiB live safety
+reserve,20 GiB D reserve and24 GiB combined D/new-C artifacts. The cache baseline
+guards existing membership/size, not content authenticity against a local admin.
+Costs if wrong: a peak can still exceed the estimate; stop the owned job, preserve
+partial artifacts and diagnose. No source checkpoint overwrite or retraining.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

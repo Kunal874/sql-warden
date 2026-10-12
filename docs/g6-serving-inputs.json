@@ -12,6 +12,7 @@
   "selected_adapter": {
     "step": 400,
     "sha256": "e6347c5593c1561a9ef67937437d403868c324683247d21a0b5d3ac004fb7ea3",
+    "config_sha256": "25ce7dad87c8eaf7113760910c8221615b4e136e368b1f048ec145c2cc1f16ee",
     "selection": "lowest validation token loss; earlier step wins a tie",
     "samples_seen": 1600
   },
