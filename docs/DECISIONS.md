@@ -2640,6 +2640,20 @@ guards existing membership/size, not content authenticity against a local admin.
 Costs if wrong: a peak can still exceed the estimate; stop the owned job, preserve
 partial artifacts and diagnose. No source checkpoint overwrite or retraining.
 
+## D-098 — Full GPU merge passed; matching conversion next (2026-10-12)
+
+Clean fc7f3d7 actual selected400 merge passed all finite/changed-weight,
+saved-tensor/tied-head, exact reload-logit and bounded synthetic-generation checks.
+Worker11.748s, peak4.24 GiB GPU, seven500MB shards; source checkpoint preserved.
+Generation flag/padding-mask warnings recorded: generation proves nonempty reload,
+not query accuracy. Continue exact pinned F16 GGUF then Q4_K_M, both models,
+four CPU threads and15-minute per-tool cap, projected C storage counted before
+each tool. Keep intermediates C-side to retain20 GiB free D. Existing cache
+membership/size and combined24 GiB cap stay enforced. Output collisions require
+investigation, not silent overwrite; partial files stay local and ignored.
+Costs if wrong: conversion can fail or require recovery despite valid merge;
+do not substitute training loss or the synthetic probe for measured E9 EX.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

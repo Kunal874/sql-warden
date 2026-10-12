@@ -2866,6 +2866,27 @@ Checks:24 focused tests passed and the full offline suite passed1010 tests, with
 Real merging, Ollama serving and answer-accuracy comparison are still unfinished.
 Docker will be restored before database evaluation. Nothing was uploaded or pushed.
 
+### Your actual trained model is merged and reloads correctly (2026-10-12)
+
+We added the selected step400 adapter to the original model. This changed the
+weights, and no invalid numbers remained. Every saved weight matched the model
+in memory. After unloading it and loading the saved version, its answer scores
+matched exactly. It also produced a short reply to an invented, harmless prompt.
+The GPU is unloaded again. The merge itself took11.7 seconds and used about
+4.24 GiB of GPU memory at its peak. The original files were not changed.
+
+A shard is one piece of a large model file: seven smaller pieces helped keep
+memory use low. Logits are the model's scores for possible next words. Matching
+logits here proves saving/loading preserved the model; it does not prove its SQL
+answers are correct. The short generation check printed harmless configuration
+warnings, recorded in the technical notes rather than hidden.
+
+Both models still need GGUF conversion, matching compression and Ollama import.
+The new bounded converter checks the planned space before starting each tool,
+watches resource limits, and refuses to overwrite files.28 focused checks passed.
+There is still no measured accuracy improvement. Docker remains temporarily
+paused and must be restored before the real database comparison. Nothing was pushed.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

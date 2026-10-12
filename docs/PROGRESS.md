@@ -360,7 +360,7 @@ the optional interview drill.
 
 ### G6 — optional follow-on (not a release blocker)
 
-- [ ] G6.1 / C8: explicit go/no-go, training deps/environment/model/dialect/time/disk choices.
+- [x] G6.1 / C8: explicit go/no-go, training deps/environment/model/dialect/time/disk choices (D-083–D-098).
 - [x] G6.2: tiny GPU training feasibility run (20 steps, clean d865f20, saved/reloaded adapter).
 - [x] G6.3: frozen data, database-based validation split and project leakage checks.
   - [x] 2000 training/128 validation records, 57/6 separate databases, 2048-token cap;
@@ -1409,6 +1409,29 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-12 — full selected merge verified; convert both models next
+
+Clean fc7f3d7 actual merge completed, parent/child exit0. Timing11.748s inside
+worker, peak reserved4,548,722,688 bytes (4.24 GiB), cold RAM5,140,045,824 bytes.
+Selected400 adapter changed original FP16 weights; all finite, no LoRA leftovers;
+every saved tensor equals memory, tied head verified, reload logits exactly equal,
+bounded16-token synthetic generation nonempty. Full source/adapter hashes checked.
+Seven500MB shards plus tokenizer files hashed in results/G6_training/merge.json.
+GPU unloaded (0 MiB); combined13.47 GiB, D free21.69 GiB, RAM5.05 GiB.
+Generation emitted padding-mask/default flag warnings; this synthetic one-message
+sanity probe is not an SQL-correctness test or a benchmark outcome.
+
+Added bounded converter supervisor: exact source/binary and merged-file checks,
+no-overwrite output, per-step projected C footprint,15-minute tool cap,
+live RAM/disk checks and only-owned-child stop. Four tests RED→GREEN;28 focused
+merge/conversion tests pass. Full no-env1014 passed/475 expected skips (11.06s),
+existing httpx warning; lint/129-file format/whitespace checks pass.
+Commit checked code/merge metadata before running `uv run python -m
+scripts.run_g6_conversion` (redirect .tools/g6-full-conversion.log). F16/Q4 outputs
+stay in C conversion workspace; same pinned converter/quantizer/4threads for
+base/tuned. No Ollama import or E9 run yet. Docker remains temporarily stopped
+with recorded recovery IDs; restore before E9. No source overwrite/retraining/push.
 
 ### 2026-10-12 — approved converter installed; real merge next
 
