@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "tensor": "blk.14.attn_v.bias",
+  "elements_rounded": 1,
+  "maximum_absolute_difference": 2.2351741790771484e-08,
+  "reason": "match full FP16 loading before Q4_K_M; no learned bias",
+  "source_weights_and_adapter_unchanged": true,
+  "recoverable_bytes_saved": true,
+  "before_sha256": {
+    "base-f16.gguf": "82b152fc1e2c615135d0192bbcab2c259a57e26816adf0ef1320a69551a33c38",
+    "base-q4km.gguf": "369f87906a42f775fe8202f47ac19d4117b662868a90fc5c0855a5cb89f42546",
+    "tuned-f16.gguf": "a4ae70b5a1414012858292e8bea9f71709bf60af1aaff9815a8c2f73f562bce2",
+    "tuned-q4km.gguf": "1461aa67d49d491f512a89d0151459afd0f5a344e6d18e46ca2372138ec60aa7"
+  },
+  "after_sha256": {
+    "base-f16.gguf": "089d18e701d378bab5fc1289b868728a55b2d2eb05c6fdd2e5e16ce6db7532f5",
+    "base-q4km.gguf": "1c5e5ad584b1c50b108a3d13e417368dd487bddcc3cf9a49675f23355873d0c1",
+    "tuned-f16.gguf": "a4ae70b5a1414012858292e8bea9f71709bf60af1aaff9815a8c2f73f562bce2",
+    "tuned-q4km.gguf": "1461aa67d49d491f512a89d0151459afd0f5a344e6d18e46ca2372138ec60aa7"
+  },
+  "git_commit": "eced4ac3e911e17792850a6bffe2c114b6821aef"
+}

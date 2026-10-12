@@ -1,5 +1,5 @@
 {
-  "status": "inputs and full merge checked; GGUF conversion and Ollama import pending",
+  "status": "full merge, matched GGUF conversion and local serving checked; E9 pending",
   "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
   "revision": "2e1fd397ee46e1388853d2af2c993145b0f1098a",
   "base_weights": {
@@ -18,9 +18,10 @@
   },
   "merge_probe": "results/G6_training/merge-probe.json",
   "full_merge": "results/G6_training/merge.json",
+  "serving_manifest": "docs/g6-serving-manifest.json",
   "limitations": [
     "Tiny invented CPU/FP16 merge probe is not full-model RAM or conversion feasibility",
-    "No Ollama import, quantization or model template has been checked on the new models",
+    "Matching models now pass local import, template and bounded generation checks; E9 is still unrun",
     "The approved cap is now 24 GiB across G6 artifacts and new Ollama cache files, with 20 GiB free on D:",
     "No accuracy gain measured; converted training labels are execution-unverified"
   ]

@@ -14,7 +14,8 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 2026-10-12 G6 continuation: Kunal now requests fine-tuning for resume value.
 G6.2-G6.4 are complete: isolated native CUDA stack, frozen data, and the full
 500-update QLoRA run with validation-selected step 400. Base/tuned E9 driver and
-compact report tooling are checked, but no real E9 run or conversion has occurred.
+compact report tooling are checked. Real selected merge, matched Q4_K_M conversion,
+local Ollama serving and guarded one-question smokes now pass; full E9 is next.
 G6.5-G6.6 remain open. Kunal approved24 GiB combined artifacts and pinned
 llama.cpp conversion-only tooling after Ollama rejected native Q4_K_M import.
 No new push is authorized by this continuation.
@@ -1409,6 +1410,50 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-12 — local matched pair works; run fresh E9 next
+
+Actual eced4ac precision alignment passed; only one observed untrained base bias
+rounded, original bytes retained in ignored backup. Final read-only Q4 audit:
+338 tensors/1,543,714,304 parameters each,28layers/1536hidden, same tokenizer hash,
+168Q4_K/29Q6_K/141F32, no fallback. Only56 adapter-target tensors differ.
+Initial F16 audit used tensor order and failed; corrected name matching verifies
+sharded conversion is semantically aligned. Compact artifacts gguf-check.json,
+precision-alignment.json, chat-template-check.json; original conversion.json
+pre-alignment hashes remain historical, serving manifest pins actual final hashes.
+
+Matched aliases base:e9-v2/tuned:e9-v1 created without overwriting older aliases.
+Actual APIshow Qwen2/Q4_K_M/context8192/output3072/temp0/seed42 and distinct digests
+verified. APIshow exposes the pinned HF Jinja template verbatim (not the Go
+Modelfile assumption); three synthetic render fixtures match exactly. Actual
+template is archived ignored; commit only hash/source/check result, not copied
+third-party template. Qwen pinned Apache-2.0 license verified/retained locally.
+Both16-token synthetic chat probes returned HTTP200/nonempty,26prompt tokens,
+8/11output tokens,1,360,758,046VRAM bytes each; unloaded before database checks.
+Combined23.826 GiB within24 cap; D21.689 GiB free. No deletions, source checkpoint
+edits, runtime model replacement, hosted request or push.
+
+Docker Desktop and all five previously running containers restored, healthy,
+sqlwarden_pg16_data preserved and127.0.0.1:55432 responds. Fresh configured suite
+with `.env.setup`, `.env.california`, `.env.datasets`:1491 passed/3 expected skips
+(32.49s), existing httpx warning. Setup+California only1190/304 skips (18.86s),
+so do not describe it as the full dataset suite. No-env1019/475,53 focused G6/E9
+checks, lint/131-file format pass. One failed focused command named a nonexistent
+test file and ran zero tests; corrected paths ran33conversion +20E9 tests.
+
+Two fresh guarded development-question smokes under restricted credentials only:
+base abstained after row_limit; tuned after undefined_object. Corrected gold valid;
+one model call each/no cache hit. This confirms actual protected-path behavior,
+not better accuracy: EX0 on each. Raw records ignored; no prompt/SQL/rows committed.
+No configuration tuning from these answers. G6.5/.6/drill remain open.
+
+Commit this checked serving checkpoint, then run sequentially from clean Git:
+`uv run --env-file .env.california --env-file .env.datasets python -m scripts.run_e9 --model base --split dev --resume`
+then tuned/dev, base/held_out, tuned/held_out (100dev/324known held-out each).
+No `.env.setup` for E9. Keep tracked files unchanged during a live/resumable run,
+as Git commit affects its resume fingerprint. Raw .jsonl records are ignored;
+the compact report is built only after all four sets finish. Do not rerun training,
+merge or one-shot conversion/alignment. Final EX/resume claim/release review pending.
 
 ### 2026-10-12 — both GGUF files made; align base precision before serving
 

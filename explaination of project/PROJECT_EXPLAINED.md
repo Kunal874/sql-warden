@@ -2909,6 +2909,38 @@ passed after first failing; full offline checks passed1019 tests, with475 skips.
 Both imports, the final matching check and real SQL accuracy are still unfinished.
 Docker remains paused until it is restored before database testing. Nothing was pushed.
 
+### Both models now run locally; real accuracy testing is next (2026-10-12)
+
+The tiny rounding difference is fixed in the derived original model, with its
+previous bytes saved for recovery. The final check found only the56 trained
+weight matrices differ. Both models have the same tokenizer and compression
+layout. Ollama imported them as separate names, and each returned a short reply.
+Its reported chat template exactly matches the pinned original template; three
+small examples checked the formatting. The older pre-fix model remains separate.
+
+A tokenizer divides text into model-readable pieces. A chat template marks who
+said each message. A digest fingerprints the exact model serving configuration.
+We froze matching settings: full schema, one candidate, no repair, the same
+compression,8,192-token context,3,072-token answer cap and seed42. Seed means a
+fixed random starting point; it is not a guarantee of identical future replies.
+
+Docker and all five services that were running before the pause are back and
+healthy. Your database volume was preserved.1,491 configured tests passed, with
+three expected skips;53 focused G6/E9 tests and lint/format also passed. Files
+use23.826 GiB of the approved24 GiB, while D: still has21.689 GiB free.
+
+We tried one real development database question per model through the existing
+guarded path. Both abstained: the original query exceeded the row limit, and the
+trained query referred to an unknown object. Neither got a correct answer here.
+Abstain means refusing to pretend an answer is usable. This is a pipeline check,
+not an accuracy comparison or evidence that tuning helped. No settings were
+changed based on these replies. Raw questions/SQL/rows stay out of Git.
+
+Next: fresh100-question development tests and324 existing held-out questions
+for each model, then honest accuracy/latency comparisons and resume notes.
+Training and local serving are finished; evaluation and final review are not.
+The historical project scores and app's default model remain unchanged. No push.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

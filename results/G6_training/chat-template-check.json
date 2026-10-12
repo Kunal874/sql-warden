@@ -1,0 +1,8 @@
+{
+  "status": "completed",
+  "template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+  "fixtures": 3,
+  "pinned_hf_rendering_equal": true,
+  "actual_ollama_show_template_equals_pinned_hf_jinja": true,
+  "scope": "E9 text messages with explicit first system message; tools/suffix/default-system outside scope"
+}

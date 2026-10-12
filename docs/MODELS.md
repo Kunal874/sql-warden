@@ -157,5 +157,24 @@ was closed or changed by the probe.
 - The second model, runtime provider, guarded CLI and production attack controls
   remain later tasks.
 
-Next: G0.7a's reviewed minimum SQL guard, bounded executor, pinned result comparator
+## G6 local matched Qwen 1.5B pair (2026-10-12)
+
+The optional fine-tuning experiment now has locally serving base/tuned Q4_K_M
+models. Runtime defaults above remain unchanged. Exact new aliases/digests,
+8192context/3072output, seed42/temp0 and actual template fingerprint are in
+[the serving manifest](g6-serving-manifest.json). The selected step400 adapter
+is merged from the pinned original weights; source files stay unchanged.
+
+Full conversion has338 tensors, identical tokenizer/quantization layout and
+only56 trained-target differences after documented one-value FP16 base bias
+alignment. Ollama APIshow exposes the original HF Jinja template; three render
+fixtures match. Both bounded local chat smokes work. One guarded dev question
+per model abstained; no measured accuracy improvement yet. Full E9 is pending.
+
+Qwen1.5B's [pinned model license](https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct/blob/2e1fd397ee46e1388853d2af2c993145b0f1098a/LICENSE)
+declares Apache-2.0 and is retained locally. No model weights or full third-party
+template are committed or redistributed. Converter tooling pins/licenses are
+recorded separately in [g6-conversion-tools.json](g6-conversion-tools.json).
+
+Historical G0 handoff (already completed): G0.7a's reviewed minimum SQL guard, bounded executor, pinned result comparator
 and one-database CLI. Do not execute generated SQL until those controls pass.

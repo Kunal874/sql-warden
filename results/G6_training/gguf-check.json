@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "model_architecture": "qwen2",
+  "file_type": "Q4_K_M",
+  "layers": 28,
+  "hidden_size": 1536,
+  "source_context_tokens": 32768,
+  "parameters": 1543714304,
+  "tensors": 338,
+  "tensor_types": {
+    "F32": 141,
+    "Q6_K": 29,
+    "Q4_K": 168
+  },
+  "quantization_layout_equal": true,
+  "tokenizer_metadata_equal": true,
+  "tokenizer_metadata_sha256": "b9c3688c38ac5867dcc63cc788e8d6290e36c7808fd51b5b22fd565070e05c82",
+  "changed_tensors": 56,
+  "changes_only_adapter_target_weights": true,
+  "fallback_quantization_tensors": 0,
+  "scope": "file structure/metadata/changed weights; not accuracy or Ollama inference"
+}

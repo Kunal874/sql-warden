@@ -1,0 +1,79 @@
+{
+  "status": "local serving verified; E9 not yet run",
+  "model_license": "Apache-2.0; verified pinned LICENSE, retained locally; weights not redistributed",
+  "model_license_source": "https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct/blob/2e1fd397ee46e1388853d2af2c993145b0f1098a/LICENSE",
+  "model_license_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+  "guarded_database_smoke": {
+    "scope": "one development question per model, fresh cache-off; not an accuracy comparison",
+    "base": {"status": "abstained", "reason": "row_limit", "ex": 0, "gold_valid": true},
+    "tuned": {"status": "abstained", "reason": "undefined_object", "ex": 0, "gold_valid": true},
+    "restricted_credentials_only": true
+  },
+  "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "revision": "2e1fd397ee46e1388853d2af2c993145b0f1098a",
+  "selected_checkpoint": 400,
+  "temperature": 0,
+  "seed": 42,
+  "schema": "full",
+  "candidates": 1,
+  "repair_attempts": 0,
+  "cache": "disabled",
+  "precision_alignment": "results/G6_training/precision-alignment.json",
+  "quantizer_commit": "d81235049384534c167caea52b85a694f6103d14",
+  "chat_template_scope": "Ollama show exposes pinned HF Jinja verbatim; E9 uses system/user text messages, no tools or suffix",
+  "held_out_status": "repeat comparison on existing known 324 questions, not newly untouched",
+  "ollama_version": "0.35.1",
+  "base": {
+    "name": "base",
+    "alias": "sqlwarden-g6-qwen1.5b-base-q4km:e9-v2",
+    "digest": "e3d2dc6368077b36581b83781fc5a40ce7dd5eaaeb9ff18309e776cbd7543cf5",
+    "context_tokens": 8192,
+    "max_output_tokens": 3072,
+    "quantization": "Q4_K_M",
+    "gguf_sha256": "1c5e5ad584b1c50b108a3d13e417368dd487bddcc3cf9a49675f23355873d0c1",
+    "template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f"
+  },
+  "tuned": {
+    "name": "tuned",
+    "alias": "sqlwarden-g6-qwen1.5b-tuned-q4km:e9-v1",
+    "digest": "50234b1de39881dad68d203f59240ee25e6ea6985436dbca4a0abfcf76df733c",
+    "context_tokens": 8192,
+    "max_output_tokens": 3072,
+    "quantization": "Q4_K_M",
+    "gguf_sha256": "1461aa67d49d491f512a89d0151459afd0f5a344e6d18e46ca2372138ec60aa7",
+    "template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f"
+  },
+  "combined_g6_bytes": 25583076001,
+  "smoke": {
+    "base": {
+      "http_status": 200,
+      "nonempty": true,
+      "max_new_tokens": 16,
+      "response_sha256": "e1152bfcfa5c277a7e4e88bdbc9e4b237731ec17ea827e254a8e5f9b255dd600",
+      "usage": {
+        "prompt_tokens": 26,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens": 8,
+        "total_tokens": 34
+      },
+      "vram_bytes": 1360758046
+    },
+    "tuned": {
+      "http_status": 200,
+      "nonempty": true,
+      "max_new_tokens": 16,
+      "response_sha256": "9871a5a803447a3554cb52ecf99da01ea614fd80a292c83f115db92b9ba88624",
+      "usage": {
+        "prompt_tokens": 26,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens": 11,
+        "total_tokens": 37
+      },
+      "vram_bytes": 1360758046
+    }
+  }
+}

@@ -2672,6 +2672,27 @@ Costs if wrong: a precision mismatch could confound the attribution of E9
 differences; require final Q4 audit showing only56 target tensors changed.
 All original source/adapter checks and combined24 GiB cap stay in force.
 
+## D-100 — Matched local serving verified; freeze E9 contract (2026-10-12)
+
+Final GGUF audit after reversible one-bias base precision alignment shows only
+56 trained q/v matrices differ. Same338-tensor shapes/quantization recipe and
+tokenizer metadata; no fallback. Distinct new matched aliases/digests in serving
+manifest, old base pre-alignment alias preserved but excluded from E9. Native
+Ollama0.35.1 APIshow gives pinned HF Jinja verbatim, not the assumed Go template;
+verify exact original-template equality and three text fixtures. Archive template
+ignored, track metadata/hash/source only; Qwen pinned Apache-2.0 license retained.
+Two bounded nonempty chat probes work; do not equate with SQL correctness.
+
+Docker and all originally running services restored healthy without volume loss.
+Actual restricted development smokes abstain (row_limit/undefined_object), bothEX0;
+no prompt/recipe change based on these outcomes. Freeze full schema/n1/k0,
+promptv2/context8192/output3072/temp0/seed42/Q4_K_M, no response cache for E9.
+Run100development then324existing known held-out questions per model. Historical
+Arctic scores remain references, not a new matched bigger-model experiment.
+Costs if wrong: small-model errors/limits may yield null or negative benefit;
+publish the actual paired result, not training-loss gains. Combined23.826GiB has
+little headroom; no new model downloads/copies until space checks pass.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
