@@ -3053,6 +3053,28 @@ No required G6 coding is left; a new experiment or publication is a separate cho
 
 ## 7. How this notebook will be kept up to date
 
+### New experiment: can one correction help? (2026-10-12)
+
+Finished preparation, not the experiment results: we added a separate way to
+test the same small trained model with no correction and with one correction.
+It uses the same100 practice questions. A failed SQL query may get one extra
+chance with the same schema and a short error category. The database safety
+checks run again. A wrong answer that runs successfully does not get a correction
+because the model must not see the correct answer during its work.
+
+"Repair" means asking the model to fix its failed SQL. "Development set" means
+practice questions used to explore improvements, not a new independent exam.
+"Paired comparison" means comparing both methods on each identical question.
+"Provenance" is the saved record of the code, settings and model used.
+
+Checks:56 focused tests passed;1041 offline and1513 configured tests passed.
+The configured checks included real PostgreSQL. Expected skips and the existing
+library warning remain. Report checks reject missing results, mismatched settings,
+too many attempts and damaged files. Old scores, weights and the app are unchanged.
+No new libraries or training were needed. The remaining work is to run both
+methods and measure correct answers, time and extra calls. RAM is nearly at the
+safety floor, so the runner may stop rather than use more resources than allowed.
+
 After each fully completed subtask or group, add what changed, why it matters,
 the checks that actually ran, and an easy explanation of new terms. Keep earlier
 entries so you can see how the project grew. Update the current-status section

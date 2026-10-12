@@ -1413,6 +1413,28 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-12 — Approved E10 development repair comparison
+
+G6 remains complete at82f1476. New bounded scope approved: fresh tuned-model k0
+versus k1 on100 existing development questions, no held-out rerun or training.
+Runner reuses E9 credential/provenance/resume/resource controls and matrix agent;
+new report reuses existing paired metrics. Old logs/defaults/security unchanged.
+Tests first: five missing-runner-option failures and11 missing-report failures,
+then56 focused checks pass. Full offline1041passed/475expected skips(12.71s),
+configured1513passed/3expected skips(48.14s), Ruff/133-file format/whitespace pass.
+Existing Starlette/httpx deprecation warning remains. Web unchanged, not rerun.
+
+Next after committing this checked tooling: sequential fresh runs:
+`uv run --env-file .env.california --env-file .env.datasets python -m scripts.run_e9 --model tuned --split dev --dev-repairs 0 --resume`
+then the same command with `--dev-repairs 1`, then
+`uv run python -m scripts.build_repair_report`.
+Raw paths: results/G6_e9/raw/repair/dev/k0.jsonl and k1.jsonl; compact result:
+results/G6_e9/repair/summary.json. Both arms must use this same clean Git commit.
+Do not change code mid-run or append to historical E9. No inference yet.
+Preflight: five Docker services healthy, Ollama unloaded, counted23.828GiB,
+D free21.691GiB, RAM1.072GiB near the1GiB live floor; stop on exhaustion.
+No new model copies, destructive cleanup, service shutdown or publication.
+
 ### 2026-10-12 — G6 complete locally; preserve evidence, do not rerun
 
 G6.1–G6.6 and the supplied written interview drill are checked. Full training,

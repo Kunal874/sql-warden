@@ -33,6 +33,7 @@ def evaluation_files(tmp_path, monkeypatch):
         assert cache is None
         return {
             "question_id": item["question_id"],
+            "condition": condition,
             "status": "answered",
             "gold_corrected_valid": True,
             "final_ex_corrected": 1,
@@ -175,6 +176,32 @@ def serving_manifest():
         }
         for name, digit in [("base", "a"), ("tuned", "b")]
     }
+
+
+@pytest.mark.parametrize("repairs", [0, 1])
+async def test_dev_repair_runs_are_separate_from_completed_e9(evaluation_files, repairs):
+    from scripts.run_e9 import run
+
+    await run("tuned", "dev", resume=False, dev_repairs=repairs)
+    path = evaluation_files / f"raw/repair/dev/k{repairs}.jsonl"
+    row = json.loads(path.read_text())
+    assert row["experiment"] == "E10-dev-repair"
+    assert row["generator"] == "tuned"
+    assert row["condition"] == ("full_n1_k1" if repairs else "full_n1")
+    manifest = json.loads(path.with_suffix(".manifest.json").read_text())
+    assert manifest["experiment"] == "E10-dev-repair"
+    assert not (evaluation_files / "raw/dev/tuned.jsonl").exists()
+
+
+@pytest.mark.parametrize(
+    "model,split,repairs", [("base", "dev", 1), ("tuned", "held_out", 1), ("tuned", "dev", 2)]
+)
+async def test_dev_repair_scope_refused_before_writes(evaluation_files, model, split, repairs):
+    from scripts.run_e9 import run
+
+    with pytest.raises(ValueError, match="development repair"):
+        await run(model, split, resume=False, dev_repairs=repairs)
+    assert not (evaluation_files / "raw").exists()
 
 
 def test_models_must_have_matching_fixed_inference_budgets(tmp_path):

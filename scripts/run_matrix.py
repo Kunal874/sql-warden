@@ -69,6 +69,7 @@ BASE = AgentConfig(
 VOTED = replace(BASE, candidates=3, max_repairs=1)
 CONDITIONS: dict[str, dict[str, Any]] = {
     "full_n1": {"config": replace(BASE, full_schema=True), "input": "corrected"},
+    "full_n1_k1": {"config": replace(BASE, full_schema=True, max_repairs=1), "input": "corrected"},
     "ret_n3_k1": {"config": VOTED, "input": "corrected"},
     "orig_n3_k1": {"config": VOTED, "input": "original"},
     "messy_n1": {"config": BASE, "input": "corrected", "messy": True},

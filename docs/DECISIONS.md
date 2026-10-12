@@ -2762,6 +2762,29 @@ Remaining optional steps (another experiment, deployment/cleanup/publication) ar
 new scope, not unfinished G6 requirements. All decisions and review limits persist
 in G6_REVIEW.md/PROGRESS/notebook before ending this plan.
 
+## D-105 — Approved bounded development repair experiment (2026-10-12)
+
+After choosing a new accuracy experiment, Kunal says "go ahead" to the proposed
+one-repair comparison rather than another training run. Reuse the selected tuned
+1.5B model and existing guarded repair state machine. Compare fresh full-schema
+single-candidate runs with k=0 versus k=1 on the same frozen100 development IDs.
+At most300 model calls combined; no helper, explanation, response cache or
+gold-assisted repair. Existing repair eligibility stays unchanged: an extracted
+SQL attempt that fails validation/execution can be repaired; malformed generation
+without extracted SQL is not repaired. Only sanitized error categories reach it.
+
+Keep seed42, context8192/output3072, pinned model/prompt/split/gold/security
+settings and app default unchanged. E10-dev-repair evidence lives separately
+inside results/G6_e9/repair (already counted by the24GiB resource guard), not in
+completed E9 logs. Record clean identical Git provenance for both arms and allow
+only max_repairs/condition to differ. Measure EX, coverage, paired gains and
+regressions, latency and repair cost. No new held-out score, retraining, dependency,
+model artifact, database modification, push or publication approved.
+Costs if wrong: repair may add latency without accuracy gain; development-only
+results and one seed do not establish generalization. RAM/disk boundary checks
+are not continuous reservations. Preserve partial evidence if a resource check
+stops a run; do not silently relax the limit or overwrite old results.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

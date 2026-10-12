@@ -75,17 +75,26 @@ def check_evaluation_env(values: dict[str, str]) -> None:
         raise ValueError("setup credentials refused by E9")
 
 
-async def run(model_name: str, split: str, *, resume: bool) -> None:
+async def run(model_name: str, split: str, *, resume: bool, dev_repairs: int | None = None) -> None:
+    if dev_repairs is not None and (
+        model_name != "tuned"
+        or split != "dev"
+        or type(dev_repairs) is not int
+        or dev_repairs not in (0, 1)
+    ):
+        raise ValueError("development repair scope refused")
+    condition = "full_n1_k1" if dev_repairs == 1 else "full_n1"
+    experiment = "E9" if dev_repairs is None else "E10-dev-repair"
     values = dict(os.environ)
     check_evaluation_env(values)
     check_e9_resources()
     serving = ROOT / "docs/g6-serving-manifest.json"
     generator = load_generators(serving)[model_name]
     items = build_items(split)
-    manifest = manifest_for("full_n1", split, items)
+    manifest = manifest_for(condition, split, items)
     manifest.pop("fingerprint")
     manifest |= {
-        "experiment": "E9",
+        "experiment": experiment,
         "generator": asdict(generator),
         "models": {generator.name: generator.digest},
         "quantization": "Q4_K_M",
@@ -97,7 +106,11 @@ async def run(model_name: str, split: str, *, resume: bool) -> None:
     manifest["fingerprint"] = fingerprint
     if manifest["git"]["dirty"]:
         raise ValueError("E9 requires clean Git provenance")
-    path = RAW / split / f"{model_name}.jsonl"
+    path = (
+        RAW / split / f"{model_name}.jsonl"
+        if dev_repairs is None
+        else RAW / "repair/dev" / f"k{dev_repairs}.jsonl"
+    )
     metadata = path.with_suffix(".manifest.json")
     if resume and metadata.exists():
         if json.loads(metadata.read_text(encoding="utf-8"))["fingerprint"] != fingerprint:
@@ -125,8 +138,8 @@ async def run(model_name: str, split: str, *, resume: bool) -> None:
         if item["question_id"] in done:
             continue
         check_e9_resources()
-        record = await run_item(item, "full_n1", values, None, lock, generator=generator)
-        record |= {"generator": generator.name, "experiment": "E9"}
+        record = await run_item(item, condition, values, None, lock, generator=generator)
+        record |= {"generator": generator.name, "experiment": experiment}
         if not record["gold_corrected_valid"]:
             raise ValueError("frozen evaluation gold unavailable; run stopped")
         planned = len(json.dumps(record, sort_keys=True, ensure_ascii=True)) + 1
@@ -157,8 +170,9 @@ def main() -> None:
     parser.add_argument("--model", choices=["base", "tuned"], required=True)
     parser.add_argument("--split", choices=["dev", "held_out"], required=True)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--dev-repairs", type=int, choices=[0, 1])
     args = parser.parse_args()
-    asyncio.run(run(args.model, args.split, resume=args.resume))
+    asyncio.run(run(args.model, args.split, resume=args.resume, dev_repairs=args.dev_repairs))
 
 
 if __name__ == "__main__":
