@@ -2887,6 +2887,28 @@ watches resource limits, and refuses to overwrite files.28 focused checks passed
 There is still no measured accuracy improvement. Docker remains temporarily
 paused and must be restored before the real database comparison. Nothing was pushed.
 
+### Both compressed model files were made; a fairness check caught one tiny difference (2026-10-12)
+
+The original and trained models both converted to Q4_K_M successfully. Each
+compressed file is about986 MB. Compression took about25 seconds per model.
+Unlike the tiny test, the full models needed no fallback compression. The first
+original model also imported into Ollama, but has not answered evaluation questions.
+
+We checked the actual weights, not just the file names. The56 trained projection
+matrices differ as expected. One other value differed by about0.000000022 because
+the merge loaded it as FP16 while the converter kept the original in F32. This
+is rounding, not a learned bias. For a fair comparison, we will apply exactly
+that same rounding to the derived original model and check again. The original
+download and trained checkpoint stay untouched; the old bytes are kept for recovery.
+The first Ollama alias stays separate and will not be used in the comparison.
+
+A bias is a small offset inside a model calculation. Numeric precision means
+how accurately stored numbers represent their original values. Even very small
+differences deserve checking when comparing training results. Five rounding tests
+passed after first failing; full offline checks passed1019 tests, with475 skips.
+Both imports, the final matching check and real SQL accuracy are still unfinished.
+Docker remains paused until it is restored before database testing. Nothing was pushed.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

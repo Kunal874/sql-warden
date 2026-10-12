@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "quantization": "Q4_K_M",
+  "threads": 4,
+  "llama_cpp_commit": "d81235049384534c167caea52b85a694f6103d14",
+  "models": {
+    "base": {
+      "f16": {
+        "bytes": 3093669056,
+        "sha256": "82b152fc1e2c615135d0192bbcab2c259a57e26816adf0ef1320a69551a33c38"
+      },
+      "q4km": {
+        "bytes": 986048192,
+        "sha256": "369f87906a42f775fe8202f47ac19d4117b662868a90fc5c0855a5cb89f42546"
+      },
+      "f16_seconds": 13.172,
+      "quantize_seconds": 25.953
+    },
+    "tuned": {
+      "f16": {
+        "bytes": 3093668928,
+        "sha256": "a4ae70b5a1414012858292e8bea9f71709bf60af1aaff9815a8c2f73f562bce2"
+      },
+      "q4km": {
+        "bytes": 986048064,
+        "sha256": "1461aa67d49d491f512a89d0151459afd0f5a344e6d18e46ca2372138ec60aa7"
+      },
+      "f16_seconds": 9.141,
+      "quantize_seconds": 25.079
+    }
+  },
+  "git_commit": "661b391a8ddf32d109c42dfca865c09e1443242d"
+}

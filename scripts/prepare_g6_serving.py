@@ -4,12 +4,28 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
+import struct
 from pathlib import Path
 
 from training.full import choose_checkpoint
 from training.pilot import MODEL, REVISION
 
 GIB = 2**30
+
+
+def fp16_rounding_changes(original: bytes, rounded: bytes) -> int:
+    if not original or len(original) != len(rounded) or len(original) % 4:
+        raise ValueError("invalid rounding tensor bytes")
+    left = struct.unpack(f"<{len(original) // 4}f", original)
+    right = struct.unpack(f"<{len(rounded) // 4}f", rounded)
+    try:
+        expected = [struct.unpack("<e", struct.pack("<e", value))[0] for value in left]
+    except (OverflowError, struct.error) as error:
+        raise ValueError("invalid rounding value") from error
+    if any(not math.isfinite(value) for value in (*left, *right)) or list(right) != expected:
+        raise ValueError("change is not exact FP16 rounding")
+    return sum(a != b for a, b in zip(left, right, strict=True))
 
 
 def check_serving_budget(

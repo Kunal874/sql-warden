@@ -1410,6 +1410,32 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-12 — both GGUF files made; align base precision before serving
+
+Clean661b391 actual conversion finished, own session83773 exit0. Base F16
+13.172s/Q4_K_M25.953s, tuned F169.141s/Q4_K_M25.079s. Each Q4 file ~986MB;
+full Qwen2 quantizer logs report338 tensors and no fallback. Fingerprints in
+results/G6_training/conversion.json describe the original conversion outputs.
+An initial base alias sqlwarden-g6-qwen1.5b-base-q4km:e9-v1 imported successfully;
+preserve it as pre-alignment, do not use it for E9. No model inference/E9 yet.
+
+Strict GGUF comparison correctly failed:56 target weights differ as expected,
+plus one value in blk.14.attn_v.bias. Trace: converter retains1D source BF16
+as F32; the full merge first loads all weights FP16. The untrained bias rounds
+by2.2351741790771484e-08; exact F32→FP16→F32 equals tuned value. A first
+F16 audit zipped file tensor order and failed; compare by exact tensor name
+instead (sharded HF conversion orders tensors differently, not a model defect).
+Apply this same numeric loading to the derived base bias only, preserve original
+bytes in .tools/g6/base-bias-before-alignment.json, record new artifact hashes.
+No source/adapter/SQL/benchmark definition change. Use a new base:e9-v2 alias,
+never overwrite the pre-alignment alias. The extra old alias keeps combined
+storage projected within24 GiB. Five rounding tests RED→GREEN, full no-env1019
+passed/475 expected skips10.50s; lint/131-file format pass. One-shot alignment
+script has actual pre-write assertions; commit first, then run
+`& training/.venv/Scripts/python.exe training/align_g6_precision.py`.
+Then repeat GGUF audit, import matched pair and record serving manifest.
+Docker still paused; recorded five services must be restored before E9.
+
 ### 2026-10-12 — full selected merge verified; convert both models next
 
 Clean fc7f3d7 actual merge completed, parent/child exit0. Timing11.748s inside

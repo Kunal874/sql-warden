@@ -2654,6 +2654,24 @@ investigation, not silent overwrite; partial files stay local and ignored.
 Costs if wrong: conversion can fail or require recovery despite valid merge;
 do not substitute training loss or the synthetic probe for measured E9 EX.
 
+## D-099 — Match the observed untrained bias rounding (2026-10-12)
+
+Full Q4_K_M conversions succeed with338 tensors/no fallback. Strict actual
+base/tuned audit fails for one untrained value in blk.14.attn_v.bias, alongside
+the56 expected adapter target matrices. Converter keeps1D BF16 values in F32,
+whereas full merge loads all weights FP16. Exact FP16 roundtrip accounts for the
+entire2.2351741790771484e-08 discrepancy; no unexplained weight changes observed.
+Normalize only this observed derived base tensor to the same loading precision,
+requiring pinned pre-hashes,256F32 elements/exactlyone rounded element,
+otherwise-identical non-target F16 tensors, and reversible old-byte backup before
+writing. Preserve source Safetensors/adapter and the pre-alignment local alias;
+create a separate e9-v2 base alias. Record post-alignment fingerprints rather
+than silently presenting old conversion hashes as current. No prompt/gold/split/
+metric change; this makes matching preprocessing stricter, before any E9 run.
+Costs if wrong: a precision mismatch could confound the attribution of E9
+differences; require final Q4 audit showing only56 target tensors changed.
+All original source/adapter checks and combined24 GiB cap stay in force.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
