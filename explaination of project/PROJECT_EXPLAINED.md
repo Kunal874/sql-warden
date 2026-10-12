@@ -25,6 +25,15 @@ It is not a finished public service yet.
 
 ## 2. What actually works now?
 
+**Current status (2026-10-13): the whole planned project is finished locally and
+pushed to your private GitHub repository, with GitHub's automatic checks passing.**
+That includes the guarded agent (G1), security evidence (G2), the full experiment
+set E1-E8 (G3), the website (G4), deployment preparation (G5), the optional
+fine-tuning with its fair comparison E9 and a small repair test E10 (G6), and the
+release checks (G7). For the fine-tuning story in one place, read "Fine-tuning
+explained on one page" near the end of this notebook. The older status notes
+below are kept as history.
+
 - The Python project installs using its saved dependency versions.
 - The optional fine-tuned 1.5B model now runs locally and has finished a matched
   comparison: 76 correct answers versus 37 for its original version on 324 existing
@@ -3186,6 +3195,82 @@ and settings produced those records. The older G3 matrix says fine-tuning had
 not run at that time; the newer G6 report correctly records its completed result.
 That old snapshot is not a new missing task. The final verification note is also
 being committed and pushed; the repository remains private and no demo is deployed.
+
+### Fine-tuning explained on one page (2026-10-13)
+
+This page pulls the many fine-tuning notes above into one simple story. Every number
+here was re-checked against the saved result files (`results/G6_e9/summary.json`,
+`results/G6_e9/repair/summary.json`, `results/G6_training/summary.json`).
+
+**What we did.** We took a small open model, Qwen2.5-Coder-1.5B-Instruct, and taught
+it more text-to-SQL examples on your own laptop. A small model was chosen because the
+GPU has 8 GB and the laptop had little free RAM; the big Arctic 7B model would not
+train comfortably here. We used QLoRA: the main model stays frozen in compressed
+4-bit form, and only a small add-on (an "adapter") is trained.
+
+- Training data: 2,000 BIRD training examples from 57 databases, converted from
+  SQLite to PostgreSQL. 128 validation examples came from 6 other databases. None of
+  these databases are the 11 test databases.
+- One pass over the data (500 small update steps). The training loop took about 58
+  minutes and used at most about 6.4 GB of GPU memory.
+- Validation loss (how wrong the model is on examples it did not train on) fell from
+  0.834 to 0.094. The best saved point, step 400, was chosen by this rule before any
+  accuracy testing.
+- The adapter was merged into the model, compressed to Q4_K_M and run in Ollama.
+
+**The fair comparison (E9).** The original and trained 1.5B models answered the
+same questions with identical settings: the full database description, one try, no
+repair, the same guard, the same restricted logins and the same answer checker.
+
+| On 324 held-out questions | Before training | After training |
+| --- | --- | --- |
+| Correct | 37 (11.4%) | 76 (23.5%) |
+| Answered at all | 82 (25.3%) | 172 (53.1%) |
+| Correct among answered | 45.1% | 44.2% |
+| Typical time per question | 2.94 s | 0.82 s |
+
+- The gain is about **+12 percentage points**, with an uncertainty range of +7.1 to
+  +17.0 points. 55 questions got better, 16 got worse.
+- The trained model mainly learned to **write valid PostgreSQL**: badly formatted
+  replies fell from 49 to 0 and syntax errors from 18 to 0. It also writes much
+  shorter replies, which is why it is faster.
+- It did **not** learn to pick the right columns: "unknown table or column" errors
+  stayed the biggest problem (125 before, 129 after). This is called grounding.
+- It is still far below Arctic 7B (54.3% on the same questions), so **Arctic stays
+  the app's default model**.
+
+**The repair test (E10, 100 practice questions only).** Giving the trained model one
+chance to fix a failed query raised correct answers from 20 to 22 with no new
+mistakes, but cost 54 extra model calls. The uncertainty range is 0 to +5 points, so
+this is not a proven improvement.
+
+**Honest limits.** The 324 test questions had been used before; the converted
+training answers were checked for structure but not run on a database; it was one
+training run with one random seed; and we cannot prove the model never saw similar
+data during its original pretraining.
+
+**What you can safely say:** "I fine-tuned a 1.5B code model with QLoRA on an 8 GB
+laptop GPU and, in a matched comparison on 324 held-out questions, it went from 37 to
+76 correct (+12 points, 95% interval +7 to +17), mostly by learning valid PostgreSQL;
+it still trails the 7B model I deploy, and I report the 16 regressions."
+
+New simple terms:
+
+**QLoRA**: training a small add-on for a compressed 4-bit model, so a big model can
+be tuned on a small GPU.
+
+**Adapter (LoRA)**: the small set of new numbers that gets trained; the original
+model is unchanged until the adapter is merged in.
+
+**Validation loss**: an error score on held-back examples, used to choose the best
+saved point without looking at the test questions.
+
+**Checkpoint**: a saved copy of the model partway through training.
+
+**GGUF / Q4_K_M**: the compressed file format and compression level Ollama runs.
+
+**Grounding**: making the SQL use the real tables and columns of this database,
+not names that only look plausible.
 
 After each fully completed subtask or group, add what changed, why it matters,
 the checks that actually ran, and an easy explanation of new terms. Keep earlier
