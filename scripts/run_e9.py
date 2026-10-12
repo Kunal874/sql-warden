@@ -12,10 +12,14 @@ import asyncio
 import hashlib
 import json
 import os
+import shutil
 from dataclasses import asdict
 from pathlib import Path
 
+from scripts.prepare_g6_serving import check_serving_budget
+from scripts.run_g6_merge import serving_storage
 from scripts.run_matrix import build_items, manifest_for, run_item
+from scripts.run_training_pilot import available_ram
 from sqlwarden.evaluation import append_jsonl_record, load_jsonl_records, write_atomic_record
 from sqlwarden.ollama import LocalModel
 
@@ -74,6 +78,7 @@ def check_evaluation_env(values: dict[str, str]) -> None:
 async def run(model_name: str, split: str, *, resume: bool) -> None:
     values = dict(os.environ)
     check_evaluation_env(values)
+    check_e9_resources()
     serving = ROOT / "docs/g6-serving-manifest.json"
     generator = load_generators(serving)[model_name]
     items = build_items(split)
@@ -100,12 +105,17 @@ async def run(model_name: str, split: str, *, resume: bool) -> None:
     elif metadata.exists() or path.exists():
         raise FileExistsError("E9 run output exists; use verified resume")
     else:
+        planned = len(json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=True)) + 1
+        check_e9_resources(planned_bytes=planned)
         write_atomic_record(metadata, manifest)
     if path.exists():
         # Refuse a partial tail rather than append across an interrupted JSON record.
-        for line in path.read_text(encoding="utf-8").splitlines():
+        payload = path.read_bytes()
+        for line in payload.decode("utf-8").splitlines():
             if line.strip():
                 json.loads(line)
+        if payload and not payload.endswith(b"\n"):
+            raise ValueError("E9 unterminated record tail; preserve and investigate")
     records = load_jsonl_records(path)
     done = validate_done(records, [item["question_id"] for item in items])
     if any(record.get("generator") != generator.name for record in records):
@@ -114,10 +124,13 @@ async def run(model_name: str, split: str, *, resume: bool) -> None:
     for item in items:
         if item["question_id"] in done:
             continue
+        check_e9_resources()
         record = await run_item(item, "full_n1", values, None, lock, generator=generator)
         record |= {"generator": generator.name, "experiment": "E9"}
         if not record["gold_corrected_valid"]:
             raise ValueError("frozen evaluation gold unavailable; run stopped")
+        planned = len(json.dumps(record, sort_keys=True, ensure_ascii=True)) + 1
+        check_e9_resources(planned_bytes=planned)
         append_jsonl_record(path, record)
         done.add(item["question_id"])
         print(
@@ -125,6 +138,18 @@ async def run(model_name: str, split: str, *, resume: bool) -> None:
             f"status={record['status']} EX={record['final_ex_corrected']}",
             flush=True,
         )
+
+
+def check_e9_resources(*, planned_bytes: int = 0) -> None:
+    used, added = serving_storage()
+    check_serving_budget(
+        available_ram(),
+        shutil.disk_usage(ROOT).free,
+        used,
+        added,
+        planned_d=planned_bytes,
+        loading=False,
+    )
 
 
 def main() -> None:

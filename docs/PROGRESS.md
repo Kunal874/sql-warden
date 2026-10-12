@@ -1413,6 +1413,36 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-12 — sole final review fixed; local closure checks
+
+Fresh read-only whole-G6 review2b10679..5746893 independently verified source
+tokens/selection and raw E9 metrics/hashes. No Critical/Minor; two Important/P2:
+syntactically valid unterminated JSONL tail accepted on resume, and direct E9 CLI
+missing resource checks. Confirmed/reproduced both. Three reproductions RED before
+fix, expanded four-case regression coverage GREEN;25focused E9/report pass.
+One fix pass only, no second reviewer. Reject nonempty unterminated tails before
+inference, preserve bytes; check live1GiB RAM/20GiB D reserve/24GiB combined cap
+before startup/every inference, and include exact planned serialized bytes before
+manifest/record writes. Boundary checks, not a continuous OS monitor/reservation.
+All four historical files terminate properly and match their unchanged raw SHA;
+no rerun, rescore, record repair or EX change. Full rulings/costs in G6_REVIEW.md.
+
+Fresh post-fix offline1025/475 (10.21s), configured1497/3 (28.99s), Ruff/131-file
+format/whitespace pass. Actual new preflight passes for projected4KiB append.
+Earlier clean local clone5746893 locked install +1021/475 (33.94s), lint/format
+passed without private env/model/download files. Update that owned clone to the
+fix commit and repeat pure checks before marking final closure. Root Node24.18
+typecheck/build/staticbuild already passed; frontend unchanged by fixes.
+130-commit attribution/current tracked known-secret-pattern scan passed in
+final-local-check.json; scan scope is narrow, not comprehensive secret absence.
+Reviewer did not duplicate GPU/Docker/PG; parent actualchecks recorded separately.
+All five original Docker services healthy, named volume preserved, models unloaded.
+
+Skill review-package helper used `C:/CODE/Git/bin/bash.exe` from PowerShell
+(Git is not in Program Files here); no repo shell/policy changes. Keep work in
+this checkout/current branch with no push/merge/publication, as already requested.
+Final G6.6/Task3 closure waits only on final checked local artifacts/commit.
+
 ### 2026-10-12 — matched E9 complete; final review/checks next
 
 All four clean faa41c9 runs complete, exit0: base/dev100 (session53149),

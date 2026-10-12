@@ -16,6 +16,7 @@ def evaluation_files(tmp_path, monkeypatch):
     (tmp_path / "uv.lock").write_text("fixed-lock", encoding="utf-8")
     monkeypatch.setattr(run_e9, "ROOT", tmp_path)
     monkeypatch.setattr(run_e9, "RAW", tmp_path / "raw")
+    monkeypatch.setattr(run_e9, "check_e9_resources", lambda **kwargs: None, raising=False)
     monkeypatch.setattr(run_e9.os, "environ", {})
     monkeypatch.setattr(run_e9, "build_items", lambda split: [{"question_id": 1}])
     monkeypatch.setattr(
@@ -74,6 +75,91 @@ async def test_e9_refuses_partial_tail_without_modifying_it(evaluation_files):
     before = path.read_bytes()
     with pytest.raises(json.JSONDecodeError):
         await run("base", "dev", resume=True)
+    assert path.read_bytes() == before
+
+
+async def test_e9_refuses_complete_unterminated_tail_before_new_inference(
+    evaluation_files, monkeypatch
+):
+    from scripts import run_e9
+
+    await run_e9.run("base", "dev", resume=False)
+    path = evaluation_files / "raw/dev/base.jsonl"
+    path.write_bytes(path.read_bytes().rstrip(b"\n"))
+    before = path.read_bytes()
+    monkeypatch.setattr(
+        run_e9, "build_items", lambda split: [{"question_id": 1}, {"question_id": 2}]
+    )
+    calls = []
+
+    async def unexpected(*args, **kwargs):
+        calls.append("inference")
+        return {
+            "question_id": 2,
+            "status": "answered",
+            "gold_corrected_valid": True,
+            "final_ex_corrected": 1,
+        }
+
+    monkeypatch.setattr(run_e9, "run_item", unexpected)
+    with pytest.raises(ValueError, match="unterminated"):
+        await run_e9.run("base", "dev", resume=True)
+    assert not calls
+    assert path.read_bytes() == before
+
+
+async def test_e9_budget_exhaustion_before_start_writes_nothing(evaluation_files, monkeypatch):
+    from scripts import run_e9
+
+    def exhausted(**kwargs):
+        raise RuntimeError("budget exhausted")
+
+    monkeypatch.setattr(run_e9, "check_e9_resources", exhausted)
+    with pytest.raises(RuntimeError, match="budget exhausted"):
+        await run_e9.run("base", "dev", resume=False)
+    assert not (evaluation_files / "raw").exists()
+
+
+@pytest.mark.parametrize("stage", ["before_inference", "before_append"])
+async def test_e9_mid_run_budget_exhaustion_preserves_evidence(
+    evaluation_files, monkeypatch, stage
+):
+    from scripts import run_e9
+
+    await run_e9.run("base", "dev", resume=False)
+    path = evaluation_files / "raw/dev/base.jsonl"
+    before = path.read_bytes()
+    monkeypatch.setattr(
+        run_e9, "build_items", lambda split: [{"question_id": 1}, {"question_id": 2}]
+    )
+    calls = []
+    sizes = []
+    checks = []
+
+    async def infer(*args, **kwargs):
+        calls.append("inference")
+        return {
+            "question_id": 2,
+            "status": "answered",
+            "gold_corrected_valid": True,
+            "final_ex_corrected": 1,
+        }
+
+    def budget(*, planned_bytes=0):
+        checks.append(planned_bytes)
+        if stage == "before_inference" and len(checks) > 1:
+            raise RuntimeError("budget exhausted")
+        if stage == "before_append" and planned_bytes:
+            sizes.append(planned_bytes)
+            raise RuntimeError("budget exhausted")
+
+    monkeypatch.setattr(run_e9, "run_item", infer)
+    monkeypatch.setattr(run_e9, "check_e9_resources", budget)
+    with pytest.raises(RuntimeError, match="budget exhausted"):
+        await run_e9.run("base", "dev", resume=True)
+    assert calls == (["inference"] if stage == "before_append" else [])
+    if stage == "before_append":
+        assert sizes[0] > 0
     assert path.read_bytes() == before
 
 

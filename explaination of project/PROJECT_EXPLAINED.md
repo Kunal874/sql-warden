@@ -2997,6 +2997,31 @@ Fresh final reporting checks: 1,021 offline tests passed with 475 expected datab
 skips, and 1,493 configured tests passed with three expected skips. Lint/format
 passed. No new training, source-file edits, uploads or pushes were performed.
 
+### A fresh review found two future-run problems; both are fixed (2026-10-12)
+
+An independent read-only review checked the whole fine-tuning change and confirmed
+that the reported scores match the saved evidence. It found two problems in the
+comparison runner. First, a file could contain a complete JSON record without
+the final line break. Continuing would join the next record onto it and break
+the file. The runner now refuses that case before requesting another answer and
+keeps the original bytes untouched.
+
+Second, we had manually checked resources during the completed runs, but the
+runner's own command did not enforce those checks. It now checks before starting,
+before each question and before writing the next record—including its planned
+file size. If the limit is exhausted, it stops instead of adding more evidence.
+This is a boundary check, not a system-wide memory/disk reservation.
+
+JSONL means one JSON record per line. Resume means continuing an interrupted
+job without repeating completed questions. A regression test recreates a bug
+to make sure the fix actually prevents it. Three reproductions failed before
+the fixes; expanded four-case coverage and25 focused runner/report tests now pass.
+These fixes do not change your848
+completed attempts or any accuracy number. The raw records and scores remain
+unchanged. Fresh offline tests passed1,025 with475 expected skips; configured
+tests passed1,497 with three expected skips. Lint/format passed. No extra training,
+database imports or inference runs were performed.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

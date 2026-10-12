@@ -2727,6 +2727,21 @@ metrics/provenance. Original raw evidence unchanged, no query/rows committed.
 Costs if wrong: local repeated-set/one-seed gains might not generalize; disclose
 16 regressions and conditional accuracy instead of selling universal reliability.
 
+## D-103 — Final reviewer fixes preserve completed E9 (2026-10-12)
+
+Single fresh read-only whole-G6 review independently checks raw hashes/metrics,
+frozen2000/128 tokens and validation choice. No Critical/Minor; two Important/P2:
+complete JSON without newline could corrupt resumed JSONL, and E9 CLI did not
+itself enforce the approved resource cap. Actual completed runs were manually
+monitored and stayed within limits; raw files all terminate properly. Keep them
+unchanged, no rerun/rescoring. Reproduce both before fixes, then refuse nonempty
+unterminated tails before inference and check actual/projected resources at
+startup/inference/write boundaries. Preserve bytes and prevent further work on
+exhaustion. Reuse shared budget validator; no new dependency or benchmark setting.
+Costs if wrong: a future interrupted resume or other process's disk consumption
+can still require scoped recovery; checks are boundary-based, not OS reservations.
+Full reviewer findings/declined-item rulings/plan decisions in G6_REVIEW.md.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

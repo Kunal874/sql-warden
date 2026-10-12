@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "history_commits": 130,
+  "author_and_committer_identity": "Kunal <kunalchandrakar2005@gmail.com>",
+  "attribution_trailers": 0,
+  "tracked_forbidden_artifacts": 0,
+  "secret_pattern_findings": 0,
+  "secret_scan_scope": "tracked current files and narrow known credential patterns; not proof of no possible secret/history secret",
+  "verified_evaluations": 848,
+  "all_raw_hashes_and_ids_match": true,
+  "combined_g6_bytes": 25584725550
+}
