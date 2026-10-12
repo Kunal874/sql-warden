@@ -3022,6 +3022,35 @@ unchanged. Fresh offline tests passed1,025 with475 expected skips; configured
 tests passed1,497 with three expected skips. Lint/format passed. No extra training,
 database imports or inference runs were performed.
 
+### G6 is finished locally and ready to explain on your resume (2026-10-12)
+
+Training, model merging/compression, local Ollama serving, the full matched
+comparison and its documentation are finished. One fresh review found two
+future-run issues; they were fixed with regression tests. Final checks passed
+1,497 configured tests (three expected skips) and1,025 offline tests (475 expected
+database skips). A clean local checkout also installed from the lock and passed
+1,025 tests without private files or model downloads. Lint/format and frontend
+typechecking/both builds passed. The existing library/bundle warnings remain.
+
+The saved answers and fingerprints still match the report. Git attribution
+checks show only your confirmed identity; declared known-secret-pattern checks
+found no matches. This is not a promise that every possible secret pattern was
+checked. No model weights, raw answer logs, passwords, downloads or caches were
+committed. Both experimental models are unloaded; Docker and all previously
+running services are restored. Nothing new was pushed or published.
+
+A clean checkout is a fresh copy of the committed project, without private local
+files. We made one to check reproducibility. Its removal was blocked by tool
+policy, so the roughly70MB disposable copy remains in Windows Temp; it contains
+no copied private environment or model files and is recoverable from local Git.
+The completed plan's working notes are archived rather than mixed with new work.
+
+What to do next: use the measured resume bullet and practise the three G6
+interview questions. Safe headline: your small model improved from37 to76 correct
+answers on324 existing questions. Keep the16 regressions, known-test-set and
+unverified-label limits clear. The bigger Arctic remains the default model.
+No required G6 coding is left; a new experiment or publication is a separate choice.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

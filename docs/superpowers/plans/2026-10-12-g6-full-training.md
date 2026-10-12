@@ -74,5 +74,5 @@ using evaluation outcomes must be caught by checks.
   explicitly a reference result.
 - [x] Update EVAL/README/RESUME/notebook using actual evidence, including a null
   or negative improvement. Keep existing G3 summaries and headlines intact.
-- [ ] Review the complete change and run applicable local release checks. Commit
+- [x] Review the complete change and run applicable local release checks. Commit
   under Kunal's identity. Leave publication/push/weights to separate approval.

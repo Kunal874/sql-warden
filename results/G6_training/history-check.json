@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "base": "2b1067972705ca622dbc93ffacda6682f02dfb3a",
+  "head": "a03938936967d36ccdb4d544b4f10e6045c7b564",
+  "introduced_commits": 19,
+  "known_secret_pattern_findings": 0,
+  "scope": "all new G6 patches; narrow API/GitHub-token and credentialed PostgreSQL URL patterns, not comprehensive secret detection"
+}

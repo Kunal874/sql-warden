@@ -19,6 +19,9 @@ one test-first fix pass. This is not a separate comprehensive security scan.
 Four regression cases cover unterminated valid JSON, startup exhaustion, and
 mid-run exhaustion before inference or append. The prior malformed-tail test
 still passes.25focused E9/report tests pass; fresh whole suites recorded in PROGRESS.
+Post-fix full suites:1,025offline/475expected skips and1,497configured/3expected
+skips. Clean local checkout of a039389 independently passes1,025offline/475skips
+and locked installation/lint/format. No re-review was dispatched after the one fix pass.
 The resource checks are at startup/inference/write boundaries, not a background
 OS monitor during a single bounded inference. They assume the authorized sequential
 workflow; they do not reserve disk against other processes.

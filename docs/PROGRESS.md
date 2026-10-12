@@ -15,10 +15,10 @@ Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional afte
 G6.2-G6.4 are complete: isolated native CUDA stack, frozen data, and the full
 500-update QLoRA run with validation-selected step 400. Base/tuned E9 driver and
 compact report tooling are checked. Real selected merge, matched Q4_K_M conversion,
-local Ollama serving and guarded one-question smokes now pass; full E9 is next.
+local Ollama serving and the complete paired E9 comparison now pass.
 G6.5 is complete: all848 matched attempts produced a measured +12.0point held-out
 EX gain for tuned1.5B (11.4→23.5%), below historical Arctic54.3%. G6.6 final
-checks/review are in progress. Kunal approved24 GiB combined artifacts and pinned
+checks/review are complete locally. Kunal approved24 GiB combined artifacts and pinned
 llama.cpp conversion-only tooling after Ollama rejected native Q4_K_M import.
 No new push is authorized by this continuation.
 
@@ -370,7 +370,7 @@ the optional interview drill.
     structurally checked but execution-unverified, explicitly approved (D-087).
 - [x] G6.4: logged training, checkpoints and memory (500 updates, selected step400).
 - [x] G6.5: merge/conversion/GGUF feasibility, local serving and comparable E9 (848fresh attempts).
-- [ ] G6.6: evidence-driven EVAL/README update; applicable G7 checks before publishing updates.
+- [x] G6.6: evidence-driven EVAL/README update and applicable local checks/review; no new publication.
 - [x] G6 interview drill: three-question written practice sheet provided; no human assessment claimed.
 
 ## Session log
@@ -1412,6 +1412,46 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-12 — G6 complete locally; preserve evidence, do not rerun
+
+G6.1–G6.6 and the supplied written interview drill are checked. Full training,
+selected merge/local serving, all848 matched fresh E9 attempts, measured
+base11.4→tuned23.5% (+12.04pp), honest resume/notebook and one fresh whole-G6
+review are complete. Two Important reviewer findings fixed in one TDD pass at
+a039389, no Critical or deferred Minor, no second review. All raw hashes and
+scores unchanged. Full reviewer/ruling/cost record: G6_REVIEW.md, D-083–D-104.
+
+Final checked tree: offline1025/475 (10.21s; task-done repeat9.10s), configured
+1497/3 (28.99s), Ruff lint/131-file format/whitespace pass. Owned clean local clone
+fast-forwarded to a039389, locked install and1025/475 (9.53s), lint/format pass
+without private environments/model/downloads. Root Node24.18.0 typecheck/build/
+staticbuild passed; existing httpx/bundle-size warnings remain, not silenced.
+Full131-commit attribution passes sole Kunal identity/no contributor trailers;
+new19G6-commit patches pass declared known-secret patterns (history-check.json).
+Current tracked forbidden artifacts/secrets patterns0; this is not comprehensive
+secret detection. Check final documentation commit identity separately as usual.
+
+Docker and all five originally running services are restored/healthy, named
+volume preserved, G6 models unloaded. Main counted G6 artifacts remain~23.83GiB
+with~21.69GiB free D; preserve downloads/checkpoints/cache/raw evidence. The
+owned test clone in Windows Temp (~70MiB) could not be deleted: tool policy blocked
+that recursive cleanup, so it remains recoverable. No bypass/retry deletion.
+Including this temporary check copy still stays below the approved24GiB cap.
+Its exact path is C:/Users/Kunal/AppData/Local/Temp/sqlwarden-g6-check-a858f8c653734842b39baf272746f478.
+
+Task3 completion is recorded by executing-plans/task-done. Retain branch
+feat/foundation/current checkout; no merge/push/upload/deployment/weight publication.
+Finishing skill uses the previously requested keep-local disposition rather than
+asking again about integration. Completed plan ledger is archived, if available,
+under .tools/g6/full-training-ledger-completed; no sibling plan workspace touched.
+
+Next: use docs/RESUME.md's measured bullet and docs/INTERVIEW.md's practice sheet.
+There is no required G6 implementation left. Any new experiment, model-default
+replacement, artifact cleanup or publication needs its own scoped request/approval.
+Do not retrain, reconvert, rerun the imported data or append to completed E9 logs.
+Frozen serving manifest/raw run metadata remain historical provenance; current
+completion is recorded here and in EVAL, not by changing their fingerprints.
 
 ### 2026-10-12 — sole final review fixed; local closure checks
 

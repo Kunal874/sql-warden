@@ -2742,6 +2742,26 @@ Costs if wrong: a future interrupted resume or other process's disk consumption
 can still require scoped recovery; checks are boundary-based, not OS reservations.
 Full reviewer findings/declined-item rulings/plan decisions in G6_REVIEW.md.
 
+## D-104 — G6 complete, checked and retained locally (2026-10-12)
+
+One fresh full-G6 review plus the sole TDD fix pass finishes Task3. Post-fix
+1025offline/475expected skips,1497configured/3expected skips, Ruff/format and
+clean root installation/checks pass. Frontend typecheck/both builds pass with
+unchanged warning. Actual completed E9 hashes/scores preserved. Keep the current
+branch/checkpoints/old aliases/raw evidence, Arctic default and local-only scope;
+do not infer new push, publication, weight upload or destructive cleanup authority.
+Practice drill is a supplied three-question sheet, not a human interview assessment.
+
+The owned clean-check clone is left in Windows Temp because recursive cleanup
+was blocked by tool policy; do not bypass it with another deletion method.
+It is about70MiB and can be recreated from local Git; source/model/data volumes
+are unaffected, total still below24GiB. Archive only this plan's completed ledger
+recoverably inside the project, preserve sibling histories. Costs if wrong:
+temporary disk clutter remains; do not turn cleanup into a blocker or a broad delete.
+Remaining optional steps (another experiment, deployment/cleanup/publication) are
+new scope, not unfinished G6 requirements. All decisions and review limits persist
+in G6_REVIEW.md/PROGRESS/notebook before ending this plan.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
