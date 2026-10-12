@@ -1,3 +1,6 @@
 # Reviewed 2026-10-11: docs/DATA.md records the SHA-256 of an ignored evidence file next to
 # the word 'credentials'; gitleaks' generic-api-key rule matches the hash. Not a secret.
 f646d89af772f71018ad007fff6598f9783880af:docs/DATA.md:generic-api-key:15
+# Reviewed 2026-10-13: tokenizer_metadata_sha256 is a metadata checksum, not a credential.
+# Ignore only this exact historical finding; retain all other secret rules.
+b2a827928aca6d0040d6f39e0b41ac968fa6c443:results/G6_training/gguf-check.json:generic-api-key:17

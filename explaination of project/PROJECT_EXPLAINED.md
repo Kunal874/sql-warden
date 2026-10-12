@@ -3149,6 +3149,21 @@ measurement. The old and new raw-file fingerprints all match; nothing was pushed
 This supplies the remaining foundation drill in the same written format as the
 later group drills. It does not claim you answered these in a live interview.
 
+### Preparing your approved GitHub update (2026-10-13)
+
+We checked the earlier push: your private GitHub repository exists and its old
+automatic checks passed. Your laptop has 23 newer commits, with no conflicting
+remote changes. The new local tests passed: 1,517 tests plus frontend type checking
+and build checks. The existing library and large-bundle warnings remain.
+
+A full-history secret scan found a model metadata fingerprint that looked like
+an API key to the scanner. It is actually a checksum, not a password. We recorded
+an exception for only that exact finding and will rescan before the push.
+"Fast-forward" means adding new commits without rewriting old history. "CI"
+means GitHub runs automatic tests after a push. The old green checks do not prove
+the new work passes, so we will check the new run too. No passwords, model weights
+or raw experiment answers will be uploaded; the repository stays private.
+
 After each fully completed subtask or group, add what changed, why it matters,
 the checks that actually ran, and an easy explanation of new terms. Keep earlier
 entries so you can see how the project grew. Update the current-status section

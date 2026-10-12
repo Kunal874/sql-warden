@@ -1428,6 +1428,24 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-13 — Approved private push; release preflight
+
+Kunal explicitly asks to push and verify the earlier account's release. Fresh
+fetch confirms private Kunal874/sql-warden main2b10679, earlier CI38177427078
+completed/success. Local3bf82cc is23commits ahead/zero behind, clean; all135
+existing commits have sole confirmed Kunal author/committer and no trailers.
+Push only a normal fast-forward HEAD:main; preserve visibility, history and weights.
+
+Fresh locked33 install, Ruff/133-file format and configured1517passed/3expected
+skips(29.23s), web typecheck/build pass. Existing httpx/bundle-size warnings remain.
+No ignored credentials/downloads/weights/raw results tracked (.env.example is a
+template). Full-history Gitleaks8.30.1 flags one additional generic-api-key false
+positive: tokenizer_metadata_sha256 in gguf-check.json. Inspect exact historical
+JSON and narrowly ignore that checksum's commit/path/rule/line fingerprint; no
+generic rule relaxation. Rescan before push. D-108 records authority and limits.
+Next: push checked HEAD to existing private main, then verify exact remote SHA
+and GitHub CI. This entry records preflight, not a claim of successful new push.
+
 ### 2026-10-13 — E10 complete locally; no required implementation remains
 
 Resumed after explicit "ready" with4.536GiB RAM. Scoped stash870621fb restored

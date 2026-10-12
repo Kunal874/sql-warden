@@ -2853,6 +2853,24 @@ author/committer and no trailers. Final direct audit recomputes the compact resu
 exactly, verifies both100-item arms and all six historical/new raw hashes.
 No pending checklist item or background run remains; retain the local-only scope.
 
+## D-108 — Explicit private GitHub push and release verification (2026-10-13)
+
+Kunal asks "push it" and to check the other account's earlier push. Fresh Git/gh
+state confirms existing private Kunal874/sql-warden/main2b10679 and green earlier
+CI38177427078. Authorize normal fast-forward of current checked work to that
+existing main only; no force/history edit, visibility change, Pages deployment,
+weight upload or credential publication. Fetch first; pause if it diverges.
+
+Fresh configured1517/3skips, locked33/Ruff/format and web typecheck/build pass.
+All135 existing commits retain confirmed sole Kunal identity/no trailers. Full
+history Gitleaks8.30.1 flags tokenizer_metadata_sha256, a64hex checksum in model
+metadata, not an API credential. Suppress only its exact historical fingerprint
+after inspecting the JSON; keep the prior reviewed DATA checksum exception and
+all other rules. Rescan before publishing. Costs if wrong: scanners are not proof
+that every possible secret is absent; findings need review, not blanket ignores.
+Record exact pushed commit and CI outcome after observing them; do not claim
+earlier green CI proves the new23commits pass. No training/inference rerun needed.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
