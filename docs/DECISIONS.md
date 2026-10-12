@@ -2848,6 +2848,11 @@ written three-question sheet, like G6; no human assessment or skipped-choice cla
 No new push/publication/weights/default change. Further experiments require new
 scope, not a manufactured unfinished item after this bounded comparison closes.
 
+Completed reporting fix/evidence/docs committed fe8ba01 with confirmed Kunal
+author/committer and no trailers. Final direct audit recomputes the compact result
+exactly, verifies both100-item arms and all six historical/new raw hashes.
+No pending checklist item or background run remains; retain the local-only scope.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

@@ -1455,10 +1455,12 @@ incomplete_cost_items0/0. Model unloaded; all five Docker services remain health
 Counted G6 artifacts23.828GiB, D free21.254GiB, RAM4.299GiB at final pre-doc check.
 
 Our exact stash870621fb was applied, not dropped; its historical pause notes
-remain recoverable. No unrelated stash or cleanup touched. Latest E10 code/report
-fix, compact evidence and documentation await the local commit in this checkpoint.
-Commit only those files with confirmed Kunal identity after staged inspection.
-Then keep branch/models/data/raw runs and default settings local. No new push,
+remain recoverable. No unrelated stash or cleanup touched. E10 report fix,
+compact evidence and documentation committed as fe8ba01, confirmed Kunal author
+and committer/no trailers, clean Git. Current summary recomputes exactly from
+both complete fresh arms; all six E9/E10 raw hashes independently verified.
+No unchecked deliverable remains in the current checklist. Keep branch/models/
+data/raw runs and default settings local. No new push,
 publication, training, cleanup or experiment is authorized by completion.
 The previously missing G0 drill is now a supplied written practice sheet, not
 human assessment. All approved project/experiment deliverables are complete;

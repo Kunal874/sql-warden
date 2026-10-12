@@ -3130,6 +3130,10 @@ The report, explanation, progress and decision records finish this experiment.
 No required coding remains in the approved scope; future experiments/publication
 are separate choices. You can resume normal laptop work.
 
+Saved result and reporting fix: local commit fe8ba01, under your Git identity.
+A final check recalculated the report from the saved records and matched every
+measurement. The old and new raw-file fingerprints all match; nothing was pushed.
+
 ### G0 foundation practice sheet (supplied, not assessed)
 
 1. Why not let AI use the database administrator login?
