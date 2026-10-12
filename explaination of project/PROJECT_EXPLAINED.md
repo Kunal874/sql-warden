@@ -26,6 +26,9 @@ It is not a finished public service yet.
 ## 2. What actually works now?
 
 - The Python project installs using its saved dependency versions.
+- The optional fine-tuned 1.5B model now runs locally and has finished a matched
+  comparison: 76 correct answers versus 37 for its original version on 324 existing
+  held-out questions. The bigger Arctic model remains the app's default.
 - A separate PostgreSQL database runs on your laptop.
 - Different datasets have different restricted database logins.
 - California Schools plus ten more real datasets have been loaded and checked.
@@ -2949,6 +2952,50 @@ uses the same24 GiB allowance.33 focused checks and1,020 offline tests passed;
 475 database tests were intentionally skipped in that offline run. Lint/format
 passed. This does not change model answers, database permissions or scoring.
 The paired accuracy test still needs to finish before we can claim any benefit.
+
+### Fine-tuning helped in the complete comparison—but not on every question (2026-10-12)
+
+All 848 attempts finished: 100 development and 324 existing held-out questions for
+each model. Every scored question had valid checked gold SQL. Both models used
+the same prompts, compression, limits, question order and database safeguards.
+The response cache was off. The trained version was chosen before these tests,
+using validation loss; we did not change settings to improve the test scores.
+
+On 324 held-out questions, the original model got 37 right (11.4%). The trained
+model got 76 right (23.5%). That is 39 more correct answers, about 12 percentage
+points better. A percentage point is a direct difference between percentages,
+not a claim of 12% relative growth. The paired uncertainty interval was about
+7.1 to 17.0 points. Bootstrap means repeatedly drawing questions from the same
+bag to estimate uncertainty; it does not prove performance on new databases.
+
+There were 55 improved questions and 16 regressions. A regression means something
+that worked before stopped working. The trained model attempted more answers,
+but correctness among the answers it gave did not improve (45.1→44.2%). Many
+queries still referenced unknown tables or columns. This is a grounding problem:
+the SQL must refer to the actual database, not just look convincing.
+
+The middle per-question time fell from 2.94 to 0.82 seconds. The model produced
+shorter replies (middle completion length 417→106 tokens); we did not make the GPU
+itself faster. "Median" means the middle measurement. Ollama reported about
+1.27 GiB loaded-model GPU memory for either model, not the whole GPU's worst spike.
+
+Important limits: this held-out set had been used before, training labels were
+not execution-verified, and we did not prove freedom from old pretraining data.
+The trained small model still scores below the bigger Arctic model's historical
+54.3%. Arctic remains the app's default. Do not say the new model beats it or
+claim an official BIRD leaderboard result. The resume now uses the honest gain
+and uncertainty; a three-question practice sheet is in INTERVIEW.
+
+Checks: all four runs exited successfully, with zero response-cache hits.
+The report verifies matching inputs/model fingerprints and keeps raw SQL/rows
+out of Git. A new test makes the report distinguish failed queries from queries
+that ran but gave a wrong answer.21 focused tests passed; all previous report
+numbers stayed unchanged when these diagnostics were added. Both models are
+unloaded. Frontend typechecking and both builds passed (existing bundle-size
+warning remains). Final whole-project checks and a fresh review are next.
+Fresh final reporting checks: 1,021 offline tests passed with 475 expected database
+skips, and 1,493 configured tests passed with three expected skips. Lint/format
+passed. No new training, source-file edits, uploads or pushes were performed.
 
 ## 7. How this notebook will be kept up to date
 

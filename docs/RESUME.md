@@ -12,21 +12,27 @@ Generated from `results/G3_matrix/summary.json`. Local PostgreSQL-adapted BIRD M
 - Switched security layers off one at a time in a disposable database: 27 of 29 attacks stayed prevented with any single layer off; L-A4-05 depended on the SQL guard alone; L-A5-03 depended on the statement timeout alone.
 - Found by a 20-question development probe that matching the model's training prompt format raised accuracy from 3/20 to 10/20 before freezing the evaluation contract.
 
-## G6 training evidence — accuracy comparison pending
+## G6 — measured fine-tuning evidence
 
-This addendum comes from [the completed training record](../results/G6_training/summary.json),
-not the G3 matrix above. A resume-ready training bullet:
+This addendum comes from [the training record](../results/G6_training/summary.json)
+and [matched E9 evidence](../results/G6_e9/summary.json), not the G3 matrix above.
+A resume-ready bullet:
 
 - Ran a 500-update QLoRA experiment on Qwen2.5-Coder-1.5B-Instruct using an 8 GB
   RTX 4060 laptop GPU and 2,000 PostgreSQL-converted BIRD examples; selected the
-  checkpoint using 128 validation examples from separate databases and verified
-  that its saved adapter reloaded exactly.
+  checkpoint using 128 validation examples from separate databases, and increased
+  execution accuracy from 11.4% to 23.5% on a matched 324-question repeat local
+  PostgreSQL benchmark (+12.0 percentage points; paired 95% interval +7.1 to +17.0),
+  with median per-question latency 2.94 s→0.82 s under unchanged SQL safeguards.
 
 The selected checkpoint was update 400 and had seen 1,600 examples; the complete
 experiment processed 2,000. Training/checkpoint/repeated-validation time was
 57.70 minutes (excluding initial model loading/validation), with 6.426 GiB peak
 PyTorch reserved memory measured during that loop. These are training measurements,
-not inference speed or answer-accuracy results. Converted training labels are
-structurally checked but execution-unverified. Do not claim an EX improvement,
-that the selected checkpoint saw all 2,000 examples, or that the 1.5B model matched
-Arctic until the matched E9 comparison finishes.
+not serving measurements. The separate E9 serving measurements above use matching
+Q4_K_M models and no response cache. Converted training labels are structurally
+checked but execution-unverified. The held-out set was already known, so say
+"repeat local benchmark," not an untouched test or official BIRD leaderboard.
+Do not claim the selected checkpoint saw all 2,000 examples or beat Arctic's 54.3%.
+Tuning had 55 wins and 16 regressions; accuracy among answered questions did not
+improve. The app still uses Arctic by default. No model weights were published.

@@ -16,7 +16,9 @@ G6.2-G6.4 are complete: isolated native CUDA stack, frozen data, and the full
 500-update QLoRA run with validation-selected step 400. Base/tuned E9 driver and
 compact report tooling are checked. Real selected merge, matched Q4_K_M conversion,
 local Ollama serving and guarded one-question smokes now pass; full E9 is next.
-G6.5-G6.6 remain open. Kunal approved24 GiB combined artifacts and pinned
+G6.5 is complete: all848 matched attempts produced a measured +12.0point held-out
+EX gain for tuned1.5B (11.4→23.5%), below historical Arctic54.3%. G6.6 final
+checks/review are in progress. Kunal approved24 GiB combined artifacts and pinned
 llama.cpp conversion-only tooling after Ollama rejected native Q4_K_M import.
 No new push is authorized by this continuation.
 
@@ -367,9 +369,9 @@ the optional interview drill.
   - [x] 2000 training/128 validation records, 57/6 separate databases, 2048-token cap;
     structurally checked but execution-unverified, explicitly approved (D-087).
 - [x] G6.4: logged training, checkpoints and memory (500 updates, selected step400).
-- [ ] G6.5: merge/conversion/GGUF feasibility, local serving and comparable E9.
+- [x] G6.5: merge/conversion/GGUF feasibility, local serving and comparable E9 (848fresh attempts).
 - [ ] G6.6: evidence-driven EVAL/README update; applicable G7 checks before publishing updates.
-- [ ] G6 interview drill.
+- [x] G6 interview drill: three-question written practice sheet provided; no human assessment claimed.
 
 ## Session log
 
@@ -1410,6 +1412,48 @@ Pre-flight contract reconciliation:
 - G5/G7: preparation precedes publication; no remote addition or push before release approval.
 
 ## Handoff
+
+### 2026-10-12 — matched E9 complete; final review/checks next
+
+All four clean faa41c9 runs complete, exit0: base/dev100 (session53149),
+tuned/dev100 (55634), base/held_out324 (64168), tuned/held_out324 (99363).
+All848 corrected gold valid, one live call/item, response-cache hits0; tracked
+Git stayed unchanged throughout. Rawrecords/manifests ignored; compact summary
+results/G6_e9/summary.json verifies paired contracts/fingerprints/model digests.
+Frozen serving manifest a3b2a8a88ecb9dbec46dcd58a44d227cfd2ac5ae33b0ef419e9fead20197da16
+retains its historical pre-run status text; do not edit/re-fingerprint it.
+
+Dev base9/100 versus tuned20/100, paired +11points (95% interval +2–20).
+Held-out base37/324 (11.4%) versus tuned76/324 (23.5%), +12.04points
+(paired95% bootstrap +7.10–16.98);55wins/16regressions/21both/232neither.
+Answer coverage25.3→53.1%, conditional EX45.1→44.2% (not improved).
+Median item time2.935→0.823s/p954.442→1.371s; completion totals139904→36827.
+Both API-reported loaded-model VRAM max1360758046bytes, not whole-device peak.
+Historical Arctic54.3% remains stronger and the app default; not rerun here.
+The held-out set was already known; not official BIRD/new untouched generalization.
+
+Candidate diagnostics added test-first, separately from valid-but-wrong answers.
+21 E9 tests pass. Initial report regeneration correctly refused existing output;
+preserved our initial summary in ignored .tools/g6/e9-summary-before-candidate-counts.json
+and generated the new one. An actual equality check removes only new diagnostic
+fields and proves every existing metric/provenance unchanged. No rerun/rescoring
+policy change. Unknown-object failures125→129; invalid output49→0,
+parse20→4/syntax18→0. Valid-but-wrong answers45→96 are not execution failures.
+
+README/EVAL/RESUME/INTERVIEW/notebook updated with gain, regressions, coverage,
+measured latency and data limits; G3 blocks untouched. Supplied three-question
+practice sheet, not live assessment. Node24.18.0 typecheck/build/static build pass;
+existing >500kB bundle warning. One log read used web-relative path and failed;
+root-relative read corrected, build checks actually passed. Both G6 models unloaded;
+Docker/original five containers remain restored. No training/import/weight deletion,
+runtime default replacement, hosted inference, push or publication.
+
+Fresh final reporting tree: configured1493/3 (29.53s), offline1021/475 (9.44s),
+Ruff lint/131-file format/whitespace pass. Next attribution/secret metadata checks,
+attribution/secret metadata checks and applicable local clone check; one fresh
+read-only final reviewer per executing-plans, then Important/Critical TDD fix pass.
+G6.6/Task3/final goal remain incomplete until those finish. Preserve current branch
+and local artifacts; no new integration/release approval is inferred.
 
 ### 2026-10-12 — local matched pair works; run fresh E9 next
 

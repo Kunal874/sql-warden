@@ -62,17 +62,17 @@ using evaluation outcomes must be caught by checks.
 
 ## Task 3 — serving, matched E9 and resume (G6.5/G6.6)
 
-- [ ] Verify adapter merge/GGUF conversion resource requirements and exact tools
+- [x] Verify adapter merge/GGUF conversion resource requirements and exact tools
   before adding conversion dependencies; choose a local path within budget.
-- [ ] Freeze matched prompt/schema/quantization/context/output/loop settings for
+- [x] Freeze matched prompt/schema/quantization/context/output/loop settings for
   base and tuned models; Arctic comparison must name any contract differences.
   Existing held-out outcomes are already known, so E9 is a repeat comparison,
   not a claim of a new untouched test set. Tune only on training validation/dev.
-- [ ] Run development then all324 existing verified held-out questions for base
+- [x] Run development then all324 existing verified held-out questions for base
   and tuned under restricted logins; compute EX, paired intervals, latency/memory
   and failure counts. A larger model comparison uses comparable settings or is
   explicitly a reference result.
-- [ ] Update EVAL/README/RESUME/notebook using actual evidence, including a null
+- [x] Update EVAL/README/RESUME/notebook using actual evidence, including a null
   or negative improvement. Keep existing G3 summaries and headlines intact.
 - [ ] Review the complete change and run applicable local release checks. Commit
   under Kunal's identity. Leave publication/push/weights to separate approval.

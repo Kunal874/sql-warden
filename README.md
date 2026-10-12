@@ -62,7 +62,7 @@ local PostgreSQL-adapted BIRD Mini-Dev numbers with corrected labels and a quant
 7B model. They are **not** official BIRD leaderboard scores and are not comparable to
 published full-precision SQLite results.
 
-## Local fine-tuning — training complete, comparison pending
+## Local fine-tuning — measured base-versus-tuned comparison
 
 A QLoRA experiment fine-tuned Qwen2.5-Coder-1.5B-Instruct on an 8 GB RTX 4060
 laptop GPU: 500 updates across 2,000 PostgreSQL-converted BIRD examples, with
@@ -72,11 +72,20 @@ matched exactly after reload. The measured training/checkpoint/validation loop
 took 57.70 minutes and peaked at 6.426 GiB reserved GPU memory; initial loading/
 validation are excluded.
 
-Training labels are structurally checked but execution-unverified. Local serving
-conversion and the matched base-versus-tuned accuracy comparison remain unfinished;
-this does not replace the Arctic runtime or establish an accuracy improvement.
+On 324 existing held-out questions, matched Q4_K_M base/tuned models scored
+37/324 (11.4%) and 76/324 (23.5%) execution accuracy: **+12.0 percentage points**
+(paired 95% bootstrap interval +7.1 to +17.0). Median per-question time was
+2.94 s versus 0.82 s in this local run. All 848 dev/held-out attempts were fresh,
+response-cache-off and guarded under restricted PostgreSQL logins.
+
+Training labels are structurally checked but execution-unverified. This is a
+repeat comparison on an already-known PostgreSQL-adapted subset, not official
+BIRD or a newly untouched test. The tuned1.5B model still trails the historical
+7B Arctic full-schema result of 54.3%; Arctic remains the app's default. Tuning
+improved 55 questions but regressed 16; accuracy among answered questions did not
+improve. No weights were published or new commits pushed.
 See [training evidence](results/G6_training/summary.json), [EVAL](docs/EVAL.md#e9--fine-tuning)
-and [resume evidence](docs/RESUME.md#g6-training-evidence--accuracy-comparison-pending).
+and [resume evidence](docs/RESUME.md#g6--measured-fine-tuning-evidence).
 
 ## Security model
 

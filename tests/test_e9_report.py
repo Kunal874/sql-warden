@@ -32,6 +32,19 @@ def test_report_pairs_by_id_and_keeps_failures_in_denominator():
     assert report["base"]["failures"] == {"no_valid_candidate": 1}
 
 
+def test_report_separates_candidate_failures_from_valid_but_wrong_answers():
+    base = [record(1, 0, "base"), record(2, 0, "base")]
+    base[0]["candidates"] = [
+        {"status": "failed", "reason": "undefined_object", "sql": "private-sql"}
+    ]
+    base[1]["candidates"] = [{"status": "ok", "reason": "ok", "sql": "private-sql"}]
+    tuned = [record(1, 1, "tuned"), record(2, 1, "tuned")]
+    report = summarize_pair(base, tuned, [1, 2])
+    assert report["base"]["candidate_failures"] == {"undefined_object": 1}
+    assert report["tuned"]["candidate_failures"] == {}
+    assert "private-sql" not in json.dumps(report)
+
+
 @pytest.mark.parametrize("bad", ["missing", "duplicate", "gold", "score", "cache", "generator"])
 def test_report_refuses_incomplete_or_incomparable_records(bad):
     base = [record(1, 0, "base"), record(2, 1, "base")]

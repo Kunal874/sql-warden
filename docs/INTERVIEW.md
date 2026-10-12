@@ -75,7 +75,7 @@ and the manifests named; re-read those files if anything is rebuilt.
     evidence site plus a local demo costs nothing and leaks nothing. Evidence:
     [DEPLOY](DEPLOY.md), D-077.
 
-## G6 training addendum — not a completed E9 comparison
+## G6 training and measured E9 addendum
 
 13. **What did you actually fine-tune?**
     Qwen2.5-Coder-1.5B-Instruct, using NF4 QLoRA on the laptop's 8 GB RTX 4060.
@@ -94,8 +94,10 @@ and the manifests named; re-read those files if anything is rebuilt.
 15. **Does lower loss prove better SQL answers?**
     No. Token loss measures how well the model predicts the saved answer tokens;
     execution accuracy checks whether a query returns the correct database answer.
-    The matched base-versus-tuned E9 test has not run, so I cannot claim an accuracy
-    improvement or that the small model matched Arctic. Evidence: EVAL E9.
+    The matched E9 test measured11.4→23.5% on324existing known held-out questions,
+    with a paired interval +7.1 to +17.0points. That is separate evidence from
+    loss, not proof of broad generalization. The small model still does not match
+    Arctic54.3%. Evidence: EVAL E9 and the compact E9 summary.
 
 16. **What are the main data-quality limits?**
     BIRD training labels started as SQLite. I converted them to PostgreSQL and
@@ -106,8 +108,34 @@ and the manifests named; re-read those files if anything is rebuilt.
     Evidence: [data manifest](training-data-manifest.json), D-087/D-088.
 
 17. **Is the trained model already running in SQLWarden?**
-    No. Save/reload passed for the adapter, and a tiny CPU merge self-check passed,
-    but that is not full-model conversion or Ollama feasibility. Model serving and
-    the fresh, guarded PostgreSQL comparison remain next. Existing Arctic behavior
-    and G3 results are unchanged. No new weights or commits were pushed.
+    It now serves locally as a separate experimental Ollama alias and completed
+    the fresh guarded comparison. It is not the app's default: Arctic remains
+    more accurate in the historical reference. Full merge/tensor/reload, matched
+    quantization/template and actual PostgreSQL checks passed. G3 results are
+    unchanged. No new weights or commits were pushed.
     Evidence: [serving inputs](g6-serving-inputs.json), PROGRESS Handoff.
+
+### Three-question G6 practice drill
+
+18. **What did the tuning improve, and what did it make worse?**
+    End-to-end EX increased37→76correct on324 questions (+12.0points);55
+    questions improved and16 regressed. More queries became executable, and
+    coverage rose25.3→53.1%, but correctness among answered queries changed
+    45.1→44.2%. Unknown-object failures remained common. Do not claim universal
+    reliability or promote the smaller model over Arctic based on this result.
+
+19. **How did you make base and tuned comparable?**
+    Same source revision, selected validation checkpoint, converter/quantizer,
+    Q4_K_M/layout/tokenizer, actual chat template, prompt/schema/seed/budgets,
+    safeguards and question order; response cache off. A strict weight audit
+    caught one untrained bias rounding difference, corrected only in the derived
+    base file with recoverable original bytes. Final files differ only in56
+    adapter-target matrices. All848 attempts used clean faa41c9 provenance.
+
+20. **Why did the tuned model answer faster?**
+    It produced shorter answers: held-out median completion length417→106tokens,
+    while median item latency2.94→0.82s. The experiment measures local task
+    latency, not faster GPU hardware or a universal speedup. Loaded-model VRAM
+    was reported similarly for both. Prefix reuse inside Ollama was not disabled.
+
+This is a supplied practice sheet, not a claim that a human interview was assessed.

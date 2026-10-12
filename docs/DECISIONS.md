@@ -2702,6 +2702,31 @@ benchmark contract, runtime/database permission or model identity changed.
 Costs if wrong: undercounted raw runs could consume the narrow remaining headroom.
 Fixed test-first;33 focused publisher/E9 checks and1020offline tests pass.
 
+## D-102 — E9 measured gain, regressions and limitations (2026-10-12)
+
+All848 attempts complete clean faa41c9, fixed model selection and contracts,
+valid corrected gold and no response-cache hits. Dev9→20/100; held-out37→76/324
+(11.4→23.5%), paired +12.04points95% interval +7.10–16.98.55wins/16regressions;
+answer coverage25.3→53.1%, conditional EX45.1→44.2%. Median item time
+2.935→0.823s with shorter completion lengths417→106tokens; do not label this a
+hardware speedup. Same API-reported loaded-model VRAM1.27GiB, not device peak.
+Use question-level10,000 bootstrap samples/seed20261008, not database-cluster
+resampling or generation seed42. Native prompt-prefix reuse was not disabled.
+
+Report actual improvement but do not promote tuned1.5B over historical Arctic
+54.3% or change app defaults. Keep the known-held-out repeat/converted-label/
+content-pretraining limitations. Resume uses percentage points and the paired
+interval, not exaggerated universal improvement. No training rerun or benchmark
+setting changes from observed development/held-out answers.
+
+Candidate reasons supplement terminal outcomes without changing EX: invalid
+output/parse/syntax failures decrease, unknown objects125→129 remain dominant.
+Existing report writer correctly refuses overwrite; preserve our original compact
+summary locally then regenerate, with asserted equality of all pre-existing
+metrics/provenance. Original raw evidence unchanged, no query/rows committed.
+Costs if wrong: local repeated-set/one-seed gains might not generalize; disclose
+16 regressions and conditional accuracy instead of selling universal reliability.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

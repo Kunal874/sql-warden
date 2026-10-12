@@ -47,6 +47,14 @@ def summarize_pair(base: list[dict], tuned: list[dict], ids: list[int]) -> dict:
             "failures": dict(
                 Counter(record["reason"] for record in records if not record["final_ex_corrected"])
             ),
+            "candidate_failures": dict(
+                Counter(
+                    candidate["reason"]
+                    for record in records
+                    for candidate in record.get("candidates", [])
+                    if candidate["status"] != "ok"
+                )
+            ),
         }
     summary["tuned_vs_base"] = paired(views["tuned"], views["base"], ids=ids)
     return summary

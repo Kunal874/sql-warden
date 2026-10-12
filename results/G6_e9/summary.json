@@ -1,0 +1,345 @@
+{
+  "claim": "repeat local PostgreSQL-adapted Mini-Dev comparison; not official BIRD",
+  "experiment": "E9",
+  "labels": "training conversions structurally checked, execution-unverified",
+  "serving_sha256": "a3b2a8a88ecb9dbec46dcd58a44d227cfd2ac5ae33b0ef419e9fead20197da16",
+  "splits": {
+    "dev": {
+      "base": {
+        "accuracy": {
+          "abstained": 54,
+          "answered": {
+            "count": 32,
+            "rate": 0.32
+          },
+          "answered_only_ex": {
+            "count": 9,
+            "rate": 0.28125
+          },
+          "ex": {
+            "bootstrap": {
+              "high": 0.15,
+              "low": 0.04,
+              "mean": 0.09,
+              "n": 100
+            },
+            "count": 9,
+            "exact": {
+              "high": 0.163982,
+              "k": 9,
+              "low": 0.041984,
+              "n": 100
+            },
+            "rate": 0.09
+          },
+          "n": 100,
+          "pending": 0
+        },
+        "candidate_failures": {
+          "database_error": 1,
+          "function_not_allowed": 5,
+          "model output invalid": 4,
+          "parse_error": 7,
+          "row_limit": 3,
+          "syntax_error": 5,
+          "table_not_allowed": 1,
+          "undefined_object": 41,
+          "unsupported_relation": 1
+        },
+        "failures": {
+          "function_not_allowed": 5,
+          "no_valid_candidate": 54,
+          "parse_error": 7,
+          "single_candidate": 23,
+          "table_not_allowed": 1,
+          "unsupported_relation": 1
+        },
+        "latency": {
+          "cache_hits": 0,
+          "calls": 100,
+          "calls_per_question": 1.0,
+          "completion_tokens_total": 43054,
+          "items": 100,
+          "median_item_seconds": 2.75,
+          "not_replayable": 0,
+          "p95_item_seconds": 4.239,
+          "peak_vram_bytes": 1360758046,
+          "per_role": {
+            "generate": {
+              "live_calls": 100,
+              "median_completion_tokens": 420.5,
+              "median_seconds": 2.692,
+              "p95_seconds": 4.167
+            }
+          },
+          "prompt_tokens_total": 151357,
+          "questions_per_hour": 1309.1,
+          "swap_seconds_total": 0
+        }
+      },
+      "provenance": {
+        "base": {
+          "git_commit": "faa41c91b01e89a13274d2973d9cec55900f301e",
+          "manifest_fingerprint": "27ab082253ab63a3e9a2740f0c0da615bcb0b5bcbd031e8dac2497ec4f12bf9d",
+          "model_digest": "e3d2dc6368077b36581b83781fc5a40ce7dd5eaaeb9ff18309e776cbd7543cf5",
+          "records_sha256": "6f8a8dec323402f86e304e2227ba27018f58dde0c663204a0e677a167665bc17"
+        },
+        "tuned": {
+          "git_commit": "faa41c91b01e89a13274d2973d9cec55900f301e",
+          "manifest_fingerprint": "4135555b1f086169cc18c953795180c256ee100faf7ec64f138aebf5db4c7ddb",
+          "model_digest": "50234b1de39881dad68d203f59240ee25e6ea6985436dbca4a0abfcf76df733c",
+          "records_sha256": "f1070dd8a1a2780bb182bf48991425f0dc4f185b144d92bea79627845f2e7577"
+        }
+      },
+      "tuned": {
+        "accuracy": {
+          "abstained": 54,
+          "answered": {
+            "count": 45,
+            "rate": 0.45
+          },
+          "answered_only_ex": {
+            "count": 20,
+            "rate": 0.444444
+          },
+          "ex": {
+            "bootstrap": {
+              "high": 0.28,
+              "low": 0.12,
+              "mean": 0.2,
+              "n": 100
+            },
+            "count": 20,
+            "exact": {
+              "high": 0.291843,
+              "k": 20,
+              "low": 0.126656,
+              "n": 100
+            },
+            "rate": 0.2
+          },
+          "n": 100,
+          "pending": 0
+        },
+        "candidate_failures": {
+          "database_error": 1,
+          "model output invalid": 1,
+          "parse_error": 1,
+          "row_limit": 2,
+          "undefined_object": 50
+        },
+        "failures": {
+          "no_valid_candidate": 54,
+          "parse_error": 1,
+          "single_candidate": 25
+        },
+        "latency": {
+          "cache_hits": 0,
+          "calls": 100,
+          "calls_per_question": 1.0,
+          "completion_tokens_total": 13462,
+          "items": 100,
+          "median_item_seconds": 0.809,
+          "not_replayable": 0,
+          "p95_item_seconds": 1.23,
+          "peak_vram_bytes": 1360758046,
+          "per_role": {
+            "generate": {
+              "live_calls": 100,
+              "median_completion_tokens": 102.5,
+              "median_seconds": 0.721,
+              "p95_seconds": 1.139
+            }
+          },
+          "prompt_tokens_total": 151357,
+          "questions_per_hour": 4449.9,
+          "swap_seconds_total": 0.091
+        }
+      },
+      "tuned_vs_base": {
+        "both": 4,
+        "ci": {
+          "high": 0.2,
+          "low": 0.02,
+          "mean": 0.11,
+          "n": 100
+        },
+        "difference": 0.11,
+        "left_only": 16,
+        "n": 100,
+        "neither": 75,
+        "right_only": 5
+      }
+    },
+    "held_out": {
+      "base": {
+        "accuracy": {
+          "abstained": 210,
+          "answered": {
+            "count": 82,
+            "rate": 0.253086
+          },
+          "answered_only_ex": {
+            "count": 37,
+            "rate": 0.45122
+          },
+          "ex": {
+            "bootstrap": {
+              "high": 0.151235,
+              "low": 0.080247,
+              "mean": 0.114198,
+              "n": 324
+            },
+            "count": 37,
+            "exact": {
+              "high": 0.153959,
+              "k": 37,
+              "low": 0.081692,
+              "n": 324
+            },
+            "rate": 0.114198
+          },
+          "n": 324,
+          "pending": 0
+        },
+        "candidate_failures": {
+          "database_error": 13,
+          "function_not_allowed": 5,
+          "model output invalid": 49,
+          "parse_error": 20,
+          "row_limit": 5,
+          "syntax_error": 18,
+          "table_not_allowed": 7,
+          "undefined_object": 125
+        },
+        "failures": {
+          "function_not_allowed": 5,
+          "no_valid_candidate": 210,
+          "parse_error": 20,
+          "single_candidate": 45,
+          "table_not_allowed": 7
+        },
+        "latency": {
+          "cache_hits": 0,
+          "calls": 324,
+          "calls_per_question": 1.0,
+          "completion_tokens_total": 139904,
+          "items": 324,
+          "median_item_seconds": 2.935,
+          "not_replayable": 0,
+          "p95_item_seconds": 4.442,
+          "peak_vram_bytes": 1360758046,
+          "per_role": {
+            "generate": {
+              "live_calls": 324,
+              "median_completion_tokens": 417.0,
+              "median_seconds": 2.862,
+              "p95_seconds": 4.41
+            }
+          },
+          "prompt_tokens_total": 497075,
+          "questions_per_hour": 1226.6,
+          "swap_seconds_total": 0.101
+        }
+      },
+      "provenance": {
+        "base": {
+          "git_commit": "faa41c91b01e89a13274d2973d9cec55900f301e",
+          "manifest_fingerprint": "4b9bcbccbec892061d1b8934e1692d980c2d3fa7e4e2b69aaff5994c3b52aad6",
+          "model_digest": "e3d2dc6368077b36581b83781fc5a40ce7dd5eaaeb9ff18309e776cbd7543cf5",
+          "records_sha256": "dc2d909b75ad0b859e3e4e1f2453c9b8ffd30a0267cdcb02b3699a141c01d18c"
+        },
+        "tuned": {
+          "git_commit": "faa41c91b01e89a13274d2973d9cec55900f301e",
+          "manifest_fingerprint": "b73e5f94229d0cdafae95a39128bbc44a82c0db46af3194594b82844bcf9d771",
+          "model_digest": "50234b1de39881dad68d203f59240ee25e6ea6985436dbca4a0abfcf76df733c",
+          "records_sha256": "6177fba12d007db172fc0f05222dc8cfb78f268386b20fb08bbfc2323692a5ad"
+        }
+      },
+      "tuned": {
+        "accuracy": {
+          "abstained": 143,
+          "answered": {
+            "count": 172,
+            "rate": 0.530864
+          },
+          "answered_only_ex": {
+            "count": 76,
+            "rate": 0.44186
+          },
+          "ex": {
+            "bootstrap": {
+              "high": 0.283951,
+              "low": 0.188272,
+              "mean": 0.234568,
+              "n": 324
+            },
+            "count": 76,
+            "exact": {
+              "high": 0.284563,
+              "k": 76,
+              "low": 0.189499,
+              "n": 324
+            },
+            "rate": 0.234568
+          },
+          "n": 324,
+          "pending": 0
+        },
+        "candidate_failures": {
+          "cost_limit": 1,
+          "database_error": 7,
+          "function_not_allowed": 3,
+          "parse_error": 4,
+          "row_limit": 7,
+          "table_not_allowed": 1,
+          "undefined_object": 129
+        },
+        "failures": {
+          "cost_limit": 1,
+          "function_not_allowed": 3,
+          "no_valid_candidate": 143,
+          "parse_error": 4,
+          "single_candidate": 96,
+          "table_not_allowed": 1
+        },
+        "latency": {
+          "cache_hits": 0,
+          "calls": 324,
+          "calls_per_question": 1.0,
+          "completion_tokens_total": 36827,
+          "items": 324,
+          "median_item_seconds": 0.823,
+          "not_replayable": 0,
+          "p95_item_seconds": 1.371,
+          "peak_vram_bytes": 1360758046,
+          "per_role": {
+            "generate": {
+              "live_calls": 324,
+              "median_completion_tokens": 106.0,
+              "median_seconds": 0.735,
+              "p95_seconds": 1.206
+            }
+          },
+          "prompt_tokens_total": 497075,
+          "questions_per_hour": 4374.2,
+          "swap_seconds_total": 0.098
+        }
+      },
+      "tuned_vs_base": {
+        "both": 21,
+        "ci": {
+          "high": 0.169753,
+          "low": 0.070988,
+          "mean": 0.12037,
+          "n": 324
+        },
+        "difference": 0.12037,
+        "left_only": 55,
+        "n": 324,
+        "neither": 232,
+        "right_only": 16
+      }
+    }
+  }
+}

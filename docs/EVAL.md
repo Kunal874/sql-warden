@@ -247,8 +247,8 @@ Layer-off variants in the disposable environment (`sqlwarden_e5_disposable`, syn
 
 ## E9 — fine-tuning
 
-G6 training has finished; the base-versus-tuned E9 accuracy comparison has **not**
-run. All E0-E8 numbers above remain unchanged. This training addendum is based on
+G6 training and the matched base-versus-tuned E9 comparison have finished.
+All E0-E8 numbers above remain unchanged. Training evidence is based on
 [the completed training record](../results/G6_training/summary.json) and
 [the frozen tokenized-data manifest](training-tokenized-manifest.json).
 
@@ -269,10 +269,63 @@ checkpoint/repeated-validation loop took 57.70 minutes and peaked at 6.426 GiB
 PyTorch reserved GPU memory; these exclude initial loading/validation and do not
 measure serving latency or full-model conversion memory.
 
-Next: matching base/tuned Q4_K_M Ollama models, full schema, prompt v2, one
-candidate/no repair, context 8,192/output 3,072/seed 42, fresh responses on all
-100 development and 324 existing held-out questions per model. The known held-out
-set makes this a repeat comparison, not a newly untouched test set. Arctic's
-matching full-schema result is an explicitly historical reference; its latency
-is not a fresh same-session measurement. No accuracy gain is inferred from loss.
-Conversion and real E9 execution await the pending artifact-limit choice.
+### E9 matched results (2026-10-12)
+
+[Compact comparison](../results/G6_e9/summary.json),
+[frozen serving manifest](g6-serving-manifest.json),
+[merge](../results/G6_training/merge.json),
+[GGUF audit](../results/G6_training/gguf-check.json).
+
+All 848 attempts completed from clean faa41c9 with valid corrected gold and zero
+response-cache hits: 100 dev plus 324 held-out per model. Both use full schema,
+promptv2, n1/k0, Q4_K_M, context8192/output3072/temp0/seed42, matched tokenizer
+and actual HF chat template, the same guard/restricted executor/EX comparator.
+Checkpoint selection was already frozen from validation; no E9-driven selection
+or prompt/threshold changes. Serving manifest stays frozen at its pre-run status
+text for provenance; this report, not that historical status field, gives completion.
+
+| Model | Dev EX (100) | Held-out EX (324; exact95% interval) | Held-out answer coverage | EX among answered | Median / p95 item time |
+| --- | --- | --- | --- | --- | --- |
+| Base 1.5B | 9/100 (9.0%) | 37/324 (11.4%; 8.2–15.4%) | 82/324 (25.3%) | 37/82 (45.1%) | 2.935 / 4.442 s |
+| Tuned 1.5B | 20/100 (20.0%) | 76/324 (23.5%; 18.9–28.5%) | 172/324 (53.1%) | 76/172 (44.2%) | 0.823 / 1.371 s |
+
+Held-out paired improvement: 39 net correct answers, +12.04 percentage points,
+95% bootstrap interval +7.10 to +16.98 points. Tuned-only55, base-only16,
+both 21, neither 232. Development difference +11 points (interval +2 to +20).
+Intervals reuse 10,000 question-level bootstrap samples/seed 20261008, distinct
+from generation seed42. These are question-level, not database-cluster intervals.
+
+Observed median item latency fell72.0%; this includes the existing run_item
+workflow, not a hardware throughput benchmark. Held-out prompt-token totals
+match497,075 each; completion totals139,904 versus36,827, with median completion
+length417 versus106 tokens. Both models' maximum API-reported loaded-model VRAM
+was1,360,758,046bytes (~1.27GiB); this is not sampled transient whole-device peak.
+Response caching was disabled; internal Ollama prompt-prefix reuse was not disabled.
+
+### What improved, and what did not
+
+Tuning improved end-to-end correctness and increased answer coverage, but did
+not improve conditional correctness on answered questions (45.1→44.2%). There
+were 16 regressions. It is not an across-the-board reliability improvement.
+
+Candidate failures are separate from valid-but-wrong answers. On held-out,
+unknown-object failures remain dominant125→129. Invalid model output49→0,
+parse errors20→4 and syntax errors18→0 decreased. Other candidate failures:
+database_error13→7, row_limit5→7, function_not_allowed5→3,
+table_not_allowed7→1, cost_limit0→1. Valid-but-wrong answers45→96 are not
+counted as execution failures. Terminal reasons and candidate categories are
+both included in the compact report; no SQL, prompt text or result rows are copied.
+
+Arctic's earlier full-schema n1/k0 held-out176/324 (54.3%) remains an explicitly
+historical7B reference, with verified corresponding project contract and model-
+specific template differences. It was not rerun in this session; its latency is
+not a fresh matched measurement. The tuned1.5B does not match or beat it, so the
+app's default generator stays Arctic. Existing G3 headline/threshold results stand.
+
+Limitations: repeat known held-out subset, execution-unverified converted training
+labels, small one-seed experiment, training2048 versus serving8192 context,
+unproven row-content/pretraining separation, and no new broad generalization claim.
+The source/selected adapter remain unchanged. Matching preprocessing required
+documented FP16 rounding of one untrained value in the derived base GGUF; original
+bytes were retained and final audit shows only56 target-weight tensors differ.
+No weight publication, hosted inference or new push.
