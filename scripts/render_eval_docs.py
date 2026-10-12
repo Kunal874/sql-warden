@@ -368,7 +368,11 @@ def phase_section(split: dict[str, Any]) -> list[str]:
         "| --- | --- | --- | --- | --- | --- |",
     ]
     for run, r in rates.items():
-        top = dict(list(r["first_attempt_failure_reasons"].items())[:4])
+        top = dict(
+            sorted(
+                r["first_attempt_failure_reasons"].items(), key=lambda item: (-item[1], item[0])
+            )[:4]
+        )
         lines.append(
             f"| {run} | {r['candidates']} | {pct(r['sql_extracted'])} | "
             f"{pct(r['guard_accepted'])} | {pct(r['executed'])} | {fmt_counts(top)} |"

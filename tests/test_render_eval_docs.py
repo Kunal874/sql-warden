@@ -1,3 +1,7 @@
+import json
+
+import pytest
+
 from scripts.render_eval_docs import readme_block, render_eval, render_resume, replace_block
 
 CONDITION = {
@@ -102,3 +106,65 @@ def test_resume_reports_attack_bound_and_names_single_layer_dependencies():
     assert "L-A4-05 depended on the SQL guard alone" in resume
     assert "L-A5-03 depended on the statement timeout alone" in resume
     assert "overlapping defenses rather than one point of failure" not in resume
+
+
+@pytest.mark.parametrize(
+    "resume_heading",
+    ["## G6 training evidence — accuracy comparison pending", "## G6 fine-tuning evidence"],
+)
+def test_document_regeneration_refreshes_g3_but_preserves_g6_addenda(
+    tmp_path, monkeypatch, resume_heading
+):
+    from scripts import build_matrix_report
+
+    (tmp_path / "results/E0_smoke").mkdir(parents=True)
+    (tmp_path / "results/E0_smoke/dashboard.json").write_text(
+        json.dumps({"models": {}}), encoding="utf-8"
+    )
+    (tmp_path / "docs").mkdir()
+    (tmp_path / "README.md").write_text(
+        "intro\n<!-- results:start -->\nold G3\n<!-- results:end -->\nG6 unchanged\n",
+        encoding="utf-8",
+    )
+    evaluation_tail = "## E9 — fine-tuning\n\nTraining complete; accuracy comparison pending.\n"
+    resume_tail = f"{resume_heading}\n\nFull run 2000; selected checkpoint 1600.\n"
+    (tmp_path / "docs/EVAL.md").write_text("old G3\n\n" + evaluation_tail, encoding="utf-8")
+    (tmp_path / "docs/RESUME.md").write_text("old G3\n\n" + resume_tail, encoding="utf-8")
+    monkeypatch.setattr(build_matrix_report, "ROOT", tmp_path)
+
+    for _ in range(2):
+        build_matrix_report.write_docs(SUMMARY)
+        evaluation = (tmp_path / "docs/EVAL.md").read_text(encoding="utf-8")
+        resume = (tmp_path / "docs/RESUME.md").read_text(encoding="utf-8")
+        assert evaluation.endswith(evaluation_tail)
+        assert resume.endswith(resume_tail)
+        assert evaluation.count("## E9") == resume.count("## G6") == 1
+        for document in [evaluation, resume]:
+            assert "old G3" not in document and "25.0%" in document
+        readme = (tmp_path / "README.md").read_text(encoding="utf-8")
+        assert "old G3" not in readme and readme.endswith("G6 unchanged\n")
+
+
+def test_top_failure_reasons_are_ranked_after_sorted_json_reload():
+    phase = {
+        "candidates": 10,
+        "sql_extracted": 1.0,
+        "guard_accepted": 0.5,
+        "executed": 0.0,
+        "first_attempt_failure_reasons": {
+            "alpha": 1,
+            "bravo": 1,
+            "charlie": 1,
+            "delta": 1,
+            "zebra": 6,
+        },
+    }
+    persisted = json.loads(
+        json.dumps(
+            SUMMARY | {"splits": {"dev": SPLIT | {"phase_rates": {"full_n1": phase}}}},
+            sort_keys=True,
+        )
+    )
+    evaluation = render_eval(persisted, e0={})
+    row = next(line for line in evaluation.splitlines() if line.startswith("| full_n1 | 10 |"))
+    assert row.endswith("| zebra 6, alpha 1, bravo 1, charlie 1 |")

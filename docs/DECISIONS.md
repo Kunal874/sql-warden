@@ -2582,6 +2582,43 @@ These factual addenda are manual, separate from G3's generated section. Its
 existing generator is G3-only; preserve/integrate the G6 evidence before later
 full regeneration. Do not run a regeneration merely to overwrite this addendum.
 
+## D-095 — G3 regeneration preserves independently versioned G6 evidence (2026-10-12)
+
+The real writer reproduced loss of manual G6 sections. Keep the existing G3
+renderers and preserve the E9/G6 tail from the versioned document, rather than
+inventing a second source of training facts or a new report framework. Match
+stable section prefixes, not the pending-status title. Repeated generation keeps
+exactly one addendum. Costs if wrong: G6 is intentionally maintained independently;
+updating its measurements still requires new verified evidence, not a G3 rerun.
+
+The first actual byte-equality check failed because persisted JSON sorts keys,
+reordering G3 tables. It also exposed top-four failure reasons being selected
+by dictionary order, falsely implying alphabetic entries were most frequent.
+Reproduced test-first; rank by count descending and name for ties. EX, counts,
+benchmark definitions and model settings stay unchanged. Incidental output
+reordering was removed; isolated actual-input checks verify G6 retention and
+unchanged G3 result lines, plus correct top failure frequencies. No live AI/DB run.
+
+The same unanswered12→24 GiB authority checkpoint has recurred across at least
+three consecutive goal continuations. It did not prevent earlier independent
+preparation; that preparation is now checked. Actual serving/E9 cannot proceed
+without the resource decision. Do not treat automatic goal continuation as new
+resource authority or redefine completion as training-only resume evidence.
+Kunal's explicit resource answer subsequently arrived in this same continuation;
+the authority blocker is now resolved by D-096, without applying blocked status.
+
+## D-096 — C8 serving artifacts increased to24 GiB (2026-10-12)
+
+Kunal chooses "Finish local Ollama conversion with the24 GiB limit" in response
+to the exact resource question. Count G6 artifacts across D: and new Ollama C:
+cache artifacts; preserve at least20 GiB free on D:. This approves the merged
+weights and matching base/tuned Q4_K_M models for the local comparison. No new
+libraries, paid services, uploads or pushes. Preserve pre-existing caches/models;
+record baseline cache membership so new G6 artifacts can be distinguished.
+Costs if wrong: native conversion can require intermediate files/memory beyond
+the estimate; fail within the approved cap rather than silently expanding it.
+Training remains complete; continue only serving/conversion/E9 and final evidence.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

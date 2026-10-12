@@ -528,10 +528,17 @@ def write_docs(summary: dict[str, Any]) -> None:
         encoding="utf-8",
         newline="\n",
     )
-    (ROOT / "docs/EVAL.md").write_text(
-        render_eval(summary, e0=e0["models"]), encoding="utf-8", newline="\n"
-    )
-    (ROOT / "docs/RESUME.md").write_text(render_resume(summary), encoding="utf-8", newline="\n")
+    for name, generated, marker in [
+        ("EVAL.md", render_eval(summary, e0=e0["models"]), "\n## E9 "),
+        ("RESUME.md", render_resume(summary), "\n## G6 "),
+    ]:
+        path = ROOT / "docs" / name
+        existing = path.read_text(encoding="utf-8") if path.exists() else ""
+        if marker in existing:
+            # G6's versioned manual evidence is independent of this G3 generator.
+            prefix = generated.partition(marker)[0].rstrip()
+            generated = f"{prefix}\n{marker}{existing.partition(marker)[2]}"
+        path.write_text(generated, encoding="utf-8", newline="\n")
 
 
 def freeze_threshold() -> dict[str, Any]:

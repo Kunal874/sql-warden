@@ -2818,6 +2818,28 @@ focused report/training tests passed, and the full no-database suite passed 983
 tests with 475 expected skips. No database or GPU training test was repeated just
 to update the notes.
 
+### Rebuilding the old report will keep your fine-tuning notes (2026-10-12)
+
+The old report builder would erase the new fine-tuning section because it knew
+only about G3. We reproduced that in a test and fixed it. It now refreshes G3
+while keeping the separate G6 notes, even when their status heading changes.
+Running it twice does not add the same section twice. This is called idempotent:
+repeating an operation leaves the intended result stable.
+
+A real-file check also found a display problem: loading sorted JSON put failure
+names in alphabetic order, and the report mistook the first names for the most
+common failures. It now chooses the largest counts first. No accuracy score or
+failure count changed. Tests used copies of your real saved reports; your result
+documents were left unchanged. Twelve focused checks and 986 full no-database
+tests passed, with 475 expected skips; formatting/lint passed.
+
+All independent preparation is checked. The remaining model conversion and real
+accuracy comparison needed a storage-limit choice. Your answer arrived during
+this step: use up to24 GiB across the project and Ollama's cache, keeping20 GiB
+free on D:. We can now proceed with the real merge and local model comparison.
+We will preserve existing models/caches and will not upload or push anything.
+The fine-tuning project is not fully finished yet.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

@@ -19,7 +19,7 @@
   "limitations": [
     "Tiny invented CPU/FP16 merge probe is not full-model RAM or conversion feasibility",
     "No Ollama import, quantization or model template has been checked on the new models",
-    "The approved artifact cap remains 12 GiB; the proposed 24 GiB cap awaits an answer",
+    "The approved cap is now 24 GiB across G6 artifacts and new Ollama cache files, with 20 GiB free on D:",
     "No accuracy gain measured; converted training labels are execution-unverified"
   ]
 }

@@ -1412,14 +1412,38 @@ Pre-flight contract reconciliation:
 
 ### 2026-10-12 — G6 training complete; serving/E9 next
 
+Report regeneration after5a25a90: fixed G3 writer to retain the independently
+versioned E9/G6 addenda while refreshing G3 sections; section-prefix matching
+survives a changed G6 status heading and repeated generation does not duplicate
+the section. Regression reproduced the original overwrite before the fix.
+An actual whole-file byte check initially failed: sorted JSON reload changes
+dictionary/table ordering, and exposed a pre-existing top-four failure display
+that selected alphabetically instead of by frequency. Fixed that test-first to
+sort by descending count, then name for ties. Count values/EX are unchanged.
+The incidental regenerated README/EVAL changes from that check were reversed
+with exact patches; no user edits were present. An isolated temporary copy of
+the actual report inputs now proves exact G6 text preservation, unchanged G3
+README result lines apart from order, and correct held-out top failure ranking.
+Current project result documents stay unchanged by this code task.
+12 focused report tests pass (0.27 s); full no-env986 passed/475 expected skips
+(10.08 s), existing httpx warning; lint/122-file format/whitespace pass. No new
+database/model/training test was needed for this offline reporting change.
+
+Resource decision arrived during this continuation: Kunal explicitly chose
+finishing local Ollama conversion with24 GiB total G6 artifacts across D: and
+Ollama's C: cache, preserving20 GiB free on D:. The previously repeated blocker
+is resolved; no blocked/paused goal status was applied. Proceed sequentially
+with source-verified selected400 merge, matching Q4_K_M imports and real E9.
+No new libraries, paid services, upload or push. Do not retrain or delete
+existing models/caches. Full G6 remains unfinished until serving/E9 verification.
+
 Training-only portfolio evidence after40ad630: README and EVAL now distinguish
 completed QLoRA training from unrun E9. RESUME includes one measured training
 bullet with the selected400/1600 versus full500/2000 distinction and label caveat.
 INTERVIEW adds five evidence-backed training questions; the full G6 drill and
 G6.6 still remain unchecked until actual E9/final verification. No EX/serving
-gain claimed or G3 number changed. G3's existing report generator still renders
-G3-only documents: integrate/preserve these G6 addenda before any later full
-regeneration; do not rerun it now and erase the continuation evidence.
+gain claimed or G3 number changed. At this checkpoint G3's generator lacked G6
+preservation; the report-regeneration entry above resolves that gap.
 The pending24 GiB choice remains the conversion/evaluation checkpoint.
 Checks: saved-record assertions verify counts, chosen step, timing, memory and
 reload; manifest checks confirm57/6 disjoint database IDs and matching token hashes.
