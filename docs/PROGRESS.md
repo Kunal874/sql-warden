@@ -4,7 +4,7 @@ Active spec: [BUILD_SPEC.md](BUILD_SPEC.md). Detailed product plan:
 [sqlwarden-plan.md](../sqlwarden-plan.md). Preserve task IDs; the active spec
 amends their order and checks.
 
-Current group (2026-10-12): G0-G5 complete locally and G3's E1-E8 matrix has run
+Current group (2026-10-13): G0-G5 complete locally and G3's E1-E8 matrix has run
 (dev and held-out, clean provenance). G7.1/G7.2/G7.5 and the G7 drill are done; G7.3
 and G7.4 are done: private repo https://github.com/Kunal874/sql-warden, MIT, CI green. G6 is optional. Headline (held-out, local
 subset, not official BIRD): full-schema single candidate 54.3%, full loop 42.9% end to
@@ -21,6 +21,12 @@ EX gain for tuned1.5B (11.4→23.5%), below historical Arctic54.3%. G6.6 final
 checks/review are complete locally. Kunal approved24 GiB combined artifacts and pinned
 llama.cpp conversion-only tooling after Ollama rejected native Q4_K_M import.
 No new push is authorized by this continuation.
+
+2026-10-13: approved E10 development repair comparison complete:200 scored items,
+tuned k0 20/100→k1 22/100 (+2pp, paired95% interval0–5),54extra calls and slower
+median item time. No held-out rerun, new training or default change. One read-only
+review; its Important timeout-cost reporting finding fixed test-first. See newest
+Handoff/EVAL and results/G6_e9/repair/summary.json; prior G6/E9 evidence unchanged.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
 Both correction-intake tasks and the sole final review are complete: Task 1
@@ -258,7 +264,7 @@ the optional interview drill.
   - [x] Freeze deterministic 100-item development split and E0 protocol manifest.
   - [x] Run local two-model E0 on 100 dev IDs and track compact summary.
 - [x] G0.8 / C2: model/slice/helper choices from speed and memory evidence.
-- [ ] G0 interview drill (may be skipped by Kunal).
+- [x] G0 interview drill: three-question written practice sheet supplied (2026-10-13); no human assessment claimed.
 
 ### G1 — agent core
 
@@ -372,6 +378,15 @@ the optional interview drill.
 - [x] G6.5: merge/conversion/GGUF feasibility, local serving and comparable E9 (848fresh attempts).
 - [x] G6.6: evidence-driven EVAL/README update and applicable local checks/review; no new publication.
 - [x] G6 interview drill: three-question written practice sheet provided; no human assessment claimed.
+
+### E10 — approved development-only follow-up
+
+- [x] Checked minimal k0/k1 runner and report tooling (d4cef0d).
+- [x] Complete100-item k0 baseline, resuming six saved items without repetition.
+- [x] Complete100-item one-repair arm, same clean d4cef0d provenance.
+- [x] Compact paired accuracy/coverage/latency/cost report, no private raw content.
+- [x] One read-only review, timeout-accounting regression/fix and full checks.
+- [x] Updated evidence, resume/interview caveats and simple-English notebook.
 
 ## Session log
 
@@ -1413,7 +1428,69 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-13 — E10 complete locally; no required implementation remains
+
+Resumed after explicit "ready" with4.536GiB RAM. Scoped stash870621fb restored
+the exact clean d4cef0d tree; baseline skipped its six saved IDs and finished,
+then repair completed sequentially at the same commit. Both100unique frozen IDs,
+valid gold and zero cache hits; baseline100calls, repair154calls/54trace repair
+starts. EX20→22, coverage45→47%, paired +2pp95% interval0–5,2wins/0regressions.
+Median0.766→1.204s, p951.149→2.252s. No test/generalization claim or default change.
+Six baseline items originate in the earlier session; two interrupted generated
+items were not appended. Full protocol/telemetry/limitations in EVAL and D-107.
+
+One fresh read-only E10 review: no Critical/Minor, one Important cost-accounting
+finding confirmed with real fake-provider total timeout. Returned candidates are
+empty but repair/start remains; report previously counted0instead of1. RED two
+failures, trace-based count and incomplete telemetry flag GREEN,60focused checks.
+No agent/provider/security/inference change, rerun or raw-file mutation. Rulings
+for all eight review exclusions in D-107. No second review.
+
+Fresh full offline1045passed/475expected skips(12.72s), configured1517passed/
+3expected skips(32.83s), including real PostgreSQL checks. Ruff/133-file format/
+whitespace pass. Existing Starlette/httpx warning remains. Web was not changed
+or rerun. Four historical E9 raw hashes match their original summary; new two
+raw hashes match the compact report. All calls have reported usage and no timeout;
+incomplete_cost_items0/0. Model unloaded; all five Docker services remain healthy.
+Counted G6 artifacts23.828GiB, D free21.254GiB, RAM4.299GiB at final pre-doc check.
+
+Our exact stash870621fb was applied, not dropped; its historical pause notes
+remain recoverable. No unrelated stash or cleanup touched. Latest E10 code/report
+fix, compact evidence and documentation await the local commit in this checkpoint.
+Commit only those files with confirmed Kunal identity after staged inspection.
+Then keep branch/models/data/raw runs and default settings local. No new push,
+publication, training, cleanup or experiment is authorized by completion.
+The previously missing G0 drill is now a supplied written practice sheet, not
+human assessment. All approved project/experiment deliverables are complete;
+further accuracy work needs a distinct question/protocol, not another E10 rerun.
+
 ### 2026-10-12 — Approved E10 development repair comparison
+
+Current status: checked tooling committed d4cef0d (confirmed Kunal author and
+committer); live comparison incomplete, paused on actual RAM exhaustion.
+First baseline launch completed one unrecorded item but stopped before append at
+the1GiB floor. Its manifest is preserved recoverably as
+results/G6_e9/raw/repair/dev/stalled-k0-d4cef0d.manifest.json. Unloaded only the
+owned tuned Ollama model; a retry after RAM rose to1.68GiB saved6 baseline items
+(6calls,0correct) before another pre-append RAM failure. One additional retry
+item was generated but not appended. These are incomplete operational evidence,
+not an EX headline; no repair arm or compact report exists. Both error logs are
+ignored .tools/g6/repair-k0.log and repair-k0-retry.log. No background job remains,
+Ollama ps confirms empty, all existing services/data retained. Historical four
+E9 raw hashes independently match their original summary.
+
+Need roughly2GiB free RAM before another inference attempt, not just a transient
+1GiB crossing. Do not lower the floor or close apps/services on the owner's behalf.
+The complete-pair300-call upper bound excludes two generated but unrecorded
+items from these interrupted launches; retain that operational cost explicitly.
+This status/decision/notebook addendum is intentionally uncommitted to retain
+d4cef0d for strict resume. Before resuming at the same commit, temporarily stash
+only these three task-owned documentation files with a descriptive message:
+`git stash push -m 'e10 paused RAM handoff' -- docs/PROGRESS.md docs/DECISIONS.md 'explaination of project/PROJECT_EXPLAINED.md'`.
+Confirm clean HEAD d4cef0d, run the two resume commands below, then restore that
+exact stash, update the outcomes and commit the completed evidence. Preserve
+other stashes; do not change Git history or silently relax manifest matching.
+If resource pressure persists, keep this experiment incomplete, not G6 blocked.
 
 G6 remains complete at82f1476. New bounded scope approved: fresh tuned-model k0
 versus k1 on100 existing development questions, no held-out rerun or training.

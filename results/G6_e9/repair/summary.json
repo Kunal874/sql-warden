@@ -1,0 +1,176 @@
+{
+  "claim": "development comparison only; no new held-out or official BIRD score",
+  "experiment": "E10-dev-repair",
+  "generator": {
+    "alias": "sqlwarden-g6-qwen1.5b-tuned-q4km:e9-v1",
+    "context_tokens": 8192,
+    "digest": "50234b1de39881dad68d203f59240ee25e6ea6985436dbca4a0abfcf76df733c",
+    "max_output_tokens": 3072,
+    "name": "tuned"
+  },
+  "k0": {
+    "accuracy": {
+      "abstained": 54,
+      "answered": {
+        "count": 45,
+        "rate": 0.45
+      },
+      "answered_only_ex": {
+        "count": 20,
+        "rate": 0.444444
+      },
+      "ex": {
+        "bootstrap": {
+          "high": 0.28,
+          "low": 0.12,
+          "mean": 0.2,
+          "n": 100
+        },
+        "count": 20,
+        "exact": {
+          "high": 0.291843,
+          "k": 20,
+          "low": 0.126656,
+          "n": 100
+        },
+        "rate": 0.2
+      },
+      "n": 100,
+      "pending": 0
+    },
+    "candidate_failures": {
+      "database_error": 1,
+      "model output invalid": 1,
+      "parse_error": 1,
+      "row_limit": 2,
+      "undefined_object": 50
+    },
+    "failures": {
+      "no_valid_candidate": 54,
+      "parse_error": 1,
+      "single_candidate": 25
+    },
+    "incomplete_cost_items": 0,
+    "latency": {
+      "cache_hits": 0,
+      "calls": 100,
+      "calls_per_question": 1.0,
+      "completion_tokens_total": 13462,
+      "items": 100,
+      "median_item_seconds": 0.766,
+      "not_replayable": 0,
+      "p95_item_seconds": 1.149,
+      "peak_vram_bytes": 1360758046,
+      "per_role": {
+        "generate": {
+          "live_calls": 100,
+          "median_completion_tokens": 102.5,
+          "median_seconds": 0.695,
+          "p95_seconds": 1.086
+        }
+      },
+      "prompt_tokens_total": 151357,
+      "questions_per_hour": 4699.7,
+      "swap_seconds_total": 0
+    }
+  },
+  "k1": {
+    "accuracy": {
+      "abstained": 52,
+      "answered": {
+        "count": 47,
+        "rate": 0.47
+      },
+      "answered_only_ex": {
+        "count": 22,
+        "rate": 0.468085
+      },
+      "ex": {
+        "bootstrap": {
+          "high": 0.3,
+          "low": 0.14,
+          "mean": 0.22,
+          "n": 100
+        },
+        "count": 22,
+        "exact": {
+          "high": 0.31392,
+          "k": 22,
+          "low": 0.143304,
+          "n": 100
+        },
+        "rate": 0.22
+      },
+      "n": 100,
+      "pending": 0
+    },
+    "candidate_failures": {
+      "model output invalid": 19,
+      "parse_error": 1,
+      "undefined_object": 33
+    },
+    "failures": {
+      "no_valid_candidate": 52,
+      "parse_error": 1,
+      "single_candidate": 25
+    },
+    "incomplete_cost_items": 0,
+    "latency": {
+      "cache_hits": 0,
+      "calls": 154,
+      "calls_per_question": 1.54,
+      "completion_tokens_total": 22611,
+      "items": 100,
+      "median_item_seconds": 1.204,
+      "not_replayable": 0,
+      "p95_item_seconds": 2.252,
+      "peak_vram_bytes": 1360758046,
+      "per_role": {
+        "generate": {
+          "live_calls": 100,
+          "median_completion_tokens": 102.5,
+          "median_seconds": 0.69,
+          "p95_seconds": 1.067
+        },
+        "repair": {
+          "live_calls": 54,
+          "median_completion_tokens": 107.0,
+          "median_seconds": 0.728,
+          "p95_seconds": 1.083
+        }
+      },
+      "prompt_tokens_total": 241859,
+      "questions_per_hour": 2990.0,
+      "swap_seconds_total": 0
+    }
+  },
+  "k1_vs_k0": {
+    "both": 20,
+    "ci": {
+      "high": 0.05,
+      "low": 0.0,
+      "mean": 0.02,
+      "n": 100
+    },
+    "difference": 0.02,
+    "left_only": 2,
+    "n": 100,
+    "neither": 78,
+    "right_only": 0
+  },
+  "limits": "fresh response-cache-free runs; Ollama prefix reuse not disabled; one seed; call/token totals cover successful logged responses, not lifetime transport attempts; incomplete_cost_items flags missing/error/unknown usage telemetry",
+  "provenance": {
+    "k0": {
+      "git_commit": "d4cef0d5f12cde48d0a573cedeb3d97a2ae0e240",
+      "manifest_fingerprint": "b85f83d3a399d0fcc193d432b20f0c55deda891cacfe3c77079d9fb255248658",
+      "records_sha256": "e477a2f58c03fae2dfe816eabea01e84f6ca517376764a78e705479ca2c5cf42"
+    },
+    "k1": {
+      "git_commit": "d4cef0d5f12cde48d0a573cedeb3d97a2ae0e240",
+      "manifest_fingerprint": "33af516da50406c114950657bfdda9419a11871854a307c952ccbd49736b22aa",
+      "records_sha256": "f44d04107afb5324422497438c5b99c22864650ec0503dc6c0078821927f88dc"
+    }
+  },
+  "repair_attempts": 54,
+  "serving_sha256": "a3b2a8a88ecb9dbec46dcd58a44d227cfd2ac5ae33b0ef419e9fead20197da16"
+}

@@ -12,6 +12,10 @@ from scripts.run_matrix import build_items
 from sqlwarden.evaluation import write_atomic_record
 
 
+def repair_starts(record: dict) -> int:
+    return sum(event[:2] == ["repair", "start"] for event in record.get("trace", []))
+
+
 def summarize(baseline: list[dict], repaired: list[dict], ids: list[int]) -> dict:
     for repairs, records in enumerate([baseline, repaired]):
         for record in records:
@@ -20,6 +24,7 @@ def summarize(baseline: list[dict], repaired: list[dict], ids: list[int]) -> dic
                 or record.get("experiment") != "E10-dev-repair"
                 or record.get("condition") != ("full_n1_k1" if repairs else "full_n1")
                 or len(record.get("calls", [])) > 1 + repairs
+                or repair_starts(record) > repairs
                 or any(c["repairs"] > repairs for c in record.get("candidates", []))
             ):
                 raise ValueError("repair record contract refused")
@@ -29,11 +34,24 @@ def summarize(baseline: list[dict], repaired: list[dict], ids: list[int]) -> dic
         [r | {"generator": "tuned"} for r in repaired],
         ids,
     )
+    for name, records in [("base", baseline), ("tuned", repaired)]:
+        report[name]["incomplete_cost_items"] = sum(
+            len(record.get("calls", [])) < 1 + repair_starts(record)
+            or any(
+                call.get("status") not in {"ok", "prompt_budget"}
+                or (
+                    call.get("status") == "ok"
+                    and (call.get("prompt_tokens") is None or call.get("completion_tokens") is None)
+                )
+                for call in record.get("calls", [])
+            )
+            for record in records
+        )
     return {
         "k0": report["base"],
         "k1": report["tuned"],
         "k1_vs_k0": report["tuned_vs_base"],
-        "repair_attempts": sum(c["repairs"] for r in repaired for c in r.get("candidates", [])),
+        "repair_attempts": sum(repair_starts(record) for record in repaired),
     }
 
 
@@ -77,7 +95,9 @@ def main() -> None:
         "generator": generator,
         "serving_sha256": serving_sha,
         "provenance": provenance,
-        "limits": "fresh response-cache-free runs; Ollama prefix reuse not disabled; one seed",
+        "limits": "fresh response-cache-free runs; Ollama prefix reuse not disabled; one seed; "
+        "call/token totals cover successful logged responses, not lifetime transport attempts; "
+        "incomplete_cost_items flags missing/error/unknown usage telemetry",
     }
     check_e9_resources(planned_bytes=len(json.dumps(summary, indent=2, sort_keys=True)) + 1)
     write_atomic_record(ROOT / "results/G6_e9/repair/summary.json", summary)

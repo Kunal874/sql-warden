@@ -36,3 +36,13 @@ checked but execution-unverified. The held-out set was already known, so say
 Do not claim the selected checkpoint saw all 2,000 examples or beat Arctic's 54.3%.
 Tuning had 55 wins and 16 regressions; accuracy among answered questions did not
 improve. The app still uses Arctic by default. No model weights were published.
+
+### Optional follow-up to discuss in interviews
+
+- Evaluated one guarded repair versus no repair on100 development questions:
+  20→22 correct (+2percentage points; paired95% interval0–5), with54extra calls
+  and median item time0.766→1.204s; kept application defaults unchanged because
+  the small exploratory gain did not establish held-out improvement.
+
+This is development evidence, not an additional headline test score. The original
+G6 bullet above remains the stronger measured fine-tuning result.

@@ -329,3 +329,51 @@ The source/selected adapter remain unchanged. Matching preprocessing required
 documented FP16 rounding of one untrained value in the derived base GGUF; original
 bytes were retained and final audit shows only56 target-weight tensors differ.
 No weight publication, hosted inference or new push.
+
+## E10 — development-only one-repair comparison
+
+Approved after E9, not part of its frozen comparison. Same selected tuned1.5B
+alias/digest, full schema/n1, promptv2,8192-context/3072-output,temp0/seed42 and
+restricted guarded executor; only max_repairs0→1 changes. Both100-item arms use
+clean d4cef0d and the original development IDs, corrected questions/evidence and
+verified PostgreSQL gold. Gold is scored after the agent finishes, never used to
+repair. No helper, explanation or response cache. Original E9 files/hashes stand.
+[Compact report](../results/G6_e9/repair/summary.json).
+
+| Tuned-model setting | Correct /100 | Answered /100 | Correct among answered | Median / p95 item seconds | Successful logged calls |
+| --- | --- | --- | --- | --- | --- |
+| k0: no repair |20 (20%)|45 (45%)|20/45 (44.4%)|0.766 /1.149|100|
+| k1: at most one repair |22 (22%)|47 (47%)|22/47 (46.8%)|1.204 /2.252|154|
+
+Paired +2percentage points, question-level95% bootstrap interval0–5points
+(10,000 resamples, seed20261008):2repair-only wins,0regressions,20both correct,
+78neither. This interval includes zero; the small development result does not
+establish a reliable generalization gain. First-attempt EX agrees on all99 items
+with derived attempts; the remaining malformed generation is a failure in both.
+
+54 repair starts cost54 extra calls. Prompt-token totals151357→241859;
+completion-token totals13462→22611. Median item time rises57.2%; it includes the
+agent/executor work, excludes offline gold scoring and setup, and is not a GPU
+throughput benchmark. Both maximum API-reported loaded-model VRAM values are
+1360758046bytes, not transient whole-device peaks. Ollama prefix reuse was not
+disabled; baseline includes six records from the earlier memory-limited session.
+
+Repair reduced unknown-object terminal candidate failures50→33 but increased
+invalid model output1→19. Only two extra final answers are correct: fewer database
+errors do not automatically mean better answers. No extra training, prompt/gold
+adjustment, held-out run or model-default change followed these outcomes.
+
+Two earlier inferred items were lost before append at the RAM floor and repeated
+on resume; disclose their operational cost outside the254 recorded calls. The
+runner preserved evidence, never lowered the floor or terminated other apps.
+All200 final records have valid gold, zero response-cache hits and complete logged
+usage; no timeout. A review found a future timeout could erase returned candidates
+and hide a repair cost. Report-only TDD fix counts retained repair/start trace
+events and flags incomplete_cost_items for missing/error/unknown usage telemetry.
+The call/token totals describe successful logged responses, not lifetime transport
+attempts. Raw evidence and EX scores remain unchanged by that reporting fix.
+
+Conclusion: retain Arctic and current app settings. The experiment is complete,
+not a reason to advertise22% as a new held-out score or start more tuning without
+a new approved protocol. One seed, repeated practice questions and the original
+training-label/generalization limitations remain.

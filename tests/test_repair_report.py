@@ -15,7 +15,18 @@ def row(qid, score, repairs):
         "final_ex_corrected": score,
         "status": "answered" if score else "abstained",
         "reason": "single_candidate" if score else "no_valid_candidate",
-        "calls": [],
+        "calls": [
+            {
+                "role": role,
+                "status": "ok",
+                "cache_hit": False,
+                "seconds": 1,
+                "prompt_tokens": 10,
+                "completion_tokens": 2,
+            }
+            for role in (["generate", "repair"] if repairs else ["generate"])
+        ],
+        "trace": [["repair", "start", "syntax_error"]] if repairs else [],
         "seconds": 2 if repairs else 1,
         "candidates": [{"status": "ok", "repairs": repairs, "attempts": [{"sql": "private"}]}],
     }
@@ -32,6 +43,7 @@ def test_repair_report_measures_paired_gain_and_cost_without_private_sql():
     assert report["k1_vs_k0"]["difference"] == 0.5
     assert report["k1"]["latency"]["median_item_seconds"] == 2
     assert report["repair_attempts"] == 2
+    assert report["k1"]["incomplete_cost_items"] == 0
     assert "private" not in json.dumps(report)
     assert repaired == before
 
@@ -100,3 +112,68 @@ def test_report_writer_checks_matching_provenance(tmp_path, monkeypatch, changed
         report.main()
         result = json.loads((tmp_path / "results/G6_e9/repair/summary.json").read_text())
         assert result["k1_vs_k0"]["difference"] == 1
+
+
+async def test_report_retains_repair_start_when_total_timeout_drops_candidates():
+    import asyncio
+
+    from scripts.build_repair_report import summarize
+    from sqlwarden.agent import AgentConfig, run_agent
+    from sqlwarden.guard import CALIFORNIA_POLICY
+    from tests.test_prompts_voting_agent import FakeExecutor, FakeProvider, _catalog
+
+    class SlowRepair(FakeProvider):
+        async def complete(self, messages, *, model_config):
+            if model_config["role"] == "repair":
+                await asyncio.Event().wait()
+            return await super().complete(messages, model_config=model_config)
+
+    result = await run_agent(
+        "List schools",
+        catalog=_catalog(),
+        provider=SlowRepair(['{"sql":"SELECT syntax"}']),
+        executor=FakeExecutor([]),
+        policy=CALIFORNIA_POLICY,
+        config=AgentConfig(
+            candidates=1,
+            max_repairs=1,
+            full_schema=True,
+            clarify_on_abstain=False,
+            explain=False,
+            total_timeout_seconds=1,
+        ),
+    )
+    assert result.reason == "run_timeout"
+    assert not result.candidates
+    repaired = row(1, 0, 1) | {
+        "candidates": [],
+        "reason": result.reason,
+        "trace": [[e.step, e.status, e.reason] for e in result.trace],
+        "calls": row(1, 0, 0)["calls"],
+    }
+    report = summarize([row(1, 0, 0)], [repaired], [1])
+    assert report["repair_attempts"] == 1
+    assert report["k1"]["incomplete_cost_items"] == 1
+
+
+@pytest.mark.parametrize("case", ["failed_call", "unknown_tokens"])
+def test_report_flags_incomplete_cost_instead_of_claiming_exact_usage(case):
+    from scripts.build_repair_report import summarize
+
+    baseline, repaired = row(1, 0, 0), row(1, 0, 1)
+    if case == "failed_call":
+        repaired["calls"][1]["status"] = "model_unavailable"
+    else:
+        repaired["calls"][1]["completion_tokens"] = None
+    assert summarize([baseline], [repaired], [1])["k1"]["incomplete_cost_items"] == 1
+
+
+def test_report_refuses_over_budget_trace_even_if_candidates_were_lost():
+    from scripts.build_repair_report import summarize
+
+    repaired = row(1, 0, 1) | {
+        "candidates": [],
+        "trace": [["repair", "start", "syntax_error"]] * 2,
+    }
+    with pytest.raises(ValueError, match="repair"):
+        summarize([row(1, 0, 0)], [repaired], [1])

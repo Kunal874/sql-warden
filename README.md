@@ -87,6 +87,11 @@ improve. No weights were published or new commits pushed.
 See [training evidence](results/G6_training/summary.json), [EVAL](docs/EVAL.md#e9--fine-tuning)
 and [resume evidence](docs/RESUME.md#g6--measured-fine-tuning-evidence).
 
+A separate development-only repair check scored 20/100 without repair and 22/100
+with one repair (+2 points; paired 95% interval 0–5). It required 54 extra calls and
+raised median item time 0.766→1.204 s. This small exploratory gain does not establish
+better held-out accuracy; defaults stay unchanged. [E10 evidence](results/G6_e9/repair/summary.json).
+
 ## Security model
 
 Defense in depth, each layer tested on its own ([SECURITY](SECURITY.md)):

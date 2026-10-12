@@ -139,3 +139,10 @@ and the manifests named; re-read those files if anything is rebuilt.
     was reported similarly for both. Prefix reuse inside Ollama was not disabled.
 
 This is a supplied practice sheet, not a claim that a human interview was assessed.
+
+21. **Did adding repair improve the tuned model enough to use it by default?**
+    In a separate development-only comparison, no repair scored20/100 and one
+    repair22/100. There were two wins and no regressions, but the paired95%
+    interval0–5points includes zero. It needed54extra calls and median time rose
+    0.766→1.204s. Invalid repair output remained common. I retained the existing
+    default rather than treating a small practice-set gain as proven test accuracy.

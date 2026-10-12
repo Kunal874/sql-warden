@@ -2768,7 +2768,7 @@ After choosing a new accuracy experiment, Kunal says "go ahead" to the proposed
 one-repair comparison rather than another training run. Reuse the selected tuned
 1.5B model and existing guarded repair state machine. Compare fresh full-schema
 single-candidate runs with k=0 versus k=1 on the same frozen100 development IDs.
-At most300 model calls combined; no helper, explanation, response cache or
+At most300 recorded model calls per complete pair; no helper, explanation, response cache or
 gold-assisted repair. Existing repair eligibility stays unchanged: an extracted
 SQL attempt that fails validation/execution can be repaired; malformed generation
 without extracted SQL is not repaired. Only sanitized error categories reach it.
@@ -2784,6 +2784,69 @@ Costs if wrong: repair may add latency without accuracy gain; development-only
 results and one seed do not establish generalization. RAM/disk boundary checks
 are not continuous reservations. Preserve partial evidence if a resource check
 stops a run; do not silently relax the limit or overwrite old results.
+
+## D-106 — Stop E10 on observed RAM exhaustion (2026-10-12)
+
+The first launch crosses the existing1GiB floor before appending its first item.
+After scoped model unload returns RAM to1.68GiB, one retry saves6/100 baseline
+items then again crosses that floor before append. Stop; no repeated retries,
+threshold reduction, process termination or Docker pause. Preserve both logs,
+the first manifest and six scored records. Two generated items were not saved,
+so interrupted launch costs are additional to the complete-pair bound. Partial
+accuracy is not a claim. No repair run/report, training or app change occurred.
+
+Keep d4cef0d as the strict-resume commit. Leave this new status documentation
+uncommitted until continuation; scoped reversible stash of only our three docs
+can restore a clean identical tree without editing history or run fingerprints.
+Costs if wrong: memory pressure may recur, and a new HEAD cannot resume these
+records. Require meaningful free RAM before continuing, preserve unrelated apps,
+services and stashes. G6 remains complete; E10 is a separate unfinished experiment.
+
+## D-107 — E10 measured trade-off and one reporting-review fix (2026-10-13)
+
+Kunal says "ready, proceed further continue till our full work is complete";
+4.536GiB RAM and matching six saved records allow exact d4cef0d resume. Temporarily
+stash only our three uncommitted docs, restore them after both arms finish. All
+200 scored items complete:20→22correct,2wins/0regressions, paired +2pp95% interval
+0–5;54extra calls and median0.766→1.204s. Do not choose more training, change
+prompts, repeat held-out or replace defaults on this small exploratory result.
+Keep old G6/E9 headlines. Interrupted launches added two unappended generations;
+the compact recorded-call bound was not a lifetime transport-call reservation.
+
+One read-only review found no Critical/Minor and one Important/P2: an outer total
+timeout after repair starts returns empty candidates, undercounting repair cost.
+Real fake-provider regression reproduces0instead of1. Count repair/start from
+retained traces, bound trace starts too, flag missing/error/unknown cost telemetry,
+and label call/token totals successful logged responses. Fix only reporting;
+raw inference/code contracts, outcomes and hashes stay unchanged.60focused,
+1045offline/475skips and1517configured/3skips pass. No actual completed E10 timeout
+or incomplete usage item. No second review, agent/provider change or new dependency.
+
+Review exclusions/rulings and costs if wrong:
+
+- Final gains were pending in review: now complete paired100+100 evidence proves
+  only the stated practice-set result; cost: a small gain may not generalize.
+- Real PG security not run by reviewer: final configured suite runs existing real
+  controls; no new security boundary/claim; cost: coverage is not universal security.
+- Fresh tests withheld during inference: full suites now pass after reporting fix;
+  cost: nondeterministic external failures can recur.
+- Raw SQL/answer semantics not manually reviewed: retain verified gold/EX contract,
+  all200valid references and existing comparator controls; cost: comparator/data
+  semantics have the previously recorded benchmark limits.
+- Continuous RAM/disk guarantees: retain boundary checks/actual within-budget
+  observations, not an OS reservation; cost: another process can exhaust resources.
+- Local-admin tampering: retain trusted-local immutable-input workflow; cost:
+  hostile file replacement can invalidate experiment evidence.
+- Absolute lifetime300calls: bound completed-pair logged calls, disclose interrupted
+  work, do not claim durable transport billing controls; cost: restarts add effort.
+- Generalization/hardware speedup: development-only/one seed/prefix reuse/multi-
+  session baseline, no held-out or hardware claim; cost: timing and gain may differ.
+
+Keep exact stash870621fb recoverable, keep only summary metadata in Git, unload our
+model and retain other apps/services/data. G0's remaining drill is supplied as a
+written three-question sheet, like G6; no human assessment or skipped-choice claim.
+No new push/publication/weights/default change. Further experiments require new
+scope, not a manufactured unfinished item after this bounded comparison closes.
 
 ## Native-import execution and final-review rulings
 

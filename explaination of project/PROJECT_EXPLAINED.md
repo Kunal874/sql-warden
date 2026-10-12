@@ -1,6 +1,6 @@
 # SQLWarden explained in simple English
 
-Last updated: 2026-10-12.
+Last updated: 2026-10-13.
 
 This is your learning notebook for the project. It will be updated after every
 completed subtask and group. It explains what was built, why it matters, how it
@@ -3074,6 +3074,76 @@ too many attempts and damaged files. Old scores, weights and the app are unchang
 No new libraries or training were needed. The remaining work is to run both
 methods and measure correct answers, time and extra calls. RAM is nearly at the
 safety floor, so the runner may stop rather than use more resources than allowed.
+
+### The new experiment stopped safely (2026-10-12)
+
+The tested experiment code is committed as d4cef0d. We tried the no-correction
+run, but the laptop ran short of free memory. After unloading our model, we tried
+once more. Only6 of100 questions were saved before memory became too low again.
+The correction run has not started. We cannot say whether it improves accuracy.
+Two extra model answers were generated but not saved when the memory check
+stopped the runs; we keep that extra cost visible rather than hiding it.
+
+"Safety floor" means a minimum amount of free memory the program must leave.
+"Resume" means continuing saved work without repeating completed questions.
+"Stash" means temporarily putting our unfinished notes aside without deleting
+them, so the experiment can continue with exactly the same recorded code.
+
+Our model is now unloaded. We did not close your apps, stop Docker, change the
+database or delete evidence. The four older experiment files still match their
+recorded hashes. These latest notes are not committed yet because committing
+would change the code identity used by the unfinished experiment. The handoff
+explains how to put just these notes aside, resume, restore them and then commit
+the finished results. Next: free around2GB of RAM and continue both practice runs.
+The previous fine-tuning work is still complete; this new comparison is unfinished.
+
+### The repair comparison is finished (2026-10-13)
+
+After you freed memory, we continued the six saved questions instead of repeating
+them. Both methods now have 100 results. Without correction, the model got 20
+answers right. With one correction, it got 22 right: two improvements and no
+regressions. It used 54 extra model calls and typical question time increased from
+0.77 to 1.20 seconds. That is a small improvement for extra work, not a big win.
+
+"Regression" means a previously correct answer becomes wrong. "Coverage" means
+how often the program answers instead of stopping: 45% without repair, 47% with it.
+"Confidence interval" describes uncertainty in this measured difference. Here
+it goes from 0 to 5 percentage points, so a reliable improvement is not established.
+These were practice questions, not a new independent test. The older fine-tuning
+result and Arctic app default stay unchanged. No more training was needed.
+
+A reviewer found one accounting problem: if time runs out during a repair, the
+final result can lose its candidate list. We now count the saved "repair started"
+events and mark incomplete call/token records. A fake slow model reproduced the
+problem before the fix; 60 focused checks and the full 1,045 offline / 1,517 configured
+tests pass. The configured tests included real PostgreSQL. Expected skips and
+the existing library warning remain. The actual 200 answers had no timeout or
+missing usage. Old raw files were not rewritten. No frontend changes were made.
+
+"Telemetry" means saved measurements such as time, tokens and call counts.
+"Percentage points" means 22% minus 20% = 2 points, not an extra 22% improvement.
+Two earlier generated answers were not saved when memory ran low; we disclose
+that cost separately. Our model is unloaded, your apps/Docker remain untouched,
+and all notes were restored from the temporary stash. The summary contains only
+measurements and fingerprints, not private questions, SQL, rows or passwords.
+The report, explanation, progress and decision records finish this experiment.
+No required coding remains in the approved scope; future experiments/publication
+are separate choices. You can resume normal laptop work.
+
+### G0 foundation practice sheet (supplied, not assessed)
+
+1. Why not let AI use the database administrator login?
+   AI can make mistakes. A restricted login can read only its own approved
+   dataset and cannot write. The database enforces this even if AI ignores a prompt.
+2. Why check the correct SQL labels before scoring the model?
+   An incorrect answer key can make a good model look bad or a bad model look
+   good. We verified the PostgreSQL answer key and froze usable question IDs first.
+3. Why freeze a development and a held-out split?
+   Practice questions help us choose settings. Test questions measure the chosen
+   system. Reusing already-known test questions must be described honestly.
+
+This supplies the remaining foundation drill in the same written format as the
+later group drills. It does not claim you answered these in a live interview.
 
 After each fully completed subtask or group, add what changed, why it matters,
 the checks that actually ran, and an easy explanation of new terms. Keep earlier
