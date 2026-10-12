@@ -2770,6 +2770,28 @@ Still unfinished: model merging/local Ollama import, the real base-versus-traine
 accuracy test and the final resume comparison. The storage-limit choice is pending.
 Training is already complete and will not be repeated. Nothing was pushed.
 
+### A tiny merge check passed; your real model is still untouched (2026-10-12)
+
+We checked the original model file against its publisher's saved fingerprint.
+They match. The selected trained adapter still matches its training fingerprint.
+Then we used a tiny invented model to check the installed merging tools. Its
+adapter changed the answer numbers inside the model, merging kept them close,
+and saving/loading preserved the merged numbers exactly. The tool also refused
+an adapter containing an invalid number. This check took about 2.6 seconds.
+
+Merging means adding the adapter's learned changes into the original model's
+weights so one model file can be served. FP16 stores numbers with fewer bits;
+small rounding differences can occur. NaN means "not a number"—an invalid
+calculation result that must not be accepted as a usable model weight.
+
+This was not a test of the full model's memory needs or Ollama compatibility.
+No full model was merged, no file was downloaded, no GPU was used and no source
+checkpoint was changed. The tiny temporary weight files were removed automatically.
+The current training files use about 10.23 GiB; a full merged model would add
+about 2.88 GiB, over the approved 12 GiB limit even though the disk has free space.
+We are keeping that limit until the storage-choice answer arrives. Real answer
+accuracy and the final resume comparison are still unfinished.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

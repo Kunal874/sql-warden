@@ -1412,6 +1412,30 @@ Pre-flight contract reconciliation:
 
 ### 2026-10-12 — G6 training complete; serving/E9 next
 
+Serving-input check after f6bccce: original3,087,467,144-byte weights hash
+c1b9b30e907950516ba3c646bdf570d8084c25a6410a0cdca80cf04b11bc13a8 equals
+the pinned public Hugging Face LFS hash; selected step400 adapter hash still
+matches. docs/g6-serving-inputs.json records metadata only. Tiny invented Qwen2
+CPU/FP16 merge self-check passed in2.568 s: adapter changes logits, safe merge
+keeps logits close, saved tensors/logits reload exactly, NaN adapter is refused.
+Temporary tiny weights removed by the owned temporary-directory context. It
+loaded no real model, used no GPU, downloaded nothing and imported no Ollama model.
+Evidence results/G6_training/merge-probe.json records dirty Git/source SHA honestly;
+it is an API/CPU numeric sanity check, not full-model feasibility or E9.
+Exact check: `& training/.venv/Scripts/python.exe training/merge_probe.py`.
+This one-shot check refuses an existing evidence file; do not rerun it blindly.
+Installed PEFT0.18.1 source performs CPU half-precision LoRA products in float32
+then casts back and supports safe_merge finite checks. Ollama's official import
+guide supports a Safetensors directory; actual Qwen import remains untested.
+Measured footprint10.23 GiB, RAM free4.59 GiB, D free24.94 GiB. Full merged
+weights would add roughly2.88 GiB before any C: Ollama copies, exceeding the
+approved12 GiB cap. No cleanup/deletion of caches or cap change is authorized.
+Fresh merge-preparation regression:983 passed/475 expected skips (10.26 s), one
+existing httpx warning; lint,122-file format and whitespace checks pass. Actual
+CPU self-check ran in the isolated installed training environment. PostgreSQL
+was not rerun for this diagnostic-only change; the previous1455/3 configured
+checkpoint applies to unchanged database/runtime code, not to the merge probe.
+
 Completed E9 preparation after 6b236f7: reuse run_matrix's guarded agent with an
 optional pinned generator (Arctic remains the default). E9 disables response
 caching, pins matched Q4_K_M/context8192/output3072/full-schema n1/k0, records

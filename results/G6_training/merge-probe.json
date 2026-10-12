@@ -1,0 +1,13 @@
+{
+  "scope": "tiny invented Qwen2 CPU FP16 model; not full-model conversion",
+  "status": "passed",
+  "adapter_effect_checked": true,
+  "merge_logits_close": true,
+  "saved_tensors_reload_equal": true,
+  "reload_logits_equal": true,
+  "nonfinite_merge_refused": true,
+  "elapsed_seconds": 2.568,
+  "script_sha256": "b524eb683cc02eb97df66229b9c6759c3ab3a57d8dec4f3631361fb0654e4856",
+  "git_commit": "f6bccce6fc22264ec66faf6b605aeb6a976008a5",
+  "git_dirty": true
+}

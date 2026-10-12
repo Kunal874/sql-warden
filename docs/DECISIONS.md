@@ -2546,6 +2546,28 @@ The first configured E9-driver regression hit D-043's pre-existing cancellation
 observe-removal timeout. Isolated test passed, full repeat and final configured
 suite passed (1455/3 skips). No executor/deadline change or root-cause claim.
 
+## D-093 — Serving-input integrity and tiny CPU merge check (2026-10-12)
+
+While the artifact-limit choice is pending, perform only a tiny invented CPU
+model check using installed libraries, plus read-only input hashing. No real
+weights are loaded into RAM and no full merge/import starts. Original weights
+SHA-256 equals the pinned public Hugging Face LFS hash; chosen adapter hash matches
+training evidence. Metadata only is recorded in g6-serving-inputs.json.
+
+The tiny Qwen2 FP16 check establishes adapter effect, approximate merge/logit
+agreement, exact saved-tensor/logit reload and nonfinite safe-merge refusal.
+It records source hash and dirty Git rather than pretending a clean benchmark run.
+Costs if wrong: tiny-model CPU behavior does not establish full Qwen RAM fit,
+Ollama conversion/template compatibility or EX. Temporary invented weights were
+owned and automatically removed; source checkpoints/caches remain untouched.
+
+Measured approved footprint10.23 GiB. Merged weights alone add about2.88 GiB;
+the12 GiB cap cannot cover that, even with adequate free disk. Retain the existing
+cap until Kunal answers the pending24 GiB choice; do not delete caches or choose
+an adapter-only comparison that bypasses the requested serving/E9 end state.
+Sources checked: https://docs.ollama.com/import and installed PEFT0.18.1
+peft/tuners/lora/layer.py and peft/tuners/tuners_utils.py.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
