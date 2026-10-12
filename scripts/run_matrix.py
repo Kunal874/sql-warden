@@ -45,7 +45,7 @@ from sqlwarden.evaluation import (
 )
 from sqlwarden.executor import QueryResult, dataset_password_key, open_dataset_executor
 from sqlwarden.guard import DATASET_POLICIES
-from sqlwarden.ollama import ARCTIC, QWEN, OllamaAgentProvider
+from sqlwarden.ollama import ARCTIC, QWEN, LocalModel, OllamaAgentProvider
 from sqlwarden.prompts import PROMPT_VERSIONS, template_sha256
 from sqlwarden.schema import SchemaCatalog
 from sqlwarden.voting import CandidateResult, vote
@@ -212,16 +212,18 @@ async def run_item(
     item: dict[str, Any],
     condition: str,
     values: dict[str, str],
-    cache: JsonDiskCache,
+    cache: JsonDiskCache | None,
     lock: asyncio.Lock,
     *,
     question: str | None = None,
     clarify: bool = False,
+    generator: LocalModel = ARCTIC,
 ) -> dict[str, Any]:
     spec = CONDITIONS[condition]
     db_id = item["db_id"]
     catalog = load_catalog(db_id)
     provider = OllamaAgentProvider(
+        generator=generator,
         fingerprints=(catalog.fingerprint(), AUDIT_SHA),
         cache=cache,
         helper=QWEN if clarify else None,
@@ -250,7 +252,7 @@ async def run_item(
             executor=executor,
             policy=DATASET_POLICIES[db_id],
             config=config,
-            model=ARCTIC.name,
+            model=generator.name,
         )
     seconds = round(time.perf_counter() - started, 3)
     gold_c = await gold_rows(db_id, item["gold_corrected"], values)

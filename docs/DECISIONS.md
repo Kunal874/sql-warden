@@ -2524,6 +2524,28 @@ latency/environment timing is historical, not a same-session measurement.
 
 Serving budget12→24 GiB question remains pending; no merge/model import yet.
 
+## D-092 — Matched E9 tooling; no fabricated result (2026-10-12)
+
+Reuse the existing guarded run_item with an optional LocalModel; preserve Arctic
+as its default so G3 callers do not change. Base/tuned E9 is full-schema n1/k0,
+Q4_K_M,8192-context/3072-output,prompt v2,seed42 and no response cache. Pin actual
+generator digests, serving manifest and runtime lock. Reject setup credentials,
+dirty Git, changed resumes, duplicate/unknown IDs and damaged JSON tails.
+Costs if wrong: strict resume requires explicit recovery for a partial record;
+the runner intentionally does not silently drop or repair evidence.
+
+Report only complete fresh pairs against valid gold. Reuse existing exact and
+paired bootstrap statistics; keep failures in every denominator and unknown
+memory null. Compact outputs exclude raw SQL/prompts/rows. Tests reproduce and
+fix legacy Arctic model metadata leaking into the E9 manifest and a report
+accepting an altered generator alias with the same digest. No real E9 inference,
+merge or Ollama import yet; the12→24 GiB resource question remains unanswered.
+Costs if wrong: loss improvement cannot establish better database answers.
+
+The first configured E9-driver regression hit D-043's pre-existing cancellation
+observe-removal timeout. Isolated test passed, full repeat and final configured
+suite passed (1455/3 skips). No executor/deadline change or root-cause claim.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

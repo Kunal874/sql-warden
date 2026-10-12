@@ -12,12 +12,12 @@ end, 66.5% accurate on the 61.7% it answers at the frozen 2/3 threshold.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
 
 2026-10-12 G6 continuation: Kunal now requests fine-tuning for resume value.
-Read-only preflight and a concrete native-Windows 1.5B QLoRA pilot plan are complete
-in `docs/superpowers/plans/2026-10-12-g6-training-pilot.md`. GPU free 7956 MiB,
-D: free ~35.2 GiB; available system RAM ~1.05 GiB is below the proposed 4 GiB
-loading floor. No packages installed, weights downloaded or GPU training run.
-C8 package/model/resource choices await the explicit answer required by section 10.
-G6.1/G6.2 stay unchecked. No new push is authorized by this continuation.
+G6.2-G6.4 are complete: isolated native CUDA stack, frozen data, and the full
+500-update QLoRA run with validation-selected step 400. Base/tuned E9 driver and
+compact report tooling are checked, but no real E9 run or conversion has occurred.
+G6.1's remaining serving resource choice and G6.5-G6.6 are open. The pending
+12→24 GiB artifact-limit question is consequential; silence is not approval.
+No new push is authorized by this continuation.
 
 2026-10-05 continuation: Kunal approved the two-task corrected-label intake plan.
 Both correction-intake tasks and the sole final review are complete: Task 1
@@ -1410,7 +1410,39 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
-### 2026-10-12 — G6 pilot preflight, current action
+### 2026-10-12 — G6 training complete; serving/E9 next
+
+Completed E9 preparation after 6b236f7: reuse run_matrix's guarded agent with an
+optional pinned generator (Arctic remains the default). E9 disables response
+caching, pins matched Q4_K_M/context8192/output3072/full-schema n1/k0, records
+actual model digests and refuses setup credentials or dirty Git. Resume requires
+the same fingerprint and refuses duplicate/unknown IDs, model mismatches and
+partial JSON tails without modifying them. A damaged tail needs an explicitly
+scoped recovery; automatic repair is not implemented.
+
+The compact report requires complete fresh pairs, valid gold and binary EX;
+checks model/provenance and paired contracts, reuses exact/bootstrap/paired
+statistics, and reports latency, tokens, memory and failures without raw SQL.
+Unreported GPU memory stays null, not zero. This is tested tooling, not an E9
+result: serving manifest, converted models and real raw runs do not exist yet.
+25 focused checks pass (0.41 s); full no-env983 passed/475 expected skips (8.88 s),
+configured1455 passed/3 expected skips (28.88 s); one existing httpx warning.
+Locked33 packages, lint,121-file format and whitespace checks pass. Earlier
+configured run failed test_real_external_cancellation_releases_resources_and_pool_recovers
+with its existing D-043 observe-removal timeout; isolate passed, then full repeat
+1443/3 and subsequent full1455/3 passed. No deadlines or executor code changed;
+root cause remains unestablished. New code/tests/docs kept local.
+
+Next, after the pending resource choice: merge selected step400 adapter and
+import matching base/tuned Q4_K_M through native Ollama, verifying actual
+templates/quantization/digests before writing docs/g6-serving-manifest.json.
+Do not rerun training. No new libraries, upload or push are approved.
+Then sequential commands (NOT run yet), restricted evaluation files only:
+`uv run --env-file .env.california --env-file .env.datasets python -m scripts.run_e9 --model base --split dev --resume`
+Repeat for tuned/dev, then base/held_out and tuned/held_out; all100 dev and324
+held-out IDs per model. Run `uv run python -m scripts.build_e9_report` only after
+all four runs finish. Update EVAL/README/RESUME/interview evidence and perform
+the final review/applicable local release checks. G6 remains unfinished.
 
 Full training complete at clean a96690b:500 updates/2000 examples,128 separate
 validation examples,3462.078 s timed training/checkpoint/validation loop
@@ -1430,7 +1462,8 @@ path; merge/import waits for the pending12→24 GiB artifact-limit choice.
 Historical Arctic reference has all9 contract/hash checks matching current
 inputs/settings and324 records/176 correct. Keep its latency labelled historical.
 
-Current full-training handoff: long-context probe passed at clean6e87f7c:
+Historical G6 entries below describe earlier states, not current launch commands.
+Long-context probe passed at clean6e87f7c:
 2 updates/8 real training examples,2048 tokens,12.484 s training/checkpoint,
 peak reserved7,367,294,976 bytes (6.861 GiB),1,089,536 trainable parameters;
 quantization-aware logical total1,544,803,840. Adapter changed and all saved

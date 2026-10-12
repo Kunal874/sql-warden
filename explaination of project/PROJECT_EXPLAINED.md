@@ -2740,6 +2740,36 @@ accurately. Lower token loss is useful evidence of learning, but real answer
 accuracy still needs the database test. Next is the original-versus-trained model
 comparison, then an honest resume entry. No model weight or code has been pushed.
 
+### The fair comparison tools are checked, but the comparison has not run (2026-10-12)
+
+We can now run the original small model and its trained version through the same
+SQL guard, restricted database login and answer checker. Both will get the same
+question, full database layout, one attempt and output limit. Old Arctic tests
+still use Arctic by default; we did not change your existing benchmark results.
+
+The new runner saves completed questions and can continue after a stop. It refuses
+a changed setup, repeated question IDs or a damaged saved line. It does not reuse
+old AI answers. The report needs every question from both models before writing
+an accuracy claim. Wrong answers and failed attempts still count. Unknown memory
+use is recorded as unknown, not zero. Tracked reports will not include SQL text,
+database answers or passwords.
+
+New terms: a digest is a file/model fingerprint used to check which version ran.
+A paired comparison checks the two models on the same questions. Execution
+accuracy (EX) means the suggested query returned the correct database answer.
+A confidence interval shows uncertainty in a measured score; it is not a promise
+about future questions. A cache stores old replies; it is disabled for this test
+so that each recorded question gets a fresh model attempt.
+
+Checks: 25 focused tests passed. The full database-configured suite passed 1,455
+tests with three expected skips; the no-database suite passed 983 with 475 skips.
+One earlier cancellation check timed out, then passed alone and in full reruns.
+Its cause is not established, so we did not claim to fix it or relax its limits.
+
+Still unfinished: model merging/local Ollama import, the real base-versus-trained
+accuracy test and the final resume comparison. The storage-limit choice is pending.
+Training is already complete and will not be repeated. Nothing was pushed.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,
