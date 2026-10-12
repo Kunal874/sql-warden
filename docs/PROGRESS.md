@@ -1428,6 +1428,31 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-13 — Private update pushed; CI and G3 gap closure verified
+
+Normal fast-forward2b10679→868ad1b succeeded on private origin/main. Remote SHA
+matched local HEAD, zero ahead/behind. New CI38300331864 completed/success:
+Python, web and disposable PostgreSQL boundary jobs all green. Full-history
+Gitleaks scan after the exact checksum exception passed(136commits); identity
+and artifact checks pass, no credentials/raw runs/weights uploaded. Earlier
+account's release was already2b10679/green CI38177427078, not overwritten.
+
+Kunal adds that the other account filled G3 gaps. Verify instead of rerunning:
+all nine G3 recorded runs complete/unique/clean provenance; frozen100dev/324
+held-out ID sets match. Read-only build() exactly recomputes the stored G3
+summary. E5 six configurations include29/29prevented all-on;27/29prevented with
+any single layer off and explicit two exceptions. E7 self-authored50complete;
+E6 replay separately records99fully replayed/100. Focused matrix/E5/E7 checks
+20passed(0.27s); full configured1517/3(29.23s) and web checks already passed.
+No G3 score/threshold/gold/raw or security change, no costly inference rerun.
+The G3-era matrix's E9/not_run entry is a historical snapshot; completed G6/E9
+has its separately versioned summary/EVAL section, not an unfinished G3 gap.
+
+This final release record is a documentation-only follow-up; push it normally
+and verify its exact remote SHA/new CI before handing back. Preserve private
+visibility, sole Kunal identity and MIT/data/model notice separation. No Pages,
+new deployment, weights or additional experimental work is authorized by push.
+
 ### 2026-10-13 — Approved private push; release preflight
 
 Kunal explicitly asks to push and verify the earlier account's release. Fresh

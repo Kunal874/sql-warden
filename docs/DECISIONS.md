@@ -2871,6 +2871,18 @@ that every possible secret is absent; findings need review, not blanket ignores.
 Record exact pushed commit and CI outcome after observing them; do not claim
 earlier green CI proves the new23commits pass. No training/inference rerun needed.
 
+Observed fast-forward2b10679→868ad1b, matching remote/private main, zero divergence.
+CI38300331864 completed/success for Python/web/disposable PG jobs. Full-history
+scanner passes136commits with two exact reviewed checksum exceptions. Kunal
+also mentions prior G3 gap closure: verify all nine complete clean runs/frozen
+IDs, exact read-only summary recomputation, six E5 configurations, E7's50items
+and E6's99/100fully replayed items;20focused checks pass. No new gap established,
+no matrix/score/raw rerun or modification. Preserve G3's historical pre-G6 E9
+status; later G6 evidence is already separately completed and versioned.
+Publish this documentation-only verification record under the same explicit
+private-push authority and check its CI too. Costs if wrong: saved evidence and
+tests do not establish universal security/generalization or a new live-app smoke.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

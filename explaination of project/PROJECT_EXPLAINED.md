@@ -3164,6 +3164,29 @@ means GitHub runs automatic tests after a push. The old green checks do not prov
 the new work passes, so we will check the new run too. No passwords, model weights
 or raw experiment answers will be uploaded; the repository stays private.
 
+### GitHub push and the G3 gaps checked (2026-10-13)
+
+The push succeeded as 868ad1b, and GitHub's new automatic checks passed: Python,
+frontend and a disposable PostgreSQL safety test. Your earlier account had
+already pushed the original project; this update adds the later work without
+rewriting it. The full-history secret scan passed after the exact checksum
+exception. No real passwords, raw answers or model weights were pushed.
+
+We also checked your G3 gap fixes. All nine saved experiment runs have their
+expected questions and clean code records. Recalculating the report from those
+saved records gave exactly the same report. The layer-off experiment, 50
+self-authored questions and cache replay are present; 20 focused tests passed.
+With every tested layer on, the disposable experiment blocked all 29 attacks.
+Turning off one layer revealed two specific weaknesses, which remain documented;
+this is not a promise that every possible attack is blocked.
+
+"Recompute" means calculate a report again from the saved evidence, without
+asking AI to answer the questions again. "Provenance" means knowing which code
+and settings produced those records. The older G3 matrix says fine-tuning had
+not run at that time; the newer G6 report correctly records its completed result.
+That old snapshot is not a new missing task. The final verification note is also
+being committed and pushed; the repository remains private and no demo is deployed.
+
 After each fully completed subtask or group, add what changed, why it matters,
 the checks that actually ran, and an easy explanation of new terms. Keep earlier
 entries so you can see how the project grew. Update the current-status section
