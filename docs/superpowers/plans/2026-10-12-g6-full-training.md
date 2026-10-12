@@ -55,9 +55,9 @@ using evaluation outcomes must be caught by checks.
   the frozen recipe; test step validation, corrupted/masked tokens and checkpoint
   choice independently of GPU packages.
 - [x] Commit checked code and run the 2-step long-context probe from clean Git.
-- [ ] Run 500 steps from base weights with logged finite losses/validation,
+- [x] Run 500 steps from base weights with logged finite losses/validation,
   checkpoint hashes, timing and peak memory; interrupt safely at resource caps.
-- [ ] Reload the chosen adapter, check weights/generation, record compact summary,
+- [x] Reload the chosen adapter, check weights/generation, record compact summary,
   run checks, update progress/decisions/notebook and commit.
 
 ## Task 3 — serving, matched E9 and resume (G6.5/G6.6)

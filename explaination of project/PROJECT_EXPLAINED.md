@@ -2722,6 +2722,24 @@ This confirms the memory limit is workable, but it is still only a feasibility
 test. Those two reported losses are training losses, not validation scores.
 Full training, checkpoint selection and the real answer-accuracy comparison remain.
 
+### Full fine-tuning finished and its saved weights passed checks (2026-10-12)
+
+The full run made 500 learning updates on 2,000 real examples. Training,
+checkpoint saves and repeated validation took about 58 minutes. The measured
+training loop used at most about 6.43 GB of reserved GPU memory and released the
+GPU when it ended. All 39 focused training checks pass.
+
+Validation loss went from about 0.834 before learning to about 0.094. The best
+saved version was update 400, slightly better than update 500. We selected it by
+the rule written before training. Every saved adapter weight matched after loading
+it again, and the loaded model produced an answer.
+
+An important detail for the resume: the full experiment processed 2,000 examples,
+but the selected version at update 400 had seen 1,600. We will describe both
+accurately. Lower token loss is useful evidence of learning, but real answer
+accuracy still needs the database test. Next is the original-versus-trained model
+comparison, then an honest resume entry. No model weight or code has been pushed.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

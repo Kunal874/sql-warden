@@ -365,7 +365,7 @@ the optional interview drill.
 - [x] G6.3: frozen data, database-based validation split and project leakage checks.
   - [x] 2000 training/128 validation records, 57/6 separate databases, 2048-token cap;
     structurally checked but execution-unverified, explicitly approved (D-087).
-- [ ] G6.4: logged training, checkpoints and memory.
+- [x] G6.4: logged training, checkpoints and memory (500 updates, selected step400).
 - [ ] G6.5: merge/conversion/GGUF feasibility, local serving and comparable E9.
 - [ ] G6.6: evidence-driven EVAL/README update; applicable G7 checks before publishing updates.
 - [ ] G6 interview drill.
@@ -1411,6 +1411,24 @@ Pre-flight contract reconciliation:
 ## Handoff
 
 ### 2026-10-12 — G6 pilot preflight, current action
+
+Full training complete at clean a96690b:500 updates/2000 examples,128 separate
+validation examples,3462.078 s timed training/checkpoint/validation loop
+(57.70 min),peak PyTorch reserved6,899,630,080 bytes (6.426 GiB) during that loop.
+Validation loss before training0.8337786; checkpoints100/200/300/400/500:
+0.1183032/0.0998751/0.0944567/0.0938427/0.0939261. Frozen lowest-loss rule selected
+step400, which saw1600 examples; the full run saw2000. Every selected adapter
+tensor matched after reload; bounded generation passed. Adapter SHA-256
+e6347c5593c1561a9ef67937437d403868c324683247d21a0b5d3ac004fb7ea3 matches
+the file. Child/parent exited0; GPU model memory returned to0 MiB. Compact
+evidence `results/G6_training/summary.json`; all weights/raw logs ignored.
+39 focused training checks pass (0.55 s). No EX improvement claim yet.
+
+Next: implement matched E9 using the existing local provider/guard/executor/
+comparator. Native Ollama Safetensors conversion is the preferred no-new-library
+path; merge/import waits for the pending12→24 GiB artifact-limit choice.
+Historical Arctic reference has all9 contract/hash checks matching current
+inputs/settings and324 records/176 correct. Keep its latency labelled historical.
 
 Current full-training handoff: long-context probe passed at clean6e87f7c:
 2 updates/8 real training examples,2048 tokens,12.484 s training/checkpoint,

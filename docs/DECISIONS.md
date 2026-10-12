@@ -2504,6 +2504,26 @@ Probe checkpoint loss is training loss (no validation run); do not present it
 as validation quality or an accuracy result. Logical model size1,544,803,840
 parameters comes from PEFT's quantization-aware count, including the adapter.
 
+## D-091 — Full run completed; validation selects step400 (2026-10-12)
+
+Clean a96690b run completed500 updates on2000 records in3462.078 s for the
+training/checkpoint/validation loop,peak reserved6.426 GiB measured in that loop.
+Validation mean token loss0.8337786 before training; best0.0938427 at step400
+versus0.0939261 at500. Select400 by the previously frozen rule, without looking
+at evaluation EX. Every adapter tensor matches its saved checkpoint on reload;
+SHA-256 verified and bounded generation succeeded. Process exit0 and GPU unload
+verified. No accuracy improvement is inferred from these losses.
+
+Ruling: distinguish the2000-example full run from the selected400-step model's
+1600-example prefix — scientific/resume claims must not imply the selected
+adapter consumed all2000 — cost if wrong: an overstated training claim.
+Ruling: retain unchanged Arctic full_n1 as an explicitly historical reference
+after config/input/IDs/models/prompts/protocol/gold/audit/original-validity
+checks all match and relevant runtime code is unchanged — cost if wrong:
+latency/environment timing is historical, not a same-session measurement.
+
+Serving budget12→24 GiB question remains pending; no merge/model import yet.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received
