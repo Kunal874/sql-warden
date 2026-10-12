@@ -2792,6 +2792,32 @@ about 2.88 GiB, over the approved 12 GiB limit even though the disk has free spa
 We are keeping that limit until the storage-choice answer arrives. Real answer
 accuracy and the final resume comparison are still unfinished.
 
+### Your resume can now describe real training work (2026-10-12)
+
+The resume notes now contain a training bullet backed by the saved experiment.
+The README and evaluation notes say training is finished but the accuracy test
+is not. Five new interview answers explain what was trained, why update 400 was
+selected, what the data checks did and why lower loss is not proof of better SQL.
+
+Safe claim: a 500-update QLoRA experiment on 2,000 examples worked on your 8 GB
+GPU, and the selected adapter passed save/reload checks. Be clear that the selected
+version had seen 1,600 examples, not all 2,000. Do not say that it improved answer
+accuracy, beat Arctic or is already running in the app. Those are still untested.
+
+An adapter is a small set of learned changes beside the original model. Frozen
+weights means the original model numbers were not trained directly. Response-only
+loss means the model learned the answer part of each example, not the question
+and schema. Validation helped choose a saved version; the database accuracy test
+will check whether that choice actually gives better answers.
+
+No model was retrained, converted or loaded in this documentation step. The
+storage-choice answer is still needed before the real serving/comparison work.
+Checks read the saved training numbers and confirmed the 57 training/six validation
+database groups are separate. The old benchmark sections are unchanged. Ten
+focused report/training tests passed, and the full no-database suite passed 983
+tests with 475 expected skips. No database or GPU training test was repeated just
+to update the notes.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,

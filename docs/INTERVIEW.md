@@ -74,3 +74,40 @@ and the manifests named; re-read those files if anything is rebuilt.
     model, and managed Postgres would not allow some permission hardening. A static
     evidence site plus a local demo costs nothing and leaks nothing. Evidence:
     [DEPLOY](DEPLOY.md), D-077.
+
+## G6 training addendum — not a completed E9 comparison
+
+13. **What did you actually fine-tune?**
+    Qwen2.5-Coder-1.5B-Instruct, using NF4 QLoRA on the laptop's 8 GB RTX 4060.
+    The original weights stayed frozen; 1,089,536 adapter parameters on query/value
+    projections learned the task. The full trial ran 500 updates on 2,000 examples.
+    Evidence: [training summary](../results/G6_training/summary.json),
+    [full worker](../training/full.py).
+
+14. **Why choose update 400 instead of the final model?**
+    I froze the selection rule before training: lowest loss on 128 validation
+    examples from separate databases, with earlier updates winning a tie. Update
+    400 scored 0.093843 versus 0.093926 at 500. The selected version saw 1,600
+    examples, although the full experiment processed 2,000. I did not use benchmark
+    execution accuracy to select it. Evidence: training summary, D-088/D-091.
+
+15. **Does lower loss prove better SQL answers?**
+    No. Token loss measures how well the model predicts the saved answer tokens;
+    execution accuracy checks whether a query returns the correct database answer.
+    The matched base-versus-tuned E9 test has not run, so I cannot claim an accuracy
+    improvement or that the small model matched Arctic. Evidence: EVAL E9.
+
+16. **What are the main data-quality limits?**
+    BIRD training labels started as SQLite. I converted them to PostgreSQL and
+    checked names, syntax and the guard, but did not execute them on the training
+    databases. Conversion can change meaning. Database families were separated;
+    evaluation families/shared schemas/exact text were screened out, but full
+    row-content separation and unknown pretraining contamination are unproven.
+    Evidence: [data manifest](training-data-manifest.json), D-087/D-088.
+
+17. **Is the trained model already running in SQLWarden?**
+    No. Save/reload passed for the adapter, and a tiny CPU merge self-check passed,
+    but that is not full-model conversion or Ollama feasibility. Model serving and
+    the fresh, guarded PostgreSQL comparison remain next. Existing Arctic behavior
+    and G3 results are unchanged. No new weights or commits were pushed.
+    Evidence: [serving inputs](g6-serving-inputs.json), PROGRESS Handoff.

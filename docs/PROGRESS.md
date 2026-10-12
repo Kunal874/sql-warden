@@ -1412,6 +1412,22 @@ Pre-flight contract reconciliation:
 
 ### 2026-10-12 — G6 training complete; serving/E9 next
 
+Training-only portfolio evidence after40ad630: README and EVAL now distinguish
+completed QLoRA training from unrun E9. RESUME includes one measured training
+bullet with the selected400/1600 versus full500/2000 distinction and label caveat.
+INTERVIEW adds five evidence-backed training questions; the full G6 drill and
+G6.6 still remain unchecked until actual E9/final verification. No EX/serving
+gain claimed or G3 number changed. G3's existing report generator still renders
+G3-only documents: integrate/preserve these G6 addenda before any later full
+regeneration; do not rerun it now and erase the continuation evidence.
+The pending24 GiB choice remains the conversion/evaluation checkpoint.
+Checks: saved-record assertions verify counts, chosen step, timing, memory and
+reload; manifest checks confirm57/6 disjoint database IDs and matching token hashes.
+G3 EVAL content before E9 and README's generated results block match40ad630 exactly.
+10 focused report/training tests passed (0.09 s); full no-env983 passed/475
+expected skips (9.94 s), one existing httpx warning; lint/122-file format and
+whitespace checks pass. No GPU/model/database run was repeated for factual docs.
+
 Serving-input check after f6bccce: original3,087,467,144-byte weights hash
 c1b9b30e907950516ba3c646bdf570d8084c25a6410a0cdca80cf04b11bc13a8 equals
 the pinned public Hugging Face LFS hash; selected step400 adapter hash still

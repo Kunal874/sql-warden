@@ -2568,6 +2568,20 @@ an adapter-only comparison that bypasses the requested serving/E9 end state.
 Sources checked: https://docs.ollama.com/import and installed PEFT0.18.1
 peft/tuners/lora/layer.py and peft/tuners/tuners_utils.py.
 
+## D-094 — Resume evidence uses training, not invented accuracy (2026-10-12)
+
+Use the already completed training record to add a resume bullet and five
+interview answers now, while E9 waits for its resource choice. README/EVAL label
+training complete and comparison unrun; preserve G3 headlines. Explicitly state
+full500/2000 versus selected400/1600, training-loop timing/memory scope and
+execution-unverified labels. No base/tuned accuracy, serving-latency or Arctic
+parity claim. Costs if wrong: readers may confuse lower token loss with EX;
+the docs explicitly distinguish them. G6.6/full drill remain incomplete.
+
+These factual addenda are manual, separate from G3's generated section. Its
+existing generator is G3-only; preserve/integrate the G6 evidence before later
+full regeneration. Do not run a regeneration merely to overwrite this addendum.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

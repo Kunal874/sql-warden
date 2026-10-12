@@ -62,6 +62,22 @@ local PostgreSQL-adapted BIRD Mini-Dev numbers with corrected labels and a quant
 7B model. They are **not** official BIRD leaderboard scores and are not comparable to
 published full-precision SQLite results.
 
+## Local fine-tuning — training complete, comparison pending
+
+A QLoRA experiment fine-tuned Qwen2.5-Coder-1.5B-Instruct on an 8 GB RTX 4060
+laptop GPU: 500 updates across 2,000 PostgreSQL-converted BIRD examples, with
+128 validation examples from separate databases. The frozen validation-loss
+rule selected update 400, which had seen 1,600 examples. Saved adapter tensors
+matched exactly after reload. The measured training/checkpoint/validation loop
+took 57.70 minutes and peaked at 6.426 GiB reserved GPU memory; initial loading/
+validation are excluded.
+
+Training labels are structurally checked but execution-unverified. Local serving
+conversion and the matched base-versus-tuned accuracy comparison remain unfinished;
+this does not replace the Arctic runtime or establish an accuracy improvement.
+See [training evidence](results/G6_training/summary.json), [EVAL](docs/EVAL.md#e9--fine-tuning)
+and [resume evidence](docs/RESUME.md#g6-training-evidence--accuracy-comparison-pending).
+
 ## Security model
 
 Defense in depth, each layer tested on its own ([SECURITY](SECURITY.md)):

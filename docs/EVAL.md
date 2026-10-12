@@ -247,4 +247,32 @@ Layer-off variants in the disposable environment (`sqlwarden_e5_disposable`, syn
 
 ## E9 — fine-tuning
 
-Optional (G6) and not run.
+G6 training has finished; the base-versus-tuned E9 accuracy comparison has **not**
+run. All E0-E8 numbers above remain unchanged. This training addendum is based on
+[the completed training record](../results/G6_training/summary.json) and
+[the frozen tokenized-data manifest](training-tokenized-manifest.json).
+
+The pinned Qwen2.5-Coder-1.5B-Instruct run used native Windows NF4 QLoRA, rank 8,
+alpha 16, query/value projections, one 2,000-example pass (500 optimizer updates),
+2,048-token examples and 128 validation examples from separate databases.
+The frozen pool covers 57 training and six validation databases. Training SQL
+was structurally checked after PostgreSQL conversion, not execution-verified.
+Project family/schema/exact-text leakage screening does not establish database
+row-content separation or unknown model-pretraining contamination.
+
+Validation mean token loss was 0.833779 before training and 0.093843 at the selected
+update-400 checkpoint; update 500 scored 0.093926. Selection used the frozen
+lowest-validation-loss rule, with an earlier checkpoint winning a tie, not E9 EX.
+The selected checkpoint had seen 1,600 examples. Its saved adapter tensors matched
+exactly after reload and a bounded generation succeeded. The full training/
+checkpoint/repeated-validation loop took 57.70 minutes and peaked at 6.426 GiB
+PyTorch reserved GPU memory; these exclude initial loading/validation and do not
+measure serving latency or full-model conversion memory.
+
+Next: matching base/tuned Q4_K_M Ollama models, full schema, prompt v2, one
+candidate/no repair, context 8,192/output 3,072/seed 42, fresh responses on all
+100 development and 324 existing held-out questions per model. The known held-out
+set makes this a repeat comparison, not a newly untouched test set. Arctic's
+matching full-schema result is an explicitly historical reference; its latency
+is not a fresh same-session measurement. No accuracy gain is inferred from loss.
+Conversion and real E9 execution await the pending artifact-limit choice.
