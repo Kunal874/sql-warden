@@ -7,6 +7,28 @@ import pytest
 from scripts import run_g6_merge as merge
 
 
+def test_serving_storage_counts_e9_evidence_as_well_as_weights(tmp_path, monkeypatch):
+    monkeypatch.setattr(merge, "ROOT", tmp_path)
+    cache = tmp_path / "cache"
+    conversion = tmp_path / "conversion"
+    cache.mkdir()
+    conversion.mkdir()
+    (cache / "new-model").write_bytes(b"cache")
+    (conversion / "base.gguf").write_bytes(b"gguf")
+    raw = tmp_path / "results/G6_e9/raw"
+    raw.mkdir(parents=True)
+    (raw / "base.jsonl").write_bytes(b"evaluation")
+    baseline = tmp_path / "baseline.json"
+    baseline.write_text(
+        json.dumps(
+            {"models_directory": str(cache), "conversion_directory": str(conversion), "files": {}}
+        )
+    )
+    monkeypatch.setattr(merge, "BASELINE", baseline)
+    monkeypatch.setattr(merge, "disk_used", lambda: 100)
+    assert merge.serving_storage() == (110, 9)
+
+
 @pytest.fixture
 def merge_report(tmp_path, monkeypatch):
     monkeypatch.setattr(merge, "ROOT", tmp_path)

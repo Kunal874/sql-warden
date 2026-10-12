@@ -1447,10 +1447,16 @@ one model call each/no cache hit. This confirms actual protected-path behavior,
 not better accuracy: EX0 on each. Raw records ignored; no prompt/SQL/rows committed.
 No configuration tuning from these answers. G6.5/.6/drill remain open.
 
-Commit this checked serving checkpoint, then run sequentially from clean Git:
+Serving checkpoint committed b2a8279 under confirmed Kunal identity. A final
+resource-accounting test reproduced omission of E9 raw/compact evidence from
+combined storage; serving_storage now counts results/G6_e9 as well.33 focused
+publisher/E9 checks pass; full no-env1020/475 (9.41s), lint/131-file format pass.
+The earlier nonexistent-test command was not counted as a successful check.
+Commit the budget fix, then run sequentially from clean Git:
 `uv run --env-file .env.california --env-file .env.datasets python -m scripts.run_e9 --model base --split dev --resume`
 then tuned/dev, base/held_out, tuned/held_out (100dev/324known held-out each).
-No `.env.setup` for E9. Keep tracked files unchanged during a live/resumable run,
+No `.env.setup` for E9. Live job/session details belong in the ignored plan ledger
+and .tools/g6/e9-run-state.json while Git is frozen. Keep tracked files unchanged during a live/resumable run,
 as Git commit affects its resume fingerprint. Raw .jsonl records are ignored;
 the compact report is built only after all four sets finish. Do not rerun training,
 merge or one-shot conversion/alignment. Final EX/resume claim/release review pending.

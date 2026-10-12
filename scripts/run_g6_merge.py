@@ -21,7 +21,10 @@ def serving_storage() -> tuple[int, int]:
     baseline = json.loads(BASELINE.read_text(encoding="utf-8"))
     added = cache_growth(Path(baseline["models_directory"]), baseline["files"])
     added += sum(cache_snapshot(Path(baseline["conversion_directory"])).values())
-    return disk_used(), added
+    evaluation = sum(
+        path.stat().st_size for path in (ROOT / "results/G6_e9").rglob("*") if path.is_file()
+    )
+    return disk_used() + evaluation, added
 
 
 def publish_merge(summary: Path) -> None:

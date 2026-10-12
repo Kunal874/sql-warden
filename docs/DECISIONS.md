@@ -2693,6 +2693,15 @@ Costs if wrong: small-model errors/limits may yield null or negative benefit;
 publish the actual paired result, not training-loss gains. Combined23.826GiB has
 little headroom; no new model downloads/copies until space checks pass.
 
+## D-101 — Include E9 evidence in serving artifact accounting (2026-10-12)
+
+Before the real E9 run, a regression reproduced that training/model/C-cache
+accounting omitted results/G6_e9. Include that directory's raw and compact
+files in the same24 GiB cap; keep existing cache membership/size checks. No
+benchmark contract, runtime/database permission or model identity changed.
+Costs if wrong: undercounted raw runs could consume the narrow remaining headroom.
+Fixed test-first;33 focused publisher/E9 checks and1020offline tests pass.
+
 ## Native-import execution and final-review rulings
 
 Recorded in decision order; all seven reviewer declined-to-judge items received

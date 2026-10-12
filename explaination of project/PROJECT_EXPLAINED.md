@@ -2941,6 +2941,15 @@ for each model, then honest accuracy/latency comparisons and resume notes.
 Training and local serving are finished; evaluation and final review are not.
 The historical project scores and app's default model remain unchanged. No push.
 
+### The comparison's saved results now count toward the storage limit (2026-10-12)
+
+One last test caught a missing part of the space calculation: it counted models
+but not the upcoming E9 result files. That is fixed, so saved comparison evidence
+uses the same24 GiB allowance.33 focused checks and1,020 offline tests passed;
+475 database tests were intentionally skipped in that offline run. Lint/format
+passed. This does not change model answers, database permissions or scoring.
+The paired accuracy test still needs to finish before we can claim any benefit.
+
 ## 7. How this notebook will be kept up to date
 
 After each fully completed subtask or group, add what changed, why it matters,
