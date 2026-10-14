@@ -1,6 +1,35 @@
 # SQLWarden explained in simple English
 
-Last updated: 2026-10-13.
+Last updated: 2026-10-14.
+
+## Local usage walkthrough — 2026-10-14
+
+The live app is running at http://127.0.0.1:8000/#ask for this session. Choose
+california_schools, enter “How many schools are in Alameda county?”, then Ask.
+Our actual run returned 761 in 56.19 seconds. Two of the three AI query results
+agreed. A separate database count also returned 761. This counts the imported
+records, not today's real-world schools. One row holds the count 761.
+
+The new [usage guide](../docs/LOCAL_USAGE.md) explains what to enter, examples,
+the answer table, clarification, failure messages, the other pages and how to
+restart/stop the app. Example exercises are labelled untested. Existing code,
+model defaults and benchmark results did not change.
+
+Checks: locked dependencies checked 33 packages; health/readiness/app and evidence
+endpoints worked; 11 datasets were listed; 13 runtime/API tests passed. No new full
+test run or frontend rebuild was needed for this documentation walkthrough.
+The laptop initially had almost no free RAM, so we waited for Kunal to close
+unused apps before the one AI run. Other projects and services were preserved.
+
+New terms: **endpoint** means an address the app calls for data; **readiness**
+means required services are reachable; **agreement** means candidate answers
+matched, not a probability they are correct; **preview** means the first few
+rows shown on screen. The app shows at most 50 rows while execution has separate
+limits. **PID** is a running program's temporary ID; check it before stopping.
+
+Finished: local start, one real answer, independent count check and usage guide.
+Other example questions have not been tested in this session. The server is left
+running for you; no new feature, training run or publication is pending here.
 
 This is your learning notebook for the project. It will be updated after every
 completed subtask and group. It explains what was built, why it matters, how it

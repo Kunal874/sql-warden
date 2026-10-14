@@ -1428,6 +1428,36 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-10-14 — Local demo running and usage walkthrough verified
+
+Kunal asks to run SQLWarden locally and explain inputs/expected results/how to
+use it. Start at clean 1f569ea; no implementation or benchmark change needed.
+Existing PG healthy at127.0.0.1:55432, preserved volume, pinned aliases installed,
+existing .env.web and web/dist reused. uv sync --locked checks33packages.
+Native API launched on127.0.0.1:8000 using .env.web only. Launcher17328/API18528
+left running intentionally for Kunal; verify PID command line before stopping.
+Ignored logs: results/local-demo-server.stdout.log and .stderr.log. Exact launch:
+`uv run --env-file .env.web uvicorn sqlwarden.runtime:create_runtime_app --factory --host 127.0.0.1 --port 8000`.
+
+Initial free RAM0.80then0.03GiB: defer inference, ask Kunal to close unused apps;
+he replies ready. Next check0.47GiB; one bounded live run then succeeds. No other
+apps/services terminated. Arctic stays loaded for demo use (Ollama's own idle
+expiry applies). App/browser open requested; no browser interaction test claimed.
+
+Live API question california_schools / How many schools are in Alameda county?:
+answered/consensus in56.19s, count761, agreement2/3, three successful generation
+calls/no repairs/no cache hits. Separate restricted executor reference count
+also761. This is a walkthrough, not a new benchmark result or security claim.
+Healthok/readinessready, indexHTTP200, all11datasets, attack/benchmark endpoints
+reachable. Focused runtime/API checks13passed/one existing httpx deprecation
+warning. Full suite/web rebuild not repeated: source/runtime unchanged.
+
+docs/LOCAL_USAGE.md records inputs, tested result versus untested exercises,
+screen/status meanings, local restart/CLI/stop commands and model/default limits.
+Notebook updated. Leave server available; no further implementation or experiment
+required by this request. No push/publication. Documentation commit pending at
+the time of this entry; final reply supplies the observed commit.
+
 ### 2026-10-13 — Private update pushed; CI and G3 gap closure verified
 
 Normal fast-forward2b10679→868ad1b succeeded on private origin/main. Remote SHA
