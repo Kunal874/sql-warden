@@ -1456,6 +1456,14 @@ database-dependent tests have not run on this commit because local PostgreSQL wa
 1f569ea..287aff4 changes no src, tests, scripts, web, db or workflow file. After the
 billing lock clears, re-run CI and record its result here.
 
+Follow-up: CI42251394986 for 4a67801 hit the same lock at 16:20 UTC and on its one
+re-run at 16:26 UTC, so no commit here has a CI result yet. Kunal then approved a local
+database run. At clean 4a67801, using .env.setup, .env.california and .env.datasets
+against real local PostgreSQL, the full configured suite gives1517passed/3expected
+symlink skips (72.09s), matching the recorded baseline. This does not replace CI, and
+the web build was not run; no web file changed. sqlwarden_pg16_data is preserved, and
+the database and Docker were stopped afterwards, as found.
+
 ### 2026-10-14 — Local demo running and usage walkthrough verified
 
 Kunal asks to run SQLWarden locally and explain inputs/expected results/how to
