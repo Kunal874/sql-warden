@@ -1442,8 +1442,19 @@ code, score, threshold, gold, model or deployment changed.
 Older commits still hold those files and the email, and commit metadata carries the
 email; no history rewrite is authorized. A fresh clone will not contain the three
 files, and checking out an older commit can remove the local copies when you return,
-so keep a separate backup. Checks and the push follow this entry; the final reply
-supplies the observed commit and CI.
+so keep a separate backup.
+
+Pushed 1f569ea→287aff4 as a normal fast-forward; remote and local SHAs match. The
+machine's active GitHub account has read-only access here, so Kunal approved the
+Kunal874 login for that one push; the active account is unchanged. Logged-out requests
+return404 for all three files, and the public269-entry tree contains none of them.
+
+CI42250628368 started no job: GitHub stopped all three at an account billing lock, so
+287aff4 has no CI result. This is not a test failure. A fresh clone of 287aff4 without
+the three files passes locked33, Ruff, format and1045passed/475skipped. Those475
+database-dependent tests have not run on this commit because local PostgreSQL was down.
+1f569ea..287aff4 changes no src, tests, scripts, web, db or workflow file. After the
+billing lock clears, re-run CI and record its result here.
 
 ### 2026-10-14 — Local demo running and usage walkthrough verified
 
