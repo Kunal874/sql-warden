@@ -15,17 +15,21 @@ the Handoff. The active spec overrides the original plan's Appendix A.
 - No parallel implementation unless Kunal asks. Keep the runtime a plain Python state machine.
 - Preserve the three original planning files as historical inputs.
 - After a task, run its relevant checks and update progress with truthful results.
-- After each completed group/subtask, update [the simple-English notebook](explaination%20of%20project/PROJECT_EXPLAINED.md) with what changed, checks, new AI/coding terms and what remains unfinished.
+- After each completed group/subtask, update the local-only, Git-ignored notebook `explaination of project/PROJECT_EXPLAINED.md` with what changed, checks, new AI/coding terms and what remains unfinished.
 - Use tests first for security boundaries, result comparison, voting, budgets and state transitions.
 - Real PostgreSQL integration tests must run before database security claims.
 
 ## Authorship and secrets
 
-Kunal is the sole author and committer. The confirmed repository identity is
-Kunal <kunalchandrakar2005@gmail.com>. Never add assistant/bot contributor credits,
+Kunal is the sole author and committer. The confirmed repository identity is this
+clone's local Git `user.name` and `user.email`. Never add assistant/bot contributor credits,
 co-author trailers or generated-by signatures. Keep necessary third-party licenses and citations.
 Inspect staged changes and the exact message before each Conventional Commit;
 check author, committer and body after it. Do not change global Git identity.
+
+The repository is public. `docs/RESUME.md`, `docs/INTERVIEW.md` and
+`explaination of project/` are personal and Git-ignored: never force-add them. Never write
+Kunal's email or home-directory paths into tracked files; use `%USERPROFILE%` for local paths.
 
 Never commit secrets, downloads, model weights, caches or raw runs. Do not print
 connection credentials or put them in model prompts. Setup credentials stay out

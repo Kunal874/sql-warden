@@ -35,7 +35,7 @@ trickle regression observed RED before this change; D-035 holds final evidence.
 - Never commit secrets, downloads, model weights, caches or raw runs.
 - Do not print connection credentials or put them in model prompts.
 - After a task, run its relevant checks and update progress with truthful results.
-- Kunal is the sole author and committer: Kunal <kunalchandrakar2005@gmail.com>.
+- Kunal is the sole author and committer: Kunal <git-config user.email>.
 - Inspect staged changes and the exact message before each Conventional Commit; check author, committer and body after it. Do not change global Git identity.
 
 Approval of this plan authorizes only the two tasks below, downloading their four
@@ -507,7 +507,7 @@ Inspect git diff --check and entire staged diff (only these new files and four
 living records), confirm exact message:
 feat(data): add strict offline correction alignment
 Commit with repository-local identity or git -c user.name=Kunal
--c user.email=kunalchandrakar2005@gmail.com; inspect author/committer/body immediately.
+-c user.email=<git-config user.email>; inspect author/committer/body immediately.
 
 ## Task 2: Exclusive pinned correction acquisition and actual offline acceptance
 

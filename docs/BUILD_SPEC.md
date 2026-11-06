@@ -66,7 +66,7 @@ On each session, read `AGENTS.md`, `docs/BUILD_SPEC.md`, `docs/PROGRESS.md` and 
 
 `docs/PROGRESS.md` holds the original task checklist with the amendments in section 11, task checks, a concise session log and a Handoff. Record completed, incomplete, blocked and deliberately skipped work accurately. `docs/DECISIONS.md` uses D-001 onward with context, options, decision, rationale and date. `AGENTS.md` stays mostly stable; do not duplicate a growing session log into it.
 
-Kunal's learning notebook is `explaination of project/PROJECT_EXPLAINED.md`. Update
+Kunal's local-only, Git-ignored learning notebook is `explaination of project/PROJECT_EXPLAINED.md`. Update
 that one file after every fully completed group/subtask, in very simple English:
 what changed, why it matters, actual checks and explanations of new AI/coding
 terms. Keep earlier entries and distinguish finished work from future plans.

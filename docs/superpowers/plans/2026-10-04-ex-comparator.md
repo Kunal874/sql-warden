@@ -112,7 +112,7 @@ Do not add a caller-supplied policy, host, role or successful-result shortcut.
 ## Commands and private diagnostics
 
 Run PowerShell commands from the repository root. If uv is not on PATH, replace
-`uv` with `& 'C:/Users/Kunal/AppData/Local/Microsoft/WinGet/Packages/astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe/uv.exe'`.
+`uv` with `& '%USERPROFILE%/AppData/Local/Microsoft/WinGet/Packages/astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe/uv.exe'`.
 Use `--tb=line` for every private database test command; never use `--showlocals`.
 No raw connection arguments, setup values or server logs enter documentation.
 The rotated reader password stays private; do not rerun credential initialization
@@ -383,7 +383,7 @@ git status --short
 ```
 
 Inspect the entire staged change and exact message before committing; both
-identities must be Kunal <kunalchandrakar2005@gmail.com>, with no trailers or
+identities must be Kunal <git-config user.email>, with no trailers or
 assistant credit. Update the next progress record with this actual commit hash.
 
 ## Task 2: Restricted PostgreSQL handoff and actual native semantics
@@ -559,8 +559,8 @@ uv run ruff format --check .
 git diff --check
 git diff -- sqlwarden-plan.md SQLWARDEN_EXECUTION_PROMPT.md SQLWARDEN_PLAN_REVIEW.md pyproject.toml uv.lock src/sqlwarden/guard.py src/sqlwarden/executor.py src/sqlwarden/config.py
 git remote -v
-& 'C:/Users/Kunal/AppData/Local/Programs/DockerDesktop/resources/bin/docker.exe' inspect sqlwarden-postgres-1 --format '{{.State.Health.Status}} {{json .HostConfig.PortBindings}} {{range .Mounts}}{{.Name}} {{end}}'
-& 'C:/Users/Kunal/AppData/Local/Programs/Ollama/ollama.exe' ps
+& '%USERPROFILE%/AppData/Local/Programs/DockerDesktop/resources/bin/docker.exe' inspect sqlwarden-postgres-1 --format '{{.State.Health.Status}} {{json .HostConfig.PortBindings}} {{range .Mounts}}{{.Name}} {{end}}'
+& '%USERPROFILE%/AppData/Local/Programs/Ollama/ollama.exe' ps
 ```
 
 Expected: full configured suite has zero skips and includes the actual new 17

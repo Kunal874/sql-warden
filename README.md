@@ -84,8 +84,8 @@ BIRD or a newly untouched test. The tuned1.5B model still trails the historical
 7B Arctic full-schema result of 54.3%; Arctic remains the app's default. Tuning
 improved 55 questions but regressed 16; accuracy among answered questions did not
 improve. No weights were published or new commits pushed.
-See [training evidence](results/G6_training/summary.json), [EVAL](docs/EVAL.md#e9--fine-tuning)
-and [resume evidence](docs/RESUME.md#g6--measured-fine-tuning-evidence).
+See [training evidence](results/G6_training/summary.json) and
+[EVAL](docs/EVAL.md#e9--fine-tuning).
 
 A separate development-only repair check scored 20/100 without repair and 22/100
 with one repair (+2 points; paired 95% interval 0–5). It required 54 extra calls and
@@ -177,8 +177,7 @@ uv run --env-file .env.setup --env-file .env.california --env-file .env.datasets
 
 [Build spec](docs/BUILD_SPEC.md) · [Progress](docs/PROGRESS.md) ·
 [Decisions](docs/DECISIONS.md) · [Evaluation](docs/EVAL.md) ·
-[Security](SECURITY.md) · [Deployment](docs/DEPLOY.md) ·
-[Simple-English notebook](explaination%20of%20project/PROJECT_EXPLAINED.md).
+[Security](SECURITY.md) · [Deployment](docs/DEPLOY.md).
 The original plan, execution brief and plan review are preserved as historical inputs.
 
 Code license: [MIT](LICENSE). Data and model licenses above are separate.

@@ -31,7 +31,7 @@ Approval of this plan includes option 1. It does not establish referential valid
 
 ## Global constraints and exact proposed operations
 
-- Work in D:/PROJECTS/SQLWARDEN on feat/foundation. Kunal <kunalchandrakar2005@gmail.com> is sole author/committer; inspect staged diff/exact Conventional Commit message first and identity/body afterward. No bot credits/trailers.
+- Work in D:/PROJECTS/SQLWARDEN on feat/foundation. Kunal <git-config user.email> is sole author/committer; inspect staged diff/exact Conventional Commit message first and identity/body afterward. No bot credits/trailers.
 - No remote, push, publication, hosted inference, account/spend, model download/inference, new dependency or runtime redesign.
 - Preserve historical planning inputs, raw sources, California objects, .env.setup/.env.california/.env.runtime, PostgreSQL 17 and sqlwarden_pg16_data. Never print credentials or put them in reports/prompts.
 - Create only absent data/import-release/minidev-0703/native and .env.datasets. Raw payloads/credentials/evidence stay ignored. Existing paths/schemas/roles refuse changes; no drop/truncate/rotation or automatic recovery.

@@ -1,7 +1,7 @@
 # Complete G1 agent core
 
 Date: 2026-10-09
-Owner: Kunal <kunalchandrakar2005@gmail.com>
+Owner: Kunal <git-config user.email>
 Scope: local-only G1 implementation after G0/G1.1 completion.
 
 ## Guardrails

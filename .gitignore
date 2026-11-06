@@ -45,3 +45,8 @@ web/dist-static/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Personal notes kept on this machine only
+docs/RESUME.md
+docs/INTERVIEW.md
+explaination of project/

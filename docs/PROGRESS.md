@@ -6,7 +6,7 @@ amends their order and checks.
 
 Current group (2026-10-13): G0-G5 complete locally and G3's E1-E8 matrix has run
 (dev and held-out, clean provenance). G7.1/G7.2/G7.5 and the G7 drill are done; G7.3
-and G7.4 are done: private repo https://github.com/Kunal874/sql-warden, MIT, CI green. G6 is optional. Headline (held-out, local
+and G7.4 are done: public repo https://github.com/Kunal874/sql-warden (D-109), MIT, CI green. G6 is optional. Headline (held-out, local
 subset, not official BIRD): full-schema single candidate 54.3%, full loop 42.9% end to
 end, 66.5% accurate on the 61.7% it answers at the frozen 2/3 threshold.
 Release order: G0 → G1 → G2 → G3 → G4 → G5 → G7; G6 is optional after release.
@@ -201,7 +201,7 @@ the optional interview drill.
 
 - Workspace initially contained only the three planning documents; no Git repo or implementation.
 - GitHub repository has no refs (read-only `git ls-remote`).
-- Confirmed Git name/email: Kunal <kunalchandrakar2005@gmail.com>.
+- Confirmed Git name/email: Kunal <git-config user.email>.
 - RTX 4060 Laptop GPU: 8188 MiB VRAM; 16 GB system RAM; roughly 66 GB free on D:.
 - Node 24.18.0/npm 11.16.0, uv 0.12.22, Docker Desktop 4.83.0, WSL 2.7.11.0.
 - uv/Docker are installed per-user and not on this session's PATH.
@@ -359,11 +359,11 @@ the optional interview drill.
   - [x] gitleaks 8.30.1 (approved install): one reviewed false positive (an evidence-file
     SHA-256 in DATA), recorded in `.gitleaksignore`; rescan clean.
 - [x] G7.3 / C9: concrete release preview; approve exact repo/visibility, push and hosting actions.
-  - [x] D-082: private Kunal874/sql-warden, MIT code license, no Pages while private.
+  - [x] D-082: private Kunal874/sql-warden, MIT code license, no Pages while private. Corrected by D-109: GitHub shows it was public.
   - [x] Preview prepared in RELEASE; waiting for Kunal's approval.
 - [x] G7.4: approved remote/push/provision/deploy; actual CI and bounded public smoke/abuse checks.
   - [x] Pushed e014fa8 as main; GitHub CI run 38177351055 passed (python, web, postgres-boundary).
-    No public deployment (private repo), so public smoke checks do not apply yet.
+    No public deployment (private repo), so public smoke checks do not apply yet. Corrected by D-109: the repo is public; there is still no deployment.
 - [x] G7.5: result-derived resume bullets and 12 evidence-backed interview questions (RESUME, INTERVIEW).
 - [x] G7 final interview drill (notebook, 2026-10-12).
 
@@ -1428,6 +1428,23 @@ Pre-flight contract reconciliation:
 
 ## Handoff
 
+### 2026-11-06 — Repository confirmed public; personal notes moved out of Git
+
+A visibility check found Kunal874/sql-warden readable without signing in, and
+GitHub's event log records it public from its creation on 2026-10-03. Every earlier
+"private" note, including the 2026-10-13 fetch claim, was wrong (D-109). Kunal keeps
+it public and keeps personal material local: docs/RESUME.md, docs/INTERVIEW.md and
+the notebook are now untracked and Git-ignored, with their local copies kept. Email
+and home paths in tracked files became placeholders; final-local-check.json changed
+only in its identity field. README, RELEASE, BUILD_SPEC and AGENTS are updated. No
+code, score, threshold, gold, model or deployment changed.
+
+Older commits still hold those files and the email, and commit metadata carries the
+email; no history rewrite is authorized. A fresh clone will not contain the three
+files, and checking out an older commit can remove the local copies when you return,
+so keep a separate backup. Checks and the push follow this entry; the final reply
+supplies the observed commit and CI.
+
 ### 2026-10-14 — Local demo running and usage walkthrough verified
 
 Kunal asks to run SQLWarden locally and explain inputs/expected results/how to
@@ -1612,7 +1629,7 @@ with~21.69GiB free D; preserve downloads/checkpoints/cache/raw evidence. The
 owned test clone in Windows Temp (~70MiB) could not be deleted: tool policy blocked
 that recursive cleanup, so it remains recoverable. No bypass/retry deletion.
 Including this temporary check copy still stays below the approved24GiB cap.
-Its exact path is C:/Users/Kunal/AppData/Local/Temp/sqlwarden-g6-check-a858f8c653734842b39baf272746f478.
+Its exact path is %USERPROFILE%/AppData/Local/Temp/sqlwarden-g6-check-a858f8c653734842b39baf272746f478.
 
 Task3 completion is recorded by executing-plans/task-done. Retain branch
 feat/foundation/current checkout; no merge/push/upload/deployment/weight publication.
@@ -2565,9 +2582,9 @@ and comparator. A model endpoint smoke must not execute model output as SQL.
 Do not touch the existing PostgreSQL 17 service or its data.
 
 Known tool paths for this session:
-- uv: C:/Users/Kunal/AppData/Local/Microsoft/WinGet/Packages/astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe/uv.exe
-- Docker: C:/Users/Kunal/AppData/Local/Programs/DockerDesktop/resources/bin/docker.exe
-- winget: C:/Users/Kunal/AppData/Local/Microsoft/WindowsApps/winget.exe
+- uv: %USERPROFILE%/AppData/Local/Microsoft/WinGet/Packages/astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe/uv.exe
+- Docker: %USERPROFILE%/AppData/Local/Programs/DockerDesktop/resources/bin/docker.exe
+- winget: %USERPROFILE%/AppData/Local/Microsoft/WindowsApps/winget.exe
 - Git Bash (skill-script helper): C:/CODE/Git/bin/bash.exe
 
 Use explicit paths if a fresh PowerShell cannot resolve commands; re-detect rather than
@@ -2582,7 +2599,7 @@ manifest before using the recorded alias; never silently pull/replace it again.
 Cold first-use exceeded 60 seconds. The warm smoke passed, but later runtime
 readiness/warmup must have a separate explicit bound. Only small prompts/context
 were measured, not a full-schema workload. Do not close Kunal's other apps.
-Native Ollama path: C:/Users/Kunal/AppData/Local/Programs/Ollama/ollama.exe.
+Native Ollama path: %USERPROFILE%/AppData/Local/Programs/Ollama/ollama.exe.
 Model unload: `ollama stop sqlwarden-qwen2.5-coder-7b-ctx2048:smoke-v1`.
 Read-only status: `ollama ps` or GET http://127.0.0.1:11434/api/ps.
 The temporary Python probe used `uv run python .tools/probes/qwen_smoke.py`,

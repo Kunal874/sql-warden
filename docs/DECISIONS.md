@@ -5,7 +5,7 @@
 Context: Kunal explicitly requested execution and supplied
 https://github.com/Kunal874/sql-warden.git. The remote currently has no refs.
 Options: configured identity or a different verified/noreply identity.
-Decision: Kunal confirmed Kunal <kunalchandrakar2005@gmail.com> for author and committer.
+Decision: Kunal confirmed Kunal <git-config user.email> for author and committer.
 Rationale: retain the owner's existing identity; configure this repository only.
 No remote addition, push or publication has been approved under the G7 release gate.
 
@@ -2385,6 +2385,8 @@ site waits until the repository is made public.
 Rationale: private keeps the work unpublished while CI runs. Cost if wrong: no public
 demo page until visibility changes.
 
+Correction: the repository was public throughout; see D-109.
+
 ## D-083 — G6 requested; bounded training pilot proposed (2026-10-12)
 
 Kunal requests fine-tuning for resume value. This authorizes pursuing G6; the
@@ -2882,6 +2884,26 @@ status; later G6 evidence is already separately completed and versioned.
 Publish this documentation-only verification record under the same explicit
 private-push authority and check its CI too. Costs if wrong: saved evidence and
 tests do not establish universal security/generalization or a new live-app smoke.
+
+## D-109 — Repository stays public; personal notes stay local (2026-11-06)
+
+Context: a visibility check found the repository page and raw files readable without
+signing in, and GitHub's event log records it public from its creation on 2026-10-03.
+D-082, D-108, PROGRESS and RELEASE called it private. Those records were wrong,
+including the 2026-10-13 note that a fresh fetch confirmed private.
+
+Decision: Kunal keeps the repository public and keeps personal material out of Git.
+`docs/RESUME.md`, `docs/INTERVIEW.md` and `explaination of project/` are untracked and
+Git-ignored, with their copies kept on this machine. Kunal's email and home-directory
+paths in tracked files became placeholders, including the identity field of
+`results/G6_training/final-local-check.json`; no measured result changed. Engineering
+records stay tracked, and their older entries otherwise stay as written.
+
+Not done: no history rewrite. Older commits still hold those files and the email, and
+commit metadata carries the email. Rewriting needs separate approval, a force-push and
+new SHAs for later commits, which evidence records cite. Pages stays unpublished.
+Costs if wrong: anyone who already copied the repository keeps that copy, and a fresh
+clone lacks the personal files, so they need their own backup.
 
 ## Native-import execution and final-review rulings
 

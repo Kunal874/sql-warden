@@ -1,7 +1,7 @@
 {
   "status": "passed",
   "history_commits": 130,
-  "author_and_committer_identity": "Kunal <kunalchandrakar2005@gmail.com>",
+  "author_and_committer_identity": "Kunal <git-config user.email>",
   "attribution_trailers": 0,
   "tracked_forbidden_artifacts": 0,
   "secret_pattern_findings": 0,

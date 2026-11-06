@@ -12,7 +12,7 @@ ignored local data or credentials skip cleanly. Repeat on the final release comm
 ## G7.2 — history, secrets and licenses
 
 - History (2026-10-11, all refs): 83 commits; every author and committer is
-  `Kunal <kunalchandrakar2005@gmail.com>`. No `Co-Authored-By`, `Signed-off-by`,
+  `Kunal <git-config user.email>`. No `Co-Authored-By`, `Signed-off-by`,
   generated-by line or assistant name in any commit message.
 - Secrets: every blob in the full history (601) was searched for the 34 exact local
   secret values from the ignored `.env*` files (names reported, values never printed)
@@ -52,6 +52,9 @@ check the public pages.
 Kunal chose a private repository and delegated the license (MIT, D-082). Before the
 push: 111 commits all Kunal, no trailers, gitleaks clean, remote confirmed empty.
 `feat/foundation` was pushed as `main` (e014fa8). GitHub CI run 38177351055 passed all
-three jobs. Pages is not published while the repository is private; to publish later,
-make the repository public, build `npm run build:static`, run
+three jobs.
+
+Correction (D-109, 2026-11-06): the repository was never private. GitHub records it as
+public from its creation on 2026-10-03, and Kunal chose to keep it public. Pages is
+still not published; to publish, build `npm run build:static`, run
 `python -m scripts.export_static_site` and deploy `web/dist-static`.

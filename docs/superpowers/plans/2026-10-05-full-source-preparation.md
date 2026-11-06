@@ -330,7 +330,7 @@ On failure do not retry an existing destination, repin sources or delete prior a
 - [x] **Step 6: Record and commit this checked logical task.**
 
 Use DATA/PROGRESS to record exact observed file/byte counts, checks and limitations. Add a D-037 entry for approval and actual Task 1 results, with options/rationale/cost. Add a simple notebook entry explaining extraction and temporary staging. Inspect `git diff`, stage only the new module/test and four records, inspect the full staged diff and exact message `feat(data): extract pinned full source release`, then commit.
-Check `git log -1 --format=fuller` and `git log -1 --format=%B`; both identities must be Kunal <kunalchandrakar2005@gmail.com>, no trailers/signatures. No source files from data/ are staged.
+Check `git log -1 --format=fuller` and `git log -1 --format=%B`; both identities must be Kunal <git-config user.email>, no trailers/signatures. No source files from data/ are staged.
 
 ## Task 2: Acquire the 75 pinned corrected descriptions
 

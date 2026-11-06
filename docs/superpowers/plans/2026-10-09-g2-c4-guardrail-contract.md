@@ -20,7 +20,7 @@ pytest and uv.
 - Work in `D:/PROJECTS/SQLWARDEN`; keep inference local.
 - No new direct dependencies, spending, accounts, remote, push, publication,
   benchmark changes, destructive work or history edits.
-- Kunal is sole author/committer: `Kunal <kunalchandrakar2005@gmail.com>`.
+- Kunal is sole author/committer: `Kunal <git-config user.email>`.
 - Never commit secrets, downloads, model weights, caches or raw runs.
 - Use tests first for security boundaries and state/limit transitions.
 - Real PostgreSQL integration tests must run before database security claims.
