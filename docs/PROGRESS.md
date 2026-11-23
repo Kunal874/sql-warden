@@ -1473,6 +1473,14 @@ earlier red runs never started any job.
 run" limitation now matches EVAL/SECURITY (27/29 stayed prevented). Notebook zip
 backups (`explaination of project*.zip`) are Git-ignored.
 
+2026-11-23 (later): README gains problem, plain-language how-it-works and tech sections,
+a demo GIF and three screenshots in docs/images, captured from a live local run (headless
+Chrome; california_schools "How many schools are in Alameda county?" answered 761 by
+2/3 consensus in 66s). The Benchmark bar chart drew no bars in the browser: Recharts'
+bar entry animation never completed, so its rectangles stayed empty. Setting
+`isAnimationActive={false}` on that Bar fixes it (5 bars verified in the DOM and on
+screen). The GitHub description and topics are set.
+
 ### 2026-10-14 — Local demo running and usage walkthrough verified
 
 Kunal asks to run SQLWarden locally and explain inputs/expected results/how to

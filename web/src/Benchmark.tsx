@@ -144,7 +144,13 @@ function SplitView({ split }: { split: Split }) {
               cursor={{ fill: "var(--hover)" }}
               formatter={(_value, _name, item) => [(item.payload as ChartRow).tip, "EX"]}
             />
-            <Bar dataKey="rate" fill="var(--series-1)" radius={[0, 4, 4, 0]} barSize={16} />
+            <Bar
+              dataKey="rate"
+              fill="var(--series-1)"
+              radius={[0, 4, 4, 0]}
+              barSize={16}
+              isAnimationActive={false}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

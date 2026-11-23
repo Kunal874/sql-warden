@@ -1,11 +1,68 @@
 # SQLWarden
 
-Ask a database a question in plain English and get an answer you can check, without
-handing an AI model the keys to your data. Language models write SQL well enough to be
-useful and badly enough to be dangerous: they invent columns, return confident wrong
-numbers, and follow instructions that should never reach a database. SQLWarden treats
-the model as an untrusted SQL author. It puts hard limits around everything the model
-writes and abstains when it isn't sure, rather than guessing.
+**Ask a database a question in plain English. Get an answer you can check, from an AI
+that is never trusted with your data.**
+
+![SQLWarden answering "How many schools are in Alameda county?" live](docs/images/ask-demo.gif)
+
+*A real run on a laptop, sped up: the question goes in, three AI-written SQL queries are
+checked and run safely, two agree, and the answer is 761.*
+
+## The problem
+
+Asking a database a question normally means writing SQL. AI models can write SQL from
+plain English, but they write it well enough to be useful and badly enough to be
+dangerous. They invent columns that don't exist and return confident wrong numbers.
+Some text can also trick them into writing a query that deletes or leaks data. Giving
+such a model direct database access is like handing a stranger the keys to your office
+because they sound helpful.
+
+SQLWarden treats the model as an untrusted SQL author. It puts hard limits around
+everything the model writes, and it says "I'm not sure" when it can't be confident,
+rather than guessing.
+
+## How it works, in plain words
+
+1. **Find the right columns.** A database can have hundreds of columns. A keyword
+   search picks the 24 most relevant ones, like a librarian pulling only the right
+   shelves, so the model isn't overwhelmed.
+2. **Write three drafts.** A local AI model writes three separate SQL queries for the
+   same question.
+3. **Check every draft.** A SQL guard reads each query the way a compiler would, into
+   a tree of parts, not as plain text. Only read-only `SELECT` queries made of approved
+   parts get through, so anything that could change data is refused.
+4. **Run it in a locked room.** Approved queries run under a login that can only read
+   one dataset, with time and size limits and a cost check first. Even if the guard
+   missed something, the database itself would refuse to change anything.
+5. **Fix once.** If a query fails, the model gets one chance to repair it.
+6. **Vote on the results.** SQLWarden compares the actual rows each query returned,
+   not the SQL text. If at least two agree, that's the answer. If they disagree, it asks
+   you one clarifying question or abstains.
+
+## The tech, explained simply
+
+| Piece | What it is | Why it is used here |
+| --- | --- | --- |
+| PostgreSQL 16 (Docker) | The database | Its roles let each dataset get its own read-only login, enforced by the database itself |
+| Ollama + Arctic-Text2SQL-R1-7B (4-bit) | A local AI model that writes SQL | Runs on a laptop, so no question or data leaves the machine |
+| sqlglot | A SQL parser | Lets the guard check a query's real structure, which text matching can't do safely |
+| BM25 retrieval | Classic keyword search | Cheaply picks the columns that matter for a question |
+| FastAPI + Server-Sent Events | The Python backend | Streams each step to the browser as it happens |
+| React + TypeScript + Recharts | The web app | Ask questions, browse the attack results and explore the benchmark |
+| pytest, Ruff, GitHub Actions | Testing and checks | Over 1,500 tests, including security tests against a real PostgreSQL database |
+| QLoRA (optional experiment) | Low-cost fine-tuning on an 8 GB laptop GPU | Measured whether a small tuned model could help; see the fine-tuning section |
+
+## Screenshots
+
+| Answer with its evidence | Benchmark | Attack Lab |
+| --- | --- | --- |
+| ![Answer card showing the SQL, the vote and the result 761](docs/images/ask-answer.png) | ![Benchmark page with accuracy by setting](docs/images/benchmark.png) | ![Attack Lab listing recorded attacks and the layer that blocked each](docs/images/attack-lab.png) |
+
+The answer shows the SQL that ran, how many drafts agreed, and the result. The
+Benchmark page shows measured accuracy for each setting. The Attack Lab lists 43
+recorded attacks and the layer that stopped each one.
+
+## In short
 
 It is a portfolio project built to be measured, not just demonstrated. Accuracy comes
 from a 324-question held-out benchmark with confidence intervals, and safety from a
