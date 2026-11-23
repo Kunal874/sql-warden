@@ -1464,6 +1464,15 @@ symlink skips (72.09s), matching the recorded baseline. This does not replace CI
 the web build was not run; no web file changed. sqlwarden_pg16_data is preserved, and
 the database and Docker were stopped afterwards, as found.
 
+2026-11-21: the billing lock was cleared. Pushing 6f50de4, which includes 287aff4 and
+4a67801, triggered CI44935228641, and the python, web and postgres-boundary jobs all
+passed. The only annotations were Node.js 20 action deprecation warnings. The two
+earlier red runs never started any job.
+
+2026-11-23: README gains a plain-language intro, and its stale "layer-off E5 has not
+run" limitation now matches EVAL/SECURITY (27/29 stayed prevented). Notebook zip
+backups (`explaination of project*.zip`) are Git-ignored.
+
 ### 2026-10-14 — Local demo running and usage walkthrough verified
 
 Kunal asks to run SQLWarden locally and explain inputs/expected results/how to

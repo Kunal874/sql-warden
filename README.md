@@ -1,5 +1,20 @@
 # SQLWarden
 
+Ask a database a question in plain English and get an answer you can check, without
+handing an AI model the keys to your data. Language models write SQL well enough to be
+useful and badly enough to be dangerous: they invent columns, return confident wrong
+numbers, and follow instructions that should never reach a database. SQLWarden treats
+the model as an untrusted SQL author. It puts hard limits around everything the model
+writes and abstains when it isn't sure, rather than guessing.
+
+It is a portfolio project built to be measured, not just demonstrated. Accuracy comes
+from a 324-question held-out benchmark with confidence intervals, and safety from a
+recorded attack suite and layer-by-layer tests on real PostgreSQL. The negative
+results are reported as plainly as the positive ones. Everything runs locally:
+PostgreSQL 16 in Docker, a 4-bit 7B model through Ollama, a FastAPI backend and a
+React web app. Jump to [Results](#results), the [Security model](#security-model) or
+[Run it locally](#run-it-locally).
+
 SQLWarden is a read-only text-to-SQL agent that runs on a laptop. It turns a question
 into PostgreSQL, but every generated query passes a SQL guard, runs under a
 one-dataset read-only login with hard limits, and is accepted only when several
@@ -157,8 +172,11 @@ uv run --env-file .env.setup --env-file .env.california --env-file .env.datasets
   end-to-end EX; the coverage curve in EVAL shows the trade-off.
 - Hosted live inference is not deployed; the public option is a static evidence site
   plus this local demo ([D-077](docs/DECISIONS.md)).
-- Layer-off attack variants (E5) need a separate approved disposable environment and
-  have not run. Catalog metadata stays visible to readers, as in normal PostgreSQL.
+- Layer-off attack tests (E5) cover only the recorded 29 attacks, switching off one layer
+  at a time in a disposable database. 27 stayed prevented; `version()` relied on the SQL
+  guard alone, and a huge cross join on the statement timeout alone
+  ([EVAL](docs/EVAL.md), `results/G3_matrix/e5-layer-off.json`). Catalog metadata stays
+  visible to readers, as in normal PostgreSQL.
 
 ## Data, models and licenses
 
